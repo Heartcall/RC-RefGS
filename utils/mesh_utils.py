@@ -82,6 +82,7 @@ class GaussianExtractor(object):
     def clean(self):
         self.depthmaps = []
         self.alphamaps = []
+        self.confmaps = []
         self.rgbmaps = []
         self.normals = []
         self.depth_normals = []
@@ -101,15 +102,19 @@ class GaussianExtractor(object):
             normal = torch.nn.functional.normalize(render_pkg['rend_normal'], dim=0)
             depth = render_pkg['surf_depth']
             depth_normal = render_pkg['surf_normal']
+            normal_agree = (normal * depth_normal).sum(dim=0, keepdim=True).clamp(0.0, 1.0)
+            conf = alpha * normal_agree
             self.rgbmaps.append(rgb.cpu())
             self.depthmaps.append(depth.cpu())
             self.alphamaps.append(alpha.cpu())
+            self.confmaps.append(conf.cpu())
             self.normals.append(normal.cpu())
             self.depth_normals.append(depth_normal.cpu())
         
         self.rgbmaps = torch.stack(self.rgbmaps, dim=0)
         self.depthmaps = torch.stack(self.depthmaps, dim=0)
         self.alphamaps = torch.stack(self.alphamaps, dim=0)
+        self.confmaps = torch.stack(self.confmaps, dim=0)
         self.depth_normals = torch.stack(self.depth_normals, dim=0)
         self.estimate_bounding_sphere()
 
@@ -128,7 +133,7 @@ class GaussianExtractor(object):
         print(f"Use at least {2.0 * self.radius:.2f} for depth_trunc")
 
     @torch.no_grad()
-    def extract_mesh_bounded(self, voxel_size=0.004, sdf_trunc=0.02, depth_trunc=3, mask_backgrond=True):
+    def extract_mesh_bounded(self, voxel_size=0.004, sdf_trunc=0.02, depth_trunc=3, mask_backgrond=True, conf_threshold=0.0):
         """
         Perform TSDF fusion given a fixed depth range, used in the paper.
         
@@ -152,11 +157,13 @@ class GaussianExtractor(object):
 
         for i, cam_o3d in tqdm(enumerate(to_cam_open3d(self.viewpoint_stack)), desc="TSDF integration progress"):
             rgb = self.rgbmaps[i]
-            depth = self.depthmaps[i]
+            depth = self.depthmaps[i].clone()
             
             # if we have mask provided, use it
             if mask_backgrond and (self.viewpoint_stack[i].gt_alpha_mask is not None):
                 depth[(self.viewpoint_stack[i].gt_alpha_mask < 0.5)] = 0
+            if hasattr(self, "confmaps"):
+                depth[self.confmaps[i] < conf_threshold] = 0
 
             # make open3d rgbd
             rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(

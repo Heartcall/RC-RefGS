@@ -1,8 +1,16 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+import sys
+
+def _extract_cuda_device(argv):
+    if "--cuda_device" in argv:
+        index = argv.index("--cuda_device")
+        if index + 1 < len(argv):
+            return argv[index + 1]
+    return os.environ.get("CUDA_VISIBLE_DEVICES", "2")
+
+os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)
 os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
-import sys
 import uuid
 import torch
 import numpy as np
@@ -13,6 +21,7 @@ from scene import Scene, GaussianModel
 from utils.loss_utils import l1_loss, ssim, entropy_loss, binary_cross_entropy, tv_loss
 from utils.general_utils import safe_state
 from gaussian_renderer import *
+from utils.reflection_consistency import choose_pair_camera, reflection_consistency_loss
 
 from utils.image_utils import psnr
 from argparse import ArgumentParser, Namespace
@@ -100,6 +109,19 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         normal_loss = lambda_normal * (normal_error).mean()
         dist_loss = lambda_dist * (rend_dist).mean()
         loss = loss + dist_loss + normal_loss
+
+        if opt.lambda_ref_consistency > 0 and iteration >= opt.ref_consistency_start and iteration % opt.ref_consistency_every == 0:
+            pair_cam = choose_pair_camera(viewpoint_stack, viewpoint_cam, opt.ref_consistency_max_angle)
+            if pair_cam is not None:
+                pair_pkg = render(pair_cam, gaussians, pipe, bg, iteration=iteration)
+                ref_loss = reflection_consistency_loss(
+                    render_pkg,
+                    pair_pkg,
+                    viewpoint_cam,
+                    pair_cam,
+                    opt.ref_consistency_gamma,
+                )
+                loss = loss + opt.lambda_ref_consistency * ref_loss
         
         # loss
         total_loss = loss
@@ -211,6 +233,7 @@ if __name__ == "__main__":
     pp = PipelineParams(parser)
     parser.add_argument('--ip', type=str, default="127.0.0.1")
     parser.add_argument('--port', type=int, default=6009)
+    parser.add_argument('--cuda_device', type=str, default="2")
     parser.add_argument('--detect_anomaly', action='store_true', default=False)
     parser.add_argument("--test_iterations", nargs="+", type=int, default=
                         [1_000, 5_000, 7_000, 10_000, 15_000, 20_000, 25_000, 30_000]

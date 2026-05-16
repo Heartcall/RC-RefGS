@@ -178,9 +178,35 @@ def render(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch.Tensor, 
     output_rgb = torch.zeros(image_height, image_width, 3).cuda()
     output_rgb.reshape(-1, 3)[select_index] = pbr_rgb
     output_rgb = output_rgb.permute(2,0,1)
+
+    output_spec_rgb = torch.zeros(image_height, image_width, 3).cuda()
+    output_spec_rgb.reshape(-1, 3)[select_index] = spec_light
+    output_spec_rgb = output_spec_rgb.permute(2,0,1)
+
+    output_diff_rgb = torch.zeros(image_height, image_width, 3).cuda()
+    output_diff_rgb.reshape(-1, 3)[select_index] = diff_light
+    output_diff_rgb = output_diff_rgb.permute(2,0,1)
+
+    output_roughness = torch.zeros(image_height, image_width, 1).cuda()
+    output_roughness.reshape(-1, 1)[select_index] = roughness_map
+    output_roughness = output_roughness.permute(2,0,1)
+
+    output_wo = torch.zeros(image_height, image_width, 3).cuda()
+    output_wo.reshape(-1, 3)[select_index] = wo
+    output_wo = output_wo.permute(2,0,1)
+
+    output_feature = torch.zeros(image_height, image_width, pc.gsfeat_dim).cuda()
+    output_feature.reshape(-1, pc.gsfeat_dim)[select_index] = feature_dirc
+    output_feature = output_feature.permute(2,0,1)
     
     rets.update({
         'pbr_rgb': output_rgb,
+        'spec_light': output_spec_rgb,
+        'diff_light': output_diff_rgb,
+        'roughness_map': output_roughness,
+        'reflection_dir': output_wo,
+        'feature_map': output_feature,
+        'select_index': select_index,
 
         'rend_alpha': render_alpha,
         'rend_normal': render_normal,

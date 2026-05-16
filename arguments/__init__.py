@@ -110,6 +110,11 @@ class OptimizationParams(ParamGroup):
         self.lambda_dssim = 0.2
         self.lambda_dist = 0.0
         self.lambda_normal = 0.05
+        self.lambda_ref_consistency = 0.0
+        self.ref_consistency_start = 3000
+        self.ref_consistency_every = 4
+        self.ref_consistency_max_angle = 20.0
+        self.ref_consistency_gamma = 2.0
         self.opacity_cull = 0.05
 
         self.densification_interval = 100
