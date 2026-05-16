@@ -538,3 +538,83 @@
 - If no GPU becomes available: switch to gpt-5.5 for the existing research-side audit and minimum evidence matrix.
 
 **Model switch recommendation:** SWITCH MODEL to gpt-5.5 unless the next window has usable GPU access for codex smoke execution.
+
+## 2026-05-16 16:09:20 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- Git status at round start was clean.
+- Primary plan tasks 1-5 were implemented and recorded in the coordination board.
+- Coordination board had no active claims.
+- The board still listed runtime smoke as blocked by GPU resource availability and recommended gpt-5.5 research audit unless a usable GPU became available.
+
+**Plan audit gate:** CONDITIONAL GO for a safe non-GPU experiment-launch patch.
+- [Reasoning] GPU smoke remains the highest runtime gate, but minimal CUDA allocation on GPU 1 still fails.
+- [Reasoning] Since `train.py` supports `--cuda_device`, the metric script and ablation runner should expose the same control so future smoke/evaluation commands can consistently target a selected GPU.
+- [Reasoning] This patch affects launch/device selection only and does not change RC loss, renderer math, or default ablation weights.
+
+**Round-local plan:**
+- Role: implementation/debugging.
+- Goal: add explicit CUDA-device control to the metric and ablation launch path.
+- Files likely touched: `metrics/reflection_consistency_eval.py`, `scripts/run_rc_refgs_ablation.sh`, `tests/test_reflection_consistency_eval_static.py`, coordination board, autonomous log.
+- Verification commands: `python -m unittest tests.test_reflection_consistency_eval_static`; `python -m unittest discover tests`; `python -m py_compile metrics/reflection_consistency_eval.py`; `bash -n scripts/run_rc_refgs_ablation.sh`.
+- Go/no-go criteria: CONDITIONAL GO if non-GPU tests/compile/shell syntax pass but CUDA allocation remains blocked.
+
+**Actions taken:**
+- Rechecked GPU state:
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` showed GPU 1 at `3 MiB`, other visible GPUs heavily occupied.
+  - Minimal CUDA allocation with `CUDA_VISIBLE_DEVICES=1` in `ref_gs` failed with `all CUDA-capable devices are busy or unavailable`.
+- Claimed the eval/ablation CUDA-device patch in the coordination board.
+- Added RED static tests requiring:
+  - `_extract_cuda_device()` and pre-import `CUDA_VISIBLE_DEVICES` assignment in `metrics/reflection_consistency_eval.py`.
+  - `--cuda_device` parser support in the metric script.
+  - `CUDA_DEVICE` environment knob and `--cuda_device "${CUDA_DEVICE}"` pass-through in `scripts/run_rc_refgs_ablation.sh`.
+- Confirmed RED failure: `python -m unittest tests.test_reflection_consistency_eval_static` exited 1 with five missing-snippet failures.
+- Patched `metrics/reflection_consistency_eval.py` to apply `--cuda_device` before importing torch, preserving an existing `CUDA_VISIBLE_DEVICES` when no CLI override is supplied and defaulting to GPU 2.
+- Patched `scripts/run_rc_refgs_ablation.sh` to set `CUDA_DEVICE="${CUDA_DEVICE:-${CUDA_VISIBLE_DEVICES:-2}}"` and pass it to both train and metric commands.
+- Released the coordination-board claim and recorded completion/blocker state.
+
+**Files changed this round:**
+- `metrics/reflection_consistency_eval.py`
+- `scripts/run_rc_refgs_ablation.sh`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; GPU 1 showed `3 MiB`, other visible GPUs were heavily occupied.
+- `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader`
+  - Exit 0; six long-running Python jobs occupied the other visible GPUs.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='1'; import torch; print(...); x=torch.empty((1,), device='cuda'); print(...)"`.
+  - Exit 1; torch reported `available True`, `count 1`, then allocation failed with `all CUDA-capable devices are busy or unavailable`.
+- `python -m unittest tests.test_reflection_consistency_eval_static`
+  - RED run: exit 1, expected missing CUDA-device support failures.
+  - GREEN run: exit 0, two tests passed.
+- `python -m py_compile metrics/reflection_consistency_eval.py`
+  - Exit 0.
+- `python -m unittest discover tests`
+  - Exit 0, eleven tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py`
+  - Exit 0.
+- `bash -n scripts/run_rc_refgs_ablation.sh`
+  - Exit 0.
+
+**Artifacts produced:**
+- Metric script can now select CUDA device before torch import.
+- Ablation runner now supports `CUDA_DEVICE=<gpu>` or falls back to existing `CUDA_VISIBLE_DEVICES`, then GPU 2.
+- Static test coverage updated for the experiment launch path.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- [Experiment-supported] Non-GPU tests, compile checks, and shell syntax checks pass.
+- [Experiment-supported] Launch scripts now consistently expose CUDA-device selection for train/eval.
+- [Experiment-weakened] Runtime smoke and RC-loss training behavior remain unverified because CUDA allocation is still blocked.
+
+**Next recommended step:**
+- If a usable GPU appears, stay in codex and run baseline/RC one-iteration smoke using `--cuda_device <free_gpu>` or `CUDA_DEVICE=<free_gpu> scripts/run_rc_refgs_ablation.sh` with reduced `ITERATIONS`.
+- If no GPU appears, switch to gpt-5.5 for the already-recorded research-side audit and minimum evidence matrix.
+
+**Model switch recommendation:** SWITCH MODEL to gpt-5.5 unless the next window has usable GPU access for codex smoke execution.

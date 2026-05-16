@@ -11,6 +11,9 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
         required_snippets = [
             "ModelParams(parser, sentinel=True)",
             "get_combined_args(parser)",
+            "def _extract_cuda_device(argv):",
+            'os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)',
+            'parser.add_argument("--cuda_device"',
             "--iteration",
             "dataset.white_background",
             "mean_reflection_consistency",
@@ -28,6 +31,8 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
         source = ablation_script.read_text()
         required_snippets = [
             "SCENES=(teapot toaster car)",
+            "CUDA_DEVICE=\"${CUDA_DEVICE:-${CUDA_VISIBLE_DEVICES:-2}}\"",
+            "--cuda_device \"${CUDA_DEVICE}\"",
             "--lambda_ref_consistency",
             "${scene}_base",
             "${scene}_rc",
