@@ -11,6 +11,8 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
         required_snippets = [
             "ModelParams(parser, sentinel=True)",
             "get_combined_args(parser)",
+            "REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))",
+            "sys.path.insert(0, REPO_ROOT)",
             "def _extract_cuda_device(argv):",
             'os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)',
             'parser.add_argument("--cuda_device"',

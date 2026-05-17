@@ -539,6 +539,407 @@
 
 **Model switch recommendation:** SWITCH MODEL to gpt-5.5 unless the next window has usable GPU access for codex smoke execution.
 
+## 2026-05-17 16:19:05 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- Git status was clean at startup.
+- Coordination board had no active claims.
+- Tasks 1-5 plus launch-path fixes were recorded complete.
+- Prior blocker was GPU allocation failure; the next recommended task was baseline/RC one-iteration smoke when a usable GPU appeared.
+
+**Plan audit gate:** GO for runtime smoke verification and one-pair metric sanity.
+- [Evidence] `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` showed all visible GPUs at `3 MiB`.
+- [Evidence] `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` showed no active compute apps.
+- [Evidence] Minimal CUDA allocation in `ref_gs` on `CUDA_VISIBLE_DEVICES=0` succeeded.
+- [Reasoning] Runtime smoke was previously the highest blocked evidence gate; with CUDA allocatable, it became the highest-value safe task for this window.
+
+**Round-local plan:**
+- Claim runtime smoke verification in the coordination board.
+- Run baseline one-iteration smoke on `ball`.
+- Run RC one-iteration smoke with `--lambda_ref_consistency 0.02 --ref_consistency_start 1 --ref_consistency_every 1`.
+- Generate one-pair metric JSON if smoke outputs are valid.
+- Fix only launch-path blockers exposed by the metric sanity run.
+- Release claim, verify, and record GO/NO-GO decision.
+
+**Actions taken:**
+- Claimed runtime smoke verification and one-pair metric sanity in the coordination board.
+- Ran baseline smoke:
+  - model path: `/tmp/rc_refgs_smoke_base_20260517_1615`
+  - command used `--cuda_device 0`, `--iterations 1`, `--test_iterations 1`, `--save_iterations 1`, `--quiet`.
+  - exit 0; produced `point_cloud/iteration_1/point_cloud.ply`, `dir_encoding.pt`, and `light_mlp.pt`.
+- Ran RC smoke:
+  - model path: `/tmp/rc_refgs_smoke_rc_20260517_1615`
+  - same smoke command plus `--lambda_ref_consistency 0.02 --ref_consistency_start 1 --ref_consistency_every 1`.
+  - exit 0; produced the same iteration-1 artifact set.
+- Ran metric script on the baseline test split; command exited 0 but produced `num_pairs=0`, so this verified script execution but not pairwise metric computation.
+- Reran metric sanity on train split with `--max_angle_deg 180 --max_pairs 1`; baseline and RC both exited 0 with `num_pairs=1`.
+- Systematic debugging during metric launch:
+  - Symptom: `python metrics/reflection_consistency_eval.py ...` failed with `ModuleNotFoundError: No module named 'arguments'`.
+  - Root cause: direct script execution puts `metrics/` rather than repo root at the front of `sys.path`.
+  - Fix: add repo root to `sys.path` before importing repo modules.
+  - Regression test: `tests/test_reflection_consistency_eval_static.py` now requires the repo-root `sys.path` setup.
+- Released the coordination-board claim and marked the prior GPU blocker resolved for this window.
+
+**Files changed this round:**
+- `metrics/reflection_consistency_eval.py`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `python -m unittest discover tests`
+  - Pre-smoke: exit 0, eleven tests passed.
+  - Post-fix final: exit 0, eleven tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py`
+  - Pre-smoke: exit 0.
+  - Post-fix final: exit 0.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='0'; import torch; ..."`
+  - Exit 0; CUDA available, one RTX A5000 visible, minimal allocation succeeded.
+- `conda run -n ref_gs python train.py --cuda_device 0 -s /data/liuly/dataset/3DGS/refnerf/ball -m /tmp/rc_refgs_smoke_base_20260517_1615 --iterations 1 --test_iterations 1 --save_iterations 1 --quiet`
+  - Exit 0.
+- `conda run -n ref_gs python train.py --cuda_device 0 -s /data/liuly/dataset/3DGS/refnerf/ball -m /tmp/rc_refgs_smoke_rc_20260517_1615 --iterations 1 --test_iterations 1 --save_iterations 1 --quiet --lambda_ref_consistency 0.02 --ref_consistency_start 1 --ref_consistency_every 1`
+  - Exit 0.
+- `python -m unittest tests.test_reflection_consistency_eval_static`
+  - RED after adding repo-root import expectation: exit 1.
+  - GREEN after metric-script patch: exit 0, two tests passed.
+- `python -m py_compile metrics/reflection_consistency_eval.py`
+  - Exit 0.
+- Baseline train-split metric sanity:
+  - `conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 0 -s /data/liuly/dataset/3DGS/refnerf/ball -m /tmp/rc_refgs_smoke_base_20260517_1615 --iteration 1 --split train --max_pairs 1 --max_angle_deg 180 --quiet --output_json /tmp/rc_refgs_smoke_base_20260517_1615/reflection_consistency_train_iter1.json`
+  - Exit 0; JSON: `mean_reflection_consistency=3.963682715379946e-09`, `reflective_region_psnr=11.578920364379883`, `num_pairs=1`.
+- RC train-split metric sanity:
+  - same command with `-m /tmp/rc_refgs_smoke_rc_20260517_1615` and matching output path.
+  - Exit 0; JSON: `mean_reflection_consistency=3.963682715379946e-09`, `reflective_region_psnr=11.578920364379883`, `num_pairs=1`.
+- `bash -n scripts/run_rc_refgs_ablation.sh`
+  - Exit 0.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_smoke_base_20260517_1615`
+- `/tmp/rc_refgs_smoke_rc_20260517_1615`
+- `/tmp/rc_refgs_smoke_base_20260517_1615/reflection_consistency_train_iter1.json`
+- `/tmp/rc_refgs_smoke_rc_20260517_1615/reflection_consistency_train_iter1.json`
+
+**Go/no-go decision:** GO for reduced experiment stage.
+- [Experiment-supported] Baseline and RC one-iteration training smoke both run and save iteration-1 artifacts.
+- [Experiment-supported] Metric script can load those artifacts and compute one train-pair JSON metric.
+- [Experiment-supported] Lightweight tests, compile checks, and ablation shell syntax checks pass.
+- [Experiment-weakened] One-iteration smoke does not establish rendering quality or scientific RC improvement; baseline and RC metric values are identical at this scale.
+
+**Next recommended step:**
+- Run a reduced `teapot` baseline/RC experiment with enough iterations for RC loss to activate beyond a single step, then produce train/test reflection-consistency JSON and standard eval metrics.
+
+**Model switch recommendation:** Stay in codex while CUDA remains allocatable for reduced experiment execution; switch to gpt-5.5 after reduced metrics exist and need claim/audit framing.
+
+## 2026-05-17 17:14:48 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with local modified RC-RefGS log/metric files from the previous completed window.
+- Coordination board had no active claims.
+- Plan Task 5 required baseline/proposed runs and evaluation JSON. Tasks 1-5 and smoke verification were already recorded complete.
+- Previous recommendation was a reduced `teapot` baseline/RC experiment with enough iterations for the RC path to activate beyond one step.
+
+**Plan audit gate:** CONDITIONAL GO for reduced `teapot` experiment.
+- [Evidence] GPU 0 minimal CUDA allocation succeeded in `ref_gs`.
+- [Evidence] `/data/liuly/dataset/3DGS/refnerf/teapot` exists.
+- [Evidence] `eval_metrics.py` is not present in this repo; only `metrics/reflection_consistency_eval.py` is available.
+- [Reasoning] The highest-value safe task is therefore reduced training plus available RC JSON metrics, with standard rendering metrics explicitly marked out of scope for this round.
+
+**Round-local plan:**
+- Run fresh lightweight tests/compile before GPU work.
+- Claim reduced `teapot` baseline/RC i20 experiment in the coordination board.
+- Train baseline for 20 iterations and save iteration 20.
+- Train RC for 20 iterations with `--lambda_ref_consistency 0.02 --ref_consistency_start 2 --ref_consistency_every 2`.
+- Generate train/test reflection-consistency JSON for both runs.
+- Investigate empty metric outputs if they occur.
+- Run final lightweight verification and release the coordination-board claim.
+
+**Actions taken:**
+- Claimed the reduced `teapot` experiment in the coordination board.
+- Ran baseline i20:
+  - model path: `/tmp/rc_refgs_teapot_base_i20_20260517_1710`
+  - command used `--cuda_device 0`, `--iterations 20`, `--test_iterations 20`, `--save_iterations 20`, `--quiet`.
+  - exit 0; saved `point_cloud/iteration_20/point_cloud.ply`, `dir_encoding.pt`, and `light_mlp.pt`.
+- Ran RC i20:
+  - model path: `/tmp/rc_refgs_teapot_rc_i20_20260517_1710`
+  - same command plus `--lambda_ref_consistency 0.02 --ref_consistency_start 2 --ref_consistency_every 2`.
+  - exit 0; saved the same iteration-20 artifact set.
+  - progress showed lower iteration throughput than baseline, consistent with the extra paired-render path being active.
+- Generated initial train/test metrics without `--eval`; train produced pairs, test produced `num_pairs=0`.
+- Investigated the empty test metric:
+  - `transforms_train.json` has 100 frames and `transforms_test.json` has 200 frames.
+  - Root cause: for Blender-style datasets, `ModelParams.eval` defaults false, and `readNerfSyntheticInfo()` folds test cameras into train while leaving `test_cameras` empty.
+  - Fix for this run: pass `--eval` to the metric script, which preserves the train/test split.
+- Reran split-preserving train/test metrics with `--eval`; all four commands exited 0 and produced `num_pairs=5`.
+- Released the coordination-board claim and recorded the result.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `python -m unittest discover tests`
+  - Pre-run: exit 0, eleven tests passed.
+  - Final: exit 0, eleven tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py`
+  - Pre-run: exit 0.
+  - Final: exit 0.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='0'; import torch; ..."`
+  - Exit 0; CUDA available on one RTX A5000 and minimal allocation succeeded.
+- Baseline training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_base_i20_20260517_1710 --iterations 20 --test_iterations 20 --save_iterations 20 --quiet`
+  - Exit 0; final progress line had loss `0.40793`.
+- RC training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_rc_i20_20260517_1710 --iterations 20 --test_iterations 20 --save_iterations 20 --quiet --lambda_ref_consistency 0.02 --ref_consistency_start 2 --ref_consistency_every 2`
+  - Exit 0; final progress line had loss `0.40795`.
+- Split-preserving baseline train metric:
+  - `conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_base_i20_20260517_1710 --iteration 20 --split train --max_pairs 5 --max_angle_deg 180 --quiet --output_json /tmp/rc_refgs_teapot_base_i20_20260517_1710/reflection_consistency_train_evalsplit_iter20.json`
+  - Exit 0; JSON: `mean_reflection_consistency=0.00013025543448748068`, `reflective_region_psnr=13.304840469360352`, `num_pairs=5`.
+- Split-preserving RC train metric:
+  - Same command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.0001234166178619489`, `reflective_region_psnr=13.304348754882813`, `num_pairs=5`.
+- Split-preserving baseline test metric:
+  - Same metric command with `--split test`.
+  - Exit 0; JSON: `mean_reflection_consistency=0.00015782483969815076`, `reflective_region_psnr=13.699755668640137`, `num_pairs=5`.
+- Split-preserving RC test metric:
+  - Same metric command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.00015079378208611162`, `reflective_region_psnr=13.700292778015136`, `num_pairs=5`.
+- `bash -n scripts/run_rc_refgs_ablation.sh`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_i20_20260517_1710`
+- `/tmp/rc_refgs_teapot_rc_i20_20260517_1710`
+- `/tmp/rc_refgs_teapot_base_i20_20260517_1710/reflection_consistency_train_evalsplit_iter20.json`
+- `/tmp/rc_refgs_teapot_rc_i20_20260517_1710/reflection_consistency_train_evalsplit_iter20.json`
+- `/tmp/rc_refgs_teapot_base_i20_20260517_1710/reflection_consistency_test_evalsplit_iter20.json`
+- `/tmp/rc_refgs_teapot_rc_i20_20260517_1710/reflection_consistency_test_evalsplit_iter20.json`
+
+**Go/no-go decision:** CONDITIONAL GO for a longer one-scene experiment.
+- [Experiment-supported] Reduced baseline and RC training both run to iteration 20 and save artifacts.
+- [Experiment-supported] Split-preserving train/test reflection-consistency metrics are non-empty with `num_pairs=5`.
+- [Experiment-supported] RC has slightly lower reflection-consistency error than baseline on train (`0.0001302554` -> `0.0001234166`) and test (`0.0001578248` -> `0.0001507938`) at this scale.
+- [Experiment-weakened] The run is too short for scientific claims, and the repo lacks a standard PSNR/SSIM/LPIPS evaluation script.
+- [Experiment-weakened] Reflective-region PSNR is effectively unchanged at i20.
+
+**Next recommended step:**
+- While CUDA remains allocatable, run a longer one-scene `teapot` baseline/RC pair, e.g. 300-500 iterations with a warmup before RC activation, and generate split-preserving metrics with `--eval`.
+- Separately add or restore a standard rendering metric entrypoint if PSNR/SSIM/LPIPS are required inside this repo.
+
+**Model switch recommendation:** Stay in codex for the next longer one-scene run while GPU access is available; switch to gpt-5.5 after longer metrics exist for research-claim framing.
+
+## 2026-05-17 17:45:52 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with local modified RC-RefGS log/metric files from previous completed windows.
+- Coordination board had no active claims.
+- Latest recommendation was a longer one-scene `teapot` baseline/RC pair with `--eval`, because the i20 experiment was too short for meaningful evidence.
+- `eval_metrics.py` remains absent; standard PSNR/SSIM/LPIPS are still out of scope for this run.
+
+**Plan audit gate:** CONDITIONAL GO for held-out split `teapot` i300 experiment.
+- [Evidence] GPU 0 was allocatable: minimal CUDA tensor allocation in `ref_gs` succeeded.
+- [Evidence] `python -m unittest discover tests` passed before GPU work.
+- [Evidence] Full modified-module `py_compile` passed before GPU work.
+- [Reasoning] Running with `--eval` preserves Blender train/test splits, avoiding the prior issue where test cameras were folded into train and test metrics were empty.
+
+**Round-local plan:**
+- Claim held-out split `teapot` baseline/RC i300 in the coordination board.
+- Train baseline for 300 iterations with `--eval`.
+- Train RC for 300 iterations with `--eval`, `--lambda_ref_consistency 0.02`, `--ref_consistency_start 50`, and `--ref_consistency_every 4`.
+- Generate train/test reflection-consistency JSON with `--eval`, `--max_pairs 10`, and `--max_angle_deg 180`.
+- Run final lightweight verification and release the claim.
+
+**Actions taken:**
+- Claimed the i300 eval-split experiment in the coordination board.
+- Ran baseline:
+  - model path: `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742`
+  - command used `--cuda_device 0 --eval --iterations 300 --test_iterations 300 --save_iterations 300 --quiet`.
+  - exit 0; saved `point_cloud/iteration_300/point_cloud.ply`, `dir_encoding.pt`, and `light_mlp.pt`.
+  - final progress line had loss `0.06251`.
+- Ran RC:
+  - model path: `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742`
+  - same command plus `--lambda_ref_consistency 0.02 --ref_consistency_start 50 --ref_consistency_every 4`.
+  - exit 0; saved the same iteration-300 artifact set.
+  - final progress line had loss `0.06252`.
+- Verified both `cfg_args` files recorded `eval=True`.
+- Generated split-preserving train/test reflection metrics for baseline and RC; all four metric commands exited 0 and produced `num_pairs=10`.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; GPU 0 showed `3 MiB`, GPU 6 had one existing 8994 MiB Python job.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='0'; import torch; ..."`
+  - Exit 0; CUDA available on one RTX A5000 and minimal allocation succeeded.
+- `python -m unittest discover tests`
+  - Pre-run: exit 0, eleven tests passed.
+  - Final: exit 0, eleven tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py`
+  - Pre-run: exit 0.
+  - Final: exit 0.
+- Baseline training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742 --iterations 300 --test_iterations 300 --save_iterations 300 --quiet`
+  - Exit 0; final loss `0.06251`.
+- RC training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742 --iterations 300 --test_iterations 300 --save_iterations 300 --quiet --lambda_ref_consistency 0.02 --ref_consistency_start 50 --ref_consistency_every 4`
+  - Exit 0; final loss `0.06252`.
+- Split-preserving baseline train metric:
+  - `conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742 --iteration 300 --split train --max_pairs 10 --max_angle_deg 180 --quiet --output_json /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/reflection_consistency_train_evalsplit_iter300.json`
+  - Exit 0; JSON: `mean_reflection_consistency=0.00397079223766923`, `reflective_region_psnr=22.43657054901123`, `num_pairs=10`.
+- Split-preserving RC train metric:
+  - Same command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.003940008953213692`, `reflective_region_psnr=22.47500057220459`, `num_pairs=10`.
+- Split-preserving baseline test metric:
+  - Same metric command with `--split test`.
+  - Exit 0; JSON: `mean_reflection_consistency=0.001844302099198103`, `reflective_region_psnr=23.035557746887207`, `num_pairs=10`.
+- Split-preserving RC test metric:
+  - Same metric command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.001834612456150353`, `reflective_region_psnr=23.17402801513672`, `num_pairs=10`.
+- `bash -n scripts/run_rc_refgs_ablation.sh`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742`
+- `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742`
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/reflection_consistency_train_evalsplit_iter300.json`
+- `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742/reflection_consistency_train_evalsplit_iter300.json`
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/reflection_consistency_test_evalsplit_iter300.json`
+- `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742/reflection_consistency_test_evalsplit_iter300.json`
+
+**Go/no-go decision:** CONDITIONAL GO for multi-scene/repeat experiment.
+- [Experiment-supported] Held-out split baseline and RC training both run to iteration 300 and save artifacts.
+- [Experiment-supported] Split-preserving train/test reflection-consistency metrics are non-empty with `num_pairs=10`.
+- [Experiment-supported] RC has slightly lower reflection-consistency error than baseline on train (`0.0039707922` -> `0.0039400090`) and test (`0.0018443021` -> `0.0018346125`).
+- [Experiment-supported] Reflective-region PSNR is slightly higher for RC on train (`22.43657` -> `22.47500`) and test (`23.03556` -> `23.17403`).
+- [Experiment-weakened] Evidence is still one scene, one seed, and 300 iterations only.
+- [Experiment-weakened] The repo still lacks a standard PSNR/SSIM/LPIPS entrypoint, so claims must be limited to the available RC JSON metrics.
+
+**Next recommended step:**
+- Repeat the eval-split i300 protocol on a second scene, preferably `toaster` or `car`, to test whether the slight RC reflection-consistency gain generalizes.
+- In parallel or next coding window, add/restore a standard rendering metric entrypoint before making broader rendering-quality claims.
+
+**Model switch recommendation:** Stay in codex while CUDA remains allocatable for the next repeat experiment; switch to gpt-5.5 after multi-scene metrics exist for research-claim framing.
+
+## 2026-05-17 18:25:37 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with local modified RC-RefGS log/metric files from prior completed windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to repeat the eval-split i300 protocol on another scene (`toaster` or `car`) to check whether the slight `teapot` RC reflection-consistency gain generalizes.
+- `eval_metrics.py` remains absent; standard PSNR/SSIM/LPIPS are still out of scope for this run.
+
+**Plan audit gate:** CONDITIONAL GO for second-scene `toaster` i300 experiment.
+- [Evidence] GPU 0 was allocatable: minimal CUDA tensor allocation in `ref_gs` succeeded.
+- [Evidence] `/data/liuly/dataset/3DGS/refnerf/toaster` exists.
+- [Evidence] `python -m unittest discover tests` passed before GPU work.
+- [Evidence] Full modified-module `py_compile` passed before GPU work.
+- [Reasoning] Repeating the exact `teapot` i300 protocol on `toaster` is the highest-value safe task because it directly tests whether the available RC metric movement generalizes to a second reflective scene.
+
+**Round-local plan:**
+- Claim eval-split `toaster` baseline/RC i300 in the coordination board.
+- Train baseline for 300 iterations with `--eval`.
+- Train RC for 300 iterations with `--eval`, `--lambda_ref_consistency 0.02`, `--ref_consistency_start 50`, and `--ref_consistency_every 4`.
+- Generate train/test reflection-consistency JSON with `--eval`, `--max_pairs 10`, and `--max_angle_deg 180`.
+- Run final lightweight verification and release the claim.
+
+**Actions taken:**
+- Claimed the `toaster` i300 eval-split experiment in the coordination board.
+- Ran baseline:
+  - model path: `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821`
+  - command used `--cuda_device 0 --eval --iterations 300 --test_iterations 300 --save_iterations 300 --quiet`.
+  - exit 0; saved `point_cloud/iteration_300/point_cloud.ply`, `dir_encoding.pt`, and `light_mlp.pt`.
+  - final progress line had loss `0.17146`.
+- Ran RC:
+  - model path: `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821`
+  - same command plus `--lambda_ref_consistency 0.02 --ref_consistency_start 50 --ref_consistency_every 4`.
+  - exit 0; saved the same iteration-300 artifact set.
+  - final progress line had loss `0.17157`.
+- Verified both `cfg_args` files recorded `eval=True`.
+- Generated split-preserving train/test reflection metrics for baseline and RC; all four metric commands exited 0 and produced `num_pairs=10`.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; GPU 0 showed `3 MiB`, GPU 6 had one existing 8994 MiB Python job.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='0'; import torch; ..."`
+  - Exit 0; CUDA available on one RTX A5000 and minimal allocation succeeded.
+- `python -m unittest discover tests`
+  - Pre-run: exit 0, eleven tests passed.
+  - Final: exit 0, eleven tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py`
+  - Pre-run: exit 0.
+  - Final: exit 0.
+- Baseline training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/toaster -m /tmp/rc_refgs_toaster_base_eval_i300_20260517_1821 --iterations 300 --test_iterations 300 --save_iterations 300 --quiet`
+  - Exit 0; final loss `0.17146`.
+- RC training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/toaster -m /tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821 --iterations 300 --test_iterations 300 --save_iterations 300 --quiet --lambda_ref_consistency 0.02 --ref_consistency_start 50 --ref_consistency_every 4`
+  - Exit 0; final loss `0.17157`.
+- Split-preserving baseline train metric:
+  - `conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/toaster -m /tmp/rc_refgs_toaster_base_eval_i300_20260517_1821 --iteration 300 --split train --max_pairs 10 --max_angle_deg 180 --quiet --output_json /tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/reflection_consistency_train_evalsplit_iter300.json`
+  - Exit 0; JSON: `mean_reflection_consistency=0.003067871439270675`, `reflective_region_psnr=12.524308395385741`, `num_pairs=10`.
+- Split-preserving RC train metric:
+  - Same command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.0029527843929827214`, `reflective_region_psnr=12.520548820495605`, `num_pairs=10`.
+- Split-preserving baseline test metric:
+  - Same metric command with `--split test`.
+  - Exit 0; JSON: `mean_reflection_consistency=0.0025387908797711136`, `reflective_region_psnr=11.384614562988281`, `num_pairs=10`.
+- Split-preserving RC test metric:
+  - Same metric command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.00247288946993649`, `reflective_region_psnr=11.380667877197265`, `num_pairs=10`.
+- `bash -n scripts/run_rc_refgs_ablation.sh`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821`
+- `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/reflection_consistency_train_evalsplit_iter300.json`
+- `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821/reflection_consistency_train_evalsplit_iter300.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/reflection_consistency_test_evalsplit_iter300.json`
+- `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821/reflection_consistency_test_evalsplit_iter300.json`
+
+**Go/no-go decision:** CONDITIONAL GO for broader metric/evaluator work.
+- [Experiment-supported] `toaster` held-out split baseline and RC training both run to iteration 300 and save artifacts.
+- [Experiment-supported] Split-preserving train/test reflection-consistency metrics are non-empty with `num_pairs=10`.
+- [Experiment-supported] RC has lower reflection-consistency error than baseline on train (`0.0030678714` -> `0.0029527844`) and test (`0.0025387909` -> `0.0024728895`).
+- [Experiment-mixed] Reflective-region PSNR is slightly lower for RC on train (`12.52431` -> `12.52055`) and test (`11.38461` -> `11.38067`).
+- [Experiment-supported] Across `teapot` and `toaster`, the available reflection-consistency metric moves in the intended direction at i300.
+- [Experiment-weakened] Rendering-quality claims remain unsupported without standard PSNR/SSIM/LPIPS and more seeds/iterations.
+
+**Next recommended step:**
+- Repeat the eval-split i300 protocol on `car`, or shift to adding/restoring standard PSNR/SSIM/LPIPS evaluation before expanding claims.
+- If continuing experiments first, keep claims limited to reflection-consistency metrics and explicitly report the `toaster` PSNR tradeoff.
+
+**Model switch recommendation:** Stay in codex for one more repeat experiment or evaluator implementation while GPU access is available; switch to gpt-5.5 for research framing once `car` or standard metrics are available.
+
 ## 2026-05-16 16:09:20 CST
 
 **Current model/window if known:** codex implementation window.
