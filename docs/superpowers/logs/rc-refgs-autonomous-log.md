@@ -940,6 +940,108 @@
 
 **Model switch recommendation:** Stay in codex for one more repeat experiment or evaluator implementation while GPU access is available; switch to gpt-5.5 for research framing once `car` or standard metrics are available.
 
+## 2026-05-17 18:57:11 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` clean at recovery time.
+- Coordination board had no active claims.
+- Latest board recommendation was to repeat the eval-split i300 protocol on `car` or add/restore standard rendering metrics.
+- `eval_metrics.py` remains absent; standard PSNR/SSIM/LPIPS are still out of scope for this run.
+
+**Plan audit gate:** CONDITIONAL GO for third-scene `car` i300 experiment.
+- [Evidence] GPU 0 was allocatable: minimal CUDA tensor allocation in `ref_gs` succeeded.
+- [Evidence] `/data/liuly/dataset/3DGS/refnerf/car` exists.
+- [Evidence] `python -m unittest discover tests` passed before GPU work.
+- [Evidence] Full modified-module `py_compile` passed before GPU work.
+- [Reasoning] Repeating the exact i300 protocol on `car` completes the planned first-three-scene set (`teapot`, `toaster`, `car`) for the available reflection-consistency metric.
+
+**Round-local plan:**
+- Claim eval-split `car` baseline/RC i300 in the coordination board.
+- Train baseline for 300 iterations with `--eval`.
+- Train RC for 300 iterations with `--eval`, `--lambda_ref_consistency 0.02`, `--ref_consistency_start 50`, and `--ref_consistency_every 4`.
+- Generate train/test reflection-consistency JSON with `--eval`, `--max_pairs 10`, and `--max_angle_deg 180`.
+- Run final lightweight verification and release the claim.
+
+**Actions taken:**
+- Claimed the `car` i300 eval-split experiment in the coordination board.
+- Ran baseline:
+  - model path: `/tmp/rc_refgs_car_base_eval_i300_20260517_1853`
+  - command used `--cuda_device 0 --eval --iterations 300 --test_iterations 300 --save_iterations 300 --quiet`.
+  - exit 0; saved `point_cloud/iteration_300/point_cloud.ply`, `dir_encoding.pt`, and `light_mlp.pt`.
+  - final progress line had loss `0.14465`.
+- Ran RC:
+  - model path: `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853`
+  - same command plus `--lambda_ref_consistency 0.02 --ref_consistency_start 50 --ref_consistency_every 4`.
+  - exit 0; saved the same iteration-300 artifact set.
+  - final progress line had loss `0.14465`.
+- Verified both `cfg_args` files recorded `eval=True`.
+- Generated split-preserving train/test reflection metrics for baseline and RC; all four metric commands exited 0 and produced `num_pairs=10`.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; GPU 0 showed `3 MiB`, GPU 6 had one existing 8994 MiB Python job.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='0'; import torch; ..."`
+  - Exit 0; CUDA available on one RTX A5000 and minimal allocation succeeded.
+- `python -m unittest discover tests`
+  - Pre-run: exit 0, eleven tests passed.
+  - Final: exit 0, eleven tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py`
+  - Pre-run: exit 0.
+  - Final: exit 0.
+- Baseline training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/car -m /tmp/rc_refgs_car_base_eval_i300_20260517_1853 --iterations 300 --test_iterations 300 --save_iterations 300 --quiet`
+  - Exit 0; final loss `0.14465`.
+- RC training:
+  - `conda run -n ref_gs python train.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/car -m /tmp/rc_refgs_car_rc_eval_i300_20260517_1853 --iterations 300 --test_iterations 300 --save_iterations 300 --quiet --lambda_ref_consistency 0.02 --ref_consistency_start 50 --ref_consistency_every 4`
+  - Exit 0; final loss `0.14465`.
+- Split-preserving baseline train metric:
+  - `conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/car -m /tmp/rc_refgs_car_base_eval_i300_20260517_1853 --iteration 300 --split train --max_pairs 10 --max_angle_deg 180 --quiet --output_json /tmp/rc_refgs_car_base_eval_i300_20260517_1853/reflection_consistency_train_evalsplit_iter300.json`
+  - Exit 0; JSON: `mean_reflection_consistency=0.002261294610798359`, `reflective_region_psnr=12.642388916015625`, `num_pairs=10`.
+- Split-preserving RC train metric:
+  - Same command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.0021638939972035585`, `reflective_region_psnr=12.619257259368897`, `num_pairs=10`.
+- Split-preserving baseline test metric:
+  - Same metric command with `--split test`.
+  - Exit 0; JSON: `mean_reflection_consistency=0.0012749511166475712`, `reflective_region_psnr=14.075741004943847`, `num_pairs=10`.
+- Split-preserving RC test metric:
+  - Same metric command with RC model path/output.
+  - Exit 0; JSON: `mean_reflection_consistency=0.0012496432173065841`, `reflective_region_psnr=14.069423198699951`, `num_pairs=10`.
+- `bash -n scripts/run_rc_refgs_ablation.sh`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853`
+- `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/reflection_consistency_train_evalsplit_iter300.json`
+- `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853/reflection_consistency_train_evalsplit_iter300.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/reflection_consistency_test_evalsplit_iter300.json`
+- `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853/reflection_consistency_test_evalsplit_iter300.json`
+
+**Go/no-go decision:** CONDITIONAL GO for research audit/evaluator work.
+- [Experiment-supported] `car` held-out split baseline and RC training both run to iteration 300 and save artifacts.
+- [Experiment-supported] Split-preserving train/test reflection-consistency metrics are non-empty with `num_pairs=10`.
+- [Experiment-supported] RC has lower reflection-consistency error than baseline on train (`0.0022612946` -> `0.0021638940`) and test (`0.0012749511` -> `0.0012496432`).
+- [Experiment-mixed] Reflective-region PSNR is slightly lower for RC on train (`12.64239` -> `12.61926`) and test (`14.07574` -> `14.06942`).
+- [Experiment-supported] Across `teapot`, `toaster`, and `car`, the available reflection-consistency metric moves in the intended direction at i300.
+- [Experiment-weakened] Rendering-quality claims remain unsupported without standard PSNR/SSIM/LPIPS and more seeds/iterations.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for research audit/claim framing across the three-scene i300 evidence set, or add/restore standard PSNR/SSIM/LPIPS evaluation before expanding rendering-quality claims.
+- Any writeup should explicitly state: reflection-consistency metric improves on all three scenes, reflective-region PSNR is mixed and slightly worse on `toaster`/`car`.
+
+**Model switch recommendation:** SWITCH MODEL to gpt-5.5 for claim framing, unless the next codex window is assigned standard evaluator implementation.
+
 ## 2026-05-16 16:09:20 CST
 
 **Current model/window if known:** codex implementation window.
@@ -1019,3 +1121,703 @@
 - If no GPU appears, switch to gpt-5.5 for the already-recorded research-side audit and minimum evidence matrix.
 
 **Model switch recommendation:** SWITCH MODEL to gpt-5.5 unless the next window has usable GPU access for codex smoke execution.
+
+## 2026-05-17 19:45:44 CST
+
+**Current model/window if known:** gpt-5.5 research audit window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing log/board edits and no code files dirty in this window.
+- Coordination board recommended switching to gpt-5.5 for claim framing after three i300 scene experiments.
+- Current evidence set was the matched i300 eval-split baseline/RC runs for `teapot`, `toaster`, and `car`.
+- Standard `eval_metrics.py` is absent from this repo, so standard PSNR/SSIM/LPIPS and geometry claims remain out of scope.
+
+**Plan audit gate:** CONDITIONAL GO for claim framing only.
+- [Citation] Existing JSON metrics show RC lowers measured reprojected reflection-consistency error versus baseline on all audited scenes and both train/test splits.
+- [Reasoning] Reflective-region PSNR is mixed: it improves on `teapot`, but moves slightly lower on `toaster` and `car`.
+- [Reasoning] The available evidence supports a targeted diagnostic claim, not a broad rendering-quality, reconstruction-quality, material-decomposition, or external-superiority claim.
+
+**Round-local plan:**
+- Claim the three-scene i300 claim-framing audit in the coordination board.
+- Aggregate and verify the six baseline/RC metric JSON comparisons.
+- Write a claim audit that separates allowed, qualified, unsupported, and future-hypothesis claims.
+- Release the coordination-board claim and record the GO / CONDITIONAL GO / SWITCH MODEL decision.
+
+**Actions taken:**
+- Claimed the audit task in the coordination board at `2026-05-17 19:43:32 CST`.
+- Aggregated metric JSON from:
+  - `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742`
+  - `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742`
+  - `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821`
+  - `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821`
+  - `/tmp/rc_refgs_car_base_eval_i300_20260517_1853`
+  - `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853`
+- Created `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md`.
+- Tagged claims in the audit as `[Citation]`, `[Reasoning]`, `[Hypothesis]`, or `[Unsupported]`.
+- Released the coordination-board claim and recorded this audit as complete.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Audit evidence checker over the six JSON files:
+  - Exit 0; confirmed `num_pairs=10`, confirmed RC reflection-consistency error lower than baseline for every scene/split, and confirmed table values appear in the audit file.
+- `rg '\[Citation\]|\[Reasoning\]|\[Hypothesis\]|\[Unsupported\]|CONDITIONAL GO|SWITCH MODEL' docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md`
+  - Exit 0; required tags and decision markers are present.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md`
+
+**Go/no-go decision:** CONDITIONAL GO for research framing; SWITCH MODEL recommended for paper-claim drafting or experiment-priority review.
+- [Experiment-supported] RC reduces the measured reflection-consistency error across `teapot`, `toaster`, and `car` at i300 on both train and test splits.
+- [Experiment-mixed] Reflective-region PSNR improves on `teapot` but is slightly lower on `toaster` and `car`.
+- [Experiment-weakened] Standard PSNR/SSIM/LPIPS, geometry metrics, material decomposition checks, longer horizons, and seed repeats are not available.
+- [Decision] GO only for the narrow statement that RC improves the targeted reflection-consistency diagnostic under the current short-run protocol.
+- [Decision] NO-GO for broad rendering-quality, surface-reconstruction, material-decomposition, or superiority claims.
+
+**Next recommended step:**
+- For research writing, use the audit's central empirical statement verbatim or near-verbatim.
+- For coding, add or restore a standard rendering metric entrypoint before claiming image-quality gains.
+- For experiments, run longer matched schedules and geometry metrics before reconstruction claims.
+
+## 2026-05-17 20:32:32 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing docs/log edits from the previous audit and no code files dirty before this task.
+- Coordination board had no active claims and recommended adding or restoring a standard rendering metric entrypoint.
+- Claim audit identified missing standard PSNR/SSIM/LPIPS as the main blocker for rendering-quality claims.
+- Existing `lpipsPyTorch` can require weight downloads, so runtime smoke should avoid LPIPS unless weights are cached or network is approved.
+
+**Plan audit gate:** CONDITIONAL GO for a standard rendering metric entrypoint.
+- [Reasoning] This directly addresses the audit blocker without launching new training or changing model behavior.
+- [Reasoning] The safe task scope is an evaluator plus static/runtime smoke verification, not a full three-scene metric sweep.
+
+**Round-local plan:**
+- Claim the evaluator task in the coordination board.
+- Add RED static coverage for the expected evaluator contract.
+- Implement `metrics/render_quality_eval.py` with PSNR, SSIM, LPIPS fields, train/test/both splits, optional reflective masks, CUDA pre-selection, and JSON output.
+- Run targeted tests, compile checks, repo tests, help output in `ref_gs`, and a one-image GPU smoke with `--skip_lpips`.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the standard rendering metrics entrypoint task at `2026-05-17 20:28:03 CST`.
+- Added `tests/test_render_quality_eval_static.py`.
+- Confirmed RED failure: `python -m unittest tests.test_render_quality_eval_static` exited 1 because `metrics/render_quality_eval.py` was missing.
+- Added `metrics/render_quality_eval.py`.
+- Implemented:
+  - pre-import `--cuda_device` handling matching the existing reflection evaluator;
+  - `--split train|test|both`;
+  - `--mask_mode none|reflective|both`;
+  - `--image_key pbr_rgb|render`;
+  - `--skip_lpips` for offline/smoke verification;
+  - JSON fields for `full_psnr`, `full_ssim`, `full_lpips`, `reflective_psnr`, `reflective_ssim`, `reflective_lpips`, `num_images`, and `per_image`.
+- Ran a first one-image smoke on the existing `teapot` i300 baseline. It failed because `utils.image_utils.psnr()` uses `.view()` and the evaluator passed non-contiguous tensors after compositing/masking.
+- Added a regression static check requiring contiguous metric batches.
+- Confirmed RED failure for that regression, patched `metric_bundle()` to call `.contiguous()`, and reran the targeted test green.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `metrics/render_quality_eval.py`
+- `tests/test_render_quality_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `python -m unittest tests.test_render_quality_eval_static`
+  - RED run: exit 1, evaluator file missing.
+  - GREEN run after evaluator implementation: exit 0, two tests passed.
+  - Regression RED run: exit 1, missing contiguous metric tensors.
+  - Final targeted run: exit 0, two tests passed.
+- `python -m py_compile metrics/render_quality_eval.py`
+  - Exit 0.
+- `python metrics/render_quality_eval.py --help`
+  - Exit 1 in base Python due existing environment mismatch: PIL import fails requiring `GLIBCXX_3.4.29` via torchvision.
+- `conda run -n ref_gs python metrics/render_quality_eval.py --help`
+  - Exit 0; CLI exposes split, mask, image key, LPIPS skip, output JSON, and CUDA-device options.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; GPU 0 showed `3 MiB`, GPU 6 had an active job.
+- `conda run -n ref_gs python -c "import os; os.environ['CUDA_VISIBLE_DEVICES']='0'; import torch; ..."`
+  - Exit 0; CUDA available on one visible GPU and minimal allocation succeeded.
+- One-image runtime smoke:
+  - `conda run -n ref_gs python metrics/render_quality_eval.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742 --iteration 300 --split test --max_images 1 --mask_mode both --skip_lpips --quiet --output_json /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/render_quality_test_i300_smoke.json`
+  - First run: exit 1 due non-contiguous tensor `.view()` in `utils.image_utils.psnr`.
+  - Final run: exit 0 and produced JSON with `full_psnr=32.53118133544922`, `full_ssim=0.9789072871208191`, `reflective_psnr=32.62388610839844`, `reflective_ssim=0.9817303419113159`, `num_images=1`, and `full_lpips=null` / `reflective_lpips=null` because `--skip_lpips` was used.
+- `python -m unittest discover tests`
+  - Exit 0, thirteen tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py metrics/render_quality_eval.py`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `metrics/render_quality_eval.py`
+- `tests/test_render_quality_eval_static.py`
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/render_quality_test_i300_smoke.json`
+
+**Go/no-go decision:** CONDITIONAL GO for standard rendering-metric collection.
+- [Experiment-supported] The evaluator exists, compiles, has static contract coverage, and runs on one held-out `teapot` image in the project conda environment.
+- [Experiment-supported] PSNR/SSIM full-image and reflective-mask fields are produced in JSON.
+- [Experiment-weakened] LPIPS was not runtime-verified in this window because `--skip_lpips` avoids network-dependent weight downloads; fields are present as `null` when skipped.
+- [Experiment-weakened] No full-scene or baseline-vs-RC standard metric sweep has been run yet, so rendering-quality claims remain gated.
+
+**Next recommended step:**
+- Run `metrics/render_quality_eval.py` over the existing `teapot`, `toaster`, and `car` baseline/RC i300 outputs with `--split both`; use `--skip_lpips` for immediate PSNR/SSIM evidence, or run LPIPS only if weights are cached or network access is explicitly approved.
+- After that, update the claim audit with standard metric results and keep negative/mixed outcomes explicit.
+
+## 2026-05-17 21:59:31 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs plus the new `metrics/render_quality_eval.py` and `tests/test_render_quality_eval_static.py`.
+- Coordination board had no active claims.
+- Latest board recommendation was to run `metrics/render_quality_eval.py` over existing `teapot`, `toaster`, and `car` baseline/RC i300 outputs with `--split both`.
+- Claim audit still framed standard metrics as unavailable or incomplete, so this round needed to collect and then fold PSNR/SSIM into the audit.
+
+**Plan audit gate:** CONDITIONAL GO for a no-training standard PSNR/SSIM sweep.
+- [Reasoning] The six i300 baseline/RC outputs already exist, so this task adds evidence without changing model parameters or starting new training.
+- [Reasoning] LPIPS remains skipped because `lpipsPyTorch` can trigger network-dependent weight downloads; PSNR/SSIM are the safe immediate metrics.
+
+**Round-local plan:**
+- Claim the three-scene i300 standard metric sweep in the coordination board.
+- Verify all six model outputs exist and GPU 0 is available.
+- Run `metrics/render_quality_eval.py --split both --mask_mode both --skip_lpips` on each baseline/RC i300 output.
+- Aggregate the six JSON files and update the claim audit with a standard PSNR/SSIM table.
+- Release the board claim and record the decision.
+
+**Actions taken:**
+- Claimed the standard metric sweep at `2026-05-17 21:55:15 CST`.
+- Verified all six `/tmp/rc_refgs_{teapot,toaster,car}_{base,rc}_eval_i300_*` outputs and iteration-300 point clouds are present.
+- Checked GPU state; all visible GPUs reported `3 MiB` used at recovery time.
+- Ran the evaluator serially on GPU 0 for:
+  - `teapot` baseline and RC,
+  - `toaster` baseline and RC,
+  - `car` baseline and RC.
+- Aggregated the six JSON files and verified:
+  - all runs have `lpips_skipped=true`;
+  - train/test splits exist for every output;
+  - baseline and RC image counts match (`100` train and `200` test for each scene);
+  - LPIPS fields are `null` because `--skip_lpips` was used.
+- Updated `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md` with a standard rendering metrics table and revised claim framing.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Existing-output check:
+  - Exit 0; all six i300 output directories and `point_cloud/iteration_300/point_cloud.ply` files were present.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; all visible GPUs showed `3 MiB` used.
+- Six render quality metric commands:
+  - Each used `conda run -n ref_gs python metrics/render_quality_eval.py --cuda_device 0 --eval -s <scene_path> -m <model_path> --iteration 300 --split both --mask_mode both --skip_lpips --quiet --output_json <model_path>/render_quality_both_i300_skip_lpips.json`.
+  - All six exited 0.
+- Aggregation script:
+  - Exit 0; printed the standard metric comparison table and asserted matching image counts and skipped LPIPS fields.
+- `python -m unittest discover tests`
+  - Exit 0, thirteen tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py metrics/render_quality_eval.py`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Metric summary:**
+- `teapot`: RC improved full and reflective PSNR/SSIM on train and test.
+- `toaster`: RC full/reflective PSNR was slightly lower on train/test, while full/reflective SSIM was slightly higher.
+- `car`: RC full/reflective PSNR and SSIM were slightly lower on train/test.
+- LPIPS: not measured in this round; JSON fields are `null` because `--skip_lpips` was used.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/render_quality_both_i300_skip_lpips.json`
+- `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742/render_quality_both_i300_skip_lpips.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/render_quality_both_i300_skip_lpips.json`
+- `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821/render_quality_both_i300_skip_lpips.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/render_quality_both_i300_skip_lpips.json`
+- `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853/render_quality_both_i300_skip_lpips.json`
+
+**Go/no-go decision:** CONDITIONAL GO for conservative research framing; NO-GO for broad rendering-quality claims.
+- [Experiment-supported] RC still has consistent reflection-consistency improvement across three scenes from prior evidence.
+- [Experiment-mixed] Standard full-image and reflective-mask PSNR/SSIM are mixed: positive for `teapot`, mixed for `toaster`, and slightly negative for `car`.
+- [Experiment-weakened] LPIPS remains unmeasured, longer schedules are absent, and geometry metrics are absent.
+- [Decision] GO only for the targeted reflection-consistency diagnostic claim.
+- [Decision] NO-GO for claiming overall novel-view rendering improvement or reconstruction/material quality improvement.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for research claim framing with the updated standard PSNR/SSIM table, or stay in codex to collect geometry/LPIPS/longer-run evidence if compute and network constraints are resolved.
+
+## 2026-05-17 23:37:57 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs and metric scripts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation included an optional summary wrapper for `render_quality_both_i300_skip_lpips.json` files if repeated sweeps will be common.
+- The previous standard-metric sweep was generated by one-off aggregation commands, so reproducibility was the highest-value safe coding task in this window.
+
+**Plan audit gate:** GO for a CPU-only render-quality summary wrapper.
+- [Reasoning] This task does not launch training or GPU rendering and does not alter model behavior.
+- [Reasoning] It makes the existing PSNR/SSIM evidence reproducible from the six saved JSON files.
+- [Reasoning] It adds no new scientific evidence, so research claims remain governed by the prior mixed-metric decision.
+
+**Round-local plan:**
+- Claim the render-quality summary wrapper in the coordination board.
+- Add RED static tests for a summary CLI.
+- Implement `metrics/summarize_render_quality.py`.
+- Run the wrapper over the existing six i300 render-quality JSON files and write JSON/Markdown summaries into `docs/superpowers/logs/`.
+- Verify artifacts, tests, compile, and diff hygiene; release the claim and log the decision.
+
+**Actions taken:**
+- Claimed the summary wrapper task at `2026-05-17 23:35:20 CST`.
+- Added `tests/test_render_quality_summary_static.py`.
+- Confirmed RED failure: `python -m unittest tests.test_render_quality_summary_static` exited 1 because `metrics/summarize_render_quality.py` was missing.
+- Added `metrics/summarize_render_quality.py` with:
+  - repeated `--pair SCENE BASE_DIR RC_DIR` inputs;
+  - configurable metric filename;
+  - JSON summary output;
+  - Markdown summary output;
+  - baseline/RC values and deltas for full/reflective PSNR, SSIM, and LPIPS fields;
+  - image-count mismatch checks.
+- Ran the wrapper on the existing `teapot`, `toaster`, and `car` baseline/RC i300 JSON files.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `metrics/summarize_render_quality.py`
+- `tests/test_render_quality_summary_static.py`
+- `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.json`
+- `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `python -m unittest tests.test_render_quality_summary_static`
+  - RED run: exit 1, wrapper file missing.
+  - First GREEN attempt exposed static contract gaps for explicit schema strings.
+  - Final targeted run: exit 0, two tests passed.
+- `python -m py_compile metrics/summarize_render_quality.py`
+  - Exit 0.
+- Summary wrapper run:
+  - `python metrics/summarize_render_quality.py --pair teapot /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742 /tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742 --pair toaster /tmp/rc_refgs_toaster_base_eval_i300_20260517_1821 /tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821 --pair car /tmp/rc_refgs_car_base_eval_i300_20260517_1853 /tmp/rc_refgs_car_rc_eval_i300_20260517_1853 --output_json docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.json --output_markdown docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.md`
+  - Exit 0.
+- Generated artifact check:
+  - Exit 0; summary JSON has six rows, expected `scene/split` pairs, all `lpips_skipped=true`, and null LPIPS values.
+- `python -m unittest discover tests`
+  - Exit 0, fifteen tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py metrics/render_quality_eval.py metrics/summarize_render_quality.py`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.json`
+- `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.md`
+
+**Go/no-go decision:** GO for render-quality summary reproducibility; CONDITIONAL GO for research use.
+- [Experiment-supported] Existing PSNR/SSIM evidence can now be regenerated into JSON/Markdown from saved metric files.
+- [Experiment-weakened] The wrapper adds no LPIPS, geometry, longer-horizon, or new-scene evidence.
+- [Decision] Use the generated summary as a reproducibility artifact, but keep the prior NO-GO on broad rendering-quality claims.
+
+**Next recommended step:**
+- If staying in codex, collect geometry evidence next, preferably a normal-consistency or normal-MAE evaluator if dataset normal maps and rendered normal coordinates can be aligned safely.
+- If switching models, use the claim audit plus the generated render-quality summary to draft conservative paper language.
+
+## 2026-05-17 23:58:38 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs and metric scripts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to collect geometry evidence next, preferably a normal-consistency or normal-MAE evaluator if dataset normal maps and rendered normal coordinates can be aligned safely.
+- Inspection showed RefNeRF folders contain adjacent `*_normal.png` files, while the loader does not attach normals to `Camera` objects; a diagnostic evaluator can reconstruct normal paths from `dataset.source_path`, split, and `camera.image_name`.
+
+**Plan audit gate:** CONDITIONAL GO for a diagnostic normal-map evaluator.
+- [Reasoning] This task adds a metric entrypoint and one-image smoke only; it does not claim geometry quality.
+- [Reasoning] Normal-map coordinate conventions are not fully audited, so results must be treated as diagnostic until baseline-vs-RC sweeps and convention checks are complete.
+
+**Round-local plan:**
+- Claim the normal diagnostic evaluator in the coordination board.
+- Add RED static tests for the evaluator contract.
+- Implement `metrics/normal_quality_eval.py`.
+- Run help, compile, unit tests, and one-image `teapot` smoke against an existing i300 output.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the normal diagnostic evaluator at `2026-05-17 23:56:19 CST`.
+- Added `tests/test_normal_quality_eval_static.py`.
+- Confirmed RED failure: `python -m unittest tests.test_normal_quality_eval_static` exited 1 because `metrics/normal_quality_eval.py` was missing.
+- Implemented `metrics/normal_quality_eval.py` with:
+  - pre-import CUDA-device selection;
+  - `--split train|test|both`;
+  - `--normal_key rend_normal|surf_normal`;
+  - `--normal_suffix`;
+  - alpha and roughness masks;
+  - normal angular MAE and mean cosine for full alpha mask and reflective mask;
+  - per-image entries and missing-normal counts.
+- Ran one-image smoke on `teapot` baseline i300 test split.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `metrics/normal_quality_eval.py`
+- `tests/test_normal_quality_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `python -m unittest tests.test_normal_quality_eval_static`
+  - RED run: exit 1, evaluator file missing.
+  - GREEN run: exit 0, two tests passed.
+- `python -m py_compile metrics/normal_quality_eval.py`
+  - Exit 0.
+- `conda run -n ref_gs python metrics/normal_quality_eval.py --help`
+  - Exit 0; CLI exposes split, max images, normal key, normal suffix, thresholds, output JSON, CUDA device, and quiet flags.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; all visible GPUs showed `3 MiB` used.
+- One-image runtime smoke:
+  - `conda run -n ref_gs python metrics/normal_quality_eval.py --cuda_device 0 --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742 --iteration 300 --split test --max_images 1 --normal_key rend_normal --quiet --output_json /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_quality_test_i300_smoke.json`
+  - Exit 0; found one normal map and produced `normal_mae_deg=30.305223952524543`, `normal_mean_cosine=0.817059362392774`, `reflective_normal_mae_deg=30.42575315840622`, `reflective_normal_mean_cosine=0.816092795536582`.
+- Smoke JSON check:
+  - Exit 0; asserted one image, one normal image, zero missing normals, non-null normal metrics, and a `*_normal.png` path.
+- `python -m unittest discover tests`
+  - Exit 0, seventeen tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py metrics/render_quality_eval.py metrics/summarize_render_quality.py metrics/normal_quality_eval.py`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_quality_test_i300_smoke.json`
+
+**Go/no-go decision:** CONDITIONAL GO for normal diagnostic collection; NO-GO for geometry-quality claims.
+- [Experiment-supported] The evaluator exists, compiles, is statically covered, and can compare one rendered normal map against an adjacent RefNeRF normal PNG.
+- [Experiment-weakened] Only one baseline image was evaluated; no RC comparison, scene sweep, coordinate-frame audit, Chamfer/F-score, or mesh metric has been run.
+- [Decision] GO to use this evaluator for controlled diagnostic sweeps.
+- [Decision] NO-GO for claiming geometry or reconstruction improvement.
+
+**Next recommended step:**
+- Run matched baseline/RC normal diagnostics on `teapot`, `toaster`, and `car` with small `--max_images` first, then full splits only if coordinate conventions look stable.
+
+## 2026-05-18 01:15:22 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs and metric scripts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to run matched baseline/RC normal diagnostics on `teapot`, `toaster`, and `car` with small `--max_images` first, while keeping geometry claims gated on coordinate-convention validation and mesh/reference metrics.
+- Existing i300 baseline/RC outputs for all three scenes were present.
+
+**Plan audit gate:** CONDITIONAL GO for a small matched normal diagnostic sweep.
+- [Reasoning] This uses existing i300 outputs and the already-smoke-tested evaluator; it does not launch training.
+- [Reasoning] It is limited to `--max_images 10` per split to check signal direction and normal-map availability before any full-split geometry work.
+- [Reasoning] Normal-map coordinate conventions remain unaudited, so results are diagnostic only.
+
+**Round-local plan:**
+- Claim the small matched normal sweep in the coordination board.
+- Verify the six output directories and GPU availability.
+- Run `metrics/normal_quality_eval.py --split both --max_images 10 --normal_key rend_normal` for the three baseline/RC pairs.
+- Aggregate the JSONs and update the claim audit with a normal diagnostic table.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the sweep at `2026-05-18 01:11:02 CST`.
+- Verified all six i300 output directories had `point_cloud/iteration_300/point_cloud.ply`.
+- Checked GPU state; all visible GPUs showed `3 MiB` used.
+- Ran normal diagnostics serially on GPU 0 for:
+  - `teapot` baseline and RC;
+  - `toaster` baseline and RC;
+  - `car` baseline and RC.
+- Aggregated the six JSON files and verified every scene/split/model had `10` images, `10` normal images, and zero missing normals.
+- Updated `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md` with a normal diagnostic table and revised caveats.
+- Released the coordination-board claim and recorded completion.
+
+**Files changed this round:**
+- `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Existing-output check:
+  - Exit 0; all six i300 output directories and iteration-300 point clouds were present.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; all visible GPUs showed `3 MiB` used.
+- Six normal diagnostic commands:
+  - Each used `conda run -n ref_gs python metrics/normal_quality_eval.py --cuda_device 0 --eval -s <scene_path> -m <model_path> --iteration 300 --split both --max_images 10 --normal_key rend_normal --quiet --output_json <model_path>/normal_quality_both_i300_max10.json`.
+  - All six exited 0.
+- Aggregation script:
+  - Exit 0; asserted `num_images=10`, `num_normal_images=10`, and `num_missing_normals=0` for every scene/split/model.
+- `python -m unittest discover tests`
+  - Exit 0, seventeen tests passed.
+- `python -m py_compile gaussian_renderer/__init__.py utils/reflection_consistency.py train.py arguments/__init__.py utils/mesh_utils.py metrics/reflection_consistency_eval.py metrics/render_quality_eval.py metrics/summarize_render_quality.py metrics/normal_quality_eval.py`
+  - Exit 0.
+- `git diff --check`
+  - Exit 0.
+
+**Metric summary:**
+- `teapot`: RC improved normal MAE and mean cosine on train and test, including reflective-mask metrics.
+- `toaster`: RC slightly improved normal MAE and mean cosine on train and test.
+- `car`: RC slightly improved train normal MAE but slightly worsened train cosine; RC worsened test normal MAE and cosine.
+- Normal diagnostics therefore move mostly in the intended direction but remain mixed.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_quality_both_i300_max10.json`
+- `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742/normal_quality_both_i300_max10.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/normal_quality_both_i300_max10.json`
+- `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821/normal_quality_both_i300_max10.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/normal_quality_both_i300_max10.json`
+- `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853/normal_quality_both_i300_max10.json`
+
+**Go/no-go decision:** CONDITIONAL GO for normal-diagnostic research framing; NO-GO for geometry-quality claims.
+- [Experiment-supported] The evaluator found normal maps for all sampled images and produced matched baseline/RC diagnostics on three scenes.
+- [Experiment-mixed] RC improves normal MAE on five of six scene/split rows, but `car` test worsens and cosine is mixed on `car`.
+- [Experiment-weakened] Results are max-10 only, coordinate-convention-sensitive, and still lack Chamfer/F-score, mesh, or reference-geometry metrics.
+- [Decision] GO to report these as preliminary diagnostics if clearly caveated.
+- [Decision] NO-GO for claiming geometry or reconstruction improvement.
+
+**Next recommended step:**
+- Validate normal-map coordinate convention before full-split normal diagnostics, or switch to gpt-5.5 to update research framing with the current diagnostic evidence.
+
+## 2026-05-18 01:35:11 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs and metric scripts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to validate RefNeRF normal-map coordinate convention before full-split normal diagnostics or geometry framing.
+- Prior normal diagnostics used `metrics/normal_quality_eval.py` with the implicit raw GT normal PNG interpretation.
+
+**Plan audit gate:** GO for a bounded evaluator-convention audit.
+- [Reasoning] The task uses existing i300 baseline outputs and only renders five train and five test images per scene.
+- [Reasoning] It avoids new training and keeps the result scoped to evaluator convention, not geometry quality.
+- [Reasoning] Making the convention explicit in the evaluator makes the audit reproducible and keeps the default behavior unchanged.
+
+**Round-local plan:**
+- Claim the normal coordinate convention audit in the coordination board.
+- Add a default-preserving `--gt_normal_space` evaluator option with a static regression test.
+- Compare `raw`, `blender_world_to_colmap`, and `opengl_camera_to_world` on the three baseline i300 outputs.
+- Update the claim audit and release the coordination-board claim.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 01:27:37 CST`.
+- Added `convert_gt_normal_space()` to `metrics/normal_quality_eval.py`.
+- Added `--gt_normal_space {raw,blender_world_to_colmap,opengl_camera_to_world}` with default `raw`.
+- Updated the static test contract in `tests/test_normal_quality_eval_static.py`.
+- Ran a bounded baseline-only convention audit on `teapot`, `toaster`, and `car`.
+- Updated `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md` with the convention table and revised caveats.
+- Released the coordination-board claim and recorded completion.
+
+**Debug note:**
+- Redirected `conda run ... > log 2>&1` commands repeatedly failed at `torch.cuda.set_device()` with `RuntimeError: No CUDA GPUs are available`.
+- The same commands run directly without shell redirection succeeded, and `nvidia-smi` plus a minimal `ref_gs` CUDA import showed GPU 0 visible. The audit commands were therefore run directly and serially.
+
+**Commands run and verification results:**
+- RED `python -m unittest tests.test_normal_quality_eval_static`
+  - Exit 1; missing explicit GT-normal-space evaluator contract.
+- GREEN `python -m unittest tests.test_normal_quality_eval_static`
+  - Exit 0; two tests passed.
+- `python -m py_compile metrics/normal_quality_eval.py tests/test_normal_quality_eval_static.py`
+  - Exit 0.
+- `conda run -n ref_gs python metrics/normal_quality_eval.py --help`
+  - Exit 0; help includes `--gt_normal_space {raw,blender_world_to_colmap,opengl_camera_to_world}`.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; all visible GPUs showed `3 MiB` used.
+- Minimal CUDA import in `ref_gs`
+  - Exit 0; `torch.cuda.is_available()` was `True`, one RTX A5000 visible under `CUDA_VISIBLE_DEVICES=0`.
+- Nine convention-audit commands:
+  - Each used `conda run -n ref_gs python metrics/normal_quality_eval.py --cuda_device 0 --eval -s <scene_path> -m <baseline_model_path> --iteration 300 --split both --max_images 5 --normal_key rend_normal --gt_normal_space <space> --quiet --output_json <model_path>/normal_convention_<space>_both_i300_max5.json`.
+  - All direct commands exited 0.
+- Aggregation script:
+  - Exit 0; asserted `num_images=5`, `num_normal_images=5`, and `num_missing_normals=0` for every scene/split/space row.
+
+**Metric summary:**
+- `raw` was best on every scene/split row.
+- `blender_world_to_colmap` was much worse on every row, with negative cosine on most rows.
+- `opengl_camera_to_world` was also worse than `raw` on every row.
+- Representative MAE/cosine rows:
+  - `teapot` test: raw `30.227852` / `0.818411`; Blender->COLMAP `133.672966` / `-0.615333`; OpenGL-camera->world `63.390974` / `0.385957`.
+  - `toaster` test: raw `46.581565` / `0.637763`; Blender->COLMAP `128.463862` / `-0.560553`; OpenGL-camera->world `60.114358` / `0.425848`.
+  - `car` test: raw `29.707215` / `0.818702`; Blender->COLMAP `146.539453` / `-0.771725`; OpenGL-camera->world `36.907460` / `0.752702`.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_convention_raw_both_i300_max5.json`
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_convention_blender_world_to_colmap_both_i300_max5.json`
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_convention_opengl_camera_to_world_both_i300_max5.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/normal_convention_raw_both_i300_max5.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/normal_convention_blender_world_to_colmap_both_i300_max5.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/normal_convention_opengl_camera_to_world_both_i300_max5.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/normal_convention_raw_both_i300_max5.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/normal_convention_blender_world_to_colmap_both_i300_max5.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/normal_convention_opengl_camera_to_world_both_i300_max5.json`
+
+**Go/no-go decision:** GO for evaluator convention use; CONDITIONAL GO for full-split normal diagnostics; NO-GO for geometry-quality claims.
+- [Experiment-supported] Raw RefNeRF normal PNG interpretation is best among the audited candidate conventions on all sampled scene/split rows.
+- [Experiment-supported] The evaluator now records the GT normal-space convention in JSON.
+- [Experiment-weakened] This is a max-5 baseline-only convention check and does not measure mesh quality or reference-geometry reconstruction quality.
+- [Decision] GO to use `--gt_normal_space raw` for future RefNeRF normal diagnostics.
+- [Decision] CONDITIONAL GO for full-split normal diagnostics as diagnostic evidence only.
+- [Decision] NO-GO for claiming geometry or reconstruction improvement without mesh/reference-geometry metrics.
+
+**Next recommended step:**
+- Run full-split baseline/RC normal diagnostics with `--gt_normal_space raw`, or switch to mesh/reference-geometry metric work if geometry claims are desired.
+
+## 2026-05-18 02:27:11 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs and metric scripts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to run full-split normal diagnostics with `--gt_normal_space raw` or move to mesh/reference-geometry metrics.
+- Existing i300 baseline/RC outputs for `teapot`, `toaster`, and `car` were present.
+
+**Plan audit gate:** CONDITIONAL GO for full-split normal diagnostics.
+- [Reasoning] The task uses existing outputs and the validated raw RefNeRF normal-map convention.
+- [Reasoning] It does not launch new training or make any mesh/reconstruction-quality claim.
+- [Reasoning] It turns the prior max-10 diagnostic into full train/test split evidence.
+
+**Round-local plan:**
+- Claim the full-split normal diagnostic task in the coordination board.
+- Verify artifact availability and GPU visibility.
+- Run six full-split baseline/RC normal diagnostic commands with `--gt_normal_space raw`.
+- Aggregate the JSONs and update the claim audit.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 02:22:43 CST`.
+- Verified all six i300 output directories had iteration-300 point clouds.
+- Verified GPU 0 was visible and CUDA initialization succeeded in `ref_gs`.
+- Ran full-split diagnostics for `teapot`, `toaster`, and `car`, baseline and RC.
+- Aggregated all six JSON files and verified matching train/test image counts, raw GT-normal convention, and zero missing normals.
+- Updated `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md` with the full-split normal diagnostic table and revised caveats.
+- Released the coordination-board claim and recorded completion.
+
+**Commands run and verification results:**
+- Existing-output check:
+  - Exit 0; all six i300 output directories and iteration-300 point clouds were present.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+  - Exit 0; all visible GPUs showed `3 MiB` used.
+- Minimal CUDA import in `ref_gs`
+  - Exit 0; `torch.cuda.is_available()` was `True`, one RTX A5000 visible under `CUDA_VISIBLE_DEVICES=0`.
+- Six normal diagnostic commands:
+  - Each used `conda run -n ref_gs python metrics/normal_quality_eval.py --cuda_device 0 --eval -s <scene_path> -m <model_path> --iteration 300 --split both --normal_key rend_normal --gt_normal_space raw --quiet --output_json <model_path>/normal_quality_both_i300_full_raw.json`.
+  - All six exited 0.
+- Aggregation script:
+  - Exit 0; asserted `gt_normal_space=raw`, matching `100` train and `200` test images, all images with normal maps, and zero missing normals for every scene/split/model.
+
+**Metric summary:**
+- `teapot`: RC improved normal MAE and mean cosine on train and test, including reflective-mask metrics.
+- `toaster`: RC slightly improved normal MAE and mean cosine on train and test.
+- `car`: RC slightly improved normal MAE and mean cosine on train and test.
+- Full-split table:
+  - `teapot` train MAE `33.643254` -> `33.371342`; cosine `0.774773` -> `0.776746`.
+  - `teapot` test MAE `36.097747` -> `35.809875`; cosine `0.746387` -> `0.748793`.
+  - `toaster` train MAE `38.870086` -> `38.849698`; cosine `0.720695` -> `0.721056`.
+  - `toaster` test MAE `38.979297` -> `38.927241`; cosine `0.717666` -> `0.718360`.
+  - `car` train MAE `35.469802` -> `35.441386`; cosine `0.754837` -> `0.755093`.
+  - `car` test MAE `37.944846` -> `37.912114`; cosine `0.726169` -> `0.726579`.
+
+**Artifacts produced:**
+- `/tmp/rc_refgs_teapot_base_eval_i300_20260517_1742/normal_quality_both_i300_full_raw.json`
+- `/tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742/normal_quality_both_i300_full_raw.json`
+- `/tmp/rc_refgs_toaster_base_eval_i300_20260517_1821/normal_quality_both_i300_full_raw.json`
+- `/tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821/normal_quality_both_i300_full_raw.json`
+- `/tmp/rc_refgs_car_base_eval_i300_20260517_1853/normal_quality_both_i300_full_raw.json`
+- `/tmp/rc_refgs_car_rc_eval_i300_20260517_1853/normal_quality_both_i300_full_raw.json`
+
+**Go/no-go decision:** CONDITIONAL GO for normal-diagnostic research framing; NO-GO for geometry-quality claims.
+- [Experiment-supported] Full-split raw-convention normal diagnostics are available for three scenes and both baseline/RC models.
+- [Experiment-supported] RC improves normal MAE and mean cosine on all six scene/split rows.
+- [Experiment-weakened] Effect sizes are small, especially for `toaster` and `car`.
+- [Experiment-weakened] This is still normal-map diagnostic evidence only; no mesh/reference-geometry metric has been run.
+- [Decision] GO to include full-split normal diagnostics as a caveated diagnostic table.
+- [Decision] NO-GO for claiming mesh, surface reconstruction, or geometry-quality improvement.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for conservative claim framing with the now-complete i300 reflection, PSNR/SSIM, and full-split normal diagnostic evidence, or add mesh/reference-geometry metrics if geometry claims remain a target.
+
+## 2026-05-18 02:33:11 CST
+
+**Current model/window if known:** codex implementation window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted docs and metric scripts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to switch to gpt-5.5 for claim framing or add mesh/reference-geometry metrics.
+- Full-split normal diagnostics already existed as six `normal_quality_both_i300_full_raw.json` files.
+
+**Plan audit gate:** GO for a CPU-only normal-summary reproducibility wrapper.
+- [Reasoning] Mesh/reference-geometry metrics are higher scientific value but require a larger metric design and reference-geometry audit.
+- [Reasoning] A normal-summary wrapper is safe for this codex window, mirrors the existing render summary, and produces handoff artifacts for claim framing.
+- [Reasoning] The wrapper adds no new scientific evidence and therefore does not expand claims.
+
+**Round-local plan:**
+- Claim the normal summary wrapper task in the coordination board.
+- Add a failing static test for `metrics/summarize_normal_quality.py`.
+- Implement the CPU-only wrapper.
+- Generate JSON and Markdown summaries from the six full-split normal diagnostic JSONs.
+- Verify artifacts, release the claim, and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 02:31:39 CST`.
+- Added `tests/test_normal_quality_summary_static.py`.
+- Verified the new test failed because `metrics/summarize_normal_quality.py` was missing.
+- Added `metrics/summarize_normal_quality.py` with `--pair`, `--metric_filename`, `--output_json`, and `--output_markdown`.
+- The wrapper validates matching image counts, normal-image counts, and GT normal-space consistency before computing deltas.
+- Generated:
+  - `docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.json`
+  - `docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.md`
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- RED `python -m unittest tests.test_normal_quality_summary_static`
+  - Exit 1; failed because `metrics/summarize_normal_quality.py` was missing.
+- GREEN `python -m unittest tests.test_normal_quality_summary_static`
+  - Exit 0; two tests passed.
+- `python -m py_compile metrics/summarize_normal_quality.py`
+  - Exit 0.
+- Wrapper run:
+  - `python metrics/summarize_normal_quality.py --pair teapot /tmp/rc_refgs_teapot_base_eval_i300_20260517_1742 /tmp/rc_refgs_teapot_rc_eval_i300_20260517_1742 --pair toaster /tmp/rc_refgs_toaster_base_eval_i300_20260517_1821 /tmp/rc_refgs_toaster_rc_eval_i300_20260517_1821 --pair car /tmp/rc_refgs_car_base_eval_i300_20260517_1853 /tmp/rc_refgs_car_rc_eval_i300_20260517_1853 --metric_filename normal_quality_both_i300_full_raw.json --output_json docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.json --output_markdown docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.md`
+  - Exit 0; wrote six rows.
+- Artifact checker:
+  - Exit 0; confirmed six rows, `gt_normal_space=raw`, zero baseline/RC missing normals, negative MAE deltas, positive cosine deltas, and expected Markdown tokens.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.json`
+- `docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.md`
+
+**Go/no-go decision:** GO for normal-summary reproducibility; SWITCH MODEL recommended for claim framing.
+- [Implementation-supported] The summary wrapper is tested and compiles.
+- [Artifact-supported] The generated JSON/Markdown reproduce the full-split normal diagnostic table from existing metric JSONs.
+- [Experiment-weakened] This adds no new LPIPS, mesh/reference-geometry, longer-horizon, or ablation evidence.
+- [Decision] GO to use the normal summary artifacts as reproducibility support.
+- [Decision] SWITCH MODEL to gpt-5.5 for conservative claim framing with the complete i300 evidence set, unless the next codex window is assigned mesh/reference-geometry metric implementation.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for claim framing and acceptance-threshold drafting, or start a separate codex task for mesh/reference-geometry metrics with a fresh scoped plan.
