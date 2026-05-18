@@ -1821,3 +1821,253 @@
 
 **Next recommended step:**
 - Switch to gpt-5.5 for claim framing and acceptance-threshold drafting, or start a separate codex task for mesh/reference-geometry metrics with a fresh scoped plan.
+
+## 2026-05-18 04:08:55 CST
+
+**Current model/window if known:** codex research/implementation window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` clean at recovery time.
+- Coordination board had no active claims.
+- Latest board recommendation was to switch to gpt-5.5 for claim framing or add mesh/reference-geometry metrics.
+- Claim audit still barred geometry-quality claims because no mesh/reference-geometry metric had been run.
+
+**Plan audit gate:** GO for geometry-reference feasibility audit; NO-GO for immediate metric implementation.
+- [Reasoning] Implementing Chamfer/F-score safely requires knowing whether current outputs have meshes and whether available geometry is true reference data.
+- [Reasoning] A feasibility audit avoids baking a misleading metric into the repo.
+- [Reasoning] This task does not change training or metric code.
+
+**Round-local plan:**
+- Claim the geometry-feasibility audit in the coordination board.
+- Inventory RefNeRF reference files and current i300 output mesh artifacts.
+- Inventory SMVP3D reference geometry and current loader compatibility.
+- Probe geometry runtime dependencies without changing environment state.
+- Write JSON/Markdown feasibility artifacts, update claim audit, release claim, and record decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 04:06:03 CST`.
+- Confirmed RefNeRF scenes contain `points3d.ply` and transforms, but current i300 outputs only contain `input.ply` and Gaussian `point_cloud/iteration_300/point_cloud.ply`, not extracted meshes.
+- Confirmed `scene/dataset_readers.py` writes random initialization points to `points3d.ply` for Blender/RefNeRF-style scenes; these files are not geometry ground truth.
+- Confirmed SMVP3D has OBJ references for `david`, `dragon`, `hedgehog`, `snail`, and `squirrel`, plus 48 images and 48 normals per scene.
+- Confirmed current `Scene` loader recognizes COLMAP `sparse/` or Blender `transforms_train.json`, while SMVP3D uses `cameras.npz`; a loader/transform conversion is required.
+- Probed runtime geometry dependencies:
+  - Plain `open3d` import failed with `GLIBCXX_3.4.29` missing through the PIL/libLerc path.
+  - `open3d` imported successfully after exporting `LD_LIBRARY_PATH=$CONDA_PREFIX/lib`.
+  - `trimesh` is not installed in `ref_gs`.
+  - `utils.mesh_utils` import failed because `utils.render_utils` is missing.
+  - No root `extract_mesh.py` entrypoint exists.
+- Created `docs/superpowers/logs/rc-refgs-geometry-feasibility-2026-05-18.json`.
+- Created `docs/superpowers/logs/rc-refgs-geometry-feasibility-2026-05-18.md`.
+- Updated `docs/superpowers/logs/rc-refgs-claim-audit-2026-05-17.md` with geometry feasibility caveats.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- RefNeRF/SMVP3D inventory commands:
+  - Exit 0; SMVP3D has five OBJ references and `cameras.npz`; RefNeRF has `points3d.ply` and transforms; current i300 outputs have no extracted meshes.
+- SMVP3D image/normal count command:
+  - Exit 0; each scene has 48 images and 48 normal files.
+- OBJ vertex/face count command:
+  - Exit 0; `david` 49996/100000, `dragon` 437645/871414, `hedgehog` 10005/20006, `snail` 10007/20010, `squirrel` 25002/50000 vertices/faces.
+- Dependency probes:
+  - Plain `open3d` import: exit 1 with `GLIBCXX_3.4.29` error.
+  - `open3d` import with `LD_LIBRARY_PATH=$CONDA_PREFIX/lib`: exit 0, version `0.17.0`.
+  - `trimesh` import: exit 1, module missing.
+  - `utils.mesh_utils` import with conda lib path: exit 1, missing `utils.render_utils`.
+- `find /home/liuly/Surface_Reconstruction/Glossy/Ref-GS -maxdepth 2 -name 'extract_mesh.py' -o -name '*mesh*.py'`
+  - Exit 0; found `utils/mesh_utils.py` and a static test, but no `extract_mesh.py`.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-geometry-feasibility-2026-05-18.json`
+- `docs/superpowers/logs/rc-refgs-geometry-feasibility-2026-05-18.md`
+
+**Go/no-go decision:** NO-GO for immediate RefNeRF geometry metrics; CONDITIONAL GO for future SMVP3D mesh metrics; SWITCH MODEL recommended for claim framing.
+- [Evidence-supported] RefNeRF `points3d.ply` is random initialization data under this repo's Blender reader, not a valid Chamfer/F-score target.
+- [Evidence-supported] Current i300 outputs have no extracted mesh artifacts.
+- [Evidence-supported] SMVP3D has real OBJ references, but needs loader/transform support before comparable RC-RefGS runs can be produced.
+- [Blocked] Mesh extraction runtime path needs repair: missing `utils.render_utils`, missing `trimesh` or an Open3D-only rewrite, and an Open3D library-path workaround.
+- [Decision] NO-GO for geometry-quality claims and immediate RefNeRF Chamfer/F-score.
+- [Decision] CONDITIONAL GO for a future mesh/reference implementation task after prerequisites are fixed.
+- [Decision] SWITCH MODEL to gpt-5.5 for claim framing unless the next codex window is explicitly assigned mesh runtime repair.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for conservative claim framing with the complete i300 evidence and geometry-feasibility caveats, or start a focused codex plan for mesh runtime repair plus SMVP3D loader/transform support.
+
+## 2026-05-18 04:19:25 CST
+
+**Current model/window if known:** codex research handoff window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with uncommitted documentation/audit artifacts from the geometry-feasibility pass.
+- Coordination board had no active claims.
+- Latest board recommendation was to switch to gpt-5.5 for claim framing or, if staying in codex, fix mesh runtime/loader prerequisites first.
+- Claim audit supported only a narrow reflection-consistency diagnostic claim and forbade broad rendering, geometry, material, LPIPS, and external-superiority claims.
+
+**Plan audit gate:** GO for claim-framing handoff packet; NO-GO for new scientific claims.
+- [Reasoning] Current codex window can safely consolidate evidence and acceptance gates without adding experimental claims.
+- [Reasoning] Geometry metrics remain blocked and LPIPS/longer-horizon/ablation evidence is still absent.
+- [Reasoning] The packet provides the recommended gpt-5.5 handoff target while preserving all no-go caveats.
+
+**Round-local plan:**
+- Claim conservative claim-framing packet task in the coordination board.
+- Create JSON and Markdown handoff artifacts.
+- Verify the artifacts contain allowed wording, required qualifiers, forbidden claims, acceptance gates, and model-switch decision.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 04:19:25 CST`.
+- Created `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.json`.
+- Created `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`.
+- The packet separates current evidence into reflection-consistency support, mixed PSNR/SSIM evidence, directionally favorable normal diagnostics, and geometry no-go status.
+- The packet lists allowed wording, required qualifiers, forbidden claims, and acceptance gates for reflection, rendering, geometry, and causality claims.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- Claim-framing packet checker:
+  - Exit 0; confirmed `CONDITIONAL GO` for claim framing, `NO-GO` for broad rendering and geometry claims, presence of reflection-consistency allowed wording, forbidden mesh claim, geometry acceptance gate, Markdown sections, and model-switch recommendation.
+- `sed -n '1,130p' docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+  - Exit 0; visually checked allowed wording, qualifiers, forbidden claims, acceptance gates, and decision.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.json`
+- `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+
+**Go/no-go decision:** CONDITIONAL GO for conservative claim framing; NO-GO for broad rendering/geometry/material/external-superiority claims; SWITCH MODEL recommended.
+- [Evidence-supported] Narrow claim: RC-RefGS lowers measured reprojected reflection-consistency error in the three-scene i300 sanity protocol.
+- [Evidence-mixed] Rendering PSNR/SSIM is scene-dependent and LPIPS is absent.
+- [Evidence-weakened] Normal diagnostics are directionally favorable but small and not geometry evidence.
+- [Blocked] Geometry metrics are not ready because current RefNeRF outputs lack extracted meshes and SMVP3D needs runtime/loader prerequisites.
+- [Decision] CONDITIONAL GO to draft paper language only if these caveats remain explicit.
+- [Decision] NO-GO for broad quality, reconstruction, material, LPIPS, or external-superiority claims.
+- [Decision] SWITCH MODEL to gpt-5.5 for paper language and acceptance-threshold drafting.
+
+**Next recommended step:**
+- Switch to gpt-5.5 and use `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md` as the handoff artifact.
+
+## 2026-05-18 05:07:58 CST
+
+**Current model/window if known:** codex research handoff window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted documentation/audit artifacts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to switch to gpt-5.5 for paper language and acceptance-threshold drafting using the claim-framing packet.
+- The plan still requires every paper claim to be tagged and negative outcomes to be reported; current evidence supports only a narrow reflection-consistency diagnostic claim.
+
+**Plan audit gate:** GO for acceptance-threshold and paper-language guardrail drafting; NO-GO for new scientific claims.
+- [Reasoning] The task advances the current handoff recommendation without touching code, launching new runs, or expanding claims beyond evidence.
+- [Reasoning] Rendering quality remains mixed, LPIPS is unavailable, geometry metrics are blocked, and ablations are absent.
+- [Reasoning] Explicit thresholds reduce the risk of overstating the current short-run result in a later manuscript pass.
+
+**Round-local plan:**
+- Claim the acceptance-threshold task in the coordination board.
+- Create JSON and Markdown guardrail artifacts from the current claim-framing packet and metric summaries.
+- Verify required gates, forbidden language, and decision text.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 05:06:23 CST`.
+- Created `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.json`.
+- Created `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`.
+- The artifacts define claim gates for reflection diagnostics, method-level reflection consistency, rendering quality, normal diagnostics, geometry quality, and causal ablation.
+- The artifacts include safe paper-language snippets tagged with `[Evidence]` and `[Qualifier]`, forbidden language, and upgrade thresholds.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.json`
+  - Exit 0; JSON parsed successfully.
+- `rg -n "reflection_diagnostic_current|overall_render_quality|geometry_quality|causal_ablation|CONDITIONAL GO|NO-GO|SWITCH MODEL|Forbidden Language|Upgrade Thresholds" docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.json docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+  - Exit 0; required gate IDs, no-go/model-switch decisions, forbidden-language section, and upgrade-threshold section were present.
+- `sed -n '1,220p' docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+  - Exit 0; visually checked current protocol, claim gates, safe paper language, forbidden language, upgrade thresholds, and decision.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+- Final board/log/artifact state checker with `rg`
+  - Exit 0; confirmed active task is `None`, acceptance-threshold artifacts are logged, and decision/model-switch markers are present.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.json`
+- `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+
+**Go/no-go decision:** CONDITIONAL GO for paper-language guardrails; NO-GO for overall rendering, LPIPS, geometry, material, external-superiority, and causal claims; SWITCH MODEL recommended.
+- [Evidence-supported] Current narrow reflection-diagnostic wording has an explicit pass gate: all six scene/split rows must improve under identical i300 pair-sampling settings, and the current evidence passes it.
+- [Evidence-mixed] Rendering metrics remain table-only because PSNR/SSIM are mixed and LPIPS is unavailable.
+- [Evidence-weakened] Normal diagnostics are directionally favorable but small and not geometry evidence.
+- [Blocked] Geometry and causality claims remain blocked by missing extracted/reference mesh metrics and missing ablations.
+- [Decision] CONDITIONAL GO to use the guardrails for conservative manuscript drafting.
+- [Decision] NO-GO for stronger quality/reconstruction/material/external/causal claims.
+- [Decision] SWITCH MODEL to gpt-5.5 for final manuscript prose polishing if the next task is writing prose rather than code or experiments.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for final manuscript prose polishing using both the claim-framing packet and acceptance-threshold artifact, or start a codex implementation task for the SMVP3D/mesh-runtime prerequisites if geometry evidence becomes the priority.
+
+## 2026-05-18 07:16:24 CST
+
+**Current model/window if known:** codex research handoff window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted documentation/audit artifacts from prior autonomous windows.
+- Coordination board had no active claims.
+- Latest board recommendation was to switch to gpt-5.5 for final manuscript prose polishing using the claim-framing and acceptance-threshold artifacts.
+- The plan still requires tagged paper claims and explicit reporting of negative outcomes.
+
+**Plan audit gate:** GO for a conservative manuscript prose skeleton; NO-GO for stronger or submission-ready claims.
+- [Reasoning] The task converts already-verified claim artifacts into a bounded writing handoff without changing code, launching experiments, or expanding claims.
+- [Reasoning] LPIPS, geometry metrics, external baselines, and ablations remain absent, so prose must remain caveated and diagnostic-centered.
+- [Reasoning] A prose skeleton is the highest safe task for this codex window because final rhetorical polishing and citation integration are better handled by the recommended gpt-5.5 window.
+
+**Round-local plan:**
+- Claim the conservative manuscript-prose task in the coordination board.
+- Create a Markdown prose skeleton with tagged claims, conservative abstract, contributions, method/results framing, limitations, forbidden replacement phrases, and upgrade checklist.
+- Verify required tags and decision markers.
+- Verify forbidden strong claims appear only in the explicit forbidden-phrases section.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 07:15:23 CST`.
+- Created `docs/superpowers/logs/rc-refgs-manuscript-prose-skeleton-2026-05-18.md`.
+- The skeleton includes `[Citation: ...]`, `[Evidence]`, `[Reasoning]`, `[Qualifier]`, and `[Unsupported]` tags.
+- The skeleton keeps the central empirical statement scoped to lower measured reprojected reflection-consistency error under the i300 sanity protocol.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- `rg -n "\\[Citation|\\[Evidence\\]|\\[Reasoning\\]|\\[Qualifier\\]|\\[Unsupported\\]|CONDITIONAL GO|NO-GO|SWITCH MODEL|Forbidden Replacement Phrases|Upgrade Checklist" docs/superpowers/logs/rc-refgs-manuscript-prose-skeleton-2026-05-18.md`
+  - Exit 0; required tags, decision markers, forbidden-phrases section, and upgrade checklist were present.
+- `rg -n "improves overall novel-view synthesis quality|improves LPIPS|improves mesh quality|improves material decomposition|outperforms external|proves that" docs/superpowers/logs/rc-refgs-manuscript-prose-skeleton-2026-05-18.md`
+  - Exit 0; matched only the explicit forbidden replacement phrases.
+- Forbidden-phrase confinement checker:
+  - Exit 0; confirmed forbidden strong-claim phrases appear only inside the `Forbidden Replacement Phrases` section.
+- `sed -n '1,220p' docs/superpowers/logs/rc-refgs-manuscript-prose-skeleton-2026-05-18.md`
+  - Exit 0; visually checked conservative abstract, contribution bullets, method/results framing, limitations, forbidden phrases, upgrade checklist, and decision.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+- Final board/log/artifact marker checker with `rg`
+  - Exit 0; confirmed active task is `None`, manuscript skeleton is logged, decision/model-switch markers are present, and required sections are present.
+- Final manuscript marker checker:
+  - Exit 0; confirmed required tags and decision markers are present and forbidden strong-claim phrases are confined to the explicit forbidden-phrases section.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-manuscript-prose-skeleton-2026-05-18.md`
+
+**Go/no-go decision:** CONDITIONAL GO for conservative manuscript prose skeleton; NO-GO for stronger rendering, LPIPS, geometry, reconstruction, material, external-superiority, or causal claims; SWITCH MODEL recommended.
+- [Evidence-supported] The prose skeleton uses the current verified claim boundary and tags the central reflection-diagnostic result.
+- [Evidence-mixed] Rendering metrics remain mixed and table-only.
+- [Evidence-weakened] Normal diagnostics remain small and diagnostic-only.
+- [Blocked] LPIPS, geometry, external baselines, and ablations remain absent.
+- [Decision] CONDITIONAL GO to use this skeleton as a handoff scaffold.
+- [Decision] NO-GO for stronger claims or submission-ready manuscript language without citation replacement and additional evidence.
+- [Decision] SWITCH MODEL to gpt-5.5 for final rhetorical polishing and citation-aware integration.
+
+**Next recommended step:**
+- Switch to gpt-5.5 for final manuscript prose polishing and replace citation placeholders with real paper/code citations, or return to codex for a scoped implementation task around SMVP3D/mesh-runtime prerequisites.

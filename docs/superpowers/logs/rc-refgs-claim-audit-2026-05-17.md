@@ -32,12 +32,12 @@ Every row used `num_pairs=10` for both baseline and RC.
 - [Reasoning] Current evidence is short-run only: 300 iterations, one seed, three scenes, and 10 sampled pairs per split.
 - [Reasoning] The current metric is pair-sampling dependent because it uses `choose_pair_camera` and a capped number of pairs; report the pair count and angle threshold with results.
 - [Reasoning] Standard PSNR/SSIM were collected with `metrics/render_quality_eval.py --split both --mask_mode both --skip_lpips`; LPIPS remains unverified in this evidence set because it was intentionally skipped to avoid network-dependent weight downloads.
-- [Reasoning] Normal diagnostics are preliminary but broader than before: a full-split sweep with the validated raw GT-normal interpretation improves angular MAE and mean cosine on all six scene/split rows, but the deltas are small and no mesh/reference-geometry metrics have been run.
+- [Reasoning] Normal diagnostics are preliminary but broader than before: a full-split sweep with the validated raw GT-normal interpretation improves angular MAE and mean cosine on all six scene/split rows, but the deltas are small. A geometry feasibility audit found that current RefNeRF i300 artifacts and environment are not ready for mesh/reference metrics.
 
 ## Claims Not Supported Yet
 
 - [Unsupported] Do not claim overall novel-view rendering improvement. Standard PSNR/SSIM are mixed across the three audited scenes, and LPIPS is not yet available for these runs.
-- [Unsupported] Do not claim mesh or surface reconstruction improvement. Normal diagnostics are small and mixed, and no Chamfer/F-score, mesh connected-component count, or TSDF quality metric has been run.
+- [Unsupported] Do not claim mesh or surface reconstruction improvement. Normal diagnostics are small and mixed; current RefNeRF `points3d.ply` files are random initialization point clouds, not ground-truth geometry; no extracted meshes or Chamfer/F-score, mesh connected-component count, or TSDF quality metric has been run.
 - [Unsupported] Do not claim improved material decomposition. No albedo variance, roughness stability, relighting, or material-specific diagnostic has been run.
 - [Unsupported] Do not claim full Ref-GS superiority over external methods such as 2DGS, MaterialRefGS, SSR-GS, GS-2M, or paper baselines. No external baseline runs or cited paper-number comparison has been audited.
 - [Unsupported] Do not claim the reflective-region PSNR trend is positive. It is mixed and currently negative on two of the three audited scenes.
@@ -116,12 +116,28 @@ All rows used `metrics/normal_quality_eval.py --split both --normal_key rend_nor
 
 [Reasoning] The full-split normal diagnostics are directionally consistent: RC improves angular MAE and mean cosine on all audited scene/split rows. The magnitude is small, especially on `toaster` and `car`, and the evidence remains a normal-map diagnostic rather than a mesh or reconstruction-quality result.
 
+## Geometry Feasibility Audit Added
+
+Date: 2026-05-18 04:06 CST
+
+Artifact: `docs/superpowers/logs/rc-refgs-geometry-feasibility-2026-05-18.md` and `.json`.
+
+Key findings:
+
+- [Unsupported] Do not use RefNeRF `points3d.ply` as geometry ground truth. The Blender reader in `scene/dataset_readers.py` generates random initialization points and writes `points3d.ply`; Chamfer/F-score against these files would be misleading.
+- [Unsupported] The current i300 `teapot`, `toaster`, and `car` output directories contain Gaussian point clouds but no extracted mesh `.ply` artifacts.
+- [Reasoning] SMVP3D is the better reference-geometry target: it has five OBJ meshes (`david`, `dragon`, `hedgehog`, `snail`, `squirrel`), 48 images, 48 normals, and `cameras.npz` per scene.
+- [Reasoning] SMVP3D is not directly loadable by the current `Scene` path because this repo recognizes COLMAP `sparse/` or Blender `transforms_train.json`, while SMVP3D uses `cameras.npz`.
+- [Reasoning] Runtime mesh extraction is currently blocked: plain `open3d` import fails unless `LD_LIBRARY_PATH=$CONDA_PREFIX/lib` is exported, `trimesh` is absent from `ref_gs`, `utils.mesh_utils` imports missing `utils.render_utils`, and no root `extract_mesh.py` entrypoint exists.
+
+Decision: **NO-GO** for immediate RefNeRF geometry metrics and geometry-quality claims. **CONDITIONAL GO** for a future mesh/reference task after fixing mesh extraction/runtime prerequisites and adding SMVP3D adapter or transform conversion.
+
 ## Minimum Next Evidence
 
 1. Add LPIPS evidence for full images and reflective masks, either by using cached weights or by explicitly approving network-dependent weight downloads.
 2. Run longer matched training for at least `teapot`, `toaster`, and `car`, preferably with the same seed and held-out split preservation.
 3. Report pair-count and selection policy for reflection-consistency metrics.
-4. Add stronger geometry evidence before making surface reconstruction claims: mesh metrics where reference geometry is available, such as Chamfer/F-score, connected component count, or depth-to-mesh reprojection diagnostics.
+4. Add stronger geometry evidence before making surface reconstruction claims: first fix mesh extraction/runtime prerequisites and SMVP3D loading, then run mesh metrics where reference geometry is available, such as Chamfer/F-score, connected component count, or depth-to-mesh reprojection diagnostics.
 5. Add ablations before attributing causality beyond the single RC-vs-baseline contrast: `w/o L_ref`, `w/o specular confidence`, and roughness-only regularization.
 
 ## Decision

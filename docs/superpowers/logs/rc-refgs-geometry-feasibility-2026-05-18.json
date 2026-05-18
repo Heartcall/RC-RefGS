@@ -1,0 +1,40 @@
+{
+  "date": "2026-05-18 04:06:03 CST",
+  "scope": "Geometry/reference-metric feasibility audit for RC-RefGS after full-split normal diagnostics.",
+  "refnerf_current_i300": {
+    "scenes_audited": ["teapot", "toaster", "car"],
+    "available_model_artifacts": [
+      "input.ply",
+      "point_cloud/iteration_300/point_cloud.ply"
+    ],
+    "missing_model_artifacts": [
+      "extracted mesh .ply",
+      "reference mesh .obj"
+    ],
+    "reference_status": "NO-GO for Chamfer/F-score against RefNeRF points3d.ply. The Blender reader in scene/dataset_readers.py generates random points inside [-1, 1] and writes points3d.ply, so these files are initialization point clouds, not geometry ground truth."
+  },
+  "smvp3d_reference_inventory": {
+    "root": "/data/liuly/dataset/3DGS/glossy/SMVP3D",
+    "scenes": {
+      "david": {"images": 48, "normals": 48, "obj_vertices": 49996, "obj_faces": 100000, "camera_npz": true},
+      "dragon": {"images": 48, "normals": 48, "obj_vertices": 437645, "obj_faces": 871414, "camera_npz": true},
+      "hedgehog": {"images": 48, "normals": 48, "obj_vertices": 10005, "obj_faces": 20006, "camera_npz": true},
+      "snail": {"images": 48, "normals": 48, "obj_vertices": 10007, "obj_faces": 20010, "camera_npz": true},
+      "squirrel": {"images": 48, "normals": 48, "obj_vertices": 25002, "obj_faces": 50000, "camera_npz": true}
+    },
+    "loader_status": "Current Scene loader recognizes COLMAP sparse/ or Blender transforms_train.json. SMVP3D has cameras.npz plus image/normal/s0/s1/s2 folders, so it needs a dataset adapter or transform conversion before training/evaluation in this repo."
+  },
+  "runtime_dependency_status": {
+    "open3d_plain_import": "FAIL: GLIBCXX_3.4.29 not found through PIL/libLerc path",
+    "open3d_with_conda_ld_library_path": "PASS: open3d 0.17.0 imports after exporting LD_LIBRARY_PATH=$CONDA_PREFIX/lib",
+    "trimesh_import": "FAIL: ModuleNotFoundError: No module named 'trimesh'",
+    "mesh_utils_import": "FAIL: ModuleNotFoundError: No module named 'utils.render_utils'",
+    "extract_mesh_entrypoint": "No extract_mesh.py found in repo root."
+  },
+  "decision": {
+    "refnerf_mesh_metric_now": "NO-GO",
+    "smvp3d_mesh_metric_future": "CONDITIONAL GO",
+    "recommended_next_codex_task": "Implement or restore geometry prerequisites in this order: runtime mesh utility import path/dependencies, mesh extraction entrypoint, then SMVP3D dataset adapter or transform conversion. Only after that run Chamfer/F-score against SMVP3D OBJ references.",
+    "recommended_next_research_task": "Switch to gpt-5.5 for conservative claim framing using the existing i300 reflection, PSNR/SSIM, and normal diagnostic evidence."
+  }
+}

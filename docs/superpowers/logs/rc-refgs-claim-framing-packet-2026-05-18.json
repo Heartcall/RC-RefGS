@@ -1,0 +1,74 @@
+{
+  "date": "2026-05-18 04:19:25 CST",
+  "scope": "Conservative claim-framing packet for RC-RefGS using current i300 evidence only.",
+  "current_evidence": {
+    "training_protocol": "Matched Ref-GS baseline vs RC-RefGS, held-out split preserved with --eval, 300 iterations, one seed, scenes teapot/toaster/car.",
+    "reflection_consistency": {
+      "status": "supported",
+      "summary": "RC lowers measured reprojected reflection-consistency error on all three scenes and both train/test splits.",
+      "caveat": "Metric is pair-sampling dependent and uses max_pairs=10 with max_angle_deg=180."
+    },
+    "standard_rendering": {
+      "status": "mixed",
+      "summary": "Full-image and reflective-mask PSNR/SSIM improve on teapot, but PSNR is slightly lower on toaster and car and SSIM is mixed.",
+      "caveat": "LPIPS was skipped; do not claim overall rendering improvement."
+    },
+    "normal_diagnostics": {
+      "status": "directionally favorable diagnostic",
+      "summary": "Full-split raw-convention normal diagnostics improve normal MAE and cosine on all six scene/split rows.",
+      "caveat": "Deltas are small and this is not mesh/reference-geometry evidence."
+    },
+    "geometry": {
+      "status": "no-go",
+      "summary": "Current RefNeRF i300 outputs have no extracted meshes; RefNeRF points3d.ply is random initialization data; SMVP3D has OBJ references but requires loader/runtime prerequisites.",
+      "caveat": "No geometry-quality or surface-reconstruction claim is supported."
+    }
+  },
+  "allowed_wording": [
+    "RC-RefGS adds a gated cross-view reflection-consistency objective to Ref-GS while preserving the base representation and renderer.",
+    "In short i300 sanity runs on teapot, toaster, and car, RC-RefGS consistently lowers the measured reprojected reflection-consistency error relative to matched Ref-GS baselines on both train and held-out test splits.",
+    "The result supports the intended optimization target: reducing a view-pair reflection-consistency diagnostic.",
+    "Full-split normal-map diagnostics are directionally favorable but small, and should be reported as diagnostics rather than geometry evidence."
+  ],
+  "qualified_wording": [
+    "Rendering quality remains mixed under the current evidence: PSNR/SSIM gains are scene-dependent and LPIPS is unavailable.",
+    "The current evidence is short-run only: 300 iterations, one seed, three scenes, and sampled reflection pairs.",
+    "The normal diagnostic trend is favorable, but the effect size is small and no mesh/reference metric has been run.",
+    "Geometry claims are gated on mesh extraction and reference-geometry evaluation, preferably on SMVP3D after loader/runtime prerequisites are fixed."
+  ],
+  "forbidden_wording": [
+    "Do not claim improved overall novel-view synthesis quality.",
+    "Do not claim improved mesh quality, surface reconstruction, or geometry quality.",
+    "Do not claim material decomposition improvement.",
+    "Do not claim superiority over external methods or paper baselines.",
+    "Do not claim LPIPS improvement.",
+    "Do not use RefNeRF points3d.ply as ground-truth geometry."
+  ],
+  "acceptance_gates": {
+    "reflection_claim": [
+      "Report scene, split, max_pairs, max_angle_deg, and pair count.",
+      "Keep claim scoped to measured reflection-consistency error under the i300 sanity protocol."
+    ],
+    "rendering_claim": [
+      "Run LPIPS with cached or approved weights.",
+      "Require non-negative or explicitly explained PSNR/SSIM/LPIPS trends across scenes before any overall rendering claim.",
+      "Repeat at longer training horizons and preferably more than one seed."
+    ],
+    "geometry_claim": [
+      "Fix mesh extraction/runtime prerequisites.",
+      "Do not evaluate RefNeRF random points3d.ply as ground truth.",
+      "Add SMVP3D loader or transform conversion.",
+      "Run Chamfer/F-score or equivalent mesh/reference metrics against OBJ references."
+    ],
+    "causality_claim": [
+      "Run ablations for w/o L_ref, w/o specular confidence, and roughness-only regularization.",
+      "Avoid attributing all observed changes to RC before ablations are available."
+    ]
+  },
+  "decision": {
+    "claim_framing": "CONDITIONAL GO",
+    "broad_rendering_claim": "NO-GO",
+    "geometry_claim": "NO-GO",
+    "model_recommendation": "SWITCH MODEL to gpt-5.5 for paper language and acceptance-threshold drafting."
+  }
+}

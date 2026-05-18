@@ -1,0 +1,121 @@
+{
+  "date": "2026-05-18 05:06:23 CST",
+  "scope": "Acceptance thresholds and paper-language guardrails for RC-RefGS using current i300 evidence.",
+  "source_artifacts": [
+    "docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md",
+    "docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-17.json",
+    "docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.json",
+    "docs/superpowers/logs/rc-refgs-geometry-feasibility-2026-05-18.md"
+  ],
+  "current_protocol": {
+    "scenes": ["teapot", "toaster", "car"],
+    "iterations": 300,
+    "seeds": 1,
+    "splits": ["train", "test"],
+    "reflection_max_pairs": 10,
+    "reflection_max_angle_deg": 180,
+    "lpips_available": false,
+    "mesh_reference_metrics_available": false,
+    "ablation_metrics_available": false
+  },
+  "claim_gates": [
+    {
+      "claim_id": "reflection_diagnostic_current",
+      "claim_text": "RC-RefGS lowers measured reprojected reflection-consistency error relative to matched Ref-GS baselines under the short i300 sanity protocol.",
+      "current_status": "pass",
+      "minimum_threshold": "All reported scene/split rows must have rc_mean_reflection_consistency < baseline_mean_reflection_consistency with identical splits, iterations, and pair-count settings.",
+      "current_evidence": "Six of six scene/split rows pass: teapot train/test, toaster train/test, and car train/test.",
+      "required_qualifiers": [
+        "Short i300 sanity protocol.",
+        "One seed.",
+        "Three scenes.",
+        "Pair-sampling dependent metric with max_pairs=10 and max_angle_deg=180.",
+        "Diagnostic claim only, not broad rendering or geometry quality."
+      ],
+      "allowed_language_strength": "diagnostic-supported"
+    },
+    {
+      "claim_id": "reflection_paper_ready",
+      "claim_text": "RC-RefGS consistently improves reflection consistency as a method-level result.",
+      "current_status": "conditional",
+      "minimum_threshold": "Repeat the reflection diagnostic at longer horizons and on at least the intended main scene set; preserve identical seeds/splits/iterations; report pair counts and sampling settings; require no unexplained scene-level regressions.",
+      "current_evidence": "Current i300 result is directionally consistent but short-run and one-seed only.",
+      "required_qualifiers": [
+        "Do not remove short-run caveat until longer-horizon runs complete.",
+        "Do not imply external superiority unless external baselines are evaluated under comparable settings."
+      ],
+      "allowed_language_strength": "conditional"
+    },
+    {
+      "claim_id": "overall_render_quality",
+      "claim_text": "RC-RefGS improves novel-view synthesis quality.",
+      "current_status": "fail",
+      "minimum_threshold": "LPIPS must be available, and PSNR/SSIM/LPIPS trends must be non-negative or explicitly explained across scenes and splits before any aggregate rendering-quality claim.",
+      "current_evidence": "PSNR/SSIM are mixed: teapot improves, toaster is mixed, and car slightly regresses; LPIPS was skipped.",
+      "required_qualifiers": [
+        "Current evidence permits only reporting the mixed table.",
+        "No overall rendering-quality gain claim.",
+        "No LPIPS claim."
+      ],
+      "allowed_language_strength": "table-only"
+    },
+    {
+      "claim_id": "normal_diagnostic",
+      "claim_text": "Normal-map diagnostics are directionally favorable under the raw RefNeRF normal convention.",
+      "current_status": "pass_with_small_effect_warning",
+      "minimum_threshold": "All reported rows should improve normal MAE and mean cosine, with GT normal convention stated and missing-normal counts reported.",
+      "current_evidence": "Six of six rows improve MAE and cosine with raw GT normals and zero missing normals, but toaster/car deltas are small.",
+      "required_qualifiers": [
+        "Diagnostic only.",
+        "Not mesh or surface-reconstruction evidence.",
+        "Effect sizes are small, especially outside teapot."
+      ],
+      "allowed_language_strength": "directional-diagnostic"
+    },
+    {
+      "claim_id": "geometry_quality",
+      "claim_text": "RC-RefGS improves mesh, surface reconstruction, or geometry quality.",
+      "current_status": "fail",
+      "minimum_threshold": "Extract comparable meshes and evaluate against valid reference geometry such as SMVP3D OBJ meshes using Chamfer/F-score or an equivalent metric; do not use RefNeRF points3d.ply as ground truth.",
+      "current_evidence": "Current RefNeRF outputs lack extracted meshes; RefNeRF points3d.ply is random initialization data; SMVP3D needs loader/runtime prerequisites.",
+      "required_qualifiers": [
+        "No geometry-quality claim.",
+        "No surface-reconstruction claim.",
+        "No mesh-quality claim."
+      ],
+      "allowed_language_strength": "forbidden"
+    },
+    {
+      "claim_id": "causal_ablation",
+      "claim_text": "The observed effects are caused specifically by the reflection-consistency loss.",
+      "current_status": "fail",
+      "minimum_threshold": "Run matched ablations for w/o L_ref, w/o specular confidence, and roughness-only regularization with the same scene/split/iteration protocol.",
+      "current_evidence": "No ablation metrics are available.",
+      "required_qualifiers": [
+        "Frame current observations as associated with the RC setting.",
+        "Avoid causal attribution beyond the implemented intervention until ablations are run."
+      ],
+      "allowed_language_strength": "hypothesis-only"
+    }
+  ],
+  "paper_language": {
+    "safe_contribution_bullet": "[Evidence] We add a gated cross-view reflection-consistency objective to Ref-GS while preserving the original representation and renderer. [Evidence] In short i300 sanity runs on teapot, toaster, and car, the RC setting lowers the measured reprojected reflection-consistency error on both train and held-out test splits relative to matched Ref-GS baselines. [Qualifier] These results support the intended diagnostic target and are not evidence of broad rendering or geometry improvement.",
+    "safe_results_sentence": "[Evidence] Across the three i300 sanity scenes, RC-RefGS reduces the measured reflection-consistency error in all six train/test rows under max_pairs=10 and max_angle_deg=180. [Qualifier] PSNR/SSIM trends are mixed and LPIPS is unavailable, so we report these metrics without claiming overall novel-view synthesis gains.",
+    "safe_normal_sentence": "[Evidence] Full-split raw-convention normal diagnostics improve MAE and mean cosine in all six scene/split rows. [Qualifier] The deltas are small and are treated as diagnostics rather than geometry-quality evidence.",
+    "required_limitation_sentence": "[Qualifier] Current evidence is limited to three short-run scenes, one seed, sampled reflection pairs, no LPIPS, no external baselines, no ablation table, and no mesh/reference-geometry metric."
+  },
+  "decision": {
+    "status": "CONDITIONAL GO",
+    "no_go_claims": [
+      "overall novel-view synthesis improvement",
+      "LPIPS improvement",
+      "mesh quality improvement",
+      "surface reconstruction improvement",
+      "geometry quality improvement",
+      "material decomposition improvement",
+      "external method superiority",
+      "causal attribution without ablations"
+    ],
+    "model_recommendation": "SWITCH MODEL to gpt-5.5 for final paper-language polishing if manuscript prose is the next task."
+  }
+}
