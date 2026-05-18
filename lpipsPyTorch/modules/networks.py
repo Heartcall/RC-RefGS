@@ -1,3 +1,4 @@
+import os
 from typing import Sequence
 
 from itertools import chain
@@ -7,6 +8,33 @@ import torch.nn as nn
 from torchvision import models
 
 from .utils import normalize_activation
+
+
+_CORRUPT_CHECKPOINT_MARKERS = (
+    "PytorchStreamReader failed reading zip archive",
+    "failed finding central directory",
+)
+
+
+def _checkpoint_path_from_weights(weights):
+    url = getattr(weights, "url", None)
+    if url is None:
+        return None
+    filename = url.rsplit("/", 1)[-1]
+    return os.path.join(torch.hub.get_dir(), "checkpoints", filename)
+
+
+def _load_features_with_retry(builder, weights):
+    try:
+        return builder(weights=weights).features
+    except RuntimeError as exc:
+        message = str(exc)
+        if not any(marker in message for marker in _CORRUPT_CHECKPOINT_MARKERS):
+            raise
+        checkpoint_path = _checkpoint_path_from_weights(weights)
+        if checkpoint_path is not None and os.path.exists(checkpoint_path):
+            os.remove(checkpoint_path)
+        return builder(weights=weights).features
 
 
 def get_network(net_type: str):
@@ -67,7 +95,10 @@ class SqueezeNet(BaseNet):
     def __init__(self):
         super(SqueezeNet, self).__init__()
 
-        self.layers = models.squeezenet1_1(True).features
+        self.layers = _load_features_with_retry(
+            models.squeezenet1_1,
+            models.SqueezeNet1_1_Weights.IMAGENET1K_V1,
+        )
         self.target_layers = [2, 5, 8, 10, 11, 12, 13]
         self.n_channels_list = [64, 128, 256, 384, 384, 512, 512]
 
@@ -78,7 +109,10 @@ class AlexNet(BaseNet):
     def __init__(self):
         super(AlexNet, self).__init__()
 
-        self.layers = models.alexnet(True).features
+        self.layers = _load_features_with_retry(
+            models.alexnet,
+            models.AlexNet_Weights.IMAGENET1K_V1,
+        )
         self.target_layers = [2, 5, 8, 10, 12]
         self.n_channels_list = [64, 192, 384, 256, 256]
 
@@ -89,7 +123,10 @@ class VGG16(BaseNet):
     def __init__(self):
         super(VGG16, self).__init__()
 
-        self.layers = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1).features
+        self.layers = _load_features_with_retry(
+            models.vgg16,
+            models.VGG16_Weights.IMAGENET1K_V1,
+        )
         self.target_layers = [4, 9, 16, 23, 30]
         self.n_channels_list = [64, 128, 256, 512, 512]
 

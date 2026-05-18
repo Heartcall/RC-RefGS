@@ -4,6 +4,8 @@ Date: 2026-05-18 05:06:23 CST
 
 Scope: conservative acceptance thresholds for claims using the current i300 evidence only.
 
+Claim-label compatibility: `Supported`, `Mixed`, and `Unsupported` labels in later manuscript artifacts correspond to the diagnostic-supported, table-only/contextual, and forbidden/failed claim gates below.
+
 ## Current Protocol
 
 - Scenes: `teapot`, `toaster`, `car`.

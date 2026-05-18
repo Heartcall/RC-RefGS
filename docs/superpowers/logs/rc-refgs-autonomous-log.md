@@ -2269,3 +2269,300 @@
 
 **Next recommended step:**
 - Switch to gpt-5.5 and follow `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.
+
+## 2026-05-18 16:05:02 CST
+
+**Current model/window if known:** codex switch-model boundary check window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with existing uncommitted control-plane changes:
+  - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+  - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- Latest commit remained `53dad65 Update reflection consistency evaluation`.
+- `git diff --stat` showed only guardrail/log/control-board edits from recent handoff checkpoints.
+- Coordination board active task claims were `None`.
+- Latest model-switch manifest remained `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.
+- Latest board decision remained `SWITCH MODEL` with `NO-GO` for additional Codex coding/experiment work.
+
+**Plan audit gate:** SWITCH MODEL; NO-GO for new code, experiments, manuscript claim expansion, or stronger wording.
+- [Reasoning] The latest manifest and board both point to gpt-5.5 manuscript polishing as the next model action.
+- [Reasoning] This Codex window cannot satisfy the requested model switch, so the safest autonomous action is to re-verify and preserve the boundary.
+- [Reasoning] No new verified evidence was produced, so broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims remain forbidden.
+
+**Round-local plan:**
+- Claim a minimal boundary-check task.
+- Re-read the latest model-switch manifest.
+- Run required marker and forbidden-claim checks.
+- Run repository tests and whitespace diff check because repo files are touched.
+- Release the claim and record a SWITCH MODEL / NO-GO decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 16:04:22 CST`.
+- Re-read the latest model-switch manifest.
+- Did not modify code, launch experiments, edit manuscript prose, add evidence, or expand claims.
+- Released the coordination-board claim at `2026-05-18 16:05:02 CST`.
+
+**Commands run and verification results:**
+- `git status --short --branch`
+  - Exit 0; recovered current uncommitted control-plane diff.
+- `git log -1 --stat --oneline`
+  - Exit 0; latest commit `53dad65 Update reflection consistency evaluation`.
+- `git diff --stat`
+  - Exit 0; current diff is limited to guardrail/log/control-board edits.
+- Recovery reads for the plan, coordination board, autonomous log tail, and model-switch manifest:
+  - Exit 0.
+- Required marker checker:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, and `Unsupported`.
+- Forbidden-claim confinement checker:
+  - Exit 0; forbidden broad-claim phrases remain confined to explicit forbidden/disallowed sections.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+
+**Artifacts touched:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Go/no-go decision:** SWITCH MODEL; NO-GO for additional Codex coding/experiment/manuscript-claim work in this window.
+- [Supported] The current evidence supports only the narrow reflection-consistency diagnostic claim.
+- [Mixed] PSNR/SSIM and normal diagnostics remain caveated context.
+- [Unsupported] LPIPS, geometry, reconstruction, material, external baselines, and ablations remain unavailable.
+- [Decision] SWITCH MODEL to gpt-5.5 for literature-aware manuscript polishing.
+- [Decision] NO-GO for broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims.
+
+**Next recommended step:**
+- Switch to gpt-5.5 and follow `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`; continuing Codex-only loops should remain limited to verification unless explicitly overridden.
+
+## 2026-05-18 16:56:57 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion.
+
+**Recovered state:**
+- Recovered protocol context from:
+  - `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`
+  - `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+  - `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+- Active claims were `None` at task start.
+- Existing i300 baseline/RC output directories were present for `teapot`, `toaster`, and `car`.
+- LPIPS acceptance gate was previously blocked by skipped runtime.
+
+**Plan audit gate:** GO for exactly one priority task: LPIPS runtime enablement and verified three-scene i300 LPIPS sweep.
+- [Reasoning] This directly addresses the highest-value missing rendering evidence gate (LPIPS availability).
+- [Reasoning] It can be executed on existing i300 checkpoints without changing training codepaths.
+- [Constraint] Do not upgrade manuscript claim strength unless thresholds are met.
+
+**Round-local plan:**
+- Claim one coordination-board task for Priority-1 LPIPS work.
+- Run LPIPS smoke to verify runtime.
+- If runtime fails, apply a minimal TDD bugfix only for the failure mode.
+- Run full three-scene baseline/RC i300 `split=both` LPIPS evaluations.
+- Summarize results and release claim with updated GO/NO-GO boundary.
+
+**Actions taken:**
+- Claimed task in coordination board at `2026-05-18 16:15:33 CST`.
+- LPIPS smoke initially failed with corrupted AlexNet checkpoint cache (`PytorchStreamReader failed reading zip archive: failed finding central directory`).
+- Added RED/GREEN regression coverage for corrupted checkpoint retry:
+  - Added `tests/test_lpips_network_retry.py`.
+  - Implemented retry-on-corrupt-cache load path in `lpipsPyTorch/modules/networks.py`.
+- Re-ran LPIPS smoke successfully (non-null LPIPS on `teapot` test split).
+- Completed six i300 LPIPS runs (`teapot`, `toaster`, `car`; baseline + RC; `split=both`), rerunning two GPU1 startup failures on GPU0.
+- Generated consolidated LPIPS summary:
+  - `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.json`
+  - `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.md`
+- Released the coordination-board claim at `2026-05-18 16:56:57 CST`.
+
+**Files changed:**
+- `lpipsPyTorch/modules/networks.py`
+- `tests/test_lpips_network_retry.py`
+- `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.json`
+- `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_lpips_network_retry`
+  - Exit 1 (expected; helper missing).
+- GREEN:
+  - `conda run -n ref_gs python -m unittest tests.test_lpips_network_retry`
+  - Exit 0 (2 tests passed).
+- LPIPS smoke:
+  - `conda run -n ref_gs python metrics/render_quality_eval.py ... --max_images 1 --split test --cuda_device 0`
+  - Exit 0; LPIPS produced (`full_lpips` and `reflective_lpips` non-null).
+- Full LPIPS sweep:
+  - Six `conda run -n ref_gs python metrics/render_quality_eval.py ... --split both --mask_mode both --output_json .../render_quality_both_i300_with_lpips.json` commands.
+  - Final status: all six exit 0; two initial GPU1 starts failed and were rerun successfully on GPU0.
+- Summary generation:
+  - `conda run -n ref_gs python metrics/summarize_render_quality.py --metric_filename render_quality_both_i300_with_lpips.json ...`
+  - Exit 0; consolidated six-row summary created.
+- Contract checks:
+  - JSON presence/shape check over six per-model files: exit 0 (`split=both`, `lpips_skipped=false`, train/test counts preserved).
+- Repository verification:
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0 (21 tests).
+  - `conda run -n ref_gs python -m py_compile lpipsPyTorch/modules/networks.py metrics/render_quality_eval.py metrics/summarize_render_quality.py` -> exit 0.
+  - `git diff --check` -> exit 0.
+
+**Artifacts produced:**
+- Six per-model LPIPS-enabled render-quality JSON files:
+  - `/tmp/rc_refgs_{teapot,toaster,car}_{base,rc}_eval_i300_*/render_quality_both_i300_with_lpips.json`
+- Consolidated summary:
+  - `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.json`
+  - `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.md`
+
+**Go/no-go decision:** CONDITIONAL GO for evidence-upgrade continuation; NO-GO for manuscript claim upgrades.
+- [Supported] LPIPS runtime is enabled and verified for all three i300 scenes on both splits.
+- [Mixed] LPIPS trends are scene-dependent: full LPIPS improves for all six rows, reflective LPIPS improves on four rows and regresses slightly on `teapot` and `car` test/train subsets.
+- [Mixed] PSNR/SSIM patterns remain scene-dependent and consistent with prior mixed rendering status.
+- [Decision] Keep rendering-quality claim as mixed/table-only under current acceptance thresholds.
+- [Decision] No upgrade to broad overall-rendering claim language.
+
+**Next recommended step:**
+- Priority-2 next: reduced-iteration end-to-end ablation script validation with `--eval` split-preserving metrics for `w/o reflection consistency`, `w/o confidence`, and roughness-only controls.
+
+## 2026-05-18 15:33:45 CST
+
+**Current model/window if known:** codex model-switch compliance window.
+
+**Skills used:** using-superpowers, executing-plans, systematic-debugging, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed clean `master...origin/master` at the start of this window.
+- Latest commit was `53dad65 Update reflection consistency evaluation`, containing the manuscript integration draft, citation/source map, model-switch manifest, coordination board, and autonomous log updates.
+- `git diff --stat` was empty at the start of recovery.
+- Coordination board active task claims were `None`.
+- Latest handoff artifact was `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.
+- The latest manifest and board decisions recommended `SWITCH MODEL` to gpt-5.5 for literature-aware manuscript polishing.
+
+**Plan audit gate:** SWITCH MODEL; NO-GO for forcing a new Codex coding or experiment task.
+- [Reasoning] The latest manifest explicitly says the next high-value work is gpt-5.5 manuscript polishing.
+- [Reasoning] The current Codex window can safely verify the handoff boundary and normalize guardrail markers, but should not introduce code, experiments, or stronger claims.
+- [Reasoning] No new verified evidence was produced in this window, so all broad claim boundaries remain unchanged.
+
+**Round-local plan:**
+- Check active task claims.
+- Claim a narrow model-switch compliance checkpoint.
+- Verify the latest manifest, claim-framing packet, and acceptance thresholds still expose required decision/claim markers.
+- Keep forbidden broad claims confined to explicit boundary sections.
+- Release the claim, log the result, and preserve the SWITCH MODEL decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 15:31:37 CST`.
+- Confirmed no active claim conflict before proceeding.
+- Read the latest model-switch manifest, claim-framing packet, acceptance thresholds, manuscript integration draft, and citation/source map.
+- Normalized claim-boundary markers without changing claim strength:
+  - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md` now labels the geometry row as `Unsupported / No-go`.
+  - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md` now states the compatibility of `Supported`, `Mixed`, and `Unsupported` labels with its gate language.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- `git status --short --branch`
+  - Exit 0; initial state clean on `master...origin/master`.
+- `git log -1 --stat --oneline`
+  - Exit 0; latest commit `53dad65 Update reflection consistency evaluation`.
+- `git diff --stat`
+  - Exit 0; no initial diff.
+- Recovery reads for the plan, board, autonomous log tail, manifest, claim-framing packet, acceptance thresholds, integration draft, and citation/source map:
+  - Exit 0.
+- Initial required marker checker:
+  - Exit 1; root cause was legacy guardrail wording missing the literal `Unsupported` marker in the claim-framing packet, and missing literal `Supported` / `Mixed` / `Unsupported` markers in the acceptance-threshold artifact.
+- Required model-switch and claim-boundary marker checker after normalization:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, and `Unsupported` across the latest manifest, claim-framing packet, and acceptance-threshold artifact.
+- Forbidden-claim confinement checker:
+  - Exit 0; forbidden broad-claim phrases remain confined to explicit forbidden/disallowed sections.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+
+**Artifacts touched:**
+- `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+- `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Go/no-go decision:** SWITCH MODEL; CONDITIONAL GO only for gpt-5.5 manuscript polishing under the latest manifest; NO-GO for forcing another Codex coding/experiment task in this window.
+- [Supported] The current handoff chain preserves a narrow reflection-consistency diagnostic center.
+- [Mixed] PSNR/SSIM and normal diagnostics remain context-only with explicit caveats.
+- [Unsupported] LPIPS, geometry, reconstruction, material, external baselines, and ablations remain unavailable.
+- [Decision] SWITCH MODEL to gpt-5.5 for literature-aware prose polishing.
+- [Decision] NO-GO for broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims.
+
+**Next recommended step:**
+- Switch to gpt-5.5 and follow `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`; do not start another Codex coding/experiment task unless explicitly overridden.
+
+## 2026-05-18 15:45:05 CST
+
+**Current model/window if known:** codex switch-model enforcement window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with uncommitted control-plane changes from the prior compliance checkpoint:
+  - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+  - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- Latest commit remained `53dad65 Update reflection consistency evaluation`.
+- Coordination board active task claims were `None`.
+- Latest model-switch manifest remained `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.
+- Latest board decision was `SWITCH MODEL`; the board explicitly says not to start a new coding or experiment task unless the user overrides the SWITCH MODEL recommendation or new evidence prerequisites are available.
+
+**Plan audit gate:** SWITCH MODEL; NO-GO for coding, experiment launches, or manuscript claim expansion in this Codex window.
+- [Reasoning] The user instructed this window to obey the latest SWITCH MODEL recommendation rather than force a coding task.
+- [Reasoning] The latest manifest already provides the gpt-5.5 read order, claim boundary, and verification checklist.
+- [Reasoning] No new evidence was produced and no prerequisite changed, so the safest task is to verify and preserve the handoff boundary.
+
+**Round-local plan:**
+- Confirm active task claims are clear.
+- Claim a minimal switch-model enforcement checkpoint.
+- Verify required decision/claim markers and forbidden-claim confinement.
+- Run repository tests and whitespace diff check because repo files are touched.
+- Release the claim and keep the decision as SWITCH MODEL.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 15:44:28 CST`.
+- Read the latest model-switch manifest, claim-framing packet, and acceptance thresholds.
+- Did not edit code, start experiments, add evidence, or expand manuscript claims.
+- Released the coordination-board claim at `2026-05-18 15:45:05 CST`.
+
+**Commands run and verification results:**
+- `git status --short --branch`
+  - Exit 0; recovered current uncommitted control-plane diff.
+- `git log -1 --stat --oneline`
+  - Exit 0; latest commit `53dad65 Update reflection consistency evaluation`.
+- `git diff --stat`
+  - Exit 0; showed only current log/guardrail/control-plane edits.
+- Recovery reads for the plan, coordination board, autonomous log tail, model-switch manifest, claim-framing packet, and acceptance thresholds:
+  - Exit 0.
+- Required marker checker:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, and `Unsupported`.
+- Forbidden-claim confinement checker:
+  - Exit 0; forbidden broad-claim phrases remain confined to explicit forbidden/disallowed sections.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+
+**Artifacts touched:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Go/no-go decision:** SWITCH MODEL; NO-GO for additional Codex coding/experiment work in this window.
+- [Supported] The handoff chain still supports only the narrow reflection-consistency diagnostic claim.
+- [Mixed] PSNR/SSIM and normal diagnostics remain caveated context.
+- [Unsupported] LPIPS, geometry, reconstruction, material, external baselines, and ablations remain unavailable.
+- [Decision] SWITCH MODEL to gpt-5.5 for literature-aware manuscript polishing.
+- [Decision] NO-GO for broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims.
+
+**Next recommended step:**
+- Switch to gpt-5.5 and follow `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.

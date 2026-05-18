@@ -11,7 +11,7 @@ Scope: conservative paper-claim handoff using current i300 evidence only.
 | Reflection consistency | Supported | RC lowers measured reprojected reflection-consistency error on `teapot`, `toaster`, and `car`, train and test | Pair-sampling dependent, `max_pairs=10`, `max_angle_deg=180` |
 | Standard PSNR/SSIM | Mixed | `teapot` improves; `toaster`/`car` are mixed or slightly lower | LPIPS skipped; no overall rendering-quality claim |
 | Normal diagnostics | Directionally favorable diagnostic | Full-split raw-convention normal MAE/cosine improve on all six scene/split rows | Small deltas; not mesh/reference-geometry evidence |
-| Geometry | No-go | SMVP3D has usable OBJ references in principle | Current RefNeRF artifacts have no extracted meshes; RefNeRF `points3d.ply` is random initialization data; SMVP3D needs loader/runtime prerequisites |
+| Geometry | Unsupported / No-go | SMVP3D has usable OBJ references in principle | Current RefNeRF artifacts have no extracted meshes; RefNeRF `points3d.ply` is random initialization data; SMVP3D needs loader/runtime prerequisites |
 
 ## Allowed Wording
 
