@@ -7,8 +7,9 @@ class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
         source = Path("train.py").read_text()
 
         self.assertIn("def _extract_cuda_device(argv):", source)
-        self.assertIn('os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)', source)
-        self.assertIn('return os.environ.get("CUDA_VISIBLE_DEVICES", "2")', source)
+        self.assertIn("def _maybe_set_cuda_device(argv):", source)
+        self.assertIn("_maybe_set_cuda_device(sys.argv)", source)
+        self.assertIn('current = os.environ.get("CUDA_VISIBLE_DEVICES")', source)
         self.assertIn("parser.add_argument('--cuda_device'", source)
 
     def test_optimization_params_define_disabled_default_reflection_consistency(self):
@@ -20,6 +21,8 @@ class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
             "self.ref_consistency_every = 4",
             "self.ref_consistency_max_angle = 20.0",
             "self.ref_consistency_gamma = 2.0",
+            "self.lambda_roughness_smoothness = 0.0",
+            "self.roughness_smoothness_start = 3000",
         ]
         for default in required_defaults:
             with self.subTest(default=default):
@@ -36,6 +39,19 @@ class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
             "pair_cam = choose_pair_camera(",
             "reflection_consistency_loss(",
             "loss = loss + opt.lambda_ref_consistency * ref_loss",
+        ]
+        for snippet in required_snippets:
+            with self.subTest(snippet=snippet):
+                self.assertIn(snippet, source)
+
+    def test_train_uses_roughness_smoothness_only_behind_ablation_gate(self):
+        source = Path("train.py").read_text()
+
+        required_snippets = [
+            "opt.lambda_roughness_smoothness > 0",
+            "iteration >= opt.roughness_smoothness_start",
+            'roughness_smoothness_loss = tv_loss(render_pkg["roughness_map"][None])',
+            "loss = loss + opt.lambda_roughness_smoothness * roughness_smoothness_loss",
         ]
         for snippet in required_snippets:
             with self.subTest(snippet=snippet):

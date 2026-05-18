@@ -5,10 +5,23 @@ def _extract_cuda_device(argv):
     if "--cuda_device" in argv:
         index = argv.index("--cuda_device")
         if index + 1 < len(argv):
-            return argv[index + 1]
-    return os.environ.get("CUDA_VISIBLE_DEVICES", "2")
+            value = argv[index + 1].strip()
+            if value and value.lower() not in {"auto", "none"}:
+                return value
+            return None
+    current = os.environ.get("CUDA_VISIBLE_DEVICES")
+    if current is not None:
+        current = current.strip()
+        if current:
+            return current
+    return None
 
-os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)
+def _maybe_set_cuda_device(argv):
+    cuda_device = _extract_cuda_device(argv)
+    if cuda_device is not None:
+        os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
+
+_maybe_set_cuda_device(sys.argv)
 os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
 import uuid
@@ -109,6 +122,10 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         normal_loss = lambda_normal * (normal_error).mean()
         dist_loss = lambda_dist * (rend_dist).mean()
         loss = loss + dist_loss + normal_loss
+
+        if opt.lambda_roughness_smoothness > 0 and iteration >= opt.roughness_smoothness_start:
+            roughness_smoothness_loss = tv_loss(render_pkg["roughness_map"][None])
+            loss = loss + opt.lambda_roughness_smoothness * roughness_smoothness_loss
 
         if opt.lambda_ref_consistency > 0 and iteration >= opt.ref_consistency_start and iteration % opt.ref_consistency_every == 0:
             pair_cam = choose_pair_camera(viewpoint_stack, viewpoint_cam, opt.ref_consistency_max_angle)
@@ -233,7 +250,7 @@ if __name__ == "__main__":
     pp = PipelineParams(parser)
     parser.add_argument('--ip', type=str, default="127.0.0.1")
     parser.add_argument('--port', type=int, default=6009)
-    parser.add_argument('--cuda_device', type=str, default="2")
+    parser.add_argument('--cuda_device', type=str, default=None)
     parser.add_argument('--detect_anomaly', action='store_true', default=False)
     parser.add_argument("--test_iterations", nargs="+", type=int, default=
                         [1_000, 5_000, 7_000, 10_000, 15_000, 20_000, 25_000, 30_000]

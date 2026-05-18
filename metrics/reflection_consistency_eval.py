@@ -12,11 +12,23 @@ def _extract_cuda_device(argv):
     if "--cuda_device" in argv:
         index = argv.index("--cuda_device")
         if index + 1 < len(argv):
-            return argv[index + 1]
-    return os.environ.get("CUDA_VISIBLE_DEVICES", "2")
+            value = argv[index + 1].strip()
+            if value and value.lower() not in {"auto", "none"}:
+                return value
+            return None
+    current = os.environ.get("CUDA_VISIBLE_DEVICES")
+    if current is not None:
+        current = current.strip()
+        if current:
+            return current
+    return None
 
+def _maybe_set_cuda_device(argv):
+    cuda_device = _extract_cuda_device(argv)
+    if cuda_device is not None:
+        os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
 
-os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)
+_maybe_set_cuda_device(sys.argv)
 
 import torch
 
@@ -127,7 +139,7 @@ def main():
     parser.add_argument("--alpha_threshold", type=float, default=0.2)
     parser.add_argument("--roughness_threshold", type=float, default=0.6)
     parser.add_argument("--output_json", type=str, default=None)
-    parser.add_argument("--cuda_device", type=str, default="2")
+    parser.add_argument("--cuda_device", type=str, default=None)
     parser.add_argument("--quiet", action="store_true")
 
     args = get_combined_args(parser)

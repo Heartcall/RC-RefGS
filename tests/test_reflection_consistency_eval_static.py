@@ -14,7 +14,8 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
             "REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))",
             "sys.path.insert(0, REPO_ROOT)",
             "def _extract_cuda_device(argv):",
-            'os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)',
+            "def _maybe_set_cuda_device(argv):",
+            "_maybe_set_cuda_device(sys.argv)",
             'parser.add_argument("--cuda_device"',
             "--iteration",
             "dataset.white_background",
@@ -38,6 +39,26 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
             "--lambda_ref_consistency",
             "${scene}_base",
             "${scene}_rc",
+        ]
+        for snippet in required_snippets:
+            with self.subTest(snippet=snippet):
+                self.assertIn(snippet, source)
+
+    def test_ablation_script_supports_eval_split_preserving_variant_matrix(self):
+        ablation_script = Path("scripts/run_rc_refgs_ablation.sh")
+        self.assertTrue(ablation_script.exists(), "scripts/run_rc_refgs_ablation.sh is missing")
+
+        source = ablation_script.read_text()
+        required_snippets = [
+            "VARIANTS=(base rc wo_ref wo_conf rough_only)",
+            "--eval",
+            "--ref_consistency_gamma",
+            "ROUGHNESS_SMOOTH_LAMBDA",
+            "--lambda_roughness_smoothness",
+            "--roughness_smoothness_start",
+            "export -n CUDA_DEVICE",
+            "for split in train test; do",
+            "reflection_consistency_${split}.json",
         ]
         for snippet in required_snippets:
             with self.subTest(snippet=snippet):

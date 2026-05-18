@@ -115,6 +115,8 @@ class OptimizationParams(ParamGroup):
         self.ref_consistency_every = 4
         self.ref_consistency_max_angle = 20.0
         self.ref_consistency_gamma = 2.0
+        self.lambda_roughness_smoothness = 0.0
+        self.roughness_smoothness_start = 3000
         self.opacity_cull = 0.05
 
         self.densification_interval = 100
