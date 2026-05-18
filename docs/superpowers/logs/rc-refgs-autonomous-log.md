@@ -2071,3 +2071,201 @@
 
 **Next recommended step:**
 - Switch to gpt-5.5 for final manuscript prose polishing and replace citation placeholders with real paper/code citations, or return to codex for a scoped implementation task around SMVP3D/mesh-runtime prerequisites.
+
+## 2026-05-18 10:36:53 CST
+
+**Current model/window if known:** codex manuscript integration window.
+
+**Skills used:** using-superpowers, brainstorming, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` clean at recovery time.
+- Coordination board had no active claims.
+- Latest writing artifacts were the conservative manuscript prose skeleton, claim-framing packet, and acceptance-threshold guardrails.
+- The claim-framing packet and acceptance thresholds supported only a narrow reflection-consistency diagnostic claim and explicitly barred broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims.
+
+**Plan audit gate:** GO for a conservative manuscript integration draft; NO-GO for code changes, experiments, or stronger claims.
+- [Reasoning] The user explicitly requested a manuscript-facing artifact with nine sections and fixed verification gates.
+- [Reasoning] Existing evidence is sufficient for a reflection-consistency diagnostic-centered draft, but remains insufficient for broad rendering, geometry, material, external-superiority, LPIPS, or causal claims.
+- [Reasoning] Because this is a writing/integration task, no training code or experiment artifacts should be modified.
+
+**Round-local plan:**
+- Claim the manuscript integration draft task in the coordination board.
+- Create a manuscript-facing Markdown artifact with title, abstract, contribution bullets, method framing, experimental protocol, results framing, limitations, a Supported/Mixed/Unsupported claim table, and upgrade checklist.
+- Preserve explicit caveats for mixed PSNR/SSIM, missing LPIPS, diagnostic-only normal results, missing mesh/reference-geometry metrics, and missing ablations.
+- Verify required labels and decision markers.
+- Verify forbidden broad claims are confined to an explicit forbidden-claim boundary.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 10:35:08 CST`.
+- Created `docs/superpowers/logs/rc-refgs-manuscript-integration-draft-2026-05-18.md`.
+- The draft integrates the existing skeleton, claim-framing packet, acceptance thresholds, render summary, normal summary, and geometry-feasibility caveats.
+- The draft contains the requested manuscript-facing sections and a claim table with `Supported`, `Mixed`, and `Unsupported` labels.
+- Broad claims are listed only under the explicit `Forbidden Claim Boundary`.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- Required phrase/tag checker:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, `Unsupported`, and all nine requested section headers are present.
+- Forbidden-claim confinement checker:
+  - First attempt failed because the shell interpreted a backtick in the inline Python checker; this was a checker quoting issue, not artifact content.
+  - Rerun with safe quoting exited 0; confirmed broad forbidden claims are confined to `Forbidden Claim Boundary`.
+- `sed -n '1,260p' docs/superpowers/logs/rc-refgs-manuscript-integration-draft-2026-05-18.md`
+  - Exit 0; visually checked title, abstract, contributions, method framing, experimental protocol, results framing, limitations, claim table, upgrade checklist, forbidden-claim boundary, and decision.
+- Final required phrase/tag checker:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, `Unsupported`, and all nine requested section headers.
+- Final forbidden-claim confinement checker:
+  - Exit 0; confirmed broad forbidden claims are confined to `Forbidden Claim Boundary`.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-manuscript-integration-draft-2026-05-18.md`
+
+**Go/no-go decision:** CONDITIONAL GO for conservative manuscript integration draft; NO-GO for broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims; SWITCH MODEL recommended.
+- [Supported] The draft centers on the current evidence that RC-RefGS lowers measured reprojected reflection-consistency error on the three i300 scenes and both splits.
+- [Mixed] Rendering PSNR/SSIM and normal diagnostics remain caveated context only.
+- [Unsupported] LPIPS, mesh/reference-geometry metrics, material diagnostics, external baselines, and ablations remain unavailable.
+- [Decision] CONDITIONAL GO to use the integration draft as a manuscript-facing scaffold.
+- [Decision] NO-GO for stronger claims unless the upgrade checklist is satisfied.
+- [Decision] SWITCH MODEL to gpt-5.5 for final rhetoric, citation replacement, and manuscript-level polishing.
+
+**Next recommended step:**
+- Use the manuscript integration draft as the gpt-5.5 writing handoff, preserving the claim table and forbidden-claim boundary.
+
+## 2026-05-18 14:49:32 CST
+
+**Current model/window if known:** codex citation handoff window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with uncommitted board/log changes and the manuscript integration draft from the prior window.
+- Coordination board had no active claims.
+- The latest completed artifact was `docs/superpowers/logs/rc-refgs-manuscript-integration-draft-2026-05-18.md`.
+- Board recommendations pointed toward gpt-5.5 citation-aware polishing while preserving the Supported/Mixed/Unsupported claim table and forbidden-claim boundary.
+
+**Plan audit gate:** GO for a citation/source map; NO-GO for new claims, code changes, experiments, or literature claims.
+- [Reasoning] The manuscript integration draft still contains citation placeholders and needs a source map before external prose polishing.
+- [Reasoning] Local code/evidence citations can be mapped safely from the repository and existing logs.
+- [Reasoning] External paper citations should remain explicit gaps unless a dedicated literature audit is requested.
+
+**Round-local plan:**
+- Claim the citation/source-map task in the coordination board.
+- Inspect local code anchors for renderer buffers, training loss gates, reflection-consistency helper, evaluator outputs, and TSDF context.
+- Create a manuscript source map with local code citations, evidence artifact citations, external citation gaps, replacement guidance, and forbidden-claim boundary.
+- Verify required markers and forbidden-phrase confinement.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 14:48:16 CST`.
+- Created `docs/superpowers/logs/rc-refgs-manuscript-citation-source-map-2026-05-18.md`.
+- Mapped draft claims to local code references in `gaussian_renderer/__init__.py`, `train.py`, `arguments/__init__.py`, `utils/reflection_consistency.py`, `metrics/reflection_consistency_eval.py`, and `utils/mesh_utils.py`.
+- Mapped empirical statements to existing evidence artifacts.
+- Listed unresolved external citation placeholders without introducing external claims.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- Code/evidence inspection:
+  - `nl -ba gaussian_renderer/__init__.py | sed -n '120,210p'` exit 0.
+  - `nl -ba train.py | sed -n '70,130p'` exit 0.
+  - `nl -ba train.py | rg -n "lambda_ref_consistency|ref_consistency|reflection_consistency_loss|choose_pair_camera"` exit 0.
+  - `nl -ba metrics/reflection_consistency_eval.py | sed -n '1,220p'` exit 0.
+  - `nl -ba utils/reflection_consistency.py | sed -n '1,260p'` exit 0.
+  - `nl -ba utils/mesh_utils.py | sed -n '120,230p'` exit 0.
+  - `nl -ba arguments/__init__.py | rg -n "lambda_ref_consistency|ref_consistency|class OptimizationParams"` exit 0.
+- Required marker checker:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, `Unsupported`, local code citation map, evidence artifact map, external citation gaps, and forbidden-claim boundary.
+- Citation source map marker checker:
+  - Exit 0; confirmed required markers and representative code anchors such as `gaussian_renderer/__init__.py:125`, `train.py:113`, and `metrics/reflection_consistency_eval.py:110`.
+- Forbidden-phrase confinement checker:
+  - Exit 0; confirmed broad forbidden phrases appear only in allowed guidance/boundary sections.
+- `sed -n '1,240p' docs/superpowers/logs/rc-refgs-manuscript-citation-source-map-2026-05-18.md`
+  - Exit 0; visually checked the citation map, evidence map, external citation gaps, replacement guidance, forbidden boundary, and decision.
+- Final citation source map marker checker:
+  - Exit 0; confirmed required markers and representative source anchors.
+- Final board/log marker checker:
+  - Exit 0; confirmed active task is `None`, source map is logged, and decision markers are present.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-manuscript-citation-source-map-2026-05-18.md`
+
+**Go/no-go decision:** CONDITIONAL GO for citation/source-map handoff; NO-GO for broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims; SWITCH MODEL recommended.
+- [Supported] Local code and evidence sources are now mapped for the conservative manuscript integration draft.
+- [Mixed] Rendering and normal diagnostic sources remain context-only.
+- [Unsupported] External literature citations are unresolved, and no LPIPS, geometry, external-baseline, material, or ablation evidence has been added.
+- [Decision] CONDITIONAL GO to use this source map for manuscript polishing.
+- [Decision] NO-GO for stronger claims or external-superiority language.
+- [Decision] SWITCH MODEL to gpt-5.5 for final literature-aware citation replacement and prose polishing.
+
+**Next recommended step:**
+- Switch to gpt-5.5 with the manuscript integration draft and citation/source map, or run a dedicated literature audit before replacing external citation placeholders.
+
+## 2026-05-18 15:00:41 CST
+
+**Current model/window if known:** codex handoff manifest window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed branch `master...origin/master` with uncommitted manuscript/log artifacts from recent writing windows.
+- Coordination board had no active claims.
+- Latest completed artifacts were the manuscript integration draft and citation/source map.
+- Board recommendations pointed to gpt-5.5 citation-aware polishing while preserving the Supported/Mixed/Unsupported claim table and forbidden-claim boundary.
+
+**Plan audit gate:** GO for a model-switch manifest; NO-GO for new experiments, code edits, literature claims, or claim expansion.
+- [Reasoning] The current codex window can safely create a compact handoff index that reduces drift risk for the next writing model.
+- [Reasoning] The next high-value work is not more local coding; it is gpt-5.5 manuscript polishing with the existing draft and citation map.
+- [Reasoning] A manifest can encode read order, claim boundaries, caveats, and verification without adding evidence.
+
+**Round-local plan:**
+- Claim the model-switch manifest task in the coordination board.
+- Create a Markdown handoff manifest with read order, current manuscript center, required caveats, forbidden-claim boundary, allowed/disallowed polishing tasks, verification checklist, and decision.
+- Verify required markers and forbidden-phrase confinement.
+- Release the claim and record the decision.
+
+**Actions taken:**
+- Claimed the task at `2026-05-18 14:59:41 CST`.
+- Created `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.
+- The manifest indexes the manuscript integration draft, citation/source map, claim-framing packet, acceptance thresholds, and claim audit.
+- The manifest restates the narrow supported reflection-consistency diagnostic center and all required caveats.
+- Released the coordination-board claim.
+
+**Commands run and verification results:**
+- Required marker checker:
+  - Exit 0; confirmed `CONDITIONAL GO`, `NO-GO`, `SWITCH MODEL`, `Supported`, `Mixed`, `Unsupported`, `Forbidden Claim Boundary`, `Verification Checklist`, and `Read Order`.
+- Manifest marker checker:
+  - Exit 0; confirmed the required markers are present.
+- Forbidden-phrase confinement checker:
+  - Exit 0; confirmed forbidden phrases are confined to allowed caveat/boundary sections.
+- `sed -n '1,220p' docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`
+  - Exit 0; visually checked read order, manuscript center, caveats, forbidden boundary, allowed/disallowed polishing tasks, verification checklist, and decision.
+- Final manifest marker checker:
+  - Exit 0; confirmed required markers are present.
+- Final board/log marker checker:
+  - Exit 0; confirmed active task is `None`, manifest is logged, and model-switch decision markers are present.
+- `python -m unittest discover tests`
+  - Exit 0; 19 tests passed.
+- `git diff --check`
+  - Exit 0; no whitespace errors.
+
+**Artifacts produced:**
+- `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`
+
+**Go/no-go decision:** CONDITIONAL GO for model-switch manifest; NO-GO for broad rendering, LPIPS, geometry, reconstruction, material, external-superiority, and causal claims; SWITCH MODEL recommended.
+- [Supported] The manifest gives the next window a precise artifact read order and current supported claim.
+- [Mixed] PSNR/SSIM and normal diagnostics remain caveated.
+- [Unsupported] LPIPS, geometry, material, external baselines, and ablations remain unavailable.
+- [Decision] CONDITIONAL GO to use this manifest for the next manuscript-polishing window.
+- [Decision] NO-GO for stronger claims or evidence expansion.
+- [Decision] SWITCH MODEL to gpt-5.5 for literature-aware prose polishing.
+
+**Next recommended step:**
+- Switch to gpt-5.5 and follow `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-18.md`.
