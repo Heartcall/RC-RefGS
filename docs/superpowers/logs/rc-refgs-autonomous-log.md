@@ -2829,3 +2829,228 @@ Key measured values (mean reflection consistency):
 
 **Next recommended step:**
 - Run the same direct-command five-variant reduced matrix on `car`, or add a lightweight summary wrapper for reduced ablation JSONs before scaling beyond i20.
+
+## 2026-05-19 03:27:56 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` recovered current dirty RC-RefGS workspace.
+- Plan recovered from `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`.
+- Autonomous log and coordination board recovered and confirmed no active claim at start.
+- Latest completed task was direct-command `toaster` i20 five-variant matrix.
+- No newer blocker superseded the recommended next task.
+
+**Plan audit gate:** CONDITIONAL GO for one experiment-only task.
+- [Constraint] Use direct `conda run` commands for runtime claims, not `scripts/run_rc_refgs_ablation.sh`.
+- [Constraint] No manuscript claim upgrades, no causal claims, no full 31000 runs, no geometry/mesh work.
+
+**Round-local plan:**
+- Claim direct-command reduced `car` i20 five-variant matrix task in coordination board.
+- Run five train commands (`base`, `rc`, `wo_ref`, `wo_conf`, `rough_only`) with `--eval --iterations 20`.
+- Generate split-preserving train/test reflection JSONs with `max_pairs=5` for every variant.
+- Verify artifacts plus required repo checks, then release claim and log decision.
+
+**Actions taken:**
+- Claimed task at `2026-05-19 03:21:29 CST`.
+- Ran direct training commands for:
+  - `/tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_base`
+  - `/tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_rc`
+  - `/tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_wo_ref`
+  - `/tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_wo_conf`
+  - `/tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_rough_only`
+- Ran ten direct `metrics/reflection_consistency_eval.py` commands (train/test for each variant).
+- One transient parallel run failed (`wo_conf` train split, bus error); reran serially and passed.
+- Released coordination-board claim at `2026-05-19 03:27:56 CST`.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery and environment:
+  - `git status --short --branch` -> exit 0.
+  - plan/log/board reads -> exit 0.
+  - `conda run -n ref_gs python -c "import torch; ..."` -> exit 0, CUDA available.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+- Training:
+  - Five direct `train.py --cuda_device auto --eval --iterations 20` variant commands -> all exit 0.
+- Metrics:
+  - Ten direct train/test metric commands -> all JSONs present with `num_pairs=5` after one serial retry for `wo_conf` train.
+- Artifact checks:
+  - `ls -d /tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_{base,rc,wo_ref,wo_conf,rough_only}/point_cloud/iteration_20` -> exit 0 (all five found).
+  - `rg -l '"num_pairs"\\s*:\\s*5' /tmp/rc_refgs_ablation_car_direct_i20_20260519_032148/car_*/reflection_consistency_*.json | sort` -> exit 0 (all ten found).
+- Required verification:
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 23 tests.
+  - `conda run -n ref_gs python -m py_compile train.py metrics/reflection_consistency_eval.py metrics/render_quality_eval.py tests/test_rc_refgs_training_static.py tests/test_reflection_consistency_eval_static.py tests/test_render_quality_eval_static.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `git diff --check` -> exit 0.
+
+**Metric values:**
+- `base`: train `0.0001494722`, test `0.0001242247`
+- `rc`: train `0.0001437736`, test `0.0001191224`
+- `wo_ref`: train `0.0001492462`, test `0.0001241010`
+- `wo_conf`: train `0.0001411765`, test `0.0001152136`
+- `rough_only`: train `0.0001496942`, test `0.0001246403`
+
+**Artifacts produced:**
+- Root: `/tmp/rc_refgs_ablation_car_direct_i20_20260519_032148`
+- Variant directories:
+  - `car_base`
+  - `car_rc`
+  - `car_wo_ref`
+  - `car_wo_conf`
+  - `car_rough_only`
+- Each variant has `point_cloud/iteration_20` and `reflection_consistency_{train,test}.json`.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- [Supported] Direct-command reduced ablation evidence now covers `car` with five variants and split-preserving train/test metrics.
+- [Mixed] At i20, `rc` is lower than `base`, but `wo_conf` (gamma-0) is lower still on this reduced run.
+- [Blocked] Script-level runtime remains unverified in this shell due nested bash/script CUDA visibility failure mode.
+- [NO-GO boundary preserved] No manuscript claim upgrade, no causal claim, no geometry/mesh work.
+
+**Next recommended step:**
+- Consolidate reduced i20 five-variant evidence across `teapot`, `toaster`, and `car` into one reproducible summary artifact while preserving current NO-GO claim boundaries.
+
+## 2026-05-19 10:03:34 CST
+
+**Current model/window if known:** codex implementation/verification window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` recovered current dirty RC-RefGS workspace.
+- Plan recovered from `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`.
+- Autonomous log and coordination board recovered with no active claim at start.
+- Latest completed task was direct-command `car` i20 five-variant ablation matrix.
+- Latest board recommendation was to consolidate reduced i20 evidence into one reproducible artifact.
+
+**Plan audit gate:** CONDITIONAL GO for one low-risk evidence-consolidation task.
+- [Constraint] No manuscript claim upgrades and no causal claims.
+- [Constraint] No geometry/mesh work and no full-iteration runs.
+
+**Round-local plan:**
+- Claim one task: build a reproducible reduced-ablation summary artifact.
+- Add a static test to enforce CLI/output contract for the summary wrapper.
+- Implement the wrapper, generate JSON/Markdown artifacts, and verify.
+- Release claim and log decision.
+
+**Actions taken:**
+- Claimed task at `2026-05-19 10:01:44 CST`.
+- Added `tests/test_reduced_ablation_summary_static.py`.
+- Verified RED state: summary script missing -> targeted static test failed.
+- Implemented `metrics/summarize_reduced_ablation.py`.
+- Generated summary artifacts:
+  - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json`
+  - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.md`
+- Released coordination-board claim at `2026-05-19 10:03:34 CST`.
+
+**Files changed:**
+- `metrics/summarize_reduced_ablation.py`
+- `tests/test_reduced_ablation_summary_static.py`
+- `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json`
+- `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> exit 0.
+  - plan/log/board reads -> exit 0.
+- TDD / wrapper implementation:
+  - `conda run -n ref_gs python -m unittest tests.test_reduced_ablation_summary_static` -> RED exit 1.
+  - same targeted test after implementation -> GREEN exit 0.
+- Artifact generation:
+  - `conda run -n ref_gs python metrics/summarize_reduced_ablation.py --scene-root teapot /tmp/rc_refgs_ablation_teapot_manual_i20_20260518_1748 --scene-root toaster /tmp/rc_refgs_ablation_toaster_direct_i20_20260519_0238 --scene-root car /tmp/rc_refgs_ablation_car_direct_i20_20260519_032148 --iteration 20 --output_json docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json --output_markdown docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.md` -> exit 0.
+- Required verification:
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 25 tests.
+  - `conda run -n ref_gs python -m py_compile metrics/summarize_reduced_ablation.py tests/test_reduced_ablation_summary_static.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `git diff --check` -> exit 0.
+
+**Summary artifact result:**
+- `expected_cells = 30`
+- `available_cells = 28`
+- `missing_cells = 2`:
+  - `teapot rough_only train`
+  - `teapot rough_only test`
+- The artifact includes per-cell status, reflection metric, baseline delta, and point-cloud presence flags.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- [Supported] Reduced-ablation evidence is now consolidated in a reproducible artifact with explicit missing-cell accounting.
+- [Blocked] `teapot rough_only` train/test cells are still missing in the reduced matrix.
+- [NO-GO boundary preserved] No manuscript claim upgrade, no causal claim, no geometry/mesh task.
+
+**Next recommended step:**
+- Fill the two missing `teapot rough_only` reduced cells via direct commands, regenerate the summary artifact, and keep all current NO-GO claim boundaries.
+
+## 2026-05-19 15:14:14 CST
+
+**Current model/window if known:** codex experiment window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- `git status --short --branch` showed prior log/code/artifact changes in progress.
+- Plan, autonomous log, and coordination board were recovered.
+- Active claim was `None` at recovery.
+- Latest recommendation was to fill the missing reduced `teapot rough_only` train/test cells and regenerate the summary.
+
+**Plan audit gate:** CONDITIONAL GO for one direct-command experiment completion task.
+- [Constraint] Use direct commands (not bash wrapper) for runtime evidence.
+- [Constraint] No manuscript claim upgrades, no causal claims, no geometry/mesh work.
+
+**Round-local plan:**
+- Claim one task in the coordination board.
+- Run direct `teapot rough_only` i20 train with `--eval`.
+- Generate `reflection_consistency_{train,test}.json` with `num_pairs=5`.
+- Regenerate reduced summary artifact and run verification checks.
+- Release claim and log decision.
+
+**Actions taken:**
+- Claimed task at `2026-05-19 15:12:34 CST`.
+- Ran direct training for:
+  - `/tmp/rc_refgs_ablation_teapot_manual_i20_20260518_1748/teapot_rough_only`
+- Ran direct train/test reflection metric commands for that model.
+- Regenerated:
+  - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json`
+  - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.md`
+- Released claim at `2026-05-19 15:14:14 CST`.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json`
+- `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery and environment:
+  - `git status --short --branch` -> exit 0.
+  - plan/log/board reads -> exit 0.
+  - CUDA probe command (`conda run -n ref_gs python -c "import torch; ..."`) -> exit 0.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+- Training/eval:
+  - `conda run -n ref_gs python train.py --cuda_device auto --eval -s /data/liuly/dataset/3DGS/refnerf/teapot -m /tmp/rc_refgs_ablation_teapot_manual_i20_20260518_1748/teapot_rough_only --iterations 20 --test_iterations 20 --save_iterations 20 --quiet --lambda_ref_consistency 0.0 --lambda_roughness_smoothness 0.02 --roughness_smoothness_start 5` -> exit 0.
+  - train metric command -> exit 0, `num_pairs=5`.
+  - test metric command -> exit 0, `num_pairs=5`.
+- Summary regeneration:
+  - `conda run -n ref_gs python metrics/summarize_reduced_ablation.py ...` -> exit 0.
+  - Summary now reports `expected_cells=30`, `available_cells=30`, `missing_cells=[]`.
+- Verification:
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 25 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `git diff --check` -> exit 0.
+
+**New metrics (filled missing cells):**
+- `teapot rough_only train`: `mean_reflection_consistency=0.0001525411003967747`, `num_pairs=5`.
+- `teapot rough_only test`: `mean_reflection_consistency=0.00013336873962543905`, `num_pairs=5`.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- [Supported] Reduced i20 five-variant matrix is now complete on `teapot`, `toaster`, and `car` with split-preserving metrics and no missing cells.
+- [Blocked] Evidence remains short-horizon and one-seed only.
+- [NO-GO boundary preserved] No manuscript claim upgrades, no causal claims, no geometry/mesh claims.
+
+**Next recommended step:**
+- SWITCH MODEL to gpt-5.5 for conservative manuscript polishing and framing using the complete reduced-ablation summary, while keeping all current NO-GO boundaries.
