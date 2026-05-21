@@ -1,0 +1,88 @@
+{
+  "completed_count": 2,
+  "cuda_device": "0",
+  "data_root": "/data/liuly/dataset/3DGS/refnerf",
+  "dry_run": false,
+  "failed_count": 0,
+  "iteration": 300,
+  "job_count": 2,
+  "jobs": [
+    {
+      "command": [
+        "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+        "metrics/render_quality_eval.py",
+        "--source_path",
+        "/data/liuly/dataset/3DGS/refnerf/car",
+        "--model_path",
+        "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base",
+        "--iteration",
+        "300",
+        "--split",
+        "both",
+        "--mask_mode",
+        "both",
+        "--cuda_device",
+        "0",
+        "--output_json",
+        "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/render_quality_both_iter300.json"
+      ],
+      "command_string": "/home/liuly/anaconda3/envs/ref_gs/bin/python metrics/render_quality_eval.py --source_path /data/liuly/dataset/3DGS/refnerf/car --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/car_base --iteration 300 --split both --mask_mode both --cuda_device 0 --output_json /tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/render_quality_both_iter300.json",
+      "finished_at": "2026-05-21 09:50:59 CST",
+      "log_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/car/base/render_quality_both_iter300.log",
+      "metric": "render_quality",
+      "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base",
+      "output_json": "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/render_quality_both_iter300.json",
+      "returncode": 0,
+      "scene": "car",
+      "started_at": "2026-05-21 09:43:50 CST",
+      "status": "passed",
+      "variant": "base"
+    },
+    {
+      "command": [
+        "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+        "metrics/render_quality_eval.py",
+        "--source_path",
+        "/data/liuly/dataset/3DGS/refnerf/car",
+        "--model_path",
+        "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc",
+        "--iteration",
+        "300",
+        "--split",
+        "both",
+        "--mask_mode",
+        "both",
+        "--cuda_device",
+        "0",
+        "--output_json",
+        "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/render_quality_both_iter300.json"
+      ],
+      "command_string": "/home/liuly/anaconda3/envs/ref_gs/bin/python metrics/render_quality_eval.py --source_path /data/liuly/dataset/3DGS/refnerf/car --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc --iteration 300 --split both --mask_mode both --cuda_device 0 --output_json /tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/render_quality_both_iter300.json",
+      "finished_at": "2026-05-21 09:58:00 CST",
+      "log_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/car/rc/render_quality_both_iter300.log",
+      "metric": "render_quality",
+      "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc",
+      "output_json": "/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/render_quality_both_iter300.json",
+      "returncode": 0,
+      "scene": "car",
+      "started_at": "2026-05-21 09:50:59 CST",
+      "status": "passed",
+      "variant": "rc"
+    }
+  ],
+  "mask_mode": "both",
+  "max_images": -1,
+  "metrics": [
+    "render_quality"
+  ],
+  "model_root": "/tmp/rc_refgs_i300_validation_base_rc_20260520",
+  "scenes": [
+    "car"
+  ],
+  "split": "both",
+  "stop_on_failure": true,
+  "variants": [
+    "base",
+    "rc"
+  ]
+}

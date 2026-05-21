@@ -4605,3 +4605,96 @@ Key measured values (mean reflection consistency):
 
 **Next recommended step:**
 - If GPU 0 remains allocatable, run the remaining corrected i300 `car_base` + `car_rc` full-split render-quality pair through the direct runner, summarize car, then generate or refresh a three-scene full-split render-quality summary from the matching `render_quality_both_iter300.json` files.
+
+## 2026-05-21 09:59:45 CST - Car full-split render-quality pair and three-scene summary
+
+**Recovered state:**
+- Git was clean on `master...origin/master` at session start, indicating the prior RC-RefGS artifacts had been reconciled before this window.
+- Coordination board active claim was `None`.
+- Latest decision was `GO` for toaster full-split render-quality pair evidence and summary, `CONDITIONAL GO` for completing remaining corrected i300 render/material metric cells in bounded batches, and `NO-GO` for broad rendering-quality or manuscript/scientific claim upgrades.
+- Latest recommended step was to run the remaining corrected i300 `car_base` + `car_rc` full-split render-quality pair, summarize car, then refresh a three-scene summary from matching `render_quality_both_iter300.json` files.
+- P3 still requires PSNR/SSIM/LPIPS for all-pixel and reflective-region masks plus JSON/Markdown per-metric summaries.
+- GPU state: GPUs 0-2 showed minimal memory, GPUs 3-6 were occupied; GPU 0 allocation probe passed with `cuda:0`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-21 09:43:24 CST`:
+  - run corrected i300 `car_base` and `car_rc` full-split render-quality cells through `scripts/run_rc_refgs_metric_sweep_direct.py`;
+  - use GPU 0 only after allocation probe;
+  - verify runner status JSON, both output JSONs, both per-cell logs, car-only summary, three-scene summary, global gates, and no lingering processes;
+  - do not launch material collection, training, or any manuscript/scientific claim upgrade.
+
+**Actions taken:**
+- Confirmed no matching car `render_quality_both_iter300.json` files were present before launch.
+- Ran:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py --data_root /data/liuly/dataset/3DGS/refnerf --model_root /tmp/rc_refgs_i300_validation_base_rc_20260520 --scenes car --variants base rc --metrics render_quality --iteration 300 --split both --mask_mode both --cuda_device 0 --summary_json docs/superpowers/logs/rc-refgs-i300-car-render-quality-full-runner-2026-05-21.json --log_root /tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs`
+- The runner exited 0 after two cells, wrote `passed` status for both jobs, and saved evaluator stdout/stderr in per-cell logs.
+- Generated car-only summary:
+  - `conda run -n ref_gs python metrics/summarize_render_quality.py --pair car /tmp/rc_refgs_i300_validation_base_rc_20260520/car_base /tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc --metric_filename render_quality_both_iter300.json --output_json docs/superpowers/logs/rc-refgs-i300-car-render-quality-full-summary-2026-05-21.json --output_markdown docs/superpowers/logs/rc-refgs-i300-car-render-quality-full-summary-2026-05-21.md`
+- Generated three-scene summary from matching `render_quality_both_iter300.json` files for `teapot`, `toaster`, and `car`:
+  - `conda run -n ref_gs python metrics/summarize_render_quality.py --pair teapot /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc --pair toaster /tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_base /tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_rc --pair car /tmp/rc_refgs_i300_validation_base_rc_20260520/car_base /tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc --metric_filename render_quality_both_iter300.json --output_json docs/superpowers/logs/rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.json --output_markdown docs/superpowers/logs/rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.md`
+
+**Artifacts:**
+- Car runner status JSON:
+  - `docs/superpowers/logs/rc-refgs-i300-car-render-quality-full-runner-2026-05-21.json`
+- Full-split car metric outputs:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/render_quality_both_iter300.json`
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/render_quality_both_iter300.json`
+- Per-cell logs:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/car/base/render_quality_both_iter300.log`
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/car/rc/render_quality_both_iter300.log`
+- Car summary:
+  - `docs/superpowers/logs/rc-refgs-i300-car-render-quality-full-summary-2026-05-21.json`
+  - `docs/superpowers/logs/rc-refgs-i300-car-render-quality-full-summary-2026-05-21.md`
+- Three-scene render-quality summary:
+  - `docs/superpowers/logs/rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.json`
+  - `docs/superpowers/logs/rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.md`
+
+**Car paired deltas (`RC - base`):**
+- `test`: full PSNR `-0.029878997802732954`, full SSIM `-0.0002941116690635681`, full LPIPS `-0.0000648001581430302`, reflective PSNR `-0.021361904144285404`, reflective SSIM `-0.00023595124483111185`, reflective LPIPS `-0.00003500722348689922`.
+- `train`: full PSNR `-0.032852058410643536`, full SSIM `-0.00023812532424927202`, full LPIPS `+0.0000711509585380743`, reflective PSNR `-0.024591350555422054`, reflective SSIM `-0.00018563568592067092`, reflective LPIPS `+0.00004056885838507607`.
+
+**Three-scene render-quality result:**
+- Six rows are present: train/test for `teapot`, `toaster`, and `car`, all with `lpips_skipped=false`.
+- Positive full PSNR deltas: 3/6 rows (`teapot` train/test, `toaster` test).
+- Positive full SSIM deltas: 0/6 rows.
+- Positive full LPIPS deltas: 5/6 rows, where positive means worse LPIPS for RC.
+- Positive reflective PSNR deltas: 3/6 rows.
+- Positive reflective SSIM deltas: 1/6 rows.
+- Positive reflective LPIPS deltas: 5/6 rows, where positive means worse LPIPS for RC.
+- Interpretation boundary: this full-split three-scene rendering evidence is mixed and does not support broad rendering-quality gains.
+
+**Commands run and verification results:**
+- Recovery and GPU:
+  - `git status --short --branch` -> clean at recovery; dirty after board/artifact updates.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 0 allocation probe -> exit 0, `cuda:0`.
+  - preflight `find` for car matching render-quality outputs -> exit 0, no matching files printed.
+- Runtime:
+  - two-cell direct runner command above -> exit 0.
+- Artifact verification:
+  - JSON validity check for runner status plus both car output JSONs -> exit 0, `valid 3`.
+  - status `rg` check for `status=passed`, `failed_count=0`, `completed_count=2`, `dry_run=false`, both output paths, and both log paths -> exit 0.
+  - output `rg` check for split `both`, `lpips_skipped=false`, `num_images=100`, `num_images=200`, and LPIPS fields across both outputs -> exit 0.
+  - both per-cell log tails include saved output paths -> exit 0.
+  - car-only summary command above -> exit 0.
+  - three-scene summary command above -> exit 0.
+  - summary JSON validity check -> exit 0, `valid 2`.
+  - summary `rg` check for scene names, `full_lpips_delta`, `reflective_lpips_delta`, `render_quality_both_iter300.json`, and `false` LPIPS skip markers -> exit 0.
+  - summary row/count extraction command -> exit 0 with 6 rows.
+  - aggregate sign-count extraction command -> exit 0.
+- Global gates:
+  - `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_metric_sweep_direct.py tests/test_metric_sweep_direct_static.py metrics/summarize_render_quality.py metrics/render_quality_eval.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 41 tests.
+  - `git diff --check` -> exit 0.
+  - first process scan overlapped with the compile command; rerun final `pgrep -af 'run_rc_refgs_metric_sweep_direct.py|metrics/render_quality_eval.py|conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py'` -> exit 1, no runner/evaluator process left running.
+
+**Go/no-go decision:** GO for corrected i300 three-scene full-split render-quality evidence completion; CONDITIONAL GO for moving next to bounded material-quality full-split collection or claim-audit refresh; NO-GO for broad rendering-quality or manuscript/scientific claim upgrades.
+- [GO] Matching LPIPS-enabled render-quality JSONs and JSON/Markdown summaries now exist for `teapot`, `toaster`, and `car`.
+- [CONDITIONAL] Continue P3 with bounded material-quality full-split collection only after a fresh GPU allocation check, or refresh claim framing to mark render-quality evidence as mixed/unsupported for broad gains.
+- [NO-GO] The three-scene render-quality table is mixed/negative for broad rendering claims: PSNR improves in only half the rows, SSIM does not improve in any full-image row, and LPIPS is worse in most rows.
+- [NO-GO] Do not upgrade material, geometry, causal, external-superiority, manuscript, or scientific claims from this window.
+
+**Next recommended step:**
+- Refresh the claim/evidence status artifact to incorporate the completed LPIPS-enabled three-scene render-quality summary, preserving `Mixed` or `Unsupported` broad-rendering boundaries; then proceed to bounded full-split material-quality collection if GPU 0 remains allocatable.

@@ -1,0 +1,53 @@
+{
+  "metric_filename": "render_quality_both_iter300.json",
+  "rows": [
+    {
+      "scene": "car",
+      "split": "test",
+      "num_images": 200,
+      "lpips_skipped": false,
+      "base_full_psnr": 18.654632387161254,
+      "rc_full_psnr": 18.62475338935852,
+      "full_psnr_delta": -0.029878997802732954,
+      "base_full_ssim": 0.824859239757061,
+      "rc_full_ssim": 0.8245651280879974,
+      "full_ssim_delta": -0.0002941116690635681,
+      "base_full_lpips": 0.23633780322968959,
+      "rc_full_lpips": 0.23627300307154656,
+      "full_lpips_delta": -6.48001581430302e-05,
+      "base_reflective_psnr": 18.67724284172058,
+      "rc_reflective_psnr": 18.655880937576296,
+      "reflective_psnr_delta": -0.021361904144285404,
+      "base_reflective_ssim": 0.8423442834615708,
+      "rc_reflective_ssim": 0.8421083322167396,
+      "reflective_ssim_delta": -0.00023595124483111185,
+      "base_reflective_lpips": 0.22238248199224472,
+      "rc_reflective_lpips": 0.22234747476875782,
+      "reflective_lpips_delta": -3.500722348689922e-05
+    },
+    {
+      "scene": "car",
+      "split": "train",
+      "num_images": 100,
+      "lpips_skipped": false,
+      "base_full_psnr": 18.470309104919433,
+      "rc_full_psnr": 18.43745704650879,
+      "full_psnr_delta": -0.032852058410643536,
+      "base_full_ssim": 0.8280612540245056,
+      "rc_full_ssim": 0.8278231287002563,
+      "full_ssim_delta": -0.00023812532424927202,
+      "base_full_lpips": 0.24505803883075714,
+      "rc_full_lpips": 0.2451291897892952,
+      "full_lpips_delta": 7.11509585380743e-05,
+      "base_reflective_psnr": 18.52558973312378,
+      "rc_reflective_psnr": 18.50099838256836,
+      "reflective_psnr_delta": -0.024591350555422054,
+      "base_reflective_ssim": 0.841794992685318,
+      "rc_reflective_ssim": 0.8416093569993973,
+      "reflective_ssim_delta": -0.00018563568592067092,
+      "base_reflective_lpips": 0.23265389308333398,
+      "rc_reflective_lpips": 0.23269446194171906,
+      "reflective_lpips_delta": 4.056885838507607e-05
+    }
+  ]
+}
