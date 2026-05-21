@@ -2,6 +2,14 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+## Superseding Roadmap
+
+For ongoing autonomous execution and task selection, use:
+
+`docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`
+
+This 2026-05-16 plan is retained as the historical baseline and method sketch.
+
 **Goal:** Add reflection-consistency supervision to Ref-GS so view-dependent specular appearance becomes a cross-view geometry/material constraint rather than only a single-view RGB fitting term.
 
 **Architecture:** Keep Ref-GS representation and renderer: 2D Gaussian surfels, deferred albedo/roughness/feature buffers, Sph-Mip directional encoding, and specular MLP. Add returned intermediate buffers, a view-pair reflection consistency loss, optional roughness-aware specular smoothness, and confidence-aware TSDF mesh extraction.

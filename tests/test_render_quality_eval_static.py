@@ -15,7 +15,9 @@ class RenderQualityEvalStaticTests(unittest.TestCase):
             "sys.path.insert(0, REPO_ROOT)",
             "def _extract_cuda_device(argv):",
             "def _maybe_set_cuda_device(argv):",
+            "def _cuda_device_index(cuda_device):",
             "_maybe_set_cuda_device(sys.argv)",
+            "safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))",
             'parser.add_argument("--cuda_device"',
             'parser.add_argument("--split", choices=["train", "test", "both"]',
             'parser.add_argument("--mask_mode", choices=["none", "reflective", "both"]',
@@ -37,6 +39,13 @@ class RenderQualityEvalStaticTests(unittest.TestCase):
         for snippet in required_snippets:
             with self.subTest(snippet=snippet):
                 self.assertIn(snippet, source)
+
+    def test_render_quality_selects_cuda_device_before_safe_state_initializes_cuda(self):
+        source = Path("metrics/render_quality_eval.py").read_text()
+        safe_state_call = "safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))"
+
+        self.assertIn(safe_state_call, source)
+        self.assertNotIn("_select_torch_cuda_device(args.cuda_device)", source)
 
     def test_render_quality_script_records_loaded_iteration_and_output_path(self):
         metric_script = Path("metrics/render_quality_eval.py")

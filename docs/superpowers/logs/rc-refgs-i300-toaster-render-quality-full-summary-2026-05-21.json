@@ -1,0 +1,53 @@
+{
+  "metric_filename": "render_quality_both_iter300.json",
+  "rows": [
+    {
+      "scene": "toaster",
+      "split": "test",
+      "num_images": 200,
+      "lpips_skipped": false,
+      "base_full_psnr": 15.15493320465088,
+      "rc_full_psnr": 15.156602268218995,
+      "full_psnr_delta": 0.0016690635681158028,
+      "base_full_ssim": 0.746638220846653,
+      "rc_full_ssim": 0.7464682802557945,
+      "full_ssim_delta": -0.00016994059085850832,
+      "base_full_lpips": 0.4448534414172173,
+      "rc_full_lpips": 0.44506706357002257,
+      "full_lpips_delta": 0.00021362215280529284,
+      "base_reflective_psnr": 15.161305561065674,
+      "rc_reflective_psnr": 15.163032383918763,
+      "reflective_psnr_delta": 0.00172682285308845,
+      "base_reflective_ssim": 0.7648492580652237,
+      "rc_reflective_ssim": 0.7646696546673775,
+      "reflective_ssim_delta": -0.0001796033978462841,
+      "base_reflective_lpips": 0.4308262445032597,
+      "rc_reflective_lpips": 0.4309001323580742,
+      "reflective_lpips_delta": 7.388785481449167e-05
+    },
+    {
+      "scene": "toaster",
+      "split": "train",
+      "num_images": 100,
+      "lpips_skipped": false,
+      "base_full_psnr": 15.682066764831543,
+      "rc_full_psnr": 15.681916761398316,
+      "full_psnr_delta": -0.0001500034332266864,
+      "base_full_ssim": 0.7574692845344544,
+      "rc_full_ssim": 0.7571939307451249,
+      "full_ssim_delta": -0.00027535378932952437,
+      "base_full_lpips": 0.4292586714029312,
+      "rc_full_lpips": 0.4293327459692955,
+      "full_lpips_delta": 7.407456636426835e-05,
+      "base_reflective_psnr": 15.688430433273316,
+      "rc_reflective_psnr": 15.688244724273682,
+      "reflective_psnr_delta": -0.0001857089996342154,
+      "base_reflective_ssim": 0.7731578820943832,
+      "rc_reflective_ssim": 0.7729004895687104,
+      "reflective_ssim_delta": -0.000257392525672806,
+      "base_reflective_lpips": 0.41652612686157225,
+      "rc_reflective_lpips": 0.4165812659263611,
+      "reflective_lpips_delta": 5.51390647888228e-05
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "metric_filename": "render_quality_both_iter300.json",
+  "rows": [
+    {
+      "scene": "teapot",
+      "split": "test",
+      "num_images": 200,
+      "lpips_skipped": false,
+      "base_full_psnr": 32.05025710105896,
+      "rc_full_psnr": 32.082486391067505,
+      "full_psnr_delta": 0.03222929000854435,
+      "base_full_ssim": 0.9798207551240921,
+      "rc_full_ssim": 0.9797507286071777,
+      "full_ssim_delta": -7.002651691434547e-05,
+      "base_full_lpips": 0.061220311801880596,
+      "rc_full_lpips": 0.061352038942277434,
+      "full_lpips_delta": 0.00013172714039683814,
+      "base_reflective_psnr": 32.144671840667726,
+      "rc_reflective_psnr": 32.17704748153687,
+      "reflective_psnr_delta": 0.03237564086914091,
+      "base_reflective_ssim": 0.9827187573909759,
+      "rc_reflective_ssim": 0.9827320322394371,
+      "reflective_ssim_delta": 1.3274848461142241e-05,
+      "base_reflective_lpips": 0.05386775102466345,
+      "rc_reflective_lpips": 0.05531046574935317,
+      "reflective_lpips_delta": 0.0014427147246897226
+    },
+    {
+      "scene": "teapot",
+      "split": "train",
+      "num_images": 100,
+      "lpips_skipped": false,
+      "base_full_psnr": 32.408219490051266,
+      "rc_full_psnr": 32.46236749649048,
+      "full_psnr_delta": 0.05414800643921325,
+      "base_full_ssim": 0.9808332133293152,
+      "rc_full_ssim": 0.9807416421175003,
+      "full_ssim_delta": -9.157121181491146e-05,
+      "base_full_lpips": 0.062169236205518244,
+      "rc_full_lpips": 0.062345773577690125,
+      "full_lpips_delta": 0.00017653737217188104,
+      "base_reflective_psnr": 32.4850740814209,
+      "rc_reflective_psnr": 32.540748863220216,
+      "reflective_psnr_delta": 0.055674781799318396,
+      "base_reflective_ssim": 0.983314443230629,
+      "rc_reflective_ssim": 0.9832973754405976,
+      "reflective_ssim_delta": -1.70677900314109e-05,
+      "base_reflective_lpips": 0.05486888330429793,
+      "rc_reflective_lpips": 0.05643945660442114,
+      "reflective_lpips_delta": 0.0015705733001232097
+    }
+  ]
+}

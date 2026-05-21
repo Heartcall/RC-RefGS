@@ -1,0 +1,110 @@
+{
+  "date": "2026-05-20",
+  "matrix": {
+    "output_root": "/tmp/rc_refgs_i300_validation_base_rc_20260520",
+    "scenes": [
+      "teapot",
+      "toaster",
+      "car"
+    ],
+    "variants": [
+      "base",
+      "rc"
+    ],
+    "seed": 0,
+    "iteration": 300,
+    "cuda_device": "0",
+    "pair_mode": "dynamic",
+    "max_pairs": 10
+  },
+  "artifact_counts": {
+    "expected": 18,
+    "found": 18,
+    "missing_after_run": 0
+  },
+  "rows": [
+    {
+      "scene": "teapot",
+      "split": "train",
+      "base_mean_reflection_consistency": 0.003979243547655642,
+      "rc_mean_reflection_consistency": 0.003899000189267099,
+      "delta_mean_reflection_consistency_rc_minus_base": -8.024335838854261e-05,
+      "base_reflective_region_psnr": 22.360122299194337,
+      "rc_reflective_region_psnr": 22.462240982055665,
+      "delta_reflective_region_psnr_rc_minus_base": 0.10211868286132741,
+      "base_valid_pair_count": 10,
+      "rc_valid_pair_count": 10
+    },
+    {
+      "scene": "teapot",
+      "split": "test",
+      "base_mean_reflection_consistency": 0.0018519803183153273,
+      "rc_mean_reflection_consistency": 0.001823421276640147,
+      "delta_mean_reflection_consistency_rc_minus_base": -2.8559041675180283e-05,
+      "base_reflective_region_psnr": 23.06524200439453,
+      "rc_reflective_region_psnr": 23.150310707092284,
+      "delta_reflective_region_psnr_rc_minus_base": 0.0850687026977539,
+      "base_valid_pair_count": 10,
+      "rc_valid_pair_count": 10
+    },
+    {
+      "scene": "toaster",
+      "split": "train",
+      "base_mean_reflection_consistency": 0.003026565397158265,
+      "rc_mean_reflection_consistency": 0.0030176093918271364,
+      "delta_mean_reflection_consistency_rc_minus_base": -8.956005331128836e-06,
+      "base_reflective_region_psnr": 12.522531509399414,
+      "rc_reflective_region_psnr": 12.52160415649414,
+      "delta_reflective_region_psnr_rc_minus_base": -0.0009273529052737928,
+      "base_valid_pair_count": 10,
+      "rc_valid_pair_count": 10
+    },
+    {
+      "scene": "toaster",
+      "split": "test",
+      "base_mean_reflection_consistency": 0.0025858033681288362,
+      "rc_mean_reflection_consistency": 0.002554125711321831,
+      "delta_mean_reflection_consistency_rc_minus_base": -3.1677656807005405e-05,
+      "base_reflective_region_psnr": 11.385143089294434,
+      "rc_reflective_region_psnr": 11.38451166152954,
+      "delta_reflective_region_psnr_rc_minus_base": -0.0006314277648939992,
+      "base_valid_pair_count": 10,
+      "rc_valid_pair_count": 10
+    },
+    {
+      "scene": "car",
+      "split": "train",
+      "base_mean_reflection_consistency": 0.0022225422668270766,
+      "rc_mean_reflection_consistency": 0.0021904635825194417,
+      "delta_mean_reflection_consistency_rc_minus_base": -3.207868430763492e-05,
+      "base_reflective_region_psnr": 12.656789970397949,
+      "rc_reflective_region_psnr": 12.63315134048462,
+      "delta_reflective_region_psnr_rc_minus_base": -0.023638629913328657,
+      "base_valid_pair_count": 10,
+      "rc_valid_pair_count": 10
+    },
+    {
+      "scene": "car",
+      "split": "test",
+      "base_mean_reflection_consistency": 0.0012438522302545608,
+      "rc_mean_reflection_consistency": 0.001233690930530429,
+      "delta_mean_reflection_consistency_rc_minus_base": -1.0161299724131866e-05,
+      "base_reflective_region_psnr": 14.088415241241455,
+      "rc_reflective_region_psnr": 14.071179676055909,
+      "delta_reflective_region_psnr_rc_minus_base": -0.01723556518554581,
+      "base_valid_pair_count": 10,
+      "rc_valid_pair_count": 10
+    }
+  ],
+  "rollup": {
+    "reflection_consistency_rows_lower_for_rc": 6,
+    "reflection_consistency_rows_total": 6,
+    "reflective_region_psnr_rows_higher_for_rc": 2,
+    "reflective_region_psnr_rows_total": 6
+  },
+  "claim_boundary": {
+    "supported": "At corrected i300, seed 0, dynamic-pair evaluation, RC has lower measured reflection-consistency error than base on all three scenes and both train/test splits.",
+    "mixed": "Reflective-region PSNR is higher on teapot train/test and lower on toaster/car train/test.",
+    "unsupported": "No broad rendering, geometry, material, causal, multi-seed, or external-superiority claim is supported by this slice."
+  }
+}

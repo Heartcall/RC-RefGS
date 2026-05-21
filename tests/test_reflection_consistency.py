@@ -27,6 +27,23 @@ def _dummy_camera(width=2, height=2, center=(0.0, 0.0, 0.0)):
     )
 
 
+def _dummy_render_pkg():
+    spec = torch.full((3, 2, 2), 0.25)
+    alpha = torch.ones(1, 2, 2)
+    roughness = torch.zeros(1, 2, 2)
+    depth = torch.ones(1, 2, 2)
+    normal = torch.zeros(3, 2, 2)
+    normal[2] = 1.0
+    return {
+        "spec_light": spec,
+        "rend_alpha": alpha,
+        "roughness_map": roughness,
+        "surf_depth": depth,
+        "rend_normal": normal,
+        "surf_normal": normal,
+    }
+
+
 class ReflectionConsistencyHelperTests(unittest.TestCase):
     def test_choose_pair_camera_selects_nearby_different_camera(self):
         rc = _load_module()
@@ -62,25 +79,49 @@ class ReflectionConsistencyHelperTests(unittest.TestCase):
     def test_reflection_consistency_loss_is_zero_for_identical_identity_projection(self):
         rc = _load_module()
         cam = _dummy_camera(width=2, height=2)
-        spec = torch.full((3, 2, 2), 0.25)
-        alpha = torch.ones(1, 2, 2)
-        roughness = torch.zeros(1, 2, 2)
-        depth = torch.ones(1, 2, 2)
-        normal = torch.zeros(3, 2, 2)
-        normal[2] = 1.0
-        pkg = {
-            "spec_light": spec,
-            "rend_alpha": alpha,
-            "roughness_map": roughness,
-            "surf_depth": depth,
-            "rend_normal": normal,
-            "surf_normal": normal,
-        }
+        pkg = _dummy_render_pkg()
 
         loss = rc.reflection_consistency_loss(pkg, pkg, cam, cam)
 
         self.assertEqual(loss.ndim, 0)
         self.assertAlmostEqual(float(loss), 0.0, places=6)
+
+    def test_reflection_consistency_loss_is_zero_for_empty_mask(self):
+        rc = _load_module()
+        cam = _dummy_camera(width=2, height=2)
+        pkg = _dummy_render_pkg()
+        pkg["rend_alpha"] = torch.zeros(1, 2, 2)
+
+        loss = rc.reflection_consistency_loss(pkg, pkg, cam, cam)
+
+        self.assertEqual(loss.ndim, 0)
+        self.assertAlmostEqual(float(loss), 0.0, places=6)
+
+    def test_reflection_consistency_loss_reports_missing_source_render_key(self):
+        rc = _load_module()
+        cam = _dummy_camera(width=2, height=2)
+        src_pkg = _dummy_render_pkg()
+        tgt_pkg = _dummy_render_pkg()
+        del src_pkg["roughness_map"]
+
+        with self.assertRaisesRegex(
+            KeyError,
+            "source render package missing required key: roughness_map",
+        ):
+            rc.reflection_consistency_loss(src_pkg, tgt_pkg, cam, cam)
+
+    def test_reflection_consistency_loss_reports_missing_target_render_key(self):
+        rc = _load_module()
+        cam = _dummy_camera(width=2, height=2)
+        src_pkg = _dummy_render_pkg()
+        tgt_pkg = _dummy_render_pkg()
+        del tgt_pkg["rend_alpha"]
+
+        with self.assertRaisesRegex(
+            KeyError,
+            "target render package missing required key: rend_alpha",
+        ):
+            rc.reflection_consistency_loss(src_pkg, tgt_pkg, cam, cam)
 
 
 if __name__ == "__main__":

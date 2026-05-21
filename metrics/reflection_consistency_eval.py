@@ -60,6 +60,54 @@ def reflective_region_psnr(render_pkg, camera, bg_color, alpha_threshold=0.2, ro
     return masked_psnr(pred, target, mask)
 
 
+def _load_pair_list(pair_list_json):
+    if pair_list_json is None:
+        return None
+    with open(pair_list_json, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if isinstance(data, dict):
+        data = data.get("pairs", [])
+    if not isinstance(data, list):
+        raise ValueError("pair-list JSON must be a list or an object with a 'pairs' list")
+
+    pairs = []
+    for index, item in enumerate(data):
+        if isinstance(item, dict):
+            source = item.get("source", item.get("src"))
+            target = item.get("target", item.get("tgt"))
+        elif isinstance(item, (list, tuple)) and len(item) == 2:
+            source, target = item
+        else:
+            raise ValueError(f"pair-list entry {index} must be [source, target] or an object")
+
+        if source is None or target is None:
+            raise ValueError(f"pair-list entry {index} is missing source or target")
+        pairs.append((str(source), str(target)))
+    return pairs
+
+
+def _camera_lookup(cameras):
+    lookup = {}
+    for camera in cameras:
+        for attr_name in ("image_name", "uid", "colmap_id"):
+            value = getattr(camera, attr_name, None)
+            if value is not None:
+                lookup[str(value)] = camera
+    return lookup
+
+
+def _resolve_pair_list(cameras, pair_specs):
+    lookup = _camera_lookup(cameras)
+    pairs = []
+    for source_key, target_key in pair_specs:
+        if source_key not in lookup:
+            raise ValueError(f"source camera '{source_key}' from pair list was not found in split")
+        if target_key not in lookup:
+            raise ValueError(f"target camera '{target_key}' from pair list was not found in split")
+        pairs.append((lookup[source_key], lookup[target_key]))
+    return pairs
+
+
 @torch.no_grad()
 def evaluate(
     scene,
@@ -73,29 +121,46 @@ def evaluate(
     alpha_threshold,
     roughness_threshold,
     bg,
+    pair_specs=None,
 ):
     if split == "test":
         cameras = scene.getTestCameras(scale=1.0)
     else:
         cameras = scene.getTrainCameras(scale=1.0)
 
+    if isinstance(pair_specs, str):
+        pair_specs = _load_pair_list(pair_specs)
+    pair_mode = "fixed" if pair_specs is not None else "dynamic"
+    requested_pair_count = len(pair_specs) if pair_specs is not None else 0
+
     if len(cameras) == 0:
         return {
             "mean_reflection_consistency": 0.0,
             "reflective_region_psnr": 0.0,
             "num_pairs": 0,
+            "pair_mode": pair_mode,
+            "max_pairs": int(max_pairs),
+            "max_angle_deg": float(max_angle_deg),
+            "valid_pair_count": 0,
+            "requested_pair_count": int(requested_pair_count),
         }
 
     reflection_values = []
     reflective_psnr_values = []
     num_pairs = 0
 
-    for src_cam in cameras:
+    if pair_specs is None:
+        eval_pairs = []
+        for src_cam in cameras:
+            tgt_cam = choose_pair_camera(cameras, src_cam, max_angle_deg=max_angle_deg)
+            if tgt_cam is not None:
+                eval_pairs.append((src_cam, tgt_cam))
+    else:
+        eval_pairs = _resolve_pair_list(cameras, pair_specs)
+
+    for src_cam, tgt_cam in eval_pairs:
         if max_pairs > 0 and num_pairs >= max_pairs:
             break
-        tgt_cam = choose_pair_camera(cameras, src_cam, max_angle_deg=max_angle_deg)
-        if tgt_cam is None:
-            continue
 
         src_pkg = render(src_cam, gaussians, pipe, bg, iteration=iteration)
         tgt_pkg = render(tgt_cam, gaussians, pipe, bg, iteration=iteration)
@@ -123,6 +188,11 @@ def evaluate(
         "mean_reflection_consistency": float(mean_reflection),
         "reflective_region_psnr": float(mean_reflective_psnr),
         "num_pairs": int(num_pairs),
+        "pair_mode": pair_mode,
+        "max_pairs": int(max_pairs),
+        "max_angle_deg": float(max_angle_deg),
+        "valid_pair_count": int(num_pairs),
+        "requested_pair_count": int(requested_pair_count),
     }
 
 
@@ -139,11 +209,13 @@ def main():
     parser.add_argument("--alpha_threshold", type=float, default=0.2)
     parser.add_argument("--roughness_threshold", type=float, default=0.6)
     parser.add_argument("--output_json", type=str, default=None)
+    parser.add_argument("--pair_list_json", type=str, default=None)
     parser.add_argument("--cuda_device", type=str, default=None)
     parser.add_argument("--quiet", action="store_true")
 
     args = get_combined_args(parser)
     safe_state(args.quiet)
+    pair_list_json = getattr(args, "pair_list_json", None)
 
     dataset = lp.extract(args)
     pipe = pp.extract(args)
@@ -164,6 +236,7 @@ def main():
         alpha_threshold=args.alpha_threshold,
         roughness_threshold=args.roughness_threshold,
         bg=bg,
+        pair_specs=pair_list_json,
     )
 
     loaded_iter = scene.loaded_iter if scene.loaded_iter is not None else args.iteration

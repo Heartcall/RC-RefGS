@@ -15,7 +15,6 @@ def _extract_cuda_device(argv):
             value = argv[index + 1].strip()
             if value and value.lower() not in {"auto", "none"}:
                 return value
-            return None
     current = os.environ.get("CUDA_VISIBLE_DEVICES")
     if current is not None:
         current = current.strip()
@@ -23,10 +22,12 @@ def _extract_cuda_device(argv):
             return current
     return None
 
+
 def _maybe_set_cuda_device(argv):
     cuda_device = _extract_cuda_device(argv)
     if cuda_device is not None and os.environ.get("RC_REF_GS_FILTER_CUDA_VISIBLE_DEVICES") == "1":
         os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
+
 
 _maybe_set_cuda_device(sys.argv)
 
@@ -34,11 +35,20 @@ import torch
 
 from arguments import ModelParams, PipelineParams, get_combined_args
 from gaussian_renderer import render
-from lpipsPyTorch import lpips
 from scene import Scene, GaussianModel
 from utils.general_utils import safe_state
-from utils.image_utils import psnr
-from utils.loss_utils import ssim
+
+
+MATERIAL_SUMMARY_KEYS = (
+    "full_diffuse_variance",
+    "full_roughness_variance",
+    "full_specular_variance",
+    "full_specular_diffuse_ratio",
+    "reflective_diffuse_variance",
+    "reflective_roughness_variance",
+    "reflective_specular_variance",
+    "reflective_specular_diffuse_ratio",
+)
 
 
 def _cuda_device_index(cuda_device):
@@ -50,58 +60,70 @@ def _cuda_device_index(cuda_device):
     return int(cuda_device.split(",", 1)[0])
 
 
-def composite_gt(camera, bg):
-    gt = camera.original_image.cuda()
-    if gt.shape[0] >= 4:
-        return gt[:3, ...] * gt[3:, ...] + (1.0 - gt[3:, ...]) * bg[:, None, None]
-    return gt[:3, ...]
-
-
-def composite_prediction(render_pkg, bg, image_key):
-    pred = render_pkg[image_key].clamp(0.0, 1.0)
-    if image_key == "pbr_rgb" and "rend_alpha" in render_pkg:
-        alpha = render_pkg["rend_alpha"].clamp(0.0, 1.0)
-        pred = pred * alpha + (1.0 - alpha) * bg[:, None, None]
-    return pred.clamp(0.0, 1.0)
-
-
-def reflective_mask(render_pkg, alpha_threshold, roughness_threshold):
-    alpha = render_pkg["rend_alpha"]
-    roughness = render_pkg["roughness_map"]
-    mask = (alpha > alpha_threshold) & (roughness < roughness_threshold)
-    return mask.float()
-
-
-def masked_image(pred, target, mask):
-    mask = mask.float()
-    return pred * mask, target * mask
-
-
-def metric_bundle(pred, target, lpips_enabled=True, mask=None):
-    if mask is not None:
-        valid = float(mask.sum().item())
-        if valid <= 0:
-            return None
-        pred, target = masked_image(pred, target, mask)
-
-    pred_batch = pred[None, ...].contiguous().clamp(0.0, 1.0)
-    target_batch = target[None, ...].contiguous().clamp(0.0, 1.0)
-    values = {
-        "psnr": float(psnr(pred_batch, target_batch).mean().item()),
-        "ssim": float(ssim(pred_batch, target_batch).mean().item()),
-        "lpips": None,
-    }
-    if lpips_enabled:
-        # lpipsPyTorch expects tensors in [-1, 1].
-        values["lpips"] = float(lpips(pred_batch * 2.0 - 1.0, target_batch * 2.0 - 1.0).mean().item())
-    return values
-
-
-def mean_metric(values, key):
-    present = [item[key] for item in values if item is not None and item[key] is not None]
+def mean_optional(values):
+    present = [v for v in values if v is not None]
     if not present:
         return None
     return float(sum(present) / len(present))
+
+
+def tensor_variance(values):
+    if values.numel() <= 0:
+        return None
+    return float(values.float().var(unbiased=False).item())
+
+
+def tensor_mean(values):
+    if values.numel() <= 0:
+        return None
+    return float(values.float().mean().item())
+
+
+def masked_values(tensor, mask):
+    mask = mask.bool()
+    if tensor.shape[0] > 1:
+        mask = mask.expand(tensor.shape[0], -1, -1)
+    return tensor[mask]
+
+
+def material_stats(render_pkg, mask):
+    diffuse = masked_values(render_pkg["diff_light"], mask)
+    roughness = masked_values(render_pkg["roughness_map"], mask)
+    specular = masked_values(render_pkg["spec_light"], mask)
+
+    specular_mean = tensor_mean(specular)
+    diffuse_mean = tensor_mean(diffuse)
+    if specular_mean is None or diffuse_mean is None or diffuse_mean <= 1e-8:
+        specular_diffuse_ratio = None
+    else:
+        specular_diffuse_ratio = float(specular_mean / diffuse_mean)
+
+    return {
+        "num_pixels": int(mask.sum().item()),
+        "diffuse_mean": diffuse_mean,
+        "diffuse_variance": tensor_variance(diffuse),
+        "roughness_mean": tensor_mean(roughness),
+        "roughness_variance": tensor_variance(roughness),
+        "specular_mean": specular_mean,
+        "specular_variance": tensor_variance(specular),
+        "specular_diffuse_ratio": specular_diffuse_ratio,
+    }
+
+
+def prefixed_stats(prefix, stats):
+    return {
+        f"{prefix}_diffuse_mean": stats["diffuse_mean"],
+        f"{prefix}_diffuse_variance": stats["diffuse_variance"],
+        f"{prefix}_roughness_mean": stats["roughness_mean"],
+        f"{prefix}_roughness_variance": stats["roughness_variance"],
+        f"{prefix}_specular_mean": stats["specular_mean"],
+        f"{prefix}_specular_variance": stats["specular_variance"],
+        f"{prefix}_specular_diffuse_ratio": stats["specular_diffuse_ratio"],
+    }
+
+
+def mean_prefixed(per_image, key):
+    return mean_optional([image.get(key) for image in per_image])
 
 
 @torch.no_grad()
@@ -112,52 +134,46 @@ def evaluate_cameras(
     bg,
     iteration,
     max_images,
-    image_key,
     mask_mode,
     alpha_threshold,
     roughness_threshold,
-    skip_lpips,
 ):
-    per_image = []
-    full_values = []
-    reflective_values = []
-
     selected_cameras = cameras if max_images <= 0 else cameras[:max_images]
+    per_image = []
+
     for camera in selected_cameras:
         render_pkg = render(camera, gaussians, pipe, bg, iteration=iteration)
-        pred = composite_prediction(render_pkg, bg, image_key)
-        target = composite_gt(camera, bg).clamp(0.0, 1.0)
+        alpha_mask = render_pkg["rend_alpha"] > alpha_threshold
+        reflective_mask = alpha_mask & (render_pkg["roughness_map"] < roughness_threshold)
 
-        full_metrics = None
+        image_stats = {
+            "image_name": getattr(camera, "image_name", str(len(per_image))),
+            "num_full_pixels": int(alpha_mask.sum().item()),
+            "num_reflective_pixels": int(reflective_mask.sum().item()),
+        }
         if mask_mode in ("none", "both"):
-            full_metrics = metric_bundle(pred, target, lpips_enabled=not skip_lpips)
-            full_values.append(full_metrics)
-
-        reflective_metrics = None
+            image_stats.update(prefixed_stats("full", material_stats(render_pkg, alpha_mask)))
         if mask_mode in ("reflective", "both"):
-            mask = reflective_mask(render_pkg, alpha_threshold, roughness_threshold)
-            reflective_metrics = metric_bundle(pred, target, lpips_enabled=not skip_lpips, mask=mask)
-            if reflective_metrics is not None:
-                reflective_values.append(reflective_metrics)
+            image_stats.update(prefixed_stats("reflective", material_stats(render_pkg, reflective_mask)))
+        per_image.append(image_stats)
 
-        per_image.append(
-            {
-                "image_name": getattr(camera, "image_name", str(len(per_image))),
-                "full": full_metrics,
-                "reflective": reflective_metrics,
-            }
-        )
-
-    return {
+    summary = {
         "num_images": len(selected_cameras),
-        "full_psnr": mean_metric(full_values, "psnr"),
-        "full_ssim": mean_metric(full_values, "ssim"),
-        "full_lpips": mean_metric(full_values, "lpips"),
-        "reflective_psnr": mean_metric(reflective_values, "psnr"),
-        "reflective_ssim": mean_metric(reflective_values, "ssim"),
-        "reflective_lpips": mean_metric(reflective_values, "lpips"),
+        "num_reflective_pixels": int(sum(image["num_reflective_pixels"] for image in per_image)),
         "per_image": per_image,
     }
+    for prefix in ("full", "reflective"):
+        for key in (
+            "diffuse_mean",
+            "diffuse_variance",
+            "roughness_mean",
+            "roughness_variance",
+            "specular_mean",
+            "specular_variance",
+            "specular_diffuse_ratio",
+        ):
+            summary[f"{prefix}_{key}"] = mean_prefixed(per_image, f"{prefix}_{key}")
+    return summary
 
 
 @torch.no_grad()
@@ -173,18 +189,16 @@ def evaluate(scene, gaussians, pipe, split, bg, args):
             bg=bg,
             iteration=args.iteration,
             max_images=args.max_images,
-            image_key=args.image_key,
             mask_mode=args.mask_mode,
             alpha_threshold=args.alpha_threshold,
             roughness_threshold=args.roughness_threshold,
-            skip_lpips=args.skip_lpips,
         )
         torch.cuda.empty_cache()
     return results
 
 
 def main():
-    parser = ArgumentParser(description="Evaluate Ref-GS rendering quality metrics.")
+    parser = ArgumentParser(description="Evaluate diagnostic material-map variance metrics.")
     lp = ModelParams(parser, sentinel=True)
     pp = PipelineParams(parser)
 
@@ -192,10 +206,8 @@ def main():
     parser.add_argument("--split", choices=["train", "test", "both"], default="test")
     parser.add_argument("--max_images", type=int, default=-1)
     parser.add_argument("--mask_mode", choices=["none", "reflective", "both"], default="both")
-    parser.add_argument("--image_key", choices=["pbr_rgb", "render"], default="pbr_rgb")
     parser.add_argument("--alpha_threshold", type=float, default=0.2)
     parser.add_argument("--roughness_threshold", type=float, default=0.6)
-    parser.add_argument("--skip_lpips", action="store_true")
     parser.add_argument("--output_json", type=str, default=None)
     parser.add_argument("--cuda_device", type=str, default=None)
     parser.add_argument("--quiet", action="store_true")
@@ -214,21 +226,19 @@ def main():
     results = {
         "iteration": int(loaded_iter),
         "split": args.split,
-        "image_key": args.image_key,
         "mask_mode": args.mask_mode,
-        "lpips_skipped": bool(args.skip_lpips),
         "splits": evaluate(scene, gaussians, pipe, args.split, bg, args),
     }
 
     if args.output_json is None:
-        args.output_json = os.path.join(dataset.model_path, f"render_quality_{args.split}_iter{loaded_iter}.json")
+        args.output_json = os.path.join(dataset.model_path, f"material_quality_{args.split}_iter{loaded_iter}.json")
 
     os.makedirs(os.path.dirname(args.output_json), exist_ok=True)
     with open(args.output_json, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
     print(json.dumps(results, indent=2))
-    print(f"Saved render quality metrics to {args.output_json}")
+    print(f"Saved material quality metrics to {args.output_json}")
 
 
 if __name__ == "__main__":

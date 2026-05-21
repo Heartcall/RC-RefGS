@@ -1,0 +1,35 @@
+{
+  "data_root": "/data/liuly/dataset/3DGS/refnerf",
+  "output_root": "/tmp/rc_refgs_i300_validation_base_rc_20260520",
+  "scenes": [
+    "teapot",
+    "toaster",
+    "car"
+  ],
+  "variants": [
+    "base",
+    "rc"
+  ],
+  "seeds": [
+    0
+  ],
+  "iterations": 300,
+  "cuda_device": "auto",
+  "lambda_ref_consistency": "0.02",
+  "ref_consistency_start": "60",
+  "ref_consistency_every": "4",
+  "ref_consistency_max_angle": "20.0",
+  "ref_consistency_gamma": "2.0",
+  "wo_conf_gamma": "0.0",
+  "roughness_smoothness_lambda": "0.02",
+  "roughness_smoothness_start": "60",
+  "max_pairs": 10,
+  "metrics": [
+    "reflection_consistency"
+  ],
+  "summary_json": "docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json",
+  "skip_train": false,
+  "skip_metrics": false,
+  "quiet": true,
+  "include_seed_in_path": false
+}

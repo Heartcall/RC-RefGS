@@ -1,0 +1,56 @@
+{
+  "completed_count": 1,
+  "cuda_device": "0",
+  "data_root": "/data/liuly/dataset/3DGS/refnerf",
+  "dry_run": false,
+  "failed_count": 0,
+  "iteration": 300,
+  "job_count": 1,
+  "jobs": [
+    {
+      "command": [
+        "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+        "metrics/render_quality_eval.py",
+        "--source_path",
+        "/data/liuly/dataset/3DGS/refnerf/teapot",
+        "--model_path",
+        "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+        "--iteration",
+        "300",
+        "--split",
+        "both",
+        "--mask_mode",
+        "both",
+        "--cuda_device",
+        "0",
+        "--output_json",
+        "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_iter300.json"
+      ],
+      "command_string": "/home/liuly/anaconda3/envs/ref_gs/bin/python metrics/render_quality_eval.py --source_path /data/liuly/dataset/3DGS/refnerf/teapot --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base --iteration 300 --split both --mask_mode both --cuda_device 0 --output_json /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_iter300.json",
+      "finished_at": "2026-05-20 23:58:44 CST",
+      "log_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/teapot/base/render_quality_both_iter300.log",
+      "metric": "render_quality",
+      "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+      "output_json": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_iter300.json",
+      "returncode": 0,
+      "scene": "teapot",
+      "started_at": "2026-05-20 23:51:36 CST",
+      "status": "passed",
+      "variant": "base"
+    }
+  ],
+  "mask_mode": "both",
+  "max_images": -1,
+  "metrics": [
+    "render_quality"
+  ],
+  "model_root": "/tmp/rc_refgs_i300_validation_base_rc_20260520",
+  "scenes": [
+    "teapot"
+  ],
+  "split": "both",
+  "stop_on_failure": true,
+  "variants": [
+    "base"
+  ]
+}

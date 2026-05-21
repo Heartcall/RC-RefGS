@@ -3054,3 +3054,1554 @@ Key measured values (mean reflection consistency):
 
 **Next recommended step:**
 - SWITCH MODEL to gpt-5.5 for conservative manuscript polishing and framing using the complete reduced-ablation summary, while keeping all current NO-GO boundaries.
+
+## 2026-05-19 18:12:01 CST
+
+**Current model/window if known:** codex handoff manifest window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed a clean `master...origin/master` workspace at recovery.
+- Plan recovered from `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`.
+- Autonomous log and coordination board were recovered.
+- Active claim was `None` at recovery.
+- Latest completed task was the reduced `teapot rough_only` fill and summary regeneration.
+- Latest board recommendation was to switch to gpt-5.5 for conservative manuscript polishing against the complete reduced-ablation summary.
+
+**Plan audit gate:** CONDITIONAL GO for one Codex-safe handoff update.
+- [Constraint] No new experiments, code, training changes, or manuscript claim upgrades.
+- [Constraint] Preserve NO-GO boundaries for broad rendering, aggregate LPIPS, geometry, reconstruction, material, external-superiority, and causal claims.
+
+**Round-local plan:**
+- Claim one handoff-manifest update task in the coordination board.
+- Create a current 2026-05-19 model-switch manifest that points to the complete reduced-ablation evidence and LPIPS-enabled render-quality evidence.
+- Verify required markers, forbidden-claim confinement, reduced summary JSON validity, and repo tests.
+- Release the claim, update the board/log, and make the model-window decision.
+
+**Actions taken:**
+- Claimed task at `2026-05-19 18:10:22 CST`.
+- Created `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md`.
+- Updated the manifest read order to put `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.{md,json}` first.
+- Added current caveats for:
+  - complete 30/30 reduced-ablation matrix with `missing_cells=[]`;
+  - LPIPS runtime-enabled evidence with mixed/context interpretation;
+  - `wo_conf` often lower than `rc`;
+  - `rough_only` as a control only;
+  - no geometry/material/external/causal upgrade.
+- Released the coordination-board claim at `2026-05-19 18:12:01 CST`.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> exit 0.
+  - worktree isolation checks -> exit 0.
+  - plan/log/board reads -> exit 0.
+- Evidence checks:
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json` -> exit 0; summary reports `expected_cells=30`, `available_cells=30`, `missing_cells=[]`.
+  - `rg -n "CONDITIONAL GO|NO-GO|SWITCH MODEL|Supported|Mixed|Unsupported|reduced-ablation|30 / 30|missing_cells=\[\]" docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md` -> exit 0.
+  - `rg -n "improved overall novel-view synthesis quality|improved LPIPS|improved mesh quality|improved surface reconstruction|improved geometry quality|improved material decomposition|superiority over external|causal proof" docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md` -> exit 0, with matches confined to required caution/forbidden-boundary text.
+- Verification:
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 25 tests.
+  - `git diff --check` -> exit 0.
+
+**Go/no-go decision:** CONDITIONAL GO and SWITCH MODEL.
+- [Supported] The handoff now points to current evidence: complete reduced-ablation matrix, verified LPIPS runtime summary, i300 reflection-consistency evidence, and existing manuscript/citation artifacts.
+- [Mixed] Rendering metrics and LPIPS remain context-only; `wo_conf` prevents a clean confidence-weighting superiority claim.
+- [NO-GO boundary preserved] No broad rendering-quality, aggregate LPIPS, geometry, reconstruction, material, external-superiority, or causal claim upgrade.
+
+**Next recommended step:**
+- SWITCH MODEL to gpt-5.5 and follow `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md` for conservative manuscript polishing.
+
+## 2026-05-19 18:57:10 CST
+
+**Current model/window if known:** codex manuscript-handoff verification window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed existing uncommitted protocol documentation from the previous handoff window:
+  - `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+  - `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md`
+- Worktree isolation check showed this is a normal repo checkout (`.git` common dir, no superproject).
+- Plan recovered from `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`.
+- Autonomous log and coordination board were recovered.
+- Active claim was `None` at recovery.
+- Latest board decision was `CONDITIONAL GO` / `SWITCH MODEL` for gpt-5.5 manuscript polishing using the 2026-05-19 manifest.
+
+**Plan audit gate:** CONDITIONAL GO for one Codex-safe manuscript handoff verification artifact.
+- [Constraint] Do not perform the gpt-5.5 prose rewrite in this Codex window.
+- [Constraint] Do not add experiments, code, training changes, or claim upgrades.
+- [Constraint] Preserve NO-GO boundaries for broad rendering, aggregate LPIPS, geometry, reconstruction, material, external-superiority, confidence-weighting superiority, and causal claims.
+
+**Round-local plan:**
+- Claim one checklist artifact in the coordination board.
+- Inspect stale LPIPS/ablation statements in `docs/superpowers/logs/rc-refgs-manuscript-integration-draft-2026-05-18.md`.
+- Create a line-level evidence-refresh checklist that maps stale statements to current LPIPS and reduced-ablation evidence.
+- Verify required markers, stale target coverage, forbidden-claim confinement, JSON validity, and repo tests.
+- Release the claim, update the board/log, and make the model-window decision.
+
+**Actions taken:**
+- Claimed task at `2026-05-19 18:55:39 CST`.
+- Created `docs/superpowers/logs/rc-refgs-manuscript-evidence-refresh-checklist-2026-05-19.md`.
+- Identified stale manuscript-integration statements around:
+  - LPIPS unavailable/missing/skipped language;
+  - ablations unavailable/missing language;
+  - claim table rows for LPIPS and causal attribution;
+  - upgrade checklist items that are now partially satisfied by LPIPS and reduced i20 ablations.
+- Added safe replacement guidance:
+  - LPIPS is measured and full-image LPIPS is lower on six i300 rows, but reflective-region LPIPS is mixed three lower and three higher.
+  - Reduced i20 ablation matrix is complete (`30 / 30`, `missing_cells=[]`) but remains short-horizon, one-seed, non-causal, and complicated by `wo_conf` often lower than `rc`.
+- Released coordination-board claim at `2026-05-19 18:57:10 CST`.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-manuscript-evidence-refresh-checklist-2026-05-19.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> exit 0.
+  - worktree isolation checks -> exit 0.
+  - plan/log/board reads -> exit 0.
+- Evidence inspection:
+  - `rg -n "LPIPS|lpips|ablation|ablations|unavailable|missing|skipped|no LPIPS" ...` -> exit 0; identified stale draft targets and current manifest/evidence references.
+  - LPIPS delta check over `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.json` -> exit 0; full-image LPIPS deltas are negative on all six rows; reflective LPIPS deltas are mixed.
+- Checklist verification:
+  - `rg -n "CONDITIONAL GO|NO-GO|SWITCH MODEL|Supported|Mixed|Unsupported|30 / 30|missing_cells=\\[\\]|aggregate LPIPS|causal attribution|wo_conf|rough_only" docs/superpowers/logs/rc-refgs-manuscript-evidence-refresh-checklist-2026-05-19.md` -> exit 0.
+  - `rg -n "LPIPS is unavailable|LPIPS is missing|LPIPS was skipped|No LPIPS result should be stated|No ablation table is available|no .*ablation exists" docs/superpowers/logs/rc-refgs-manuscript-evidence-refresh-checklist-2026-05-19.md` -> exit 0, with matches intentionally confined to quoted stale-statement targets and the verification command.
+  - `rg -n "improves overall novel-view synthesis quality|improves LPIPS|improved overall novel-view synthesis quality|improved LPIPS|improved mesh quality|improved surface reconstruction|improved geometry quality|improved material decomposition|outperforms external|superiority over external|proves that|causal proof" docs/superpowers/logs/rc-refgs-manuscript-evidence-refresh-checklist-2026-05-19.md` -> exit 0, with matches confined to forbidden-upgrade or forbidden-claim guidance.
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.json` -> exit 0.
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.json` -> exit 0.
+- Verification:
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 25 tests.
+  - `git diff --check` -> exit 0.
+
+**Go/no-go decision:** CONDITIONAL GO and SWITCH MODEL.
+- [Supported] The checklist makes the current evidence transition actionable for the manuscript window.
+- [Mixed] LPIPS remains context-only because reflective-region LPIPS is mixed; reduced i20 ablations remain non-causal because `wo_conf` often lowers the diagnostic more than `rc`.
+- [NO-GO boundary preserved] No broad rendering-quality, aggregate LPIPS, geometry, reconstruction, material, external-superiority, confidence-weighting superiority, or causal claim upgrade.
+
+**Next recommended step:**
+- SWITCH MODEL to gpt-5.5 and use `docs/superpowers/logs/rc-refgs-manuscript-evidence-refresh-checklist-2026-05-19.md` together with `docs/superpowers/logs/rc-refgs-manuscript-model-switch-manifest-2026-05-19.md` for conservative manuscript evidence refresh.
+
+## 2026-05-19 19:32:35 CST
+
+**Current model/window if known:** codex meta-planning/protocol-upgrade window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion.
+
+**Recovered state:**
+- Recovered `git status` and latest diff.
+- Recovered plan/log/board and evidence packets:
+  - `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`
+  - `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+  - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+  - `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.{md,json}`
+  - `docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.{md,json}`
+  - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.{md,json}`
+
+**Why this task in this window:**
+- User explicitly requested a meta-planning/protocol-upgrade task, not manuscript polishing and not long experiment execution.
+- The objective was to make future generic continuation prompts self-routing toward full RC-RefGS implementation and complete experiments.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - `Upgrade autonomous roadmap for full RC-RefGS implementation and complete experiments.`
+
+**Changes made:**
+- Added superseding roadmap:
+  - `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`
+  - Includes completed evidence inventory, blockers, definitions of `Full RC-RefGS code complete` and `Complete experiment package`, prioritized queue P0-P5, verification gates, per-claim thresholds, model routing (`gpt-5.3-codex` for code/experiments and `gpt-5.5` for claim/manuscript work), and explicit generic-prompt continuation rule.
+- Updated historical plan with superseding pointer:
+  - `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`
+  - Added `Superseding Roadmap` section near the top.
+- Added concise implementation status table:
+  - `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+  - Covers required components and claim impact with `Supported` / `Mixed` / `Unsupported` and `NO-GO` / `CONDITIONAL GO` / `SWITCH MODEL` tags.
+- Refreshed coordination-board next-task protocol queue:
+  - Replaced `Next Suggested Tasks` with ordered P0-P5 queue for future autonomous windows.
+- Updated this autonomous log and coordination board entries for this protocol-upgrade task.
+
+**Verification commands and results:**
+- `rg -n "Full RC-RefGS code complete|Complete experiment package|P0|P1|P2|P3|P4|P5" docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md` -> exit 0.
+- `rg -n "Next Suggested Tasks|P0|P1|P2|P3|P4|P5" docs/superpowers/logs/rc-refgs-coordination-board.md` -> exit 0.
+- `rg -n "Superseding Roadmap" docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md` -> exit 0.
+- `rg -n "NO-GO|CONDITIONAL GO|SWITCH MODEL|Supported|Mixed|Unsupported" docs/superpowers/logs/rc-refgs-full-implementation-status.md docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 25 tests.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `git diff --check` -> exit 0.
+
+**Claim release:**
+- Coordination-board claim released at completion (Active Task Claims -> `None`).
+
+**Go/no-go decision:** GO.
+- Rationale: roadmap/protocol artifacts are updated, required verification passed, and future generic prompts now have an unambiguous P0->P5 autonomous execution queue for full RC-RefGS implementation and complete experiments.
+
+## 2026-05-19 19:47:45 CST
+
+**Current model/window if known:** codex P0 runtime-hardening window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion, using-git-worktrees, test-driven-development, systematic-debugging.
+
+**Recovered state:**
+- `git status --short --branch` showed existing uncommitted roadmap/status/protocol docs from previous autonomous windows plus no active coordination-board claim.
+- Worktree isolation check showed a normal repo checkout (`.git` common dir, no superproject).
+- Historical plan recovered from `docs/superpowers/plans/2026-05-16-rc-refgs-research-plan.md`.
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Autonomous log and coordination board were recovered.
+- Latest board queue selected P0: protocol/runtime hardening for the ablation launcher.
+
+**Plan audit gate:** GO for one P0 launcher-hardening slice.
+- [Constraint] Prefer the roadmap-approved Python direct-command launcher path over forcing the known nested bash/conda failure.
+- [Constraint] Do not run long experiments.
+- [Constraint] Preserve claim boundaries; no manuscript/scientific claim upgrade.
+
+**Round-local plan:**
+- Claim one P0 task in the coordination board.
+- Add a failing static contract test for a direct Python launcher.
+- Implement `scripts/run_rc_refgs_ablation_direct.py`.
+- Verify dry-run command expansion.
+- Attempt one reduced launcher smoke; if a GPU is unavailable, diagnose and retry only on a proven allocatable GPU.
+- Update roadmap/status/board/log and release claim.
+
+**Actions taken:**
+- Claimed task at `2026-05-19 19:43:17 CST`.
+- Added `test_direct_ablation_launcher_contract` to `tests/test_reflection_consistency_eval_static.py`.
+- Verified RED state before implementation: targeted static test failed because `scripts/run_rc_refgs_ablation_direct.py` was missing.
+- Implemented `scripts/run_rc_refgs_ablation_direct.py` with:
+  - default scenes `teapot/toaster/car`;
+  - variants `base/rc/wo_ref/wo_conf/rough_only`;
+  - direct `subprocess.run` calls using `sys.executable`;
+  - train/test reflection metric commands;
+  - `--dry_run`, `--skip_train`, `--skip_metrics`, and `--cuda_device` controls;
+  - list-based subprocess calls, avoiding shell quoting and nested bash.
+- Fixed a Python 3.7 compatibility issue discovered by dry-run: replaced `argparse.BooleanOptionalAction` with explicit `--quiet` / `--no_quiet` flags.
+- Ran dry-run expansion for `teapot` with `base` and `rough_only`.
+- Attempted one-iteration `teapot/base` launcher smoke on GPU 1; it reached `train.py` but failed at CUDA allocation with `all CUDA-capable devices are busy or unavailable`.
+- Probed GPUs 0/1/2; GPU 1 allocation failed, GPU 0 and GPU 2 allocation passed.
+- Reran the same launcher smoke on GPU 2; training plus train/test reflection metrics completed.
+- Updated:
+  - `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`
+  - `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- Released claim at `2026-05-19 19:47:45 CST`.
+
+**Files changed:**
+- `scripts/run_rc_refgs_ablation_direct.py`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`
+- `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> exit 0.
+  - worktree isolation checks -> exit 0.
+  - plan/log/board reads -> exit 0.
+- TDD:
+  - `conda run -n ref_gs python -m unittest tests.test_reflection_consistency_eval_static` -> RED exit 1 before launcher existed.
+  - same targeted test after implementation -> GREEN exit 0.
+  - regression RED for Python 3.7 incompatible `argparse.BooleanOptionalAction` -> exit 1 during dry-run.
+  - same targeted test after compatibility fix -> GREEN exit 0.
+- Dry-run:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --dry_run --scenes teapot --variants base rough_only --iterations 20 --max_pairs 2 --output_root /tmp/rc_refgs_direct_launcher_dryrun` -> exit 0.
+- Runtime smoke:
+  - `conda run -n ref_gs python -c "import torch; print(...)"` -> exit 0, CUDA available with 7 devices.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - GPU 1 allocation probe -> exit 1, `all CUDA-capable devices are busy or unavailable`.
+  - GPU 2 allocation probe -> exit 0.
+  - GPU 0 allocation probe -> exit 0.
+  - GPU 1 launcher smoke -> exit 1 at CUDA allocation in `train.py`.
+  - GPU 2 launcher smoke:
+    - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --scenes teapot --variants base --iterations 1 --max_pairs 1 --cuda_device 2 --output_root /tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2` -> exit 0.
+- Artifact checks:
+  - `rg -n '"num_pairs"\\s*:\\s*1|mean_reflection_consistency|reflective_region_psnr' /tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/reflection_consistency_train.json /tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/reflection_consistency_test.json` -> exit 0.
+- Verification:
+  - `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_ablation_direct.py tests/test_reflection_consistency_eval_static.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 26 tests.
+  - `git diff --check` -> exit 0.
+
+**Smoke artifacts:**
+- `/tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/point_cloud/iteration_1/point_cloud.ply`
+- `/tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/reflection_consistency_train.json`
+- `/tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/reflection_consistency_test.json`
+
+**Go/no-go decision:** GO for P0 Python direct-command launcher; CONDITIONAL GO for roadmap-driven P1/P2 engineering.
+- [Supported] The new Python launcher avoids shell wrapping, is statically covered, expands the full variant matrix, and completed a one-variant reduced train+metric smoke.
+- [Mixed] The old bash wrapper remains syntax-verified only under the known nested bash/conda CUDA-visibility blocker.
+- [NO-GO boundary preserved] No manuscript/scientific claim upgrade, no bash-wrapper runtime claim, and no broad rendering/geometry/material/external/causal claim.
+
+**Next recommended step:**
+- Continue to P1 code-completeness audit and edge-case tests from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+
+## 2026-05-19 20:59:09 CST
+
+**Current model/window if known:** codex P1 edge-case hardening window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, systematic-debugging, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed existing uncommitted protocol/roadmap artifacts from prior autonomous windows and no active coordination-board claim.
+- Worktree isolation had already been checked in this model window as a normal repo checkout, not a linked worktree or submodule.
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board selected P1 code-completeness work after the completed P0 Python direct-command launcher.
+
+**Plan audit gate:** CONDITIONAL GO for one narrow P1 edge-case slice.
+- [Reasoning] Reflection-consistency helper hardening is CPU-testable, bounded, and directly listed in the P1 missing edge-case queue.
+- [Constraint] Do not run long experiments or upgrade manuscript/scientific claims in this coding window.
+
+**Round-local task claim:**
+- Claimed at `2026-05-19 20:57:44 CST`:
+  - harden reflection-consistency helper edge cases for missing render keys and invalid masks;
+  - files claimed: `utils/reflection_consistency.py`, `tests/test_reflection_consistency.py`, coordination board, autonomous log.
+
+**Actions taken:**
+- Added `_dummy_render_pkg()` test helper to avoid duplicated render-package fixtures.
+- Added regression coverage that `reflection_consistency_loss()` returns a scalar zero for an empty alpha mask.
+- Added RED tests requiring explicit missing-key diagnostics for source and target render packages.
+- Confirmed expected RED state: targeted test failed because the implementation raised bare `KeyError('roughness_map')` and `KeyError('rend_alpha')`.
+- Added `_require_render_keys()` to `utils/reflection_consistency.py`.
+- Validated source keys before projection/loss work:
+  - `spec_light`, `rend_alpha`, `roughness_map`, `surf_depth`, `rend_normal`, `surf_normal`.
+- Validated target keys before sampling:
+  - `spec_light`, `rend_alpha`, `surf_depth`.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `utils/reflection_consistency.py`
+- `tests/test_reflection_consistency.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python -m unittest tests.test_reflection_consistency`
+  - First run: RED exit 1 for missing explicit source/target render-key diagnostics.
+  - Final run: GREEN exit 0, 7 tests.
+- `conda run -n ref_gs python -m py_compile utils/reflection_consistency.py tests/test_reflection_consistency.py` -> exit 0.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 29 tests.
+- `git diff --check` -> exit 0.
+
+**Go/no-go decision:** CONDITIONAL GO for continued P1 code-completeness hardening.
+- [Supported] Missing render-buffer failures are now explicit and package-scoped, and empty-mask behavior has regression coverage.
+- [NO-GO boundary preserved] This task adds no new experiment evidence and does not support any manuscript/scientific claim upgrade.
+
+**Next recommended step:**
+- Continue P1 with the next bounded code-completeness item: fixed pair-list support for reflection-consistency evaluation or deterministic launcher output naming/seed coverage, then rerun the same protocol verification gates.
+
+## 2026-05-19 21:36:19 CST
+
+**Current model/window if known:** codex P1 fixed-pair metric window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Worktree isolation check showed a normal repo checkout (`.git` common dir, no superproject path).
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and latest autonomous-log entry selected P1 code-completeness work after the prior missing-key/empty-mask hardening.
+
+**Plan audit gate:** GO for one bounded P1 reproducibility slice.
+- [Reasoning] Fixed pair-list support is explicitly listed in P1/P3 and is prerequisite for reproducible cross-variant metric comparisons.
+- [Constraint] Keep scope to evaluator/launcher/test plumbing; do not run long experiments or upgrade scientific claims.
+
+**Round-local task claim:**
+- Claimed at `2026-05-19 21:33:06 CST`:
+  - add fixed pair-list support to reflection-consistency evaluation and direct launcher;
+  - files claimed: `metrics/reflection_consistency_eval.py`, `scripts/run_rc_refgs_ablation_direct.py`, `tests/test_reflection_consistency_eval_static.py`, coordination board, autonomous log.
+
+**Actions taken:**
+- Added RED static coverage requiring:
+  - `_load_pair_list()`;
+  - `_camera_lookup()`;
+  - `_resolve_pair_list()`;
+  - `--pair_list_json`;
+  - output metadata for pair mode and valid/requested pair counts;
+  - direct launcher forwarding of `--pair_list_json`.
+- Confirmed expected RED state: targeted static test failed for missing fixed-pair evaluator hooks and launcher argument.
+- Implemented JSON pair-list support in `metrics/reflection_consistency_eval.py`:
+  - accepts either a top-level list or an object with a `pairs` list;
+  - accepts pair entries as `[source, target]` or objects with `source`/`target` or `src`/`tgt`;
+  - resolves camera keys against `image_name`, `uid`, and `colmap_id`;
+  - raises explicit `ValueError` for malformed entries or missing split cameras.
+- Extended evaluator output JSON with:
+  - `pair_mode`;
+  - `max_pairs`;
+  - `max_angle_deg`;
+  - `valid_pair_count`;
+  - `requested_pair_count`.
+- Added `--pair_list_json` to `scripts/run_rc_refgs_ablation_direct.py` and forwarded it to train/test metric commands.
+- Ran a fixed-pair metric smoke on the existing iteration-1 `teapot/base` artifact using `/tmp/rc_refgs_teapot_train_pairlist.json`.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `metrics/reflection_consistency_eval.py`
+- `scripts/run_rc_refgs_ablation_direct.py`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python -m unittest tests.test_reflection_consistency_eval_static`
+  - First run: RED exit 1 for missing fixed-pair hooks and launcher forwarding.
+  - Final run: GREEN exit 0, 5 tests.
+- `conda run -n ref_gs python -m py_compile metrics/reflection_consistency_eval.py scripts/run_rc_refgs_ablation_direct.py tests/test_reflection_consistency_eval_static.py` -> exit 0.
+- `conda run -n ref_gs python metrics/reflection_consistency_eval.py --help` -> exit 0 and shows `--pair_list_json`.
+- `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --dry_run --skip_train --scenes teapot --variants base --iterations 20 --max_pairs 2 --pair_list_json /tmp/rc_refgs_pairs.json --output_root /tmp/rc_refgs_pairlist_dryrun` -> exit 0 and dry-run metric commands include `--pair_list_json`.
+- `conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 2 --model_path /tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base --source_path /data/liuly/dataset/3DGS/refnerf/teapot --iteration 1 --split train --max_pairs 1 --pair_list_json /tmp/rc_refgs_teapot_train_pairlist.json --output_json /tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/reflection_consistency_train_pairlist_smoke.json --quiet` -> exit 0.
+- Fixed-pair smoke JSON check:
+  - `/tmp/rc_refgs_direct_launcher_smoke_20260519_1943_gpu2/teapot_base/reflection_consistency_train_pairlist_smoke.json` contains `pair_mode: fixed`, `num_pairs: 1`, `valid_pair_count: 1`, `requested_pair_count: 1`.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 30 tests.
+- `git diff --check` -> exit 0.
+
+**Go/no-go decision:** GO for fixed-pair reflection metric reproducibility; CONDITIONAL GO for continued P1/P2 engineering.
+- [Supported] Reflection-consistency metrics can now replay a caller-provided pair list and report pair settings/count metadata.
+- [Supported] Direct launcher dry-run forwarding and one fixed-pair metric runtime smoke both passed.
+- [NO-GO boundary preserved] This task improves reproducibility only; it does not add comparative evidence or support manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- Continue P1 with deterministic seed/output naming coverage in the Python direct launcher, then move to P2 manifest schema/dry-run orchestration once reproducibility controls are covered.
+
+## 2026-05-19 23:04:15 CST
+
+**Current model/window if known:** codex P1 deterministic seed/output naming window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Worktree isolation check showed a normal repo checkout (`.git` common dir, no superproject path).
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and latest autonomous-log entry selected P1 deterministic seed/output naming after fixed pair-list support.
+
+**Plan audit gate:** GO for one bounded P1 reproducibility-control slice.
+- [Reasoning] The direct launcher already had fixed-pair metric replay, but multi-seed orchestration would be misleading without explicit training seed control and deterministic seed-specific output paths.
+- [Constraint] Preserve default single-seed output paths for backward compatibility.
+- [Constraint] Do not run long experiments or upgrade manuscript/scientific claims.
+
+**Round-local task claim:**
+- Claimed at `2026-05-19 23:00:58 CST`:
+  - add deterministic seed controls and multi-seed output naming to training/direct launcher;
+  - files claimed: `utils/general_utils.py`, `train.py`, `scripts/run_rc_refgs_ablation_direct.py`, `tests/test_rc_refgs_training_static.py`, `tests/test_reflection_consistency_eval_static.py`, coordination board, autonomous log.
+
+**Actions taken:**
+- Added RED static coverage requiring:
+  - `train.py --seed`;
+  - `safe_state(args.quiet, seed=args.seed)`;
+  - `safe_state(silent, seed=0)`;
+  - seed-driven Python/NumPy/Torch RNG initialization;
+  - direct launcher `--seeds`;
+  - direct launcher `--include_seed_in_path`;
+  - deterministic multi-seed output path suffixes like `scene_variant_seed1`;
+  - forwarding `--seed` to `train.py`.
+- Confirmed expected RED state:
+  - targeted training static test failed for missing `--seed`;
+  - targeted launcher static test failed for missing seed-output naming hooks.
+- Updated `utils/general_utils.safe_state()` to accept `seed=0` while preserving the old default behavior.
+- Added `--seed` to `train.py` and passed it into `safe_state()`.
+- Updated `scripts/run_rc_refgs_ablation_direct.py`:
+  - added `_model_path()`;
+  - added `--seeds`, default `[0]`;
+  - added `--include_seed_in_path`;
+  - forwards `--seed <seed>` to `train.py`;
+  - keeps default single-seed output naming as `scene_variant`;
+  - uses `scene_variant_seedN` automatically when more than one seed is requested.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `utils/general_utils.py`
+- `train.py`
+- `scripts/run_rc_refgs_ablation_direct.py`
+- `tests/test_rc_refgs_training_static.py`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python -m unittest tests.test_rc_refgs_training_static`
+  - First run: RED exit 1 for missing explicit seed CLI/RNG path.
+  - Final run: GREEN exit 0, 5 tests.
+- `conda run -n ref_gs python -m unittest tests.test_reflection_consistency_eval_static`
+  - First run: RED exit 1 for missing deterministic seed output naming hooks.
+  - Final run: GREEN exit 0, 6 tests.
+- `conda run -n ref_gs python -m py_compile utils/general_utils.py train.py scripts/run_rc_refgs_ablation_direct.py tests/test_rc_refgs_training_static.py tests/test_reflection_consistency_eval_static.py` -> exit 0.
+- Default naming dry-run:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --dry_run --skip_metrics --scenes teapot --variants base --iterations 20 --output_root /tmp/rc_refgs_seed_default_dryrun` -> exit 0.
+  - Output path stayed `/tmp/rc_refgs_seed_default_dryrun/teapot_base`; train command included `--seed 0`.
+- Multi-seed naming dry-run:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --dry_run --skip_metrics --scenes teapot --variants base --seeds 0 1 --iterations 20 --output_root /tmp/rc_refgs_seed_multi_dryrun` -> exit 0.
+  - Output paths were `/tmp/rc_refgs_seed_multi_dryrun/teapot_base_seed0` and `/tmp/rc_refgs_seed_multi_dryrun/teapot_base_seed1`; train commands included matching `--seed 0` and `--seed 1`.
+- `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --help` -> exit 0 and shows `--seeds` plus `--include_seed_in_path`.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 32 tests.
+- `git diff --check` -> exit 0.
+
+**Go/no-go decision:** GO for deterministic seed/output naming readiness; CONDITIONAL GO for P2 manifest/orchestration work.
+- [Supported] Train-time RNG seed is now explicit and default-preserving.
+- [Supported] Python direct launcher can expand deterministic multi-seed output paths while preserving default single-seed path compatibility.
+- [NO-GO boundary preserved] This task adds no comparative experiment evidence and does not support manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- Move to P2: add a reproducible experiment manifest schema and dry-run expansion path using scenes, variants, iterations, seeds, pair-list settings, and output-root controls.
+
+## 2026-05-19 23:14:59 CST
+
+**Current model/window if known:** codex P2 manifest dry-run window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion, using-git-worktrees, systematic-debugging.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Worktree isolation check showed a normal repo checkout (`.git` common dir, no superproject path).
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and latest autonomous-log entry selected P2 manifest schema/dry-run orchestration after P1 seed/output naming readiness.
+
+**Plan audit gate:** GO for one bounded P2 manifest-orchestration slice.
+- [Reasoning] Manifest expansion is the next prerequisite before reliable i300/i1000/full-run orchestration.
+- [Constraint] Keep the primary task to schema/dry-run plus one small smoke; do not start a long matrix.
+- [Constraint] Preserve manuscript/scientific NO-GO boundaries because this task adds no comparative evidence.
+
+**Round-local task claim:**
+- Claimed at `2026-05-19 23:10:30 CST`:
+  - add reproducible experiment manifest schema and dry-run expansion to Python direct launcher;
+  - files claimed: `scripts/run_rc_refgs_ablation_direct.py`, `tests/test_reflection_consistency_eval_static.py`, coordination board, autonomous log.
+
+**Actions taken:**
+- Added RED static coverage requiring:
+  - `--manifest_json`;
+  - `MANIFEST_FIELDS`;
+  - scenes, variants, iterations, seeds, output root, pair-list, and metrics fields;
+  - supported metric validation for `reflection_consistency`;
+  - manifest loading, CLI override detection, and manifest application helpers.
+- Confirmed expected RED state: targeted static test failed for missing manifest hooks.
+- Implemented manifest support in `scripts/run_rc_refgs_ablation_direct.py`:
+  - `_load_manifest()`;
+  - `_cli_option_names()`;
+  - `_validate_manifest_metrics()`;
+  - `_apply_manifest()`;
+  - `--manifest_json`.
+- Manifest fields currently cover:
+  - `data_root`, `output_root`, `scenes`, `variants`, `seeds`, `iterations`, `cuda_device`;
+  - RC loss/metric schedule parameters;
+  - `max_pairs`, `pair_list_json`, `metrics`;
+  - `skip_train`, `skip_metrics`, `dry_run`, `quiet`, `include_seed_in_path`.
+- Manifest values populate launcher arguments unless the same option is explicitly provided on the CLI.
+- Unsupported manifest metrics are rejected with `Unsupported manifest metrics`.
+- Verified manifest dry-run expansion for `teapot` x `base/rough_only` x seeds `0/1`.
+- Attempted one-iteration manifest smoke on GPU 2. Initial run found a real evaluator bug:
+  - after `get_combined_args()` loaded train-time `cfg_args`, `pair_list_json` could be absent from the merged namespace when the metric command did not explicitly pass it.
+- Added regression static coverage requiring:
+  - `pair_list_json = getattr(args, "pair_list_json", None)`;
+  - `pair_specs=pair_list_json`.
+- Fixed `metrics/reflection_consistency_eval.py` to use `getattr()` for optional `pair_list_json`.
+- Reran the manifest smoke successfully.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `scripts/run_rc_refgs_ablation_direct.py`
+- `metrics/reflection_consistency_eval.py`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python -m unittest tests.test_reflection_consistency_eval_static`
+  - First run: RED exit 1 for missing manifest hooks.
+  - Second RED run: exit 1 for missing evaluator `getattr()` regression after smoke exposed the bug.
+  - Final run: GREEN exit 0, 7 tests.
+- `conda run -n ref_gs python -m py_compile metrics/reflection_consistency_eval.py scripts/run_rc_refgs_ablation_direct.py tests/test_reflection_consistency_eval_static.py` -> exit 0.
+- Manifest dry-run:
+  - created `/tmp/rc_refgs_manifest_dryrun.json`;
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json /tmp/rc_refgs_manifest_dryrun.json` -> exit 0;
+  - expanded four metric targets: `teapot_base_seed0`, `teapot_rough_only_seed0`, `teapot_base_seed1`, `teapot_rough_only_seed1`, each with train/test metric commands and `--pair_list_json /tmp/rc_refgs_pairs.json`.
+- Unsupported metric schema check:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json /tmp/rc_refgs_manifest_bad_metric.json --dry_run` -> exit 1 with `Unsupported manifest metrics: not_supported`.
+- Manifest smoke:
+  - created `/tmp/rc_refgs_manifest_smoke.json`;
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` showed GPU 2 at 3 MiB / 0%.
+  - initial smoke exit 1 due missing `pair_list_json` namespace attr in evaluator after `cfg_args` merge.
+  - rerun after fix: `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json /tmp/rc_refgs_manifest_smoke.json` -> exit 0.
+- Artifact checks:
+  - `rg -n '"num_pairs"\\s*:\\s*1|...valid_pair_count...' /tmp/rc_refgs_manifest_smoke_20260519_2310/teapot_base/reflection_consistency_{train,test}.json` -> exit 0.
+  - `find /tmp/rc_refgs_manifest_smoke_20260519_2310/teapot_base -maxdepth 3 -type f | sort` found point cloud and train/test metric artifacts.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 33 tests.
+- `git diff --check` -> exit 0.
+
+**Smoke artifacts:**
+- `/tmp/rc_refgs_manifest_smoke_20260519_2310/teapot_base/point_cloud/iteration_1/point_cloud.ply`
+- `/tmp/rc_refgs_manifest_smoke_20260519_2310/teapot_base/reflection_consistency_train.json`
+- `/tmp/rc_refgs_manifest_smoke_20260519_2310/teapot_base/reflection_consistency_test.json`
+
+**Go/no-go decision:** GO for P2 manifest-driven dry-run and one-scene smoke orchestration; CONDITIONAL GO for broader P2/P3 automation.
+- [Supported] Python direct launcher now accepts a validated manifest covering scenes, variants, iterations, seeds, output roots, pair-list settings, and supported metrics.
+- [Supported] Manifest dry-run and one-iteration manifest smoke both passed after fixing the evaluator optional-argument regression.
+- [NO-GO boundary preserved] This task proves orchestration mechanics only; it does not add comparative experiment evidence or support manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- Continue P2 by adding manifest artifact/missing-run detection and a machine-readable expansion summary, then use it to plan i300/i1000 validation matrices before any longer run.
+
+## 2026-05-20 01:01:50 CST
+
+**Current model/window if known:** codex P2 manifest summary/missing-run window.
+
+**Skills used:** using-superpowers, executing-plans, test-driven-development, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Worktree isolation check showed a normal repo checkout (`.git` common dir, no superproject path).
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and latest autonomous-log entry selected the P2 follow-up: manifest artifact/missing-run detection plus a machine-readable expansion summary.
+
+**Plan audit gate:** GO for one bounded P2 orchestration-hardening slice.
+- [Reasoning] Before i300/i1000 validation matrices, the launcher needs a reproducible summary of expanded jobs, commands, and expected artifacts plus a detector for missing outputs.
+- [Constraint] Do not launch a long matrix in this window.
+- [Constraint] Preserve manuscript/scientific NO-GO boundaries because this task adds orchestration evidence only.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 00:58:53 CST`:
+  - add manifest expansion summary JSON and missing-artifact detection to Python direct launcher;
+  - files claimed: `scripts/run_rc_refgs_ablation_direct.py`, `tests/test_reflection_consistency_eval_static.py`, coordination board, autonomous log.
+
+**Actions taken:**
+- Added RED static coverage requiring:
+  - `_expected_artifacts()`;
+  - `_build_jobs()`;
+  - `_write_expansion_summary()`;
+  - `_collect_missing_artifacts()`;
+  - `--summary_json`;
+  - `--check_missing`;
+  - summary fields for expected artifacts, missing artifacts, train command, metric commands, seed-path mode, and missing count;
+  - exit code 2 for missing-artifact detector failures.
+- Confirmed expected RED state: targeted static test failed for missing summary/detector hooks.
+- Implemented launcher job expansion as a reusable in-memory job list.
+- Added expected artifact accounting:
+  - train point cloud at `point_cloud/iteration_<iterations>/point_cloud.ply` when train is not skipped;
+  - train/test reflection-consistency JSONs when metrics are not skipped.
+- Added `--summary_json` to write machine-readable run plans with commands, expected artifacts, and missing-artifact counts.
+- Added `--check_missing` to inspect expected artifacts without launching train/metric commands; missing outputs print as `MISSING ...` and exit with code 2.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `scripts/run_rc_refgs_ablation_direct.py`
+- `tests/test_reflection_consistency_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python -m unittest tests.test_reflection_consistency_eval_static`
+  - First run: RED exit 1 for missing summary/detector hooks.
+  - Final run: GREEN exit 0, 8 tests.
+- `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_ablation_direct.py tests/test_reflection_consistency_eval_static.py` -> exit 0.
+- Dry-run summary expansion:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --dry_run --skip_train --scenes teapot --variants base rc --seeds 0 1 --iterations 20 --output_root /tmp/rc_refgs_manifest_summary_dryrun_20260520 --summary_json /tmp/rc_refgs_manifest_summary_20260520.json` -> exit 0.
+  - `rg` checker confirmed `job_count=4`, `missing_count=8`, `include_seed_in_path=true`, expected artifact fields, metric command fields, train command fields, and `teapot_rc_seed1` paths.
+- Missing-artifact detector expected-failure check:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --check_missing --skip_train --scenes teapot --variants base --seeds 0 --iterations 20 --output_root /tmp/rc_refgs_manifest_summary_missing_20260520 --summary_json /tmp/rc_refgs_manifest_missing_20260520.json` -> exit 2, with two `MISSING` reflection metric JSONs.
+  - `rg` checker confirmed `job_count=1`, `missing_count=2`, `check_missing=true`, and both missing metric JSON paths.
+- Existing-artifact detector check:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --check_missing --scenes teapot --variants base --seeds 0 --iterations 1 --output_root /tmp/rc_refgs_manifest_smoke_20260519_2310 --summary_json /tmp/rc_refgs_manifest_existing_check_20260520.json` -> exit 0.
+  - `rg` checker confirmed `job_count=1`, `missing_count=0`, `check_missing=true`, point cloud path, and train/test metric JSON paths.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 34 tests.
+- `git diff --check` -> exit 0.
+
+**Artifacts:**
+- `/tmp/rc_refgs_manifest_summary_20260520.json`
+- `/tmp/rc_refgs_manifest_missing_20260520.json`
+- `/tmp/rc_refgs_manifest_existing_check_20260520.json`
+
+**Go/no-go decision:** GO for P2 manifest expansion summary and missing-run detection; CONDITIONAL GO for i300/i1000 validation-matrix planning.
+- [Supported] The Python direct launcher now emits a machine-readable job/command/artifact summary.
+- [Supported] The missing-artifact detector has both expected-failure and zero-missing verification paths.
+- [NO-GO boundary preserved] This task adds no comparative evidence and does not support manuscript/scientific claim upgrades.
+- [NO-GO boundary preserved] Do not launch long/full matrices until the next window uses the summary/detector to define and verify a bounded i300/i1000 validation plan.
+
+**Next recommended step:**
+- Continue P2 by generating a concrete i300 validation manifest for `teapot/toaster/car` x `base/rc` first, run `--summary_json` and `--check_missing` to validate the matrix, then decide whether a bounded validation run is safe for available compute.
+
+## 2026-05-20 01:43:39 CST
+
+**Current model/window if known:** codex P2 i300 validation-manifest planning window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Latest commits remained `7f65cbb`, `2be4fd4`, `af8f4c1`, `53dad65`, `ec8b4a7`.
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and autonomous-log tail selected the next P2 task: generate a concrete i300 validation manifest for `teapot/toaster/car` x `base/rc`, run summary/missing checks, and decide whether a bounded run is safe.
+- Worktree isolation check showed a normal repo checkout (`.git` common dir, no superproject path); continued in place under the existing protocol state.
+
+**Plan audit gate:** GO for one bounded P2 validation-matrix planning slice.
+- [Reasoning] The previous window added summary/missing-run detection, so the next safest step is to instantiate the first i300 validation matrix as a reproducible manifest and preflight it.
+- [Constraint] Do not launch training in this window.
+- [Constraint] Do not expand to full 31000, multi-seed, or five-variant ablation matrices until the base/rc i300 preflight is reviewed.
+- [Constraint] Preserve manuscript/scientific NO-GO boundaries because this task adds no comparative evidence.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 01:41:32 CST`:
+  - create and validate concrete i300 base/rc manifest for `teapot/toaster/car` without launching training;
+  - files claimed: `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`, `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md`, `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`, coordination board, autonomous log.
+
+**Actions taken:**
+- Created `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json` with:
+  - scenes `teapot`, `toaster`, `car`;
+  - variants `base`, `rc`;
+  - seed `0`;
+  - iteration `300`;
+  - output root `/tmp/rc_refgs_i300_validation_base_rc_20260520`;
+  - reflection-consistency metric settings and summary target.
+- Created `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md` documenting matrix intent, expected jobs/artifacts, execution boundary, preflight commands, and decision boundary.
+- Ran the Python direct launcher in dry-run mode with the manifest; generated `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`.
+- Ran `--check_missing` with the same manifest; it exited 2 with exactly 18 expected missing artifacts.
+- Checked GPU status for next-window feasibility: GPUs 0, 1, and 2 reported 3 MiB used and 0% utilization; GPUs 3-6 were occupied by other jobs.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md`
+- `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json` -> exit 0.
+- `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --dry_run` -> exit 0; expanded 6 train jobs plus train/test metric commands.
+- `rg -n '"job_count": 6|...|"missing_count": 18' docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json` -> exit 0; confirmed 6 jobs, iteration 300, three scenes, two variants, point-cloud and train/test metric artifact paths, and 18 missing artifacts.
+- `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --check_missing` -> expected exit 2 with 18 `MISSING` artifact paths.
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json` -> exit 0.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0; GPUs 0-2 idle, GPUs 3-6 busy.
+- `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0; showed four active jobs on GPUs 3-6.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 34 tests.
+- `git diff --check` -> exit 0.
+
+**Artifacts:**
+- `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md`
+- `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`
+
+**Go/no-go decision:** GO for i300 base/rc validation-matrix preflight; CONDITIONAL GO for launching the bounded six-job i300 validation matrix on GPUs 0-2 if still allocatable.
+- [Supported] The i300 validation plan is now reproducible as JSON and Markdown protocol artifacts.
+- [Supported] The launcher summary expands exactly 6 jobs and 18 expected artifacts.
+- [Expected pre-run state] Missing detector reports 18 missing artifacts because the matrix has not been run.
+- [Conditional] GPUs 0-2 were idle at preflight time, but availability must be rechecked immediately before launching.
+- [NO-GO boundary preserved] This window produced no comparative evidence and does not support manuscript/scientific claim upgrades.
+- [NO-GO boundary preserved] Do not launch full 31000, multi-seed, or five-variant matrices from this preflight alone.
+
+**Next recommended step:**
+- If GPUs 0-2 remain allocatable, launch the bounded six-job i300 validation matrix from `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`, preferably one GPU/job batch at a time, then rerun `--check_missing` and summarize train/test reflection metrics.
+
+## 2026-05-20 03:11:54 CST
+
+**Current model/window if known:** codex P2 i300 manifest schedule-correction window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and latest autonomous-log entry recommended launching the bounded six-job i300 validation matrix if GPUs 0-2 remained allocatable.
+- The current manifest was `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`.
+
+**Plan audit gate:** NO-GO for launching the existing i300 manifest as-is; GO for one schedule-correction/preflight slice.
+- [Finding] The i300 manifest had `iterations=300` but `ref_consistency_start=3000`.
+- [Evidence] `train.py` gates the RC loss with `iteration >= opt.ref_consistency_start`; therefore the previous i300 `rc` jobs would not exercise the RC training branch.
+- [Constraint] Do not launch training until the manifest is corrected and preflighted.
+- [Constraint] Preserve manuscript/scientific NO-GO boundaries because this task adds no comparative evidence.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 03:10:30 CST`:
+  - fix i300 validation manifest so RC loss activates within 300 iterations and rerun preflight without launching training;
+  - files claimed: `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`, `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md`, `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`, coordination board, autonomous log.
+
+**Actions taken:**
+- Audited `train.py` and confirmed:
+  - RC loss condition: `opt.lambda_ref_consistency > 0 and iteration >= opt.ref_consistency_start and iteration % opt.ref_consistency_every == 0`.
+  - roughness smoothness condition: `iteration >= opt.roughness_smoothness_start`.
+- Updated `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`:
+  - `ref_consistency_start`: `3000` -> `60`;
+  - `roughness_smoothness_start`: `3000` -> `60`.
+- Updated `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md` with the schedule correction rationale and corrected preflight results.
+- Regenerated `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json` from the corrected manifest.
+- Re-ran missing-artifact preflight; 18 missing artifacts remain expected before execution.
+- Checked GPU status: GPUs 0, 1, and 2 still reported 3 MiB used and 0% utilization; GPUs 3-6 were busy.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md`
+- `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `rg -n "ref_consistency_start|lambda_ref_consistency|reflection_consistency_loss|iteration >|iteration >=" train.py arguments utils tests` -> exit 0; confirmed RC loss starts only after `iteration >= opt.ref_consistency_start`.
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0; GPUs 0-2 idle, GPUs 3-6 busy.
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json` -> exit 0.
+- `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --dry_run` -> exit 0; expanded 6 jobs and showed `--ref_consistency_start 60` in all three `rc` train commands.
+- `rg -n '"job_count": 6|...|"missing_count": 18|--ref_consistency_start|...|"60"' docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md` -> exit 0.
+- `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --check_missing` -> expected exit 2 with 18 missing artifacts.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 34 tests.
+- `git diff --check` -> exit 0.
+
+**Artifacts:**
+- Corrected: `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`
+- Updated note: `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.md`
+- Regenerated: `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`
+
+**Go/no-go decision:** GO for corrected i300 base/rc validation-matrix preflight; CONDITIONAL GO for launching the bounded six-job i300 matrix on GPUs 0-2 if still allocatable.
+- [Supported] The corrected manifest now activates RC loss within 300 iterations.
+- [Supported] The regenerated summary proves the `rc` launch commands carry `--ref_consistency_start 60`.
+- [Expected pre-run state] Missing detector still reports 18 missing artifacts because the corrected matrix has not been run.
+- [NO-GO boundary] Do not launch the previous default-schedule i300 manifest.
+- [NO-GO boundary preserved] This window produced no comparative evidence and does not support manuscript/scientific claim upgrades.
+- [NO-GO boundary preserved] Do not launch full 31000, multi-seed, or five-variant matrices before the corrected base/rc i300 run is complete.
+
+**Next recommended step:**
+- If GPUs 0-2 remain allocatable, launch the corrected bounded six-job i300 validation matrix from `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`, then rerun `--check_missing` and summarize train/test reflection metrics.
+
+## 2026-05-20 04:10:39 CST
+
+**Current model/window if known:** codex P2 corrected i300 launch window.
+
+**Skills used:** using-superpowers, executing-plans, verification-before-completion, using-git-worktrees.
+
+**Recovered state:**
+- `git status --short --branch` showed the existing dirty autonomous protocol state and no active coordination-board claim.
+- Superseding roadmap recovered from `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Coordination board and autonomous-log tail selected the corrected six-job i300 launch if GPUs 0-2 remained allocatable.
+- Corrected manifest recovered from `docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json`.
+- Worktree check showed normal checkout (`.git` common dir, no superproject path); continued in place.
+
+**Plan audit gate:** GO for one bounded P2 launch slice.
+- [Reasoning] The corrected manifest now uses `ref_consistency_start=60`, and GPUs 0-2 were idle at recovery.
+- [Constraint] Launch only the six `teapot/toaster/car` x `base/rc` jobs at i300, seed 0.
+- [Constraint] Use the Python direct launcher, not the bash wrapper.
+- [Constraint] Preserve manuscript/scientific NO-GO boundaries until evidence is summarized and claim-audited.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 04:00:35 CST`:
+  - launch corrected bounded six-job i300 base/rc matrix for `teapot/toaster/car` on GPU 0 and verify artifacts;
+  - files claimed: `/tmp/rc_refgs_i300_validation_base_rc_20260520`, `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`, `docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.json`, `docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.md`, coordination board, autonomous log.
+
+**Actions taken:**
+- Rechecked GPUs before launch:
+  - GPUs 0, 1, 2: 3 MiB used, 0% utilization.
+  - GPUs 3-6 occupied by other jobs.
+- Launched:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --cuda_device 0`
+- The launcher completed all six sequential jobs:
+  - `teapot_base`
+  - `teapot_rc`
+  - `toaster_base`
+  - `toaster_rc`
+  - `car_base`
+  - `car_rc`
+- Ran the launcher missing detector after completion; it returned exit 0 and updated `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json` with `missing_count=0`.
+- Created `docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.json`.
+- Created `docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.md`.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.json`
+- `docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Runtime artifacts:**
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/point_cloud/iteration_300/point_cloud.ply`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc/point_cloud/iteration_300/point_cloud.ply`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_base/point_cloud/iteration_300/point_cloud.ply`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_rc/point_cloud/iteration_300/point_cloud.ply`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/point_cloud/iteration_300/point_cloud.ply`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/point_cloud/iteration_300/point_cloud.ply`
+- Train/test `reflection_consistency_{train,test}.json` for all six model directories.
+
+**Metric rollup:**
+- Reflection-consistency error: RC lower than base on 6/6 scene/split rows.
+- Reflective-region PSNR: RC higher than base on 2/6 rows.
+- Pair settings: dynamic pairs, `max_pairs=10`, `valid_pair_count=10` for all metric JSONs.
+
+**Commands run and verification results:**
+- `git rev-parse --git-dir --git-common-dir --show-superproject-working-tree` -> normal checkout (`.git`, `.git`, no superproject path).
+- `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0; GPUs 0-2 idle before launch.
+- `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0; other users' jobs on GPUs 3-6 only.
+- Launch command:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --cuda_device 0` -> exit 0.
+- Post-run missing detector:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-i300-validation-manifest-2026-05-20.json --cuda_device 0 --check_missing` -> exit 0.
+- Artifact count:
+  - `find /tmp/rc_refgs_i300_validation_base_rc_20260520 -maxdepth 5 -type f \( -name 'reflection_consistency_*.json' -o -path '*/point_cloud/iteration_300/point_cloud.ply' \) | wc -l` -> `18`.
+- Metric JSON field check:
+  - `rg -n '"mean_reflection_consistency"|"reflective_region_psnr"|"num_pairs"|"valid_pair_count"|"pair_mode"' /tmp/rc_refgs_i300_validation_base_rc_20260520/*/reflection_consistency_*.json` -> exit 0.
+- Summary checks:
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.json` -> exit 0.
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json` -> exit 0.
+  - `rg -n '"missing_count": 0|...|"cuda_device": "0"' docs/superpowers/logs/rc-refgs-i300-validation-summary-2026-05-20.json` -> exit 0.
+  - `rg -n '"reflection_consistency_rows_lower_for_rc": 6|...|"missing_after_run": 0' docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.json docs/superpowers/logs/rc-refgs-i300-validation-results-2026-05-20.md` -> exit 0.
+- Global gates:
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 34 tests.
+  - `git diff --check` -> exit 0.
+
+**Go/no-go decision:** GO for corrected i300 base/rc reflection-consistency evidence collection; CONDITIONAL GO for i300 render/normal metric completion or bounded five-variant i300 ablation planning.
+- [Supported] Corrected i300, seed 0, dynamic-pair evaluation shows lower measured reflection-consistency error for RC than base on all three scenes and both train/test splits.
+- [Mixed] Reflective-region PSNR is higher on teapot train/test and lower on toaster/car train/test.
+- [NO-GO boundary] Do not claim broad rendering-quality gains.
+- [NO-GO boundary] Do not claim causal attribution, geometry, material, external-superiority, multi-seed robustness, or full-horizon performance.
+- [NO-GO boundary] Do not escalate manuscript/scientific claims from this window alone.
+
+**Next recommended step:**
+- Continue P3/P4 cautiously by collecting standard render-quality and normal diagnostic metrics for the corrected i300 output tree, or plan a bounded five-variant i300 ablation matrix using the same corrected schedule before any full 31000 run.
+
+## 2026-05-20 13:20:54 CST - Corrected i300 render-quality metric attempt and evaluator CUDA-device hardening
+
+**Recovered state:**
+- Latest completed evidence remained the corrected i300 base/RC reflection-consistency sweep at `/tmp/rc_refgs_i300_validation_base_rc_20260520`.
+- Coordination board had no active claim at recovery.
+- Roadmap next safe P3 task was rendering metric completion: PSNR/SSIM/LPIPS for full images and reflective masks.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 13:13:57 CST`:
+  - run corrected i300 render-quality metrics for `teapot/toaster/car` x `base/rc`;
+  - summarize into `docs/superpowers/logs/rc-refgs-i300-render-quality-summary-2026-05-20.{json,md}`;
+  - update coordination board and autonomous log.
+
+**Actions taken:**
+- Confirmed the six corrected i300 checkpoints and train/test reflection metric JSONs exist under `/tmp/rc_refgs_i300_validation_base_rc_20260520`.
+- Attempted `metrics/render_quality_eval.py --split both --mask_mode both --cuda_device 1` with LPIPS enabled.
+- The first metric launch failed before evaluation because `CUDA_VISIBLE_DEVICES=1` made torch report zero CUDA devices in this runtime.
+- Added a regression expectation to `tests/test_render_quality_eval_static.py`, then patched `metrics/render_quality_eval.py` so `--cuda_device` selects the torch CUDA device after initialization instead of relying on ordinal `CUDA_VISIBLE_DEVICES` filtering by default.
+- Verified the patched evaluator target test and compile checks.
+- Diagnosed remaining runtime constraints:
+  - inline environment assignment such as `MPLCONFIGDIR=/tmp/...` also made torch report zero CUDA devices in this sandboxed command path;
+  - GPU 1 was visible but rejected allocation with `all CUDA-capable devices are busy or unavailable`;
+  - GPU 2 accepted a simple tensor allocation, but the render smoke hit a nonzero-device nvdiffrast cross-device error and then GPU 2 was taken by another user's long process;
+  - GPU 0 was actively occupied by another user's training process.
+- Released the coordination-board claim with a NO-GO boundary for corrected i300 render-quality evidence claims from this window.
+
+**Files changed:**
+- `metrics/render_quality_eval.py`
+- `tests/test_render_quality_eval_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- `conda run -n ref_gs python metrics/render_quality_eval.py --help` -> exit 0.
+- `python -m unittest tests.test_render_quality_eval_static` -> RED exit 1 before implementation, then GREEN exit 0 after implementation.
+- `python -m py_compile metrics/render_quality_eval.py tests/test_render_quality_eval_static.py` -> exit 0.
+- `conda run -n ref_gs python -c 'import torch; ... torch.cuda.set_device(2); ...'` -> exit 0, confirming GPU 2 allocation was possible at that moment.
+- `conda run -n ref_gs python metrics/render_quality_eval.py ... --cuda_device 2 --max_images 1` -> exit 1 with `texture_fwd_mip(): Inputs tex, uv must reside on the same GPU device`, so nonzero-device render-quality evaluation is not yet runtime-safe.
+- `ps -fp 352388` -> identified active GPU 0 training process from another user.
+- `nvidia-smi --query-compute-apps=...` -> showed GPU 2 occupied by another user's `scripts/test.py` process after the smoke attempt.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+- `git diff --check` -> exit 0.
+- `python -m unittest discover tests` -> exit 1 due base Python environment import failure in `test_lpips_network_retry` (`GLIBCXX_3.4.29` missing for base Python/PIL stack); not caused by this patch.
+- `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 34 tests.
+
+**Go/no-go decision:** CONDITIONAL GO for evaluator hardening; NO-GO for corrected i300 render-quality evidence claims in this window.
+- [GO] The render-quality evaluator now has a verified torch-side `--cuda_device` path for environments where ordinal `CUDA_VISIBLE_DEVICES` filtering hides CUDA.
+- [NO-GO] No corrected i300 PSNR/SSIM/LPIPS table was produced in this window.
+- [NO-GO] Do not claim corrected i300 rendering-quality gains from this attempted sweep.
+- [Constraint] The next render-quality attempt should use a truly idle GPU 0 or first fix the nvdiffrast cross-device path for nonzero devices.
+- [NO-GO boundary] Full 31000, multi-seed, causal, broad rendering, geometry, material, external-superiority, and manuscript/scientific claim upgrades remain blocked.
+
+**Next recommended step:**
+- When a safe GPU is available, rerun the corrected i300 render-quality sweep without inline environment assignments. If only nonzero GPUs are available, first fix and smoke-test the nvdiffrast cross-device issue in `metrics/render_quality_eval.py`/render setup before launching the six full metric jobs.
+
+## 2026-05-20 13:39:20 CST - Render-quality CUDA device initialization order hardening
+
+**Recovered state:**
+- Git status showed the ongoing dirty RC-RefGS protocol/code changes; active coordination-board claim was `None`.
+- Roadmap priority remained P3 metrics completion, with corrected i300 render-quality blocked by the previous nonzero-GPU nvdiffrast cross-device failure.
+- Latest log decision was `CONDITIONAL GO` for render-quality evaluator hardening and `NO-GO` for corrected i300 render-quality evidence claims.
+- GPU recovery showed GPU 0 occupied by another user's training job, GPU 2 occupied by another user's process, GPU 1 apparently idle but historically allocation-rejecting, and GPUs 3-6 busy.
+
+**Root-cause hypothesis:**
+- The previous patch selected the requested CUDA device after `safe_state(args.quiet)`.
+- `safe_state` hard-selected `cuda:0`, which can initialize CUDA/runtime extension context state before render-quality switches to a nonzero device.
+- The observed nvdiffrast error (`texture_fwd_mip(): Inputs tex, uv must reside on the same GPU device`) is consistent with late device switching in a renderer path that uses default `cuda` tensors and custom CUDA extensions.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 13:37:05 CST`:
+  - root-cause and harden `metrics/render_quality_eval.py --cuda_device 2` nonzero-device path;
+  - add targeted regression coverage;
+  - smoke only if a safe GPU is available;
+  - update protocol logs and decision.
+
+**Actions taken:**
+- Read `metrics/render_quality_eval.py`, `gaussian_renderer/__init__.py`, `scene/gaussian_model.py`, and CUDA tensor allocation call sites.
+- Added RED static regressions:
+  - render-quality must derive `_cuda_device_index(args.cuda_device)`;
+  - render-quality must pass that index into `safe_state` directly;
+  - render-quality must not perform post-`safe_state` `_select_torch_cuda_device(args.cuda_device)`;
+  - `safe_state` must accept `cuda_device` while preserving explicit seed support.
+- Implemented the minimal fix:
+  - `utils/general_utils.safe_state(silent, seed=0, cuda_device=0)` now calls `torch.cuda.set_device(torch.device(f"cuda:{cuda_device}"))`;
+  - `metrics/render_quality_eval.py` now calls `safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))`;
+  - removed the post-`safe_state` selector path from render-quality.
+- Rechecked GPU state before runtime smoke:
+  - GPU 1 still failed a minimal allocation probe with `all CUDA-capable devices are busy or unavailable`;
+  - GPU 0 and GPU 2 were occupied by other users;
+  - no runtime render smoke was launched.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `metrics/render_quality_eval.py`
+- `utils/general_utils.py`
+- `tests/test_render_quality_eval_static.py`
+- `tests/test_rc_refgs_training_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery:
+  - `git rev-parse --git-dir --git-common-dir --show-superproject-working-tree` -> normal checkout.
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - roadmap/log/board reads -> exit 0.
+- Root-cause inspection:
+  - `rg -n "device=\"cuda\"|\\.cuda\\(|torch\\.cuda\\.set_device|..." gaussian_renderer scene metrics/render_quality_eval.py utils` -> exit 0.
+- TDD:
+  - `python -m unittest tests.test_render_quality_eval_static tests.test_rc_refgs_training_static` -> RED exit 1 before implementation, then GREEN exit 0 after implementation.
+  - `conda run -n ref_gs python -m unittest tests.test_render_quality_eval_static tests.test_rc_refgs_training_static` -> RED exit 1 before implementation, then GREEN exit 0 after implementation.
+- Compile/help:
+  - `python -m py_compile metrics/render_quality_eval.py utils/general_utils.py tests/test_render_quality_eval_static.py tests/test_rc_refgs_training_static.py` -> exit 0.
+  - `conda run -n ref_gs python metrics/render_quality_eval.py --help` -> exit 0.
+- Runtime availability:
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0; GPU 0 and GPU 2 occupied, GPU 1 apparently idle.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0; other users' jobs on GPU 0, GPU 2, and GPUs 3-6.
+  - `conda run -n ref_gs python -c 'import torch; ... torch.cuda.set_device(1); x=torch.zeros((1,), device="cuda"); ...'` -> exit 1, `all CUDA-capable devices are busy or unavailable`.
+- Global gates:
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 35 tests.
+  - `git diff --check` -> exit 0.
+
+**Go/no-go decision:** CONDITIONAL GO for nonzero-GPU render-quality device-order fix; NO-GO for runtime render-quality evidence collection from this window.
+- [GO] The code path now initializes CUDA on the requested device through `safe_state` instead of switching after `safe_state` has selected `cuda:0`.
+- [CONDITIONAL] Runtime render smoke could not be rerun because no safe allocatable GPU was available.
+- [NO-GO] Do not claim corrected i300 render-quality PSNR/SSIM/LPIPS evidence was produced.
+- [NO-GO] Do not claim nonzero-GPU render-quality runtime is fully repaired until a one-image render smoke passes on GPU 1/2.
+- [NO-GO boundary] Full 31000, multi-seed, causal, broad rendering, geometry, material, external-superiority, and manuscript/scientific claim upgrades remain blocked.
+
+**Next recommended step:**
+- When a safe GPU is available, first run one-image corrected i300 render-quality smoke on the target GPU. If it passes, launch the six corrected i300 render-quality metric jobs and summarize them. If it still fails on nonzero GPUs, instrument renderer tensor device IDs around `pc.dir_encoding(...)` and nvdiffrast texture inputs before any broader sweep.
+
+## 2026-05-20 14:46:18 CST - Material diagnostic metric scaffold
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS changes from prior protocol windows.
+- Coordination board active claim was `None`.
+- Latest decision was `CONDITIONAL GO` for nonzero-GPU render-quality device-order hardening and `NO-GO` for runtime render-quality collection until a one-image smoke passes.
+- Roadmap P3 still required material diagnostics: cross-view/material-map variance and specular consistency if supported.
+- GPU check showed GPU 0 and GPU 2 occupied by other users, GPUs 3-6 occupied, and GPU 1 apparently idle but still failing a minimal allocation probe with `all CUDA-capable devices are busy or unavailable`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 14:42:38 CST`:
+  - add static-tested material diagnostic evaluator and summary wrapper;
+  - no GPU runtime sweep while GPUs are unsafe;
+  - update protocol logs and decision.
+
+**Actions taken:**
+- Read existing metric patterns:
+  - `metrics/normal_quality_eval.py`
+  - `metrics/summarize_normal_quality.py`
+  - `metrics/summarize_render_quality.py`
+  - related static tests.
+- Added RED static tests:
+  - `tests/test_material_quality_eval_static.py`
+  - `tests/test_material_quality_summary_static.py`
+- Implemented:
+  - `metrics/material_quality_eval.py`
+  - `metrics/summarize_material_quality.py`
+- Material evaluator contract:
+  - consumes renderer outputs `diff_light`, `roughness_map`, `spec_light`, and `rend_alpha`;
+  - supports `--split train/test/both`, `--mask_mode none/reflective/both`, `--max_images`, alpha/roughness thresholds, `--cuda_device`, and `--output_json`;
+  - reports full and reflective diffuse variance, roughness variance, specular variance, and specular/diffuse ratio;
+  - records `num_reflective_pixels` and `per_image` diagnostics;
+  - uses the pre-`safe_state` CUDA-device pattern from the render-quality hardening.
+- Material summary contract:
+  - accepts repeated `--pair SCENE BASE_DIR RC_DIR`;
+  - summarizes base-vs-RC deltas for material variance/ratio metrics;
+  - writes JSON and optional Markdown.
+- Released the coordination-board claim at completion.
+
+**Files changed:**
+- `metrics/material_quality_eval.py`
+- `metrics/summarize_material_quality.py`
+- `tests/test_material_quality_eval_static.py`
+- `tests/test_material_quality_summary_static.py`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Commands run and verification results:**
+- Recovery:
+  - `git rev-parse --git-dir --git-common-dir --show-superproject-working-tree` -> normal checkout.
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - roadmap/log/board reads -> exit 0.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 1 allocation probe -> exit 1, `all CUDA-capable devices are busy or unavailable`.
+- TDD:
+  - `python -m unittest tests.test_material_quality_eval_static tests.test_material_quality_summary_static` -> RED exit 1 before scripts existed, then GREEN exit 0 after implementation.
+  - `conda run -n ref_gs python -m unittest tests.test_material_quality_eval_static tests.test_material_quality_summary_static` -> RED exit 1 before scripts existed, then GREEN exit 0 after implementation.
+- Compile/help:
+  - `python -m py_compile metrics/material_quality_eval.py metrics/summarize_material_quality.py tests/test_material_quality_eval_static.py tests/test_material_quality_summary_static.py` -> exit 0.
+  - `conda run -n ref_gs python metrics/material_quality_eval.py --help` -> exit 0.
+  - `conda run -n ref_gs python metrics/summarize_material_quality.py --help` -> exit 0.
+- Global gates:
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 39 tests.
+  - `git diff --check` -> exit 0.
+
+**Go/no-go decision:** GO for material diagnostic scaffolding; CONDITIONAL GO for future material metric collection; NO-GO for material-quality claims.
+- [GO] The material diagnostic evaluator and summary wrapper now exist and are statically covered.
+- [CONDITIONAL] Runtime metric collection still depends on a safe render-capable GPU.
+- [NO-GO] No material diagnostic JSON/Markdown results were generated in this window.
+- [NO-GO] Do not claim material consistency, material decomposition, or specular-quality gains from this scaffold alone.
+- [NO-GO boundary] Corrected i300 render-quality collection, full 31000, multi-seed, causal, broad rendering, geometry, external-superiority, and manuscript/scientific claim upgrades remain blocked.
+
+**Next recommended step:**
+- When a safe GPU is available, run one-image render-quality smoke first. If render smoke passes, run corrected i300 render-quality and material-quality sweeps on `teapot/toaster/car` x `base/rc`, then summarize both into JSON/Markdown artifacts. If render smoke remains blocked, continue with non-runtime P3/P1 hardening only.
+
+## 2026-05-20 18:05:06 CST - Corrected i300 render-quality runtime smoke matrix
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS changes from prior protocol windows.
+- Coordination board active claim was `None`.
+- Latest board decision was `GO` for material diagnostic scaffolding, `CONDITIONAL GO` for future material metric collection, and `NO-GO` for material-quality claims.
+- Roadmap P3 still required render-quality PSNR/SSIM/LPIPS artifacts for all-pixel and reflective-region masks.
+- GPU check showed GPU 0 and GPU 1 apparently idle; allocation probe passed on GPU 0 and failed on GPU 1 with `all CUDA-capable devices are busy or unavailable`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 17:15:27 CST`:
+  - run corrected i300 render-quality smoke on GPU 0;
+  - if the smoke passed, attempt the corrected i300 six-output render-quality sweep;
+  - summarize results and record GO/NO-GO decision.
+
+**Actions taken:**
+- Ran the one-image corrected i300 `teapot_base` render-quality smoke with LPIPS enabled on GPU 0; it passed.
+- Attempted a shell-loop full-split six-output sweep; the loop was not suitable because failed evaluator cells continued and later cells hit `RuntimeError: No CUDA GPUs are available`.
+- Retried `teapot_base` full split as a single command; it completed and wrote `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_i300_corrected_with_lpips.json`, but it took about 6.5 minutes and emitted a very large per-image payload.
+- Retried `teapot_rc` full split with redirected output; it failed quickly with the same CUDA startup error.
+- Pivoted to a bounded, reliable six-cell one-image corrected i300 smoke matrix for `teapot/toaster/car` x `base/rc`.
+- Summarized the six smoke JSONs into:
+  - `docs/superpowers/logs/rc-refgs-i300-render-quality-smoke-summary-2026-05-20.json`
+  - `docs/superpowers/logs/rc-refgs-i300-render-quality-smoke-summary-2026-05-20.md`
+- Released the coordination-board claim at completion.
+
+**Artifacts:**
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_test_i300_corrected_smoke_with_lpips.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc/render_quality_test_i300_corrected_smoke_with_lpips.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_base/render_quality_test_i300_corrected_smoke_with_lpips.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_rc/render_quality_test_i300_corrected_smoke_with_lpips.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/render_quality_test_i300_corrected_smoke_with_lpips.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/render_quality_test_i300_corrected_smoke_with_lpips.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_i300_corrected_with_lpips.json`
+
+**Smoke-summary result:**
+- `teapot`: RC improves full PSNR by `+0.030121`, reflective PSNR by `+0.029072`, and full LPIPS by `-0.000278`; RC slightly lowers SSIM and worsens reflective LPIPS by `+0.005765`.
+- `toaster`: RC is slightly worse on full/reflective PSNR, SSIM, and LPIPS.
+- `car`: RC is slightly worse on full PSNR/SSIM/LPIPS and reflective PSNR/LPIPS, with reflective SSIM slightly better by `+0.000190`.
+- Interpretation: runtime evaluator path is proven, but the render-quality evidence is mixed and one-image only.
+
+**Commands run and verification results:**
+- Recovery and GPU:
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 0 allocation probe -> exit 0, `cuda:0`.
+  - GPU 1 allocation probe -> exit 1, `all CUDA-capable devices are busy or unavailable`.
+- Runtime metrics:
+  - Six one-image `conda run -n ref_gs python metrics/render_quality_eval.py ... --max_images 1 --cuda_device 0` commands -> exit 0, LPIPS enabled.
+  - One full-split `teapot_base` render-quality command -> exit 0.
+  - Full-split shell-loop/redirected retry attempts -> failed cells with `RuntimeError: No CUDA GPUs are available`; these are not used as evidence except as blocker diagnostics.
+  - `conda run -n ref_gs python metrics/summarize_render_quality.py ... --metric_filename render_quality_test_i300_corrected_smoke_with_lpips.json` -> exit 0.
+- Verification:
+  - artifact `rg` check for `lpips_skipped=false`, `num_images=1`, and LPIPS fields -> exit 0.
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-render-quality-smoke-summary-2026-05-20.json` -> exit 0.
+  - summary `rg` check for scene names and LPIPS deltas -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 39 tests.
+  - `git diff --check` -> exit 0.
+  - final `pgrep -af 'metrics/render_quality_eval.py|conda run -n ref_gs python metrics/render_quality_eval.py'` -> exit 1, no evaluator process left running.
+
+**Go/no-go decision:** GO for corrected i300 render-quality runtime smoke coverage; CONDITIONAL GO for future full-split render-quality sweep; NO-GO for broad rendering-quality claims or manuscript/scientific claim upgrades.
+- [GO] The render-quality evaluator now has runtime proof on GPU 0 with LPIPS enabled across all six corrected i300 base/RC cells.
+- [CONDITIONAL] Full-split render-quality collection should continue only with single-command launches or a hardened no-continue-on-failure runner; full LPIPS is slow.
+- [NO-GO] The one-image render trends are mixed and do not support broad rendering-quality claims.
+- [NO-GO] Do not upgrade manuscript/scientific claims from this smoke matrix.
+
+**Next recommended step:**
+- Either harden render-quality full-split orchestration to avoid shell-loop CUDA startup failures and excessive stdout, or run a bounded material-quality smoke matrix now that GPU 0 has proven usable for one-image rendering.
+
+## 2026-05-20 19:14:15 CST - Corrected i300 material-quality runtime smoke matrix
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS protocol/code changes.
+- Coordination board active claim was `None`.
+- Latest decision was `GO` for corrected i300 render-quality runtime smoke coverage, `CONDITIONAL GO` for future full-split render-quality sweep, and `NO-GO` for broad rendering-quality/manuscript claim upgrades.
+- Roadmap P3 still required material diagnostics.
+- GPU 0 and GPU 1 appeared idle by `nvidia-smi`; allocation probe passed on GPU 0 and failed on GPU 1 with `all CUDA-capable devices are busy or unavailable`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 19:10:43 CST`:
+  - run corrected i300 material-quality one-image diagnostics on GPU 0 for `teapot/toaster/car` x `base/rc`;
+  - summarize paired base-vs-RC deltas;
+  - verify artifacts and global gates;
+  - update board/log with decision.
+
+**Actions taken:**
+- Ran six direct single-command material diagnostics:
+  - `metrics/material_quality_eval.py --split test --max_images 1 --mask_mode both --cuda_device 0`
+  - output filename: `material_quality_test_i300_corrected_smoke.json`
+- Generated summary artifacts:
+  - `docs/superpowers/logs/rc-refgs-i300-material-quality-smoke-summary-2026-05-20.json`
+  - `docs/superpowers/logs/rc-refgs-i300-material-quality-smoke-summary-2026-05-20.md`
+- Released the coordination-board claim at completion.
+
+**Artifacts:**
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/material_quality_test_i300_corrected_smoke.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc/material_quality_test_i300_corrected_smoke.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_base/material_quality_test_i300_corrected_smoke.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_rc/material_quality_test_i300_corrected_smoke.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_base/material_quality_test_i300_corrected_smoke.json`
+- `/tmp/rc_refgs_i300_validation_base_rc_20260520/car_rc/material_quality_test_i300_corrected_smoke.json`
+
+**Smoke-summary result:**
+- `teapot`: RC raises full diffuse variance by `+0.0000334007`, lowers full roughness variance by `-0.000137124`, lowers full specular variance by `-0.000104057`, and lowers reflective specular/diffuse ratio by `-0.00136318`.
+- `toaster`: RC raises tracked full/reflective diffuse, roughness, and specular variances, and raises reflective specular/diffuse ratio by `+0.00278597`.
+- `car`: RC slightly raises full diffuse variance by `+0.000005392` and roughness variance by `+0.000005656`, lowers full specular variance by `-0.0000991414`, and lowers reflective specular/diffuse ratio by `-0.00181590`.
+- Interpretation: material diagnostics are now runtime-covered, but trends are mixed and one-image only.
+
+**Commands run and verification results:**
+- Recovery and GPU:
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 0 allocation probe -> exit 0, `cuda:0`.
+  - GPU 1 allocation probe -> exit 1, `all CUDA-capable devices are busy or unavailable`.
+- Runtime metrics:
+  - Six `conda run -n ref_gs python metrics/material_quality_eval.py ... --max_images 1 --cuda_device 0` commands -> exit 0.
+  - `conda run -n ref_gs python metrics/summarize_material_quality.py ... --metric_filename material_quality_test_i300_corrected_smoke.json` -> exit 0.
+- Verification:
+  - artifact `rg` check for `num_images=1`, diffuse/roughness/specular variance, and specular/diffuse fields -> exit 0.
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-material-quality-smoke-summary-2026-05-20.json` -> exit 0.
+  - summary `rg` check for scene names and key deltas -> exit 0.
+  - `conda run -n ref_gs python -m py_compile metrics/material_quality_eval.py metrics/summarize_material_quality.py tests/test_material_quality_eval_static.py tests/test_material_quality_summary_static.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 39 tests.
+  - `git diff --check` -> exit 0.
+  - final `pgrep -af 'metrics/material_quality_eval.py|conda run -n ref_gs python metrics/material_quality_eval.py'` -> exit 1, no evaluator process left running.
+
+**Go/no-go decision:** GO for corrected i300 material diagnostic runtime smoke coverage; CONDITIONAL GO for future full-split/material interpretation work; NO-GO for material-quality, material-decomposition, causal, or manuscript/scientific claim upgrades.
+- [GO] The material diagnostic evaluator has runtime evidence on GPU 0 across all six corrected i300 base/RC cells.
+- [CONDITIONAL] Full-split material diagnostic collection and interpretation should wait for a hardened run plan and clearer acceptance thresholds.
+- [NO-GO] The one-image material trends are mixed and diagnostic-only.
+- [NO-GO] Do not claim material consistency, decomposition quality, causal attribution, or manuscript/scientific upgrades from this smoke matrix.
+
+**Next recommended step:**
+- Highest-value safe follow-up is P3 orchestration hardening for full-split metric collection: add or use a no-continue-on-failure direct runner for render/material metric sweeps that suppresses large per-image stdout and records per-cell status, then rerun full-split summaries when GPU 0 is safely available.
+
+## 2026-05-20 20:54:59 CST - Direct metric-sweep orchestration hardening
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS protocol/code changes.
+- Coordination board active claim was `None`.
+- Latest decision was `GO` for corrected i300 material diagnostic runtime smoke coverage, `CONDITIONAL GO` for future full-split/material interpretation work, and `NO-GO` for material-quality/manuscript claim upgrades.
+- Roadmap P3 still needs full-split render/material metric completion, but the prior shell-loop sweep had continued after failed cells and flooded stdout.
+- GPU check showed GPU 0 and GPU 1 apparently idle by memory, with GPUs 2-6 occupied; this window intentionally performed dry-run orchestration only.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 20:52:11 CST`:
+  - add a TDD-covered direct Python runner for render/material metric sweeps;
+  - suppress evaluator stdout/stderr into per-cell logs;
+  - write per-cell status JSON;
+  - stop on first failure by default;
+  - dry-run verify against the corrected i300 tree.
+
+**TDD cycle:**
+- Added `tests/test_metric_sweep_direct_static.py`.
+- RED: `conda run -n ref_gs python -m unittest tests.test_metric_sweep_direct_static` -> exit 1 because `scripts/run_rc_refgs_metric_sweep_direct.py` was missing.
+- Implemented `scripts/run_rc_refgs_metric_sweep_direct.py`.
+- GREEN: targeted test command -> exit 0.
+
+**Implementation:**
+- New runner:
+  - builds `metrics/render_quality_eval.py` and `metrics/material_quality_eval.py` commands for scene/variant/metric matrices;
+  - supports `--data_root`, `--model_root`, `--scenes`, `--variants`, `--metrics`, `--iteration`, `--split`, `--mask_mode`, `--max_images`, `--cuda_device`, `--summary_json`, `--log_root`, `--skip_lpips`, `--quiet`, `--dry_run`, `--stop_on_failure`, and `--continue_on_failure`;
+  - redirects runtime evaluator stdout/stderr to per-cell log files;
+  - writes a summary JSON after each cell and at completion;
+  - exits with code 2 on first failed cell by default.
+- Dry-run artifact:
+  - `docs/superpowers/logs/rc-refgs-i300-metric-sweep-direct-dryrun-2026-05-20.json`
+  - matrix: `teapot/toaster/car` x `base/rc` x `render_quality/material_quality` = 12 planned cells.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+- Targeted TDD/runner checks:
+  - `conda run -n ref_gs python -m unittest tests.test_metric_sweep_direct_static` -> RED exit 1, then GREEN exit 0.
+  - `conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py --data_root /data/liuly/dataset/3DGS/refnerf --model_root /tmp/rc_refgs_i300_validation_base_rc_20260520 --scenes teapot toaster car --variants base rc --metrics render_quality material_quality --iteration 300 --split both --mask_mode both --cuda_device 0 --summary_json docs/superpowers/logs/rc-refgs-i300-metric-sweep-direct-dryrun-2026-05-20.json --log_root /tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs --dry_run` -> exit 0.
+  - `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_metric_sweep_direct.py tests/test_metric_sweep_direct_static.py` -> exit 0.
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-metric-sweep-direct-dryrun-2026-05-20.json` -> exit 0.
+  - dry-run summary `rg` check for `job_count=12`, `failed_count=0`, `dry_run` statuses, render/material commands, and log paths -> exit 0.
+- Global gates:
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 41 tests.
+  - `git diff --check` -> exit 0.
+  - final `pgrep -af 'run_rc_refgs_metric_sweep_direct.py|metrics/(render_quality_eval|material_quality_eval).py|conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py'` -> exit 1, no runner/evaluator process left running.
+
+**Go/no-go decision:** GO for direct render/material metric-sweep orchestration hardening; CONDITIONAL GO for launching full-split sweeps when GPU 0 is allocatable; NO-GO for new metric evidence or claim upgrades in this window.
+- [GO] The direct runner removes the previous shell-loop failure mode and provides a reproducible 12-cell dry-run status plan.
+- [CONDITIONAL] Full-split render/material collection should use this runner only when a safe GPU is available and the expected long LPIPS runtime is acceptable.
+- [NO-GO] No new full-split metric evidence was collected in this window.
+- [NO-GO] Do not upgrade rendering/material/manuscript/scientific claims from orchestration hardening alone.
+
+**Next recommended step:**
+- If GPU 0 remains allocatable, launch the direct metric runner for one full-split cell first, then continue the 12-cell corrected i300 render/material sweep only if the status JSON and per-cell log prove clean failure handling and acceptable runtime.
+
+## 2026-05-20 23:36:36 CST - One-cell full-split render-quality runner validation
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS protocol/code changes.
+- Coordination board active claim was `None`.
+- Latest decision was `GO` for direct render/material metric-sweep orchestration hardening, `CONDITIONAL GO` for launching full-split sweeps when GPU 0 is allocatable, and `NO-GO` for new metric evidence or claim upgrades.
+- Roadmap P3 still needs full-split render/material metric completion and per-metric summaries.
+- GPU check showed all GPUs at minimal memory by `nvidia-smi`; allocation probe passed on GPU 0 and failed on GPU 1 with `all CUDA-capable devices are busy or unavailable`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 23:28:44 CST`:
+  - use probe-safe GPU 0 only;
+  - run one corrected i300 full-split render-quality cell through `scripts/run_rc_refgs_metric_sweep_direct.py`;
+  - target cell: `teapot_rc`, `render_quality`, split `both`;
+  - verify status JSON, output JSON, per-cell log, global gates, and no lingering processes;
+  - do not launch the 12-cell sweep or upgrade claims.
+
+**Actions taken:**
+- Ran:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py --data_root /data/liuly/dataset/3DGS/refnerf --model_root /tmp/rc_refgs_i300_validation_base_rc_20260520 --scenes teapot --variants rc --metrics render_quality --iteration 300 --split both --mask_mode both --cuda_device 0 --summary_json docs/superpowers/logs/rc-refgs-i300-teapot-rc-render-quality-full-runner-2026-05-20.json --log_root /tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs`
+- The runner exited 0 after one cell, wrote a `passed` status, and kept evaluator stdout/stderr in the per-cell log.
+
+**Artifacts:**
+- Runner status JSON:
+  - `docs/superpowers/logs/rc-refgs-i300-teapot-rc-render-quality-full-runner-2026-05-20.json`
+- Full-split metric output:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc/render_quality_both_iter300.json`
+- Per-cell log:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/teapot/rc/render_quality_both_iter300.log`
+
+**Metric result:**
+- `train`: `num_images=100`, full PSNR `32.46236749649048`, full SSIM `0.9807416421175003`, full LPIPS `0.062345773577690125`, reflective PSNR `32.540748863220216`, reflective SSIM `0.9832973754405976`, reflective LPIPS `0.05643945660442114`.
+- `test`: `num_images=200`, full PSNR `32.082486391067505`, full SSIM `0.9797507286071777`, full LPIPS `0.061352038942277434`, reflective PSNR `32.17704748153687`, reflective SSIM `0.9827320322394371`, reflective LPIPS `0.05531046574935317`.
+
+**Commands run and verification results:**
+- Recovery and GPU:
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 0 allocation probe -> exit 0, `cuda:0`.
+  - GPU 1 allocation probe -> exit 1, `all CUDA-capable devices are busy or unavailable`.
+- Runtime:
+  - one-cell direct runner command above -> exit 0.
+  - side checks confirmed child evaluator held GPU 0 and log path existed during execution.
+- Artifact verification:
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-teapot-rc-render-quality-full-runner-2026-05-20.json` -> exit 0.
+  - `conda run -n ref_gs python -m json.tool /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc/render_quality_both_iter300.json` -> exit 0.
+  - status `rg` check for `status=passed`, `failed_count=0`, `completed_count=1`, `dry_run=false`, log path, and output path -> exit 0.
+  - output `rg` check for split `both`, `lpips_skipped=false`, `num_images=100`, `num_images=200`, and LPIPS fields -> exit 0.
+  - per-cell log tail includes saved output path -> exit 0.
+  - aggregate metric extraction command -> exit 0.
+- Global gates:
+  - `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_metric_sweep_direct.py tests/test_metric_sweep_direct_static.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 41 tests.
+  - `git diff --check` -> exit 0.
+  - final `pgrep -af 'run_rc_refgs_metric_sweep_direct.py|metrics/render_quality_eval.py|conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py'` -> exit 1, no runner/evaluator process left running.
+
+**Go/no-go decision:** GO for direct-runner full-split one-cell render-quality collection; CONDITIONAL GO for continuing the remaining corrected i300 full-split render/material cells; NO-GO for broad rendering-quality or manuscript/scientific claim upgrades.
+- [GO] The new direct runner is runtime-proven on one full-split LPIPS-enabled render-quality cell.
+- [CONDITIONAL] Continue remaining corrected i300 cells only in bounded batches, preferably render and material separately, because full LPIPS remains slow.
+- [NO-GO] This is one RC-side cell, not a complete base-vs-RC matrix.
+- [NO-GO] Do not upgrade rendering, material, manuscript, or scientific claims from this cell alone.
+
+**Next recommended step:**
+- Run the matching `teapot_base` render-quality cell through the direct runner using the same output filename pattern, then generate a teapot-only full-split render-quality summary if both matching files are present and verified.
+
+## 2026-05-21 00:00:10 CST - Matched teapot full-split render-quality pair summary
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS protocol/code changes.
+- Coordination board active claim was `None`.
+- Latest decision was `GO` for direct-runner full-split one-cell render-quality collection, `CONDITIONAL GO` for continuing the remaining corrected i300 full-split render/material cells, and `NO-GO` for broad rendering-quality or manuscript/scientific claim upgrades.
+- Latest recommended step was to run the matching `teapot_base` full-split render-quality cell through the direct runner and summarize the teapot base/RC pair.
+- GPU state: GPUs 0-2 showed minimal memory, GPUs 3-6 were occupied; GPU 0 allocation probe passed with `cuda:0`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-20 23:51:21 CST`:
+  - run exactly one matching corrected i300 `teapot_base` render-quality cell through `scripts/run_rc_refgs_metric_sweep_direct.py`;
+  - use GPU 0 only after allocation probe;
+  - verify runner status JSON, output JSON, per-cell log, paired teapot summary, global gates, and no lingering processes;
+  - do not launch a multi-scene sweep, material collection, or claim upgrade.
+
+**Actions taken:**
+- Ran:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py --data_root /data/liuly/dataset/3DGS/refnerf --model_root /tmp/rc_refgs_i300_validation_base_rc_20260520 --scenes teapot --variants base --metrics render_quality --iteration 300 --split both --mask_mode both --cuda_device 0 --summary_json docs/superpowers/logs/rc-refgs-i300-teapot-base-render-quality-full-runner-2026-05-20.json --log_root /tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs`
+- The runner exited 0 after one cell, wrote a `passed` status, and saved evaluator stdout/stderr in the per-cell log.
+- Generated paired teapot summary from matching `render_quality_both_iter300.json` files:
+  - `conda run -n ref_gs python metrics/summarize_render_quality.py --pair teapot /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_rc --metric_filename render_quality_both_iter300.json --output_json docs/superpowers/logs/rc-refgs-i300-teapot-render-quality-full-summary-2026-05-20.json --output_markdown docs/superpowers/logs/rc-refgs-i300-teapot-render-quality-full-summary-2026-05-20.md`
+
+**Artifacts:**
+- Base runner status JSON:
+  - `docs/superpowers/logs/rc-refgs-i300-teapot-base-render-quality-full-runner-2026-05-20.json`
+- Base full-split metric output:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_iter300.json`
+- Base per-cell log:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/teapot/base/render_quality_both_iter300.log`
+- Paired teapot render-quality summary:
+  - `docs/superpowers/logs/rc-refgs-i300-teapot-render-quality-full-summary-2026-05-20.json`
+  - `docs/superpowers/logs/rc-refgs-i300-teapot-render-quality-full-summary-2026-05-20.md`
+
+**Base metric result:**
+- `train`: `num_images=100`, full PSNR `32.408219490051266`, full SSIM `0.9808332133293152`, full LPIPS `0.062169236205518244`, reflective PSNR `32.4850740814209`, reflective SSIM `0.983314443230629`, reflective LPIPS `0.05486888330429793`.
+- `test`: `num_images=200`, full PSNR `32.05025710105896`, full SSIM `0.9798207551240921`, full LPIPS `0.061220311801880596`, reflective PSNR `32.144671840667726`, reflective SSIM `0.9827187573909759`, reflective LPIPS `0.05386775102466345`.
+
+**Paired teapot deltas (`RC - base`):**
+- `test`: full PSNR `+0.03222929000854435`, full SSIM `-0.00007002651691434547`, full LPIPS `+0.00013172714039683814`, reflective PSNR `+0.03237564086914091`, reflective SSIM `+0.000013274848461142241`, reflective LPIPS `+0.0014427147246897226`.
+- `train`: full PSNR `+0.05414800643921325`, full SSIM `-0.00009157121181491146`, full LPIPS `+0.00017653737217188104`, reflective PSNR `+0.055674781799318396`, reflective SSIM `-0.0000170677900314109`, reflective LPIPS `+0.0015705733001232097`.
+- Interpretation boundary: PSNR moves slightly in favor of RC on this scene, SSIM is near-flat/mixed, and LPIPS worsens slightly; this is one scene only and does not support broad rendering-quality claims.
+
+**Commands run and verification results:**
+- Recovery and GPU:
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 0 allocation probe -> exit 0, `cuda:0`.
+- Runtime:
+  - one-cell direct runner command above -> exit 0.
+- Artifact verification:
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-teapot-base-render-quality-full-runner-2026-05-20.json` -> exit 0.
+  - `conda run -n ref_gs python -m json.tool /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/render_quality_both_iter300.json` -> exit 0.
+  - status `rg` check for `status=passed`, `failed_count=0`, `completed_count=1`, `dry_run=false`, log path, and output path -> exit 0.
+  - output `rg` check for split `both`, `lpips_skipped=false`, `num_images=100`, `num_images=200`, and LPIPS fields -> exit 0.
+  - per-cell log tail includes saved output path -> exit 0.
+  - paired summary command above -> exit 0.
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-i300-teapot-render-quality-full-summary-2026-05-20.json` -> exit 0.
+  - summary `rg` check for `teapot`, `full_lpips_delta`, `reflective_lpips_delta`, `render_quality_both_iter300.json`, and `false` LPIPS skip markers -> exit 0.
+  - aggregate base metric extraction command -> exit 0.
+  - paired summary row extraction command -> exit 0.
+- Global gates:
+  - `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_metric_sweep_direct.py tests/test_metric_sweep_direct_static.py metrics/summarize_render_quality.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 41 tests.
+  - `git diff --check` -> exit 0.
+  - final `pgrep -af 'run_rc_refgs_metric_sweep_direct.py|metrics/render_quality_eval.py|conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py'` -> exit 1, no runner/evaluator process left running.
+
+**Go/no-go decision:** GO for matched teapot full-split render-quality pair evidence and summary; CONDITIONAL GO for continuing remaining corrected i300 full-split render/material cells in bounded batches; NO-GO for broad rendering-quality or manuscript/scientific claim upgrades.
+- [GO] The matched `teapot_base` runner cell completed and the teapot base/RC full-split render-quality summary is reproducible from matching direct-runner filenames.
+- [CONDITIONAL] Continue remaining corrected i300 cells only after a fresh GPU allocation check, preferably one scene/metric batch at a time because full LPIPS remains slow.
+- [NO-GO] Teapot-only mixed deltas are insufficient for broad rendering-quality claims.
+- [NO-GO] Do not upgrade material, geometry, causal, external-superiority, manuscript, or scientific claims from this window.
+
+**Next recommended step:**
+- Continue P3 with a bounded remaining-cell batch: either run `toaster_base` + `toaster_rc` render-quality through the direct runner and summarize toaster, or run the two `teapot` material-quality full-split cells only if GPU 0 remains allocatable. Preserve claim boundaries until multi-scene summaries are complete.
+
+## 2026-05-21 02:48:31 CST - Toaster full-split render-quality pair summary
+
+**Recovered state:**
+- Git remained on `master...origin/master` with ongoing dirty RC-RefGS protocol/code changes and prior P3 metric artifacts.
+- Coordination board active claim was `None`.
+- Latest decision was `GO` for matched teapot full-split render-quality pair evidence and summary, `CONDITIONAL GO` for continuing remaining corrected i300 full-split render/material cells in bounded batches, and `NO-GO` for broad rendering-quality or manuscript/scientific claim upgrades.
+- Latest recommended step allowed a bounded `toaster_base` + `toaster_rc` render-quality pair or a teapot material-quality pair; the toaster render pair was the higher-value safe task because it advances the multi-scene render-quality matrix.
+- P3 still requires PSNR/SSIM/LPIPS for all-pixel and reflective-region masks plus per-metric JSON/Markdown summaries.
+- GPU state: GPUs 0-2 showed minimal memory, GPUs 3-6 were occupied; GPU 0 allocation probe passed with `cuda:0`.
+
+**Round-local task claim:**
+- Claimed at `2026-05-21 02:33:13 CST`:
+  - run exactly corrected i300 `toaster_base` and `toaster_rc` full-split render-quality cells through `scripts/run_rc_refgs_metric_sweep_direct.py`;
+  - use GPU 0 only after allocation probe;
+  - verify runner status JSON, both output JSONs, both per-cell logs, paired toaster summary, global gates, and no lingering processes;
+  - do not launch a car sweep, material collection, or claim upgrade.
+
+**Actions taken:**
+- Confirmed no matching toaster `render_quality_both_iter300.json` files were present before launch.
+- Ran:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py --data_root /data/liuly/dataset/3DGS/refnerf --model_root /tmp/rc_refgs_i300_validation_base_rc_20260520 --scenes toaster --variants base rc --metrics render_quality --iteration 300 --split both --mask_mode both --cuda_device 0 --summary_json docs/superpowers/logs/rc-refgs-i300-toaster-render-quality-full-runner-2026-05-21.json --log_root /tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs`
+- The runner exited 0 after two cells, wrote `passed` status for both jobs, and saved evaluator stdout/stderr in per-cell logs.
+- Generated paired toaster summary from matching `render_quality_both_iter300.json` files:
+  - `conda run -n ref_gs python metrics/summarize_render_quality.py --pair toaster /tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_base /tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_rc --metric_filename render_quality_both_iter300.json --output_json docs/superpowers/logs/rc-refgs-i300-toaster-render-quality-full-summary-2026-05-21.json --output_markdown docs/superpowers/logs/rc-refgs-i300-toaster-render-quality-full-summary-2026-05-21.md`
+
+**Artifacts:**
+- Toaster runner status JSON:
+  - `docs/superpowers/logs/rc-refgs-i300-toaster-render-quality-full-runner-2026-05-21.json`
+- Full-split metric outputs:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_base/render_quality_both_iter300.json`
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/toaster_rc/render_quality_both_iter300.json`
+- Per-cell logs:
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/toaster/base/render_quality_both_iter300.log`
+  - `/tmp/rc_refgs_i300_validation_base_rc_20260520/metric_sweep_logs/toaster/rc/render_quality_both_iter300.log`
+- Paired toaster render-quality summary:
+  - `docs/superpowers/logs/rc-refgs-i300-toaster-render-quality-full-summary-2026-05-21.json`
+  - `docs/superpowers/logs/rc-refgs-i300-toaster-render-quality-full-summary-2026-05-21.md`
+
+**Metric results:**
+- `toaster_base` train: `num_images=100`, full PSNR `15.682066764831543`, full SSIM `0.7574692845344544`, full LPIPS `0.4292586714029312`, reflective PSNR `15.688430433273316`, reflective SSIM `0.7731578820943832`, reflective LPIPS `0.41652612686157225`.
+- `toaster_base` test: `num_images=200`, full PSNR `15.15493320465088`, full SSIM `0.746638220846653`, full LPIPS `0.4448534414172173`, reflective PSNR `15.161305561065674`, reflective SSIM `0.7648492580652237`, reflective LPIPS `0.4308262445032597`.
+- `toaster_rc` train: `num_images=100`, full PSNR `15.681916761398316`, full SSIM `0.7571939307451249`, full LPIPS `0.4293327459692955`, reflective PSNR `15.688244724273682`, reflective SSIM `0.7729004895687104`, reflective LPIPS `0.4165812659263611`.
+- `toaster_rc` test: `num_images=200`, full PSNR `15.156602268218995`, full SSIM `0.7464682802557945`, full LPIPS `0.44506706357002257`, reflective PSNR `15.163032383918763`, reflective SSIM `0.7646696546673775`, reflective LPIPS `0.4309001323580742`.
+
+**Paired toaster deltas (`RC - base`):**
+- `test`: full PSNR `+0.0016690635681158028`, full SSIM `-0.00016994059085850832`, full LPIPS `+0.00021362215280529284`, reflective PSNR `+0.00172682285308845`, reflective SSIM `-0.0001796033978462841`, reflective LPIPS `+0.00007388785481449167`.
+- `train`: full PSNR `-0.0001500034332266864`, full SSIM `-0.00027535378932952437`, full LPIPS `+0.00007407456636426835`, reflective PSNR `-0.0001857089996342154`, reflective SSIM `-0.000257392525672806`, reflective LPIPS `+0.0000551390647888228`.
+- Interpretation boundary: toaster render-quality deltas are effectively near-flat/mixed and slightly worse for SSIM/LPIPS; this does not support broad rendering-quality claims.
+
+**Commands run and verification results:**
+- Recovery and GPU:
+  - `git status --short --branch` -> dirty ongoing protocol/code changes.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> exit 0.
+  - `nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_memory --format=csv,noheader` -> exit 0.
+  - GPU 0 allocation probe -> exit 0, `cuda:0`.
+  - preflight `find` for toaster matching render-quality outputs -> exit 0, no matching files printed.
+- Runtime:
+  - two-cell direct runner command above -> exit 0.
+- Artifact verification:
+  - JSON validity check for runner status plus both toaster output JSONs -> exit 0, `valid 3`.
+  - status `rg` check for `status=passed`, `failed_count=0`, `completed_count=2`, `dry_run=false`, both output paths, and both log paths -> exit 0.
+  - output `rg` check for split `both`, `lpips_skipped=false`, `num_images=100`, `num_images=200`, and LPIPS fields across both outputs -> exit 0.
+  - both per-cell log tails include saved output paths -> exit 0.
+  - paired summary command above -> exit 0.
+  - summary JSON validity check -> exit 0, `valid 1`.
+  - summary `rg` check for `toaster`, `full_lpips_delta`, `reflective_lpips_delta`, `render_quality_both_iter300.json`, and `false` LPIPS skip markers -> exit 0.
+  - summary row extraction command -> exit 0.
+  - aggregate base/RC metric extraction command -> exit 0.
+- Global gates:
+  - `conda run -n ref_gs python -m py_compile scripts/run_rc_refgs_metric_sweep_direct.py tests/test_metric_sweep_direct_static.py metrics/summarize_render_quality.py metrics/render_quality_eval.py` -> exit 0.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> exit 0.
+  - `conda run -n ref_gs python -m unittest discover tests` -> exit 0, 41 tests.
+  - `git diff --check` -> exit 0.
+  - first process scan overlapped with the compile command; rerun final `pgrep -af 'run_rc_refgs_metric_sweep_direct.py|metrics/render_quality_eval.py|conda run -n ref_gs python scripts/run_rc_refgs_metric_sweep_direct.py'` -> exit 1, no runner/evaluator process left running.
+
+**Go/no-go decision:** GO for toaster full-split render-quality pair evidence and summary; CONDITIONAL GO for completing the remaining corrected i300 render/material metric cells in bounded batches; NO-GO for broad rendering-quality or manuscript/scientific claim upgrades.
+- [GO] The toaster base/RC render-quality pair completed through the direct runner and has reproducible JSON/Markdown summary artifacts.
+- [CONDITIONAL] Continue the render-quality matrix with the remaining `car_base` + `car_rc` pair only after a fresh GPU allocation check; full LPIPS remains slow.
+- [NO-GO] Toaster deltas are near-flat/mixed and do not improve the rendering-quality claim boundary.
+- [NO-GO] Do not upgrade material, geometry, causal, external-superiority, manuscript, or scientific claims from this window.
+
+**Next recommended step:**
+- If GPU 0 remains allocatable, run the remaining corrected i300 `car_base` + `car_rc` full-split render-quality pair through the direct runner, summarize car, then generate or refresh a three-scene full-split render-quality summary from the matching `render_quality_both_iter300.json` files.

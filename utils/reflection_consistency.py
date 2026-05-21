@@ -110,6 +110,12 @@ def _sample_map(image, grid):
     )[0, :, :, 0].T
 
 
+def _require_render_keys(render_pkg, keys, package_name):
+    for key in keys:
+        if key not in render_pkg:
+            raise KeyError(f"{package_name} render package missing required key: {key}")
+
+
 def reflection_consistency_loss(
     src_pkg,
     tgt_pkg,
@@ -120,6 +126,28 @@ def reflection_consistency_loss(
     roughness_threshold=0.6,
     depth_tolerance=0.02,
 ):
+    _require_render_keys(
+        src_pkg,
+        (
+            "spec_light",
+            "rend_alpha",
+            "roughness_map",
+            "surf_depth",
+            "rend_normal",
+            "surf_normal",
+        ),
+        "source",
+    )
+    _require_render_keys(
+        tgt_pkg,
+        (
+            "spec_light",
+            "rend_alpha",
+            "surf_depth",
+        ),
+        "target",
+    )
+
     spec_src = src_pkg["spec_light"]
     spec_tgt = tgt_pkg["spec_light"]
     depth_src = src_pkg["surf_depth"]
