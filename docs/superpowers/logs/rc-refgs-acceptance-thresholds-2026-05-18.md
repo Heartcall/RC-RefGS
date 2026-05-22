@@ -4,6 +4,8 @@ Date: 2026-05-18 05:06:23 CST
 
 Scope: conservative acceptance thresholds for claims using the current i300 evidence only.
 
+Refresh note (2026-05-21): corrected i300 full-split LPIPS-enabled render-quality evidence is now available in `rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.{md,json}`. The evidence remains Mixed / Unsupported for broad rendering-quality gains: full PSNR improves in 3/6 scene/split rows, full SSIM improves in 0/6 rows, and full LPIPS is worse in 5/6 rows.
+
 Claim-label compatibility: `Supported`, `Mixed`, and `Unsupported` labels in later manuscript artifacts correspond to the diagnostic-supported, table-only/contextual, and forbidden/failed claim gates below.
 
 ## Current Protocol
@@ -13,7 +15,7 @@ Claim-label compatibility: `Supported`, `Mixed`, and `Unsupported` labels in lat
 - Seeds: one.
 - Splits: train and held-out test.
 - Reflection metric: `max_pairs=10`, `max_angle_deg=180`.
-- LPIPS: unavailable/skipped.
+- LPIPS: available for the corrected i300 full-split `teapot`/`toaster`/`car` base/RC render-quality summary; trend is mostly worse for RC.
 - Mesh/reference geometry metrics: unavailable.
 - Ablations: unavailable.
 
@@ -23,7 +25,7 @@ Claim-label compatibility: `Supported`, `Mixed`, and `Unsupported` labels in lat
 | --- | --- | --- | --- | --- |
 | Reflection-consistency diagnostic | Pass | Every scene/split row must have lower RC mean reflection-consistency error under identical split, iteration, and pair settings | Six of six rows pass on `teapot`, `toaster`, and `car` | Diagnostic-supported |
 | Method-level reflection consistency | Conditional | Repeat at longer horizons on the intended main scene set; preserve identical seeds/splits/iterations; report pair counts and sampling settings; require no unexplained scene-level regressions | Current result is consistent but short-run and one-seed | Conditional |
-| Overall rendering quality | Fail | LPIPS available, and PSNR/SSIM/LPIPS trends non-negative or explicitly explained across scenes/splits | PSNR/SSIM are mixed; LPIPS skipped | Table-only |
+| Overall rendering quality | Fail | LPIPS available, and PSNR/SSIM/LPIPS trends non-negative or explicitly explained across scenes/splits | Corrected i300 LPIPS-enabled summary has mixed/negative broad trend: full PSNR improves in 3/6 rows, full SSIM improves in 0/6 rows, and full LPIPS is worse in 5/6 rows | Table-only; NO-GO for broad rendering-quality gain |
 | Normal diagnostics | Pass with small-effect warning | All rows improve MAE and cosine; GT normal convention and missing-normal counts reported | Six of six rows improve with raw GT normals and zero missing normals, but small deltas | Directional diagnostic |
 | Geometry quality | Fail | Extract comparable meshes and evaluate against valid reference geometry, such as SMVP3D OBJ, with Chamfer/F-score or equivalent | No extracted RefNeRF meshes; RefNeRF `points3d.ply` is random init; SMVP3D needs loader/runtime work | Forbidden |
 | Causal attribution | Fail | Matched ablations for `w/o L_ref`, `w/o specular confidence`, and roughness-only regularization | No ablation metrics available | Hypothesis-only |
@@ -36,7 +38,7 @@ Contribution bullet:
 
 Results sentence:
 
-> [Evidence] Across the three i300 sanity scenes, RC-RefGS reduces the measured reflection-consistency error in all six train/test rows under `max_pairs=10` and `max_angle_deg=180`. [Qualifier] PSNR/SSIM trends are mixed and LPIPS is unavailable, so we report these metrics without claiming overall novel-view synthesis gains.
+> [Evidence] Across the three i300 sanity scenes, RC-RefGS reduces the measured reflection-consistency error in all six train/test rows under `max_pairs=10` and `max_angle_deg=180`. [Qualifier] Corrected full-split PSNR/SSIM/LPIPS rendering metrics are mixed or negative for broad rendering quality, so we report these metrics without claiming overall novel-view synthesis gains.
 
 Normal diagnostic sentence:
 
@@ -44,12 +46,13 @@ Normal diagnostic sentence:
 
 Required limitation sentence:
 
-> [Qualifier] Current evidence is limited to three short-run scenes, one seed, sampled reflection pairs, no LPIPS, no external baselines, no ablation table, and no mesh/reference-geometry metric.
+> [Qualifier] Current evidence is limited to three short-run scenes, one seed, sampled reflection pairs, mixed/negative LPIPS-enabled rendering trends, no external baselines, no full-horizon ablation table, and no mesh/reference-geometry metric.
 
 ## Forbidden Language
 
 - Do not claim improved overall novel-view synthesis quality.
 - Do not claim LPIPS improvement.
+- Do not claim broad rendering-quality improvement from the corrected i300 LPIPS-enabled three-scene summary.
 - Do not claim improved mesh quality, surface reconstruction, or geometry quality.
 - Do not claim material decomposition improvement.
 - Do not claim superiority over external methods or paper baselines.

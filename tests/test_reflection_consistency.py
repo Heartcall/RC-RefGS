@@ -55,6 +55,26 @@ class ReflectionConsistencyHelperTests(unittest.TestCase):
 
         self.assertIs(selected, nearby)
 
+    def test_choose_pair_camera_returns_none_when_no_candidate_is_within_angle(self):
+        rc = _load_module()
+        current = _dummy_camera(center=(1.0, 0.0, 0.0))
+        off_angle = _dummy_camera(center=(0.0, 1.0, 0.0))
+        opposite = _dummy_camera(center=(-1.0, 0.0, 0.0))
+
+        selected = rc.choose_pair_camera([current, off_angle, opposite], current, max_angle_deg=10.0)
+
+        self.assertIsNone(selected)
+
+    def test_choose_pair_camera_returns_none_when_current_camera_has_no_center(self):
+        rc = _load_module()
+        current = _dummy_camera(center=(0.0, 0.0, 0.0))
+        current.camera_center = None
+        other = _dummy_camera(center=(0.0, 0.0, 1.0))
+
+        selected = rc.choose_pair_camera([current, other], current, max_angle_deg=45.0)
+
+        self.assertIsNone(selected)
+
     def test_backproject_depth_returns_world_points_for_each_pixel(self):
         rc = _load_module()
         cam = _dummy_camera(width=2, height=2)

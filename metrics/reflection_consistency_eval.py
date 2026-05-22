@@ -25,7 +25,7 @@ def _extract_cuda_device(argv):
 
 def _maybe_set_cuda_device(argv):
     cuda_device = _extract_cuda_device(argv)
-    if cuda_device is not None:
+    if cuda_device is not None and os.environ.get("RC_REF_GS_FILTER_CUDA_VISIBLE_DEVICES") == "1":
         os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
 
 _maybe_set_cuda_device(sys.argv)
@@ -37,6 +37,15 @@ from gaussian_renderer import render
 from scene import Scene, GaussianModel
 from utils.general_utils import safe_state
 from utils.reflection_consistency import choose_pair_camera, reflection_consistency_loss
+
+
+def _cuda_device_index(cuda_device):
+    if cuda_device is None:
+        return 0
+    cuda_device = cuda_device.strip()
+    if not cuda_device or cuda_device.lower() in {"auto", "none"}:
+        return 0
+    return int(cuda_device.split(",", 1)[0])
 
 
 def masked_psnr(pred, target, mask, eps=1e-8):
@@ -214,7 +223,7 @@ def main():
     parser.add_argument("--quiet", action="store_true")
 
     args = get_combined_args(parser)
-    safe_state(args.quiet)
+    safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))
     pair_list_json = getattr(args, "pair_list_json", None)
 
     dataset = lp.extract(args)

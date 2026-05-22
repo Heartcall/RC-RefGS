@@ -12,11 +12,25 @@ def _extract_cuda_device(argv):
     if "--cuda_device" in argv:
         index = argv.index("--cuda_device")
         if index + 1 < len(argv):
-            return argv[index + 1]
-    return os.environ.get("CUDA_VISIBLE_DEVICES", "2")
+            value = argv[index + 1].strip()
+            if value and value.lower() not in {"auto", "none"}:
+                return value
+            return None
+    current = os.environ.get("CUDA_VISIBLE_DEVICES")
+    if current is not None:
+        current = current.strip()
+        if current:
+            return current
+    return None
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = _extract_cuda_device(sys.argv)
+def _maybe_set_cuda_device(argv):
+    cuda_device = _extract_cuda_device(argv)
+    if cuda_device is not None and os.environ.get("RC_REF_GS_FILTER_CUDA_VISIBLE_DEVICES") == "1":
+        os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
+
+
+_maybe_set_cuda_device(sys.argv)
 
 import torch
 import torch.nn.functional as F
@@ -26,6 +40,15 @@ from arguments import ModelParams, PipelineParams, get_combined_args
 from gaussian_renderer import render
 from scene import Scene, GaussianModel
 from utils.general_utils import PILtoTorch, safe_state
+
+
+def _cuda_device_index(cuda_device):
+    if cuda_device is None:
+        return 0
+    cuda_device = cuda_device.strip()
+    if not cuda_device or cuda_device.lower() in {"auto", "none"}:
+        return 0
+    return int(cuda_device.split(",", 1)[0])
 
 
 def convert_gt_normal_space(normal, camera, gt_normal_space):
@@ -214,11 +237,11 @@ def main():
     parser.add_argument("--alpha_threshold", type=float, default=0.2)
     parser.add_argument("--roughness_threshold", type=float, default=0.6)
     parser.add_argument("--output_json", type=str, default=None)
-    parser.add_argument("--cuda_device", type=str, default="2")
+    parser.add_argument("--cuda_device", type=str, default=None)
     parser.add_argument("--quiet", action="store_true")
 
     args = get_combined_args(parser)
-    safe_state(args.quiet)
+    safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))
 
     dataset = lp.extract(args)
     pipe = pp.extract(args)

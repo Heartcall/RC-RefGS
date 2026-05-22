@@ -25,10 +25,18 @@ the agent must:
 - Reflection metric entrypoint implemented (`metrics/reflection_consistency_eval.py`).
 - Render-quality evaluator and LPIPS-enabled i300 summary artifact available:
   - `docs/superpowers/logs/rc-refgs-render-quality-summary-2026-05-18-lpips.{md,json}`
+  - corrected i300 full-split three-scene summary: `docs/superpowers/logs/rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.{md,json}`
 - Normal-quality full-split summary artifact available:
   - `docs/superpowers/logs/rc-refgs-normal-quality-summary-2026-05-18.{md,json}`
+- Material-quality diagnostics are implemented and summarized for corrected i300 `teapot/toaster/car` base/RC full splits:
+  - `docs/superpowers/logs/rc-refgs-i300-material-quality-full-summary-2026-05-21.{md,json}`
 - Reduced ablation summary is complete (30/30 cells, no missing cells):
   - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.{md,json}`
+- P4 base/RC full-horizon preflight is ready but unlaunched:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json`
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-dryrun-summary-2026-05-22.json`
+  - `docs/superpowers/logs/rc-refgs-p4-full-horizon-preflight-2026-05-22.md`
+  - `docs/superpowers/logs/rc-refgs-p4-launch-safety-audit-2026-05-22.md`
 - Conservative claim framing and thresholds exist:
   - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
   - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
@@ -37,8 +45,9 @@ the agent must:
 
 - Bash script launcher reliability is still Mixed in nested bash/conda contexts; use the Python direct-command launcher as the primary launcher until the bash wrapper is runtime repaired.
 - Full-horizon matched runs (31000) are not executed for the full matrix.
+- The P4 base/RC full-horizon matrix must not be launched opportunistically; launch only in a deliberate runtime window with explicitly allocated compute.
 - Multi-seed evidence is missing.
-- Material diagnostics are missing.
+- Material diagnostics exist for corrected i300 full splits, but remain Mixed / Unsupported for material-quality claims and need longer-horizon/multi-seed linkage before claim use.
 - Geometry metrics are blocked pending valid SMVP3D loader/transform/runtime path.
 - External baseline comparisons are missing.
 
@@ -131,17 +140,20 @@ Verification gate:
 
 ### P3 - Metrics completion
 
+Status: mostly complete for corrected i300 `teapot/toaster/car` base/RC diagnostics; remaining P3 work is geometry-prerequisite work or optional fixed-pair/full-horizon reruns, not material/rendering plumbing.
+
 - Reflection consistency:
-  - fixed pair lists;
+  - fixed pair lists implemented;
   - `max_pairs`, `max_angle_deg`, valid-pair counts in outputs.
 - Rendering:
-  - PSNR/SSIM/LPIPS for all-pixel and reflective-region masks.
+  - PSNR/SSIM/LPIPS for all-pixel and reflective-region masks are summarized for corrected i300 full splits.
 - Normal diagnostics:
   - full split;
   - raw GT convention;
   - missing-normal counts.
 - Material diagnostics:
-  - cross-view albedo variance, roughness variance, specular consistency (if supported).
+  - cross-view diffuse/albedo variance, roughness variance, and specular consistency are summarized for corrected i300 full splits;
+  - keep as diagnostic-only unless longer-horizon/multi-seed evidence supports a material-quality claim.
 - Geometry:
   - do not use RefNeRF `points3d.ply` as GT;
   - add SMVP3D loader/transform support first;
@@ -154,7 +166,9 @@ Verification gate:
 
 ### P4 - Full experiment execution
 
-- Run matched full 31000 base/rc first on `teapot`/`toaster`/`car`.
+- Highest-value next task: run matched full 31000 base/rc first on `teapot`/`toaster`/`car`, using `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json`.
+- Launch gate: do not start this six-job matrix unless compute is explicitly allocated for the window and GPU/process safety checks pass.
+- If compute is not explicitly allocated, do not repeat opportunistic no-launch audits unless state changed; use docs/status reconciliation only when a stale artifact would misroute future windows.
 - Run matched full ablations.
 - Run multi-seed repeats.
 - Optionally expand scene set and SMVP3D geometry experiments.
@@ -167,10 +181,10 @@ Verification gate:
 
 ### P5 - Claim audit and manuscript integration
 
-- Switch to gpt-5.5 only after new evidence artifacts exist.
+- Switch to gpt-5.5 only after new full-horizon evidence artifacts exist.
 - Update claim audit and manuscript integration drafts.
 - Upgrade claims only when acceptance thresholds are satisfied.
-- Preserve NO-GO boundaries for rendering, geometry, material, external-superiority, and causal claims until evidence supports upgrades.
+- Preserve NO-GO boundaries for manuscript/scientific, broad rendering, geometry, material, external-superiority, causal, ablation, and multi-seed claims until evidence supports upgrades.
 
 Verification gate:
 - claim-audit artifact includes Supported / Mixed / Unsupported tags;
@@ -209,7 +223,7 @@ Until thresholds are met: keep claim state as Supported / Mixed / Unsupported wi
 
 Switching rule:
 - Do not SWITCH MODEL for manuscript work during P0-P4 unless explicitly requested.
-- SWITCH MODEL to gpt-5.5 during P5 only when fresh evidence artifacts are present.
+- SWITCH MODEL to gpt-5.5 during P5 only when fresh full-horizon evidence artifacts are present.
 
 ## Decision Policy
 

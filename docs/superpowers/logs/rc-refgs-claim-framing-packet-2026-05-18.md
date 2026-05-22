@@ -4,12 +4,14 @@ Date: 2026-05-18 04:19:25 CST
 
 Scope: conservative paper-claim handoff using current i300 evidence only.
 
+Refresh note (2026-05-21): corrected i300 full-split LPIPS-enabled render-quality evidence is now available in `rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.{md,json}`. It preserves the broad rendering-quality NO-GO boundary: full PSNR improves in only 3/6 scene/split rows, full SSIM improves in 0/6 rows, and full LPIPS is worse in 5/6 rows.
+
 ## Current Evidence
 
 | Evidence area | Status | What it supports | Caveat |
 | --- | --- | --- | --- |
 | Reflection consistency | Supported | RC lowers measured reprojected reflection-consistency error on `teapot`, `toaster`, and `car`, train and test | Pair-sampling dependent, `max_pairs=10`, `max_angle_deg=180` |
-| Standard PSNR/SSIM | Mixed | `teapot` improves; `toaster`/`car` are mixed or slightly lower | LPIPS skipped; no overall rendering-quality claim |
+| Standard PSNR/SSIM/LPIPS | Mixed / Unsupported for broad rendering gains | LPIPS-enabled corrected i300 full-split metrics are now available for `teapot`, `toaster`, and `car`; some PSNR rows improve | Full PSNR improves in only 3/6 rows, full SSIM improves in 0/6 rows, full LPIPS is worse in 5/6 rows; no overall rendering-quality claim |
 | Normal diagnostics | Directionally favorable diagnostic | Full-split raw-convention normal MAE/cosine improve on all six scene/split rows | Small deltas; not mesh/reference-geometry evidence |
 | Geometry | Unsupported / No-go | SMVP3D has usable OBJ references in principle | Current RefNeRF artifacts have no extracted meshes; RefNeRF `points3d.ply` is random initialization data; SMVP3D needs loader/runtime prerequisites |
 
@@ -22,7 +24,7 @@ Scope: conservative paper-claim handoff using current i300 evidence only.
 
 ## Required Qualifiers
 
-- Rendering quality remains mixed: PSNR/SSIM gains are scene-dependent, and LPIPS is unavailable.
+- Rendering quality remains mixed/unsupported for broad gains: PSNR gains are scene-dependent, full SSIM does not improve in any of the six rows, and LPIPS is worse in most rows.
 - Evidence is short-run only: 300 iterations, one seed, three scenes, and sampled reflection pairs.
 - Normal diagnostic effect sizes are small, especially outside `teapot`.
 - Geometry claims require extracted meshes and reference-geometry metrics; current evidence does not provide them.
@@ -34,6 +36,7 @@ Scope: conservative paper-claim handoff using current i300 evidence only.
 - Do not claim material decomposition improvement.
 - Do not claim superiority over external methods or paper baselines.
 - Do not claim LPIPS improvement.
+- Do not claim broad rendering-quality improvement from the corrected i300 LPIPS-enabled three-scene summary.
 - Do not use RefNeRF `points3d.ply` as ground-truth geometry.
 
 ## Acceptance Gates
@@ -45,7 +48,7 @@ Reflection-consistency claim:
 
 Rendering claim:
 
-- Run LPIPS with cached or explicitly approved weights.
+- Use the corrected i300 LPIPS-enabled summary as current evidence: `rc-refgs-i300-three-scene-render-quality-full-summary-2026-05-21.{md,json}`.
 - Require non-negative or explicitly explained PSNR/SSIM/LPIPS trends across scenes before any overall rendering claim.
 - Repeat at longer training horizons and preferably more than one seed.
 
@@ -65,6 +68,6 @@ Causality claim:
 
 **CONDITIONAL GO** for conservative RC-RefGS claim framing centered on the reflection-consistency diagnostic.
 
-**NO-GO** for broad rendering-quality, geometry-quality, surface-reconstruction, material-decomposition, LPIPS, or external-superiority claims.
+**NO-GO** for broad rendering-quality, geometry-quality, surface-reconstruction, material-decomposition, LPIPS-improvement, or external-superiority claims.
 
 **SWITCH MODEL** to gpt-5.5 is recommended for paper language and acceptance-threshold drafting.
