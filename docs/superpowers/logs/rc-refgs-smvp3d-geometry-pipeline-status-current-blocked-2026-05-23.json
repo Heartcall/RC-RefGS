@@ -1,0 +1,18 @@
+{
+  "blockers": [
+    "postrun_status:summary_is_dry_run",
+    "missing_predicted_meshes:5"
+  ],
+  "claim_boundary": "Diagnostic status only; do not upgrade geometry claims from this summary.",
+  "evaluator_scene_count": 0,
+  "evaluator_status": "blocked_by_gate",
+  "gate_metrics_allowed": false,
+  "gate_status": "blocked",
+  "metrics_computed": false,
+  "metrics_ready": false,
+  "mode": "smvp3d_geometry_pipeline_status",
+  "next_action": "run_non_dryrun_extraction_smoke_with_explicit_compute",
+  "postrun_ready": false,
+  "postrun_status": "summary_is_dry_run",
+  "status": "blocked_pending_extraction"
+}

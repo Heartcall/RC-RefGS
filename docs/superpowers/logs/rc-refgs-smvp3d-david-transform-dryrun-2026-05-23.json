@@ -1,0 +1,14 @@
+{
+  "mode": "smvp3d_transform_conversion",
+  "scene_path": "/data/liuly/dataset/3DGS/glossy/SMVP3D/david",
+  "cameras_path": "/data/liuly/dataset/3DGS/glossy/SMVP3D/david/cameras.npz",
+  "camera_count": 48,
+  "converted_count": 48,
+  "train_count": 42,
+  "test_count": 6,
+  "missing_images": [],
+  "image_dir": "image",
+  "extension": ".png",
+  "eval_split": true,
+  "llffhold": 8
+}

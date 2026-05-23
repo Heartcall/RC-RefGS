@@ -1,0 +1,54 @@
+{
+  "mode": "extract_mesh_runtime_readiness",
+  "created_at": "2026-05-23 04:45:06 CST",
+  "source_artifacts": {
+    "dry_run_import_smoke": "docs/superpowers/logs/rc-refgs-extract-mesh-teapot-base-dryrun-smoke-2026-05-22.json",
+    "plain_open3d_preflight": "docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-2026-05-23.json",
+    "ldpath_open3d_preflight": "docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-ldpath-2026-05-23.json",
+    "runtime_command_plan": "docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23.json",
+    "smvp3d_obj_reference_plan": "docs/superpowers/logs/rc-refgs-smvp3d-obj-reference-dryrun-plan-2026-05-23.json"
+  },
+  "extraction_target": {
+    "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+    "iteration": 300,
+    "split": "train",
+    "mesh_mode": "bounded",
+    "point_cloud_input": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/point_cloud/iteration_300/point_cloud.ply",
+    "missing_inputs": [],
+    "planned_output_mesh": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply",
+    "planned_output_mesh_exists": false,
+    "planned_runtime_summary_json": "docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23-runtime.json"
+  },
+  "runtime_environment": {
+    "plain_open3d_ok": false,
+    "plain_open3d_error_type": "ImportError",
+    "plain_open3d_error_contains": "GLIBCXX_3.4.29",
+    "ldpath_open3d_ok": true,
+    "open3d_version": "0.17.0",
+    "required_ld_library_path": "/home/liuly/anaconda3/envs/ref_gs/lib:$LD_LIBRARY_PATH"
+  },
+  "planned_command": {
+    "requires_explicit_runtime_allocation": true,
+    "argv_omits_dry_run_flags": true,
+    "command_line": "/home/liuly/anaconda3/envs/ref_gs/bin/python extract_mesh.py --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base --iteration 300 --output_mesh /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply --mesh_mode bounded --split train --voxel_size 0.004 --sdf_trunc 0.02 --depth_trunc 3.0 --conf_threshold 0.0 --mesh_resolution 1024 --cluster_to_keep 1000 --summary_json docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23-runtime.json --cuda_device 0"
+  },
+  "smvp3d_geometry_dependency": {
+    "scene_count": 5,
+    "reference_obj_count": 5,
+    "missing_mesh_count": 5,
+    "metrics_computed": false
+  },
+  "go_no_go": {
+    "go": [
+      "Use this packet as the command/env/gate handoff for one explicitly allocated non-dry-run extraction smoke."
+    ],
+    "conditional_go": [
+      "Run extraction only in a deliberate runtime window with explicit GPU allocation and required_ld_library_path applied."
+    ],
+    "no_go": [
+      "Do not compute Chamfer/F-score values until predicted meshes exist.",
+      "Do not upgrade geometry, reconstruction, manuscript, scientific, or P4 claims from this packet."
+    ]
+  },
+  "claim_boundary": "Readiness packet only; no training, extraction, mesh metric computation, or claim upgrade was performed."
+}

@@ -1,0 +1,23 @@
+{
+  "mode": "mesh_extraction",
+  "dry_run": true,
+  "imports_checked": false,
+  "import_info": null,
+  "open3d_info": {
+    "checked": true,
+    "ok": true,
+    "version": "0.17.0",
+    "error_type": null,
+    "error": null,
+    "recommended_ld_library_path_prefix": "/home/liuly/anaconda3/envs/ref_gs/lib"
+  },
+  "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+  "iteration": 300,
+  "output_mesh": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300.ply",
+  "mesh_mode": "bounded",
+  "split": "train",
+  "expected_inputs": [
+    "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/point_cloud/iteration_300/point_cloud.ply"
+  ],
+  "missing_inputs": []
+}

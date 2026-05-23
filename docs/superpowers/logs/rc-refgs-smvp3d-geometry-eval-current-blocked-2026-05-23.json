@@ -1,0 +1,12 @@
+{
+  "blockers": [
+    "postrun_status:summary_is_dry_run",
+    "missing_predicted_meshes:5"
+  ],
+  "claim_boundary": "Gate-blocked run; no geometry metric values are computed.",
+  "metrics_computed": false,
+  "mode": "smvp3d_geometry_eval",
+  "sampling_mode": "vertices_only",
+  "scenes": [],
+  "status": "blocked_by_gate"
+}

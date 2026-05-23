@@ -1,0 +1,17 @@
+{
+  "blockers": [
+    "postrun_status:summary_is_dry_run",
+    "missing_predicted_meshes:5"
+  ],
+  "claim_boundary": "Dry-run gate only; no geometry metric values are computed.",
+  "geometry_ready_count": 0,
+  "metrics_allowed": false,
+  "metrics_computed": false,
+  "missing_predicted_mesh_count": 5,
+  "mode": "geometry_metric_gate_dryrun",
+  "postrun_ready": false,
+  "postrun_status": "summary_is_dry_run",
+  "reference_obj_count": 5,
+  "scene_count": 5,
+  "status": "blocked"
+}

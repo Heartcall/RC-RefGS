@@ -1,0 +1,63 @@
+{
+  "mode": "mesh_extraction",
+  "dry_run": true,
+  "imports_checked": false,
+  "import_info": null,
+  "open3d_info": {
+    "checked": true,
+    "ok": true,
+    "version": "0.17.0",
+    "error_type": null,
+    "error": null,
+    "recommended_ld_library_path_prefix": "/home/liuly/anaconda3/envs/ref_gs/lib"
+  },
+  "runtime_command_plan": {
+    "requires_explicit_runtime_allocation": true,
+    "environment": {
+      "LD_LIBRARY_PATH": "/home/liuly/anaconda3/envs/ref_gs/lib:$LD_LIBRARY_PATH"
+    },
+    "argv": [
+      "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+      "extract_mesh.py",
+      "--model_path",
+      "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+      "--iteration",
+      "300",
+      "--output_mesh",
+      "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply",
+      "--mesh_mode",
+      "bounded",
+      "--split",
+      "train",
+      "--voxel_size",
+      "0.004",
+      "--sdf_trunc",
+      "0.02",
+      "--depth_trunc",
+      "3.0",
+      "--conf_threshold",
+      "0.0",
+      "--mesh_resolution",
+      "1024",
+      "--cluster_to_keep",
+      "1000",
+      "--summary_json",
+      "docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23-runtime.json",
+      "--cuda_device",
+      "0"
+    ],
+    "command_line": "/home/liuly/anaconda3/envs/ref_gs/bin/python extract_mesh.py --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base --iteration 300 --output_mesh /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply --mesh_mode bounded --split train --voxel_size 0.004 --sdf_trunc 0.02 --depth_trunc 3.0 --conf_threshold 0.0 --mesh_resolution 1024 --cluster_to_keep 1000 --summary_json docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23-runtime.json --cuda_device 0",
+    "output_mesh": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply",
+    "runtime_summary_json": "docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23-runtime.json",
+    "claim_boundary": "Command plan only; extraction is not executed during dry-run."
+  },
+  "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+  "iteration": 300,
+  "output_mesh": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply",
+  "mesh_mode": "bounded",
+  "split": "train",
+  "expected_inputs": [
+    "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/point_cloud/iteration_300/point_cloud.ply"
+  ],
+  "missing_inputs": []
+}

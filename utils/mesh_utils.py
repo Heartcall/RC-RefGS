@@ -14,10 +14,28 @@ import numpy as np
 import os
 import math
 from tqdm import tqdm
-from utils.render_utils import save_img_f32, save_img_u8
+from importlib import import_module
 from functools import partial
 import open3d as o3d
-import trimesh
+
+
+def _missing_render_utils_helper(name):
+    def _missing(*args, **kwargs):
+        raise ModuleNotFoundError(
+            "utils.render_utils is required for GaussianExtractor.export_image "
+            "but is not available in this repository"
+        )
+    return _missing
+
+
+try:
+    _render_utils = import_module("utils.render_utils")
+except ModuleNotFoundError:
+    save_img_f32 = _missing_render_utils_helper("save_img_f32")
+    save_img_u8 = _missing_render_utils_helper("save_img_u8")
+else:
+    save_img_f32 = _render_utils.save_img_f32
+    save_img_u8 = _render_utils.save_img_u8
 
 def post_process_mesh(mesh, cluster_to_keep=1000):
     """

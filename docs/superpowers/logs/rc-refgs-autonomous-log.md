@@ -5260,3 +5260,902 @@ Key measured values (mean reflection consistency):
 
 **Next recommended step:**
 - If a specific GPU/runtime window is allocated, claim and launch the preflighted P4 base/RC `31000` manifest; otherwise avoid repeating no-launch audits or docs-only reconciliations unless GPU/process state or protocol artifacts change.
+
+---
+
+## 2026-05-22 19:41:04 CST - P3 Geometry Prerequisite Refresh
+
+**Recovered state:**
+- Git state was clean before this window.
+- Coordination board active claim was `None`.
+- The roadmap and full implementation status route P4 full-horizon execution only to an explicitly allocated compute window; no explicit compute allocation was present in this prompt.
+- Prior geometry feasibility state was `NO-GO` for immediate RefNeRF Chamfer/F-score and `CONDITIONAL GO` for future SMVP3D geometry after loader/runtime prerequisites.
+
+**Round-local task claim:**
+- Claimed at `2026-05-22 19:39:29 CST`:
+  - refresh current SMVP3D/reference-mesh geometry prerequisite blocker state;
+  - keep scope to import/file/dataset probes and a dated audit artifact;
+  - do not launch training, edit training code, edit metric code, or upgrade claims.
+
+**Actions taken:**
+- Added `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`.
+- Rechecked geometry runtime and dataset prerequisites:
+  - `trimesh` remains missing in `ref_gs`.
+  - Plain `open3d` import still fails with `GLIBCXX_3.4.29` through `libLerc.so.4`.
+  - `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` still allows `open3d 0.17.0` to import.
+  - `utils.mesh_utils` still fails at import on missing `utils.render_utils`.
+  - No root mesh extraction/evaluation entrypoint is present.
+  - `Scene` still dispatches only COLMAP `sparse/` or Blender `transforms_train.json`; no SMVP3D `cameras.npz` loader is present.
+  - SMVP3D remains available at `/data/liuly/dataset/3DGS/glossy/SMVP3D`, with `david`, `dragon`, `hedgehog`, `snail`, and `squirrel`; each has 48 images plus an OBJ reference and `cameras.npz`.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> clean at recovery.
+  - roadmap, coordination board, autonomous log, full implementation status, memory protocol note, and prior geometry feasibility artifact were read.
+- Geometry probes:
+  - `conda run -n ref_gs python -c "import importlib.util; ... find_spec('trimesh')"` -> `trimesh_spec= None`.
+  - `conda run -n ref_gs python -c "import open3d; ..."` -> exit 1 with `GLIBCXX_3.4.29` missing.
+  - `conda run -n ref_gs bash -lc 'export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:$LD_LIBRARY_PATH"; python -c "import open3d; ..."'` -> exit 0 with `open3d ok 0.17.0`.
+  - `conda run -n ref_gs python -c "import utils.mesh_utils; ..."` -> exit 1 with `ModuleNotFoundError: No module named 'utils.render_utils'`.
+  - `rg --files | rg '(^extract_mesh\.py$|mesh.*eval|geometry|chamfer|fscore|smvp)'` -> only prior geometry feasibility artifacts found.
+  - SMVP3D scene/image/OBJ/camera probes confirmed the existing five-scene inventory.
+
+**Evidence interpretation recorded:**
+- This window changes no runtime or metric behavior.
+- Geometry blockers remain current and reproducible.
+- Immediate RefNeRF Chamfer/F-score and SMVP3D geometry metrics remain blocked.
+
+**Go/no-go decision:** CONDITIONAL GO for a future bounded geometry-prerequisite implementation task that fixes/isolates the mesh utility runtime path, dependency path, Open3D runner environment, extraction entrypoint, and SMVP3D loader/transform conversion; NO-GO for immediate geometry metrics, geometry-quality claims, reconstruction-quality claims, manuscript/scientific claim upgrades, or P4 launch in this window.
+
+**Next recommended step:**
+- If no explicit compute allocation is provided, the next safe P3 geometry task is a small prerequisite implementation window: repair or isolate `utils.mesh_utils` dependencies and add a smoke-testable mesh extraction/evaluation entrypoint before adding SMVP3D loader support.
+
+---
+
+## 2026-05-22 20:10:16 CST - Geometry Routing Reconciliation After Prerequisite Refresh
+
+**Recovered state:**
+- Git was dirty from the previous geometry-refresh window:
+  - modified `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+  - modified `docs/superpowers/logs/rc-refgs-coordination-board.md`
+  - untracked `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`
+- Coordination board active claim was `None`.
+- The roadmap still made P4 full-horizon execution the highest-value runtime task only when compute is explicitly allocated.
+- No explicit compute allocation was present in this prompt.
+- The latest geometry refresh identified the next no-GPU Codex path as bounded geometry-prerequisite implementation: repair or isolate `utils.mesh_utils` dependencies, handle optional `trimesh`, preserve the Open3D environment workaround, then add a smoke-testable mesh extraction/evaluation entrypoint.
+
+**Round-local task claim:**
+- Claimed at `2026-05-22 20:09:01 CST`:
+  - reconcile coordination-board/status routing after the P3 geometry-prerequisite refresh;
+  - keep scope to docs/log/status only;
+  - do not launch training, edit training code, edit metric code, or upgrade claims.
+
+**Actions taken:**
+- Updated the coordination board:
+  - added an explicit P3 safe fallback when P4 compute is not explicitly allocated;
+  - routed no-compute Codex windows to bounded geometry-prerequisite implementation grounded in `rc-refgs-geometry-prereq-refresh-2026-05-22.md`;
+  - preserved the explicit-compute-only P4 launch gate and no repeated no-launch audit rule.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`:
+  - added the geometry refresh audit to the Geometry/SMVP3D evidence row;
+  - recorded the current runtime/import blockers;
+  - clarified that no-compute Codex work should route to P3 geometry-prerequisite implementation.
+- Updated the superseding roadmap:
+  - added the geometry refresh audit to the completed evidence inventory;
+  - updated blocker/P4 fallback language so no-compute windows do not repeat P4 no-launch/status loops.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior geometry-refresh docs/log artifacts.
+  - roadmap, coordination board, autonomous log, full status, memory protocol note, and geometry refresh audit were read.
+- Verification:
+  - routing marker checks for geometry refresh artifact, P3 safe fallback, bounded geometry-prerequisite implementation, no repeated P4 no-launch audits, explicit compute allocation, and NO-GO boundaries were run during closeout.
+
+**Evidence interpretation recorded:**
+- This is routing/protocol clarification only.
+- No runtime behavior, metric behavior, or experimental evidence changed.
+- P4 remains unlaunched and preflight-only.
+
+**Go/no-go decision:** GO for routing reconciliation; CONDITIONAL GO for a future bounded P3 geometry-prerequisite implementation task when no explicit compute allocation is present; CONDITIONAL GO for future P4 launch only with explicit compute allocation; NO-GO for immediate geometry metrics, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest.
+- If no explicit compute is allocated, claim exactly one test-first P3 geometry-prerequisite implementation task, starting with import/runtime isolation for `utils.mesh_utils`.
+
+---
+
+## 2026-05-22 20:17:17 CST - Mesh Utils Import Isolation
+
+**Recovered state:**
+- Git was dirty from prior geometry refresh/routing docs:
+  - modified autonomous log, coordination board, full implementation status, and roadmap;
+  - untracked `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The board/status/roadmap routed no-compute Codex work to a bounded, test-first P3 geometry prerequisite implementation, starting with `utils.mesh_utils` import/runtime isolation.
+
+**Round-local task claim:**
+- Claimed at `2026-05-22 20:14:04 CST`:
+  - isolate `utils.mesh_utils` from missing top-level `utils.render_utils` and unused `trimesh` import blockers;
+  - keep scope to `utils/mesh_utils.py`, focused tests, and protocol/status logs;
+  - do not launch training, edit metric code, or upgrade claims.
+
+**Root cause investigation:**
+- `utils/mesh_utils.py` imported `save_img_f32` and `save_img_u8` from missing `utils.render_utils` at module import time.
+- `utils/mesh_utils.py` also imported `trimesh` at module import time, but `trimesh` is not installed in `ref_gs` and is unused in the file.
+- These imports blocked geometry tooling before any mesh extraction path could be smoke-tested.
+
+**TDD evidence:**
+- Added `tests/test_rc_refgs_mesh_confidence_static.py::test_mesh_utils_does_not_require_image_helpers_or_trimesh_at_import`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_rc_refgs_mesh_confidence_static` -> exit 1;
+  - failures confirmed the top-level `from utils.render_utils import save_img_f32, save_img_u8`, top-level `import trimesh`, and missing fallback helpers.
+- GREEN:
+  - `utils/mesh_utils.py` now resolves image-save helpers with `import_module("utils.render_utils")` and installs explicit fallback helpers only for `export_image` if that module is unavailable.
+  - Removed the unused top-level `trimesh` import.
+
+**Actions taken:**
+- Updated `utils/mesh_utils.py` with lazy/fallback image helper resolution.
+- Updated `tests/test_rc_refgs_mesh_confidence_static.py` with import-isolation static coverage.
+- Updated status/roadmap/geometry-refresh artifacts so the fixed blockers and remaining geometry blockers are explicit.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_rc_refgs_mesh_confidence_static` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile utils/mesh_utils.py tests/test_rc_refgs_mesh_confidence_static.py` -> exit 0.
+  - `conda run -n ref_gs python -c "import utils.mesh_utils as m; ..."` -> exit 0, importing repo `utils/mesh_utils.py` with Open3D `0.17.0`.
+  - `conda run -n ref_gs bash -lc 'export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:$LD_LIBRARY_PATH"; python -c "import utils.mesh_utils; ..."'` -> exit 0.
+- Residual blocker probe:
+  - `conda run -n ref_gs python -c "import open3d; ..."` -> exit 1 with `GLIBCXX_3.4.29` missing through `libLerc.so.4`.
+  - `conda run -n ref_gs python -c "import importlib.util; ... find_spec('trimesh')"` -> `trimesh_spec= None`.
+
+**Evidence interpretation recorded:**
+- This window repairs the first geometry prerequisite only: `utils.mesh_utils` can now import without missing `utils.render_utils` or `trimesh`.
+- It does not add a mesh extraction/evaluation entrypoint, SMVP3D loader/transform support, or geometry metrics.
+- No training or metric code was changed.
+
+**Go/no-go decision:** GO for mesh-utils import isolation; CONDITIONAL GO for the next bounded P3 geometry prerequisite implementation, which should add or restore a smoke-testable mesh extraction/evaluation entrypoint; NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metrics, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest.
+- If no explicit compute is allocated, claim exactly one test-first P3 geometry prerequisite task to add a smoke-testable mesh extraction/evaluation entrypoint around the now-importable `utils.mesh_utils`.
+
+---
+
+## 2026-05-22 22:04:05 CST - Root Mesh Extraction Entrypoint
+
+**Recovered state:**
+- Git was dirty from prior geometry refresh/routing/import-isolation docs and code:
+  - modified autonomous log, coordination board, full implementation status, roadmap, `utils/mesh_utils.py`, and `tests/test_rc_refgs_mesh_confidence_static.py`;
+  - untracked `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The board/status/roadmap routed no-compute Codex work to the next bounded P3 geometry prerequisite: add or restore a smoke-testable mesh extraction/evaluation entrypoint.
+
+**Round-local task claim:**
+- Claimed at `2026-05-22 22:00:28 CST`:
+  - add a smoke-testable root `extract_mesh.py` entrypoint around the now-importable `utils.mesh_utils`;
+  - keep scope to root extraction CLI, focused tests, and protocol/status logs;
+  - do not launch training, edit metric code, or upgrade claims.
+
+**Root cause investigation:**
+- `extract_mesh.py` was absent from the repo root, so prior geometry commands and future mesh extraction could not be smoke-tested.
+- The new entrypoint needed a no-GPU `--dry_run` path because actual extraction is still a later runtime step and geometry claims remain blocked.
+- While implementing, targeted tests exposed two local integration issues:
+  - `--resolution` conflicts with existing `ModelParams` parser ownership, so the mesh-only unbounded grid option must be named `--mesh_resolution`.
+  - `get_combined_args` raises on absent `cfg_args`; dry-run validation should work on a minimal model artifact directory, so the entrypoint uses `cfg_args` when present and falls back to command-line args otherwise.
+
+**TDD evidence:**
+- Added `tests/test_extract_mesh_static.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 1 because `extract_mesh.py` was missing.
+- GREEN:
+  - Added `extract_mesh.py` with `--dry_run`, `--check_imports`, `--summary_json`, expected point-cloud input validation, JSON summary writing, and non-dry-run `GaussianExtractor` extraction path.
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 0, 2 tests.
+
+**Actions taken:**
+- Added `extract_mesh.py`.
+- Added `tests/test_extract_mesh_static.py`.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`, the superseding roadmap, the geometry prerequisite refresh artifact, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile extract_mesh.py tests/test_extract_mesh_static.py` -> exit 0.
+- Dry-run coverage:
+  - The targeted test invokes `extract_mesh.py --dry_run --check_imports` against a temporary model with `point_cloud/iteration_300/point_cloud.ply`.
+  - The summary JSON records `mode=mesh_extraction`, `dry_run=true`, `imports_checked=true`, `iteration=300`, expected point-cloud input, no missing inputs, and output mesh path.
+
+**Evidence interpretation recorded:**
+- This window adds a smoke-testable extraction entrypoint only.
+- It does not run actual mesh extraction, add SMVP3D loader/transform support, compute Chamfer/F-score, launch P4, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for root extraction dry-run/import-check entrypoint; CONDITIONAL GO for the next bounded P3 geometry prerequisite, either one extraction runtime smoke on an existing model or SMVP3D `cameras.npz` transform support; NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metrics, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest.
+- If no explicit compute is allocated, claim exactly one P3 geometry prerequisite task: either run one bounded extraction dry-run/runtime smoke on an existing output, or add SMVP3D transform support before any OBJ-based metric.
+
+---
+
+## 2026-05-22 22:55:53 CST - Existing-Artifact Extract Mesh Dry-Run Smoke
+
+**Recovered state:**
+- Git was dirty from prior geometry refresh/routing/import-isolation/extraction-entrypoint work:
+  - modified autonomous log, coordination board, full implementation status, roadmap, `utils/mesh_utils.py`, and `tests/test_rc_refgs_mesh_confidence_static.py`;
+  - untracked `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`, `extract_mesh.py`, and `tests/test_extract_mesh_static.py`.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The board/status/roadmap routed no-compute Codex work to one bounded P3 geometry prerequisite: run one extraction dry-run/runtime smoke on an existing output or add SMVP3D transform support.
+
+**Round-local task claim:**
+- Claimed at `2026-05-22 22:55:00 CST`:
+  - run `extract_mesh.py --dry_run --check_imports` against one existing corrected i300 model artifact;
+  - record the dry-run summary artifact and update protocol/status logs;
+  - do not launch training, run actual mesh extraction, edit metric code, compute geometry metrics, or upgrade claims.
+
+**Actions taken:**
+- Located six corrected i300 point-cloud inputs under `/tmp/rc_refgs_i300_validation_base_rc_20260520`.
+- Selected `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base` as the single smoke target.
+- Ran the root extraction entrypoint in dry-run/import-check mode at iteration `300`.
+- Wrote `docs/superpowers/logs/rc-refgs-extract-mesh-teapot-base-dryrun-smoke-2026-05-22.json`.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`, the superseding roadmap, the geometry prerequisite refresh artifact, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, geometry refresh, and memory protocol notes were read.
+  - `find /tmp/rc_refgs_i300_validation_base_rc_20260520 -path '*/point_cloud/iteration_300/point_cloud.ply' -print` -> six corrected i300 point-cloud inputs found.
+- Targeted smoke:
+  - `conda run -n ref_gs python extract_mesh.py --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base --iteration 300 --output_mesh /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_dryrun.ply --summary_json docs/superpowers/logs/rc-refgs-extract-mesh-teapot-base-dryrun-smoke-2026-05-22.json --dry_run --check_imports` -> exit 0.
+  - Summary recorded `mode=mesh_extraction`, `dry_run=true`, `imports_checked=true`, existing `point_cloud/iteration_300/point_cloud.ply`, `missing_inputs=[]`, and import info for `GaussianExtractor` and `post_process_mesh`.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 0, 2 tests.
+  - Summary JSON contract check -> exit 0.
+  - `test ! -f /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_dryrun.ply` -> exit 0, confirming no mesh was written in dry-run mode.
+
+**Evidence interpretation recorded:**
+- This window proves the new extraction entrypoint can validate and import-check against a real existing corrected i300 artifact.
+- It does not run actual mesh extraction, add SMVP3D loader/transform support, compute Chamfer/F-score, launch P4, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for existing-artifact extraction dry-run/import-check smoke; CONDITIONAL GO for the next bounded P3 geometry prerequisite, preferably SMVP3D `cameras.npz` transform support when no compute is allocated, or one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation; NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metrics, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest.
+- If no explicit compute is allocated, claim exactly one P3 geometry prerequisite task to add SMVP3D transform support before any OBJ-based metric.
+
+---
+
+## 2026-05-22 23:10:13 CST - SMVP3D Transform Conversion Support
+
+**Recovered state:**
+- Git was dirty from prior geometry prerequisite work:
+  - modified autonomous log, coordination board, full implementation status, roadmap, `utils/mesh_utils.py`, and `tests/test_rc_refgs_mesh_confidence_static.py`;
+  - untracked `docs/superpowers/logs/rc-refgs-extract-mesh-teapot-base-dryrun-smoke-2026-05-22.json`, `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`, `extract_mesh.py`, and `tests/test_extract_mesh_static.py`.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The board/status/roadmap routed no-compute Codex work to SMVP3D `cameras.npz` transform support, after the existing-artifact extraction dry-run smoke was completed.
+
+**Round-local task claim:**
+- Claimed at `2026-05-22 23:06:25 CST`:
+  - add one bounded P3 geometry prerequisite for SMVP3D `cameras.npz` transform support;
+  - keep scope to helper/CLI code, focused tests, a real-scene dry-run summary, and protocol/status logs;
+  - do not launch training, run extraction, compute geometry metrics, edit metric code, or upgrade claims.
+
+**Schema investigation:**
+- Real SMVP3D `dragon/cameras.npz` contains paired `world_mat_<i>` and `scale_mat_<i>` keys for indices `0..47`.
+- Images are under `image/0000.png` through `image/0047.png`, with 512x512 RGB images.
+- `cv2` is available in the `ref_gs` environment, so the converter can decompose DTU-style projection matrices with `cv2.decomposeProjectionMatrix`.
+
+**TDD evidence:**
+- Added `tests/test_smvp3d_transform_support.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_transform_support` -> exit 1;
+  - failures confirmed missing `utils.smvp3d_utils` and missing `scripts/convert_smvp3d_transforms.py`.
+- GREEN:
+  - Added `utils/smvp3d_utils.py` with deterministic camera index parsing, projection decomposition, Blender-reader-compatible transform generation, train/test split handling, and summary writing.
+  - Added `scripts/convert_smvp3d_transforms.py` with summary-only and `--write` modes.
+  - Fixed CLI import path bootstrapping after the first GREEN run exposed `ModuleNotFoundError: No module named 'utils'` from a script subprocess.
+
+**Actions taken:**
+- Added `utils/smvp3d_utils.py`.
+- Added `scripts/convert_smvp3d_transforms.py`.
+- Added `tests/test_smvp3d_transform_support.py`.
+- Ran a real SMVP3D `dragon` transform dry-run summary without writing into the dataset directory.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`, the superseding roadmap, the geometry prerequisite refresh artifact, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_transform_support` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile utils/smvp3d_utils.py scripts/convert_smvp3d_transforms.py tests/test_smvp3d_transform_support.py` -> exit 0.
+  - `conda run -n ref_gs python scripts/convert_smvp3d_transforms.py --scene_path /data/liuly/dataset/3DGS/glossy/SMVP3D/dragon --eval --llffhold 8 --summary_json docs/superpowers/logs/rc-refgs-smvp3d-dragon-transform-dryrun-2026-05-22.json` -> exit 0.
+  - Summary JSON contract check -> exit 0 with `camera_count=48`, `converted_count=48`, `train_count=42`, `test_count=6`, and `missing_images=[]`.
+  - Marker check confirmed `build_smvp3d_transforms`, `decomposeProjectionMatrix`, `transforms_train.json`, `smvp3d_transform_conversion`, and `--write` anchors.
+
+**Evidence interpretation recorded:**
+- This window removes the missing SMVP3D transform-conversion prerequisite for one real-scene dry-run path.
+- It does not train on SMVP3D, write into the SMVP3D dataset, run actual mesh extraction, compute Chamfer/F-score, add OBJ-reference metric plumbing, launch P4, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for bounded SMVP3D transform conversion support and the real `dragon` dry-run; CONDITIONAL GO for all-scene SMVP3D transform dry-run coverage or, with explicit runtime/GPU allocation, one non-dry-run bounded extraction smoke; NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metrics, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest.
+- If no explicit compute is allocated, claim exactly one P3 geometry prerequisite task: all-scene SMVP3D transform dry-run coverage, or OBJ-reference metric scaffolding after transform coverage is complete.
+
+---
+
+## 2026-05-23 01:29:46 CST - All-Scene SMVP3D Transform Dry-Run Coverage
+
+**Recovered state:**
+- Git was dirty from prior geometry prerequisite work:
+  - modified autonomous log, coordination board, full implementation status, roadmap, `utils/mesh_utils.py`, and `tests/test_rc_refgs_mesh_confidence_static.py`;
+  - untracked geometry prerequisite code/tests and dry-run summaries from the mesh extraction and SMVP3D transform windows.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The board/status/roadmap routed no-compute Codex work to all-scene SMVP3D transform dry-run coverage after the one-scene `dragon` transform dry-run succeeded.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 01:28:23 CST`:
+  - run all-scene SMVP3D `cameras.npz` transform dry-run coverage for `david`, `dragon`, `hedgehog`, `snail`, and `squirrel`;
+  - record per-scene and aggregate summary artifacts;
+  - do not launch training, write into the dataset, run extraction, compute geometry metrics, edit metric code, or upgrade claims.
+
+**Actions taken:**
+- Ran `scripts/convert_smvp3d_transforms.py` in summary-only mode for all five SMVP3D scenes with `--eval --llffhold 8`.
+- Wrote per-scene dry-run summaries:
+  - `docs/superpowers/logs/rc-refgs-smvp3d-david-transform-dryrun-2026-05-23.json`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-dragon-transform-dryrun-2026-05-23.json`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-hedgehog-transform-dryrun-2026-05-23.json`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-snail-transform-dryrun-2026-05-23.json`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-squirrel-transform-dryrun-2026-05-23.json`
+- Wrote aggregate summary:
+  - `docs/superpowers/logs/rc-refgs-smvp3d-all-scene-transform-dryrun-summary-2026-05-23.json`.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`, the superseding roadmap, the geometry prerequisite refresh artifact, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+- Targeted dry-runs:
+  - Five per-scene converter commands exited 0.
+  - Each scene reported `camera_count=48`, `converted_count=48`, `train_count=42`, `test_count=6`, and `missing_images=[]`.
+- Targeted verification:
+  - Aggregate summary generation -> exit 0 with totals `camera_count=240`, `converted_count=240`, `train_count=210`, `test_count=30`, `missing_images=0`, and `all_scenes_complete=True`.
+  - Aggregate JSON contract check -> exit 0.
+  - Dataset-write guard `find /data/liuly/dataset/3DGS/glossy/SMVP3D -maxdepth 2 -name 'transforms_train.json' -o -name 'transforms_test.json'` -> exit 0 with no printed paths.
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_transform_support` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile scripts/convert_smvp3d_transforms.py utils/smvp3d_utils.py tests/test_smvp3d_transform_support.py` -> exit 0.
+
+**Evidence interpretation recorded:**
+- This window proves transform conversion coverage across all five SMVP3D scenes in summary-only mode.
+- It does not train on SMVP3D, write transforms into the dataset, run actual mesh extraction, compute Chamfer/F-score, add OBJ-reference metric plumbing, launch P4, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for all-scene SMVP3D transform dry-run coverage; CONDITIONAL GO for the next bounded P3 geometry prerequisite, preferably OBJ-reference metric scaffolding/dry-run checks when no compute is allocated, or one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation; NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metrics, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest.
+- If no explicit compute is allocated, claim exactly one P3 geometry prerequisite task: OBJ-reference metric scaffolding/dry-run checks before any geometry metric result is produced.
+
+---
+
+## 2026-05-23 02:54:01 CST - SMVP3D OBJ-Reference Dry-Run Scaffolding
+
+**Recovered state:**
+- Git was dirty from prior geometry prerequisite work:
+  - modified autonomous log, coordination board, full implementation status, roadmap, `utils/mesh_utils.py`, and `tests/test_rc_refgs_mesh_confidence_static.py`;
+  - untracked geometry prerequisite code/tests and dry-run summaries from the mesh extraction and SMVP3D transform windows.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The board/status/roadmap routed no-compute Codex work to OBJ-reference metric scaffolding/dry-run checks after all-scene SMVP3D transform dry-run coverage completed.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 02:51:33 CST`:
+  - add one bounded P3 geometry prerequisite for OBJ-reference metric scaffolding/dry-run checks;
+  - enumerate SMVP3D OBJ references and expected extracted-mesh inputs;
+  - do not compute Chamfer/F-score, launch training, run extraction, edit existing metric evaluators, or upgrade claims.
+
+**TDD evidence:**
+- Added `tests/test_smvp3d_geometry_eval_plan.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_geometry_eval_plan` -> exit 1;
+  - failures confirmed missing `utils.smvp3d_geometry_plan` and missing `scripts/prepare_smvp3d_geometry_eval.py`.
+- GREEN:
+  - Added `utils/smvp3d_geometry_plan.py` with a dry-run plan builder that records reference OBJ paths, expected predicted-mesh paths, missing references, missing predictions, and `metrics_computed=false`.
+  - Added `scripts/prepare_smvp3d_geometry_eval.py` to write the dry-run summary JSON.
+
+**Actions taken:**
+- Added `utils/smvp3d_geometry_plan.py`.
+- Added `scripts/prepare_smvp3d_geometry_eval.py`.
+- Added `tests/test_smvp3d_geometry_eval_plan.py`.
+- Ran a real SMVP3D dry-run plan against `/data/liuly/dataset/3DGS/glossy/SMVP3D` with a deliberately missing prediction mesh root.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`, the superseding roadmap, the geometry prerequisite refresh artifact, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_geometry_eval_plan` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile utils/smvp3d_geometry_plan.py scripts/prepare_smvp3d_geometry_eval.py tests/test_smvp3d_geometry_eval_plan.py` -> exit 0.
+  - `conda run -n ref_gs python scripts/prepare_smvp3d_geometry_eval.py --dataset_root /data/liuly/dataset/3DGS/glossy/SMVP3D --mesh_root /tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523 --iteration 300 --summary_json docs/superpowers/logs/rc-refgs-smvp3d-obj-reference-dryrun-plan-2026-05-23.json` -> exit 0.
+  - Summary JSON contract check -> exit 0 with `scene_count=5`, `reference_obj_count=5`, `ready_count=0`, `missing_reference_count=0`, `missing_mesh_count=5`, and `metrics_computed=false`.
+  - Marker check confirmed `smvp3d_geometry_eval_dryrun`, `metrics_computed`, `missing_mesh_count`, dry-run claim boundary text, and `build_smvp3d_geometry_eval_plan`.
+
+**Evidence interpretation recorded:**
+- This window proves all five SMVP3D OBJ references are addressable and records the expected prediction mesh inputs.
+- It does not compute Chamfer/F-score, create predicted meshes, run extraction, launch training, modify existing metric evaluators, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for OBJ-reference dry-run scaffolding; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation; NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim and launch the preflighted P4 base/RC `31000` manifest, or claim a bounded non-dry-run extraction smoke if the goal is to unblock geometry.
+- If no explicit compute is allocated, keep geometry at input-readiness/dry-run status; do not compute geometry metric values until predicted meshes exist.
+
+---
+
+## 2026-05-23 04:05:01 CST - Extract-Mesh Open3D Preflight
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, geometry, extraction, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state routed no-compute work to bounded P3 geometry prerequisites; the remaining extraction blocker explicitly included Open3D environment handling before a non-dry-run smoke.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 04:01:44 CST`:
+  - add one bounded P3 geometry-prerequisite Open3D preflight to `extract_mesh.py`;
+  - report Open3D import/runtime status and LD_LIBRARY_PATH workaround guidance in dry-run summaries;
+  - do not launch training, run actual extraction, compute geometry metrics, edit existing metric evaluators, or upgrade claims.
+
+**TDD and debugging evidence:**
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 1;
+  - failures confirmed missing `--check_open3d`, missing `open3d_info`, and unrecognized argument handling.
+- GREEN step 1:
+  - Added `extract_mesh.py --check_open3d`, `_check_open3d()`, and `open3d_info` summary fields.
+  - Targeted test passed with 3 tests.
+- Real dry-run then exposed a cfg-backed model bug:
+  - `conda run -n ref_gs python extract_mesh.py --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base --iteration 300 --summary_json docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-2026-05-23.json --dry_run --check_open3d` -> exit 1 before the fix;
+  - root cause: `get_combined_args()` returned the saved `cfg_args` namespace plus non-`None` CLI values, so mesh-only parser attributes such as `output_mesh` were absent when their CLI value was `None`.
+- Regression RED/GREEN:
+  - Added a cfg-backed dry-run regression to `tests/test_extract_mesh_static.py`;
+  - RED failed with missing `output_mesh`;
+  - fixed `_parse_args()` to fill missing parser attributes from the command-line namespace after loading `cfg_args`;
+  - targeted tests passed with 3 tests.
+
+**Actions taken:**
+- Updated `extract_mesh.py` with non-crashing Open3D preflight support and cfg-backed parser-default filling.
+- Updated `tests/test_extract_mesh_static.py` with Open3D preflight and cfg-backed regression coverage.
+- Wrote plain-environment dry-run artifact:
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-2026-05-23.json`.
+- Wrote library-path workaround dry-run artifact:
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-ldpath-2026-05-23.json`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, geometry refresh, and memory protocol notes were read.
+- Environment probe:
+  - `conda run -n ref_gs python -c "import open3d as o3d; print('open3d', o3d.__version__)"` -> exit 1 with `GLIBCXX_3.4.29` missing through `libLerc.so.4`.
+  - `conda run -n ref_gs bash -lc 'export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:$LD_LIBRARY_PATH"; python -c "import open3d as o3d; print(\"open3d\", o3d.__version__)"'` -> exit 0, `open3d 0.17.0`.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 0, 3 tests.
+  - `conda run -n ref_gs python -m py_compile extract_mesh.py tests/test_extract_mesh_static.py` -> exit 0.
+  - Plain existing-artifact dry-run with `--check_open3d` -> exit 0, `missing_inputs=[]`, `open3d_info.ok=false`, `error_type=ImportError`, and `GLIBCXX_3.4.29` captured.
+  - LD_LIBRARY_PATH existing-artifact dry-run with `--check_open3d` -> exit 0, `missing_inputs=[]`, `open3d_info.ok=true`, and `version=0.17.0`.
+
+**Evidence interpretation recorded:**
+- This window removes a dry-run/preflight reporting blocker and preserves the exact Open3D environment boundary for the next non-dry-run extraction smoke.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit metric evaluators, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the Open3D preflight and cfg-backed mesh CLI merge fix; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation and the validated `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` environment; NO-GO for immediate Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke on an existing corrected i300 artifact using the validated Open3D library-path environment.
+- If no explicit compute is allocated, keep geometry at input-readiness/dry-run status; do not compute geometry metric values until predicted meshes exist.
+
+---
+
+## 2026-05-23 04:34:33 CST - Extract-Mesh Runtime Command Plan
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, geometry, extraction, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state showed the next extraction step still requires an explicitly allocated runtime/GPU window, but the exact non-dry-run command and environment boundary could be prepared safely without executing extraction.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 04:31:44 CST`:
+  - add one bounded P3 geometry-prerequisite dry-run command-plan report to `extract_mesh.py`;
+  - record the exact non-dry-run argv and Open3D `LD_LIBRARY_PATH` environment for the next explicitly allocated extraction window;
+  - do not launch training, run extraction, compute geometry metrics, edit metric evaluators, or upgrade claims.
+
+**TDD evidence:**
+- Added `test_extract_mesh_dry_run_can_emit_runtime_command_plan` to `tests/test_extract_mesh_static.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 1;
+  - failure confirmed unrecognized `--emit_runtime_command`.
+- GREEN:
+  - Added `extract_mesh.py --emit_runtime_command`.
+  - Added runtime command-plan construction with `requires_explicit_runtime_allocation=true`, `LD_LIBRARY_PATH=<conda lib>:$LD_LIBRARY_PATH`, non-dry-run argv, planned output mesh, planned runtime summary JSON, and claim-boundary text.
+  - Targeted test passed with 4 tests.
+
+**Actions taken:**
+- Updated `extract_mesh.py` with dry-run runtime command-plan reporting.
+- Updated `tests/test_extract_mesh_static.py` with command-plan regression coverage.
+- Ran a real dry-run on the existing corrected i300 `teapot_base` artifact under the validated Open3D library-path environment.
+- Wrote `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23.json`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+  - process check for active RC-RefGS train/extract/convert jobs returned no matches.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_static` -> exit 0, 4 tests.
+  - `conda run -n ref_gs python -m py_compile extract_mesh.py tests/test_extract_mesh_static.py` -> exit 0.
+  - `conda run -n ref_gs bash -lc 'export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:$LD_LIBRARY_PATH"; python extract_mesh.py --model_path /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base --iteration 300 --summary_json docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23.json --output_mesh /tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply --dry_run --check_open3d --emit_runtime_command --cuda_device 0'` -> exit 0.
+  - Runtime command-plan JSON contract check -> exit 0 with `open3d_info.version=0.17.0`, `missing_inputs=[]`, `requires_explicit_runtime_allocation=true`, and planned argv omitting `--dry_run`, `--check_open3d`, and `--emit_runtime_command`.
+  - Planned mesh absence check for `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply` -> exit 0.
+  - Marker check for `emit_runtime_command`, `runtime_command_plan`, `requires_explicit_runtime_allocation`, and claim-boundary text -> exit 0.
+
+**Evidence interpretation recorded:**
+- This window gives the next runtime/GPU window an exact non-dry-run extraction command plan with the validated Open3D library-path environment.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit metric evaluators, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the dry-run runtime command-plan reporting; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation and the recorded `LD_LIBRARY_PATH=/home/liuly/anaconda3/envs/ref_gs/lib:$LD_LIBRARY_PATH` environment; NO-GO for immediate Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke using the recorded command plan.
+- If no explicit compute is allocated, keep geometry at input-readiness/dry-run status; do not compute geometry metric values until predicted meshes exist.
+
+---
+
+## 2026-05-23 04:46:20 CST - Extract-Mesh Runtime Readiness Packet
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, geometry, extraction, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state showed geometry work is at input-readiness/dry-run status; actual extraction remains blocked pending an explicitly allocated runtime/GPU window.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 04:45:06 CST`:
+  - create one bounded runtime-readiness packet from existing extraction dry-run, Open3D preflight, runtime command-plan, and SMVP3D OBJ-reference artifacts;
+  - consolidate command, environment, acceptance gates, dependency state, and NO-GO boundaries;
+  - do not launch training, run extraction, compute geometry metrics, edit metric evaluators, or upgrade claims.
+
+**Actions taken:**
+- Added `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-readiness-2026-05-23.json`.
+- Added `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-readiness-2026-05-23.md`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+  - process check for active RC-RefGS train/extract/convert jobs returned no matches.
+- Source artifact probes:
+  - Runtime command-plan artifact probe -> exit 0 with model `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base`, iteration `300`, `missing_inputs=[]`, Open3D `ok=true`, version `0.17.0`, required environment `/home/liuly/anaconda3/envs/ref_gs/lib:$LD_LIBRARY_PATH`, planned output mesh `/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply`, and planned runtime summary `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23-runtime.json`.
+  - Plain Open3D preflight artifact probe -> exit 0 with `ok=false`, `error_type=ImportError`, and `GLIBCXX_3.4.29` present.
+  - SMVP3D OBJ-reference artifact probe -> exit 0 with `scene_count=5`, `reference_obj_count=5`, `missing_mesh_count=5`, and `metrics_computed=false`.
+  - Planned mesh absence check -> exit 0.
+
+**Evidence interpretation recorded:**
+- This window consolidates the exact handoff for the next extraction runtime window.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit metric evaluators, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the readiness packet; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation and the recorded `LD_LIBRARY_PATH=/home/liuly/anaconda3/envs/ref_gs/lib:$LD_LIBRARY_PATH` environment; NO-GO for immediate Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke using `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-readiness-2026-05-23.{json,md}`.
+- If no explicit compute is allocated, keep geometry at input-readiness/dry-run status; do not compute geometry metric values until predicted meshes exist.
+
+---
+
+## 2026-05-23 04:53:59 CST - Extract-Mesh Post-Run Smoke Validator
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, geometry, extraction, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state showed actual extraction remains blocked pending an explicitly allocated runtime/GPU window, while a post-run validation gate was still safe to add.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 04:52:28 CST`:
+  - add one bounded post-run extraction smoke validator;
+  - check an `extract_mesh.py` runtime summary and produced mesh file for presence/size only;
+  - do not launch training, run extraction, compute Chamfer/F-score or geometry metrics, edit metric evaluators, or upgrade claims.
+
+**TDD evidence:**
+- Added `tests/test_extract_mesh_smoke_check.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_smoke_check` -> exit 1;
+  - failures confirmed missing `scripts/check_extract_mesh_smoke.py`.
+- GREEN:
+  - Added `scripts/check_extract_mesh_smoke.py`.
+  - The validator reports `mode=extract_mesh_postrun_smoke_check`, `ready`, `status`, mesh existence/size, missing inputs, and `metrics_computed=false`.
+  - Targeted tests passed with 2 tests.
+
+**Actions taken:**
+- Added `scripts/check_extract_mesh_smoke.py`.
+- Added `tests/test_extract_mesh_smoke_check.py`.
+- Ran the checker on the current dry-run command-plan artifact and wrote `docs/superpowers/logs/rc-refgs-extract-mesh-postrun-smoke-current-missing-2026-05-23.json`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+  - process check for active RC-RefGS train/extract/convert jobs returned no matches.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_extract_mesh_smoke_check` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python scripts/check_extract_mesh_smoke.py --summary_json docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23.json --output_json docs/superpowers/logs/rc-refgs-extract-mesh-postrun-smoke-current-missing-2026-05-23.json` -> exit 2 as expected for a dry-run summary, writing `ready=false`, `status=summary_is_dry_run`, `mesh_exists=false`, `missing_inputs=[]`, and `metrics_computed=false`.
+
+**Evidence interpretation recorded:**
+- This window adds a post-run gate for the future extraction smoke.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit metric evaluators, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the post-run extraction smoke validator; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation and subsequent validator pass; NO-GO for immediate Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke, then run `scripts/check_extract_mesh_smoke.py` on the resulting runtime summary before any geometry metric work.
+- If no explicit compute is allocated, keep geometry at input-readiness/dry-run status; do not compute geometry metric values until predicted meshes exist.
+
+---
+
+## 2026-05-23 05:54:57 CST - Geometry Metric Gate Dry-Run Checker
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, extraction, geometry, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state showed actual extraction remains blocked pending an explicitly allocated runtime/GPU window, while a dry-run gate before geometry metric computation was still safe to add.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 05:52:05 CST`:
+  - add one bounded P3 geometry-prerequisite dry-run gate checker;
+  - combine the extraction post-run smoke report and SMVP3D OBJ-reference plan to decide whether geometry metric computation is allowed;
+  - do not launch training, run extraction, compute Chamfer/F-score or geometry metrics, edit existing metric evaluators, or upgrade claims.
+
+**TDD evidence:**
+- Added `tests/test_geometry_metric_gate.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_geometry_metric_gate` -> exit 1;
+  - failure confirmed missing `scripts/check_geometry_metric_gate.py`.
+- GREEN:
+  - Added `scripts/check_geometry_metric_gate.py`.
+  - The checker reports `mode=geometry_metric_gate_dryrun`, `metrics_allowed`, `status`, prerequisite counts, blockers, and `metrics_computed=false`.
+  - Targeted tests passed with 2 tests.
+
+**Actions taken:**
+- Added `scripts/check_geometry_metric_gate.py`.
+- Added `tests/test_geometry_metric_gate.py`.
+- Ran the checker on the current post-run smoke report and SMVP3D OBJ-reference plan, writing `docs/superpowers/logs/rc-refgs-geometry-metric-gate-current-nogo-2026-05-23.json`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_geometry_metric_gate` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile scripts/check_geometry_metric_gate.py tests/test_geometry_metric_gate.py` -> exit 0.
+  - `conda run -n ref_gs python scripts/check_geometry_metric_gate.py --postrun_json docs/superpowers/logs/rc-refgs-extract-mesh-postrun-smoke-current-missing-2026-05-23.json --geometry_plan_json docs/superpowers/logs/rc-refgs-smvp3d-obj-reference-dryrun-plan-2026-05-23.json --output_json docs/superpowers/logs/rc-refgs-geometry-metric-gate-current-nogo-2026-05-23.json` -> exit 2 as expected for the current blocked state.
+  - Current gate JSON contract check -> exit 0 with `metrics_allowed=false`, `status=blocked`, `metrics_computed=false`, `missing_predicted_mesh_count=5`, blockers `postrun_status:summary_is_dry_run` and `missing_predicted_meshes:5`, and no Chamfer/F-score fields.
+
+**Evidence interpretation recorded:**
+- This window adds the final dry-run go/no-go gate before any future geometry metric computation.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit metric evaluators, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the geometry metric gate checker; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation, subsequent post-run smoke validation, and gate rerun; NO-GO for immediate Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke, run `scripts/check_extract_mesh_smoke.py`, then rerun `scripts/check_geometry_metric_gate.py`.
+- If no explicit compute is allocated, keep geometry at input-readiness/dry-run status; do not compute geometry metric values until predicted meshes exist and the gate reports `metrics_allowed=true`.
+
+---
+
+## 2026-05-23 06:47:12 CST - Guarded SMVP3D Geometry Evaluator
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, extraction, geometry, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state showed actual extraction remains blocked pending an explicitly allocated runtime/GPU window; the existing geometry metric gate reports `metrics_allowed=false` for current real artifacts.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 06:43:39 CST`:
+  - add one bounded P3 SMVP3D geometry evaluator entrypoint guarded by the existing dry-run gate;
+  - include synthetic test coverage for the ready path and real-current verification that blocked gate artifacts refuse metric computation;
+  - do not launch training, run extraction, produce real Chamfer/F-score results, edit training code, or upgrade claims.
+
+**TDD evidence:**
+- Added `tests/test_smvp3d_geometry_eval.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_geometry_eval` -> exit 1;
+  - failure confirmed missing `metrics/smvp3d_geometry_eval.py`.
+- GREEN:
+  - Added `metrics/smvp3d_geometry_eval.py`.
+  - The evaluator reads a geometry plan plus gate report, refuses computation when the gate blocks, and computes vertex-only diagnostics only for explicit ready inputs.
+  - Targeted tests passed with 2 tests.
+
+**Actions taken:**
+- Added `metrics/smvp3d_geometry_eval.py`.
+- Added `tests/test_smvp3d_geometry_eval.py`.
+- Ran the evaluator on the current SMVP3D OBJ-reference plan and geometry metric gate, writing `docs/superpowers/logs/rc-refgs-smvp3d-geometry-eval-current-blocked-2026-05-23.json`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_geometry_eval` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile metrics/smvp3d_geometry_eval.py tests/test_smvp3d_geometry_eval.py` -> exit 0.
+  - `conda run -n ref_gs python metrics/smvp3d_geometry_eval.py --geometry_plan_json docs/superpowers/logs/rc-refgs-smvp3d-obj-reference-dryrun-plan-2026-05-23.json --gate_json docs/superpowers/logs/rc-refgs-geometry-metric-gate-current-nogo-2026-05-23.json --output_json docs/superpowers/logs/rc-refgs-smvp3d-geometry-eval-current-blocked-2026-05-23.json` -> exit 2 as expected for the current blocked state.
+  - Current blocked report JSON contract check -> exit 0 with `status=blocked_by_gate`, `metrics_computed=false`, empty scenes, blockers `postrun_status:summary_is_dry_run` and `missing_predicted_meshes:5`, and no real Chamfer/F-score fields.
+
+**Evidence interpretation recorded:**
+- This window adds the guarded evaluator path but still preserves the real-artifact metric gate.
+- The only computed metric values were synthetic unit-test diagnostics; no real SMVP3D Chamfer/F-score values were produced.
+- It does not create predicted meshes, run extraction, launch training, edit training code, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the guarded evaluator entrypoint; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation, subsequent post-run smoke validation, geometry gate rerun, and evaluator run only if the gate reports `metrics_allowed=true`; NO-GO for current real Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke, run `scripts/check_extract_mesh_smoke.py`, rerun `scripts/check_geometry_metric_gate.py`, and only then run `metrics/smvp3d_geometry_eval.py`.
+- If no explicit compute is allocated, preserve the current blocked-gate status; real geometry metric values remain unavailable.
+
+---
+
+## 2026-05-23 14:11:29 CST - SMVP3D Geometry Pipeline Status Summarizer
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, extraction, geometry, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- Roadmap/status/board state showed actual extraction remains blocked pending an explicitly allocated runtime/GPU window; the current gate and guarded evaluator both preserve NO-GO for real geometry metric values.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 14:08:01 CST`:
+  - add one bounded P3 SMVP3D geometry pipeline status summarizer;
+  - consolidate the post-run extraction smoke report, geometry metric gate, and guarded evaluator report into a machine-readable next-action artifact;
+  - do not launch training, run extraction, compute Chamfer/F-score or geometry metrics, edit training code, or upgrade claims.
+
+**TDD evidence:**
+- Added `tests/test_smvp3d_geometry_pipeline_status.py`.
+- RED:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_geometry_pipeline_status` -> exit 1;
+  - failure confirmed missing `scripts/summarize_smvp3d_geometry_pipeline_status.py`.
+- GREEN:
+  - Added `scripts/summarize_smvp3d_geometry_pipeline_status.py`.
+  - The summarizer reports `mode=smvp3d_geometry_pipeline_status`, `status`, `next_action`, readiness flags, blockers, and `metrics_computed`.
+  - Targeted tests passed with 2 tests.
+
+**Actions taken:**
+- Added `scripts/summarize_smvp3d_geometry_pipeline_status.py`.
+- Added `tests/test_smvp3d_geometry_pipeline_status.py`.
+- Ran the summarizer on the current post-run smoke, gate, and guarded evaluator reports, writing `docs/superpowers/logs/rc-refgs-smvp3d-geometry-pipeline-status-current-blocked-2026-05-23.json`.
+- Updated full implementation status, the superseding roadmap, geometry prerequisite refresh, coordination board, and autonomous log.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+  - process check for active RC-RefGS train/extract/geometry jobs returned no matches.
+- Targeted verification:
+  - `conda run -n ref_gs python -m unittest tests.test_smvp3d_geometry_pipeline_status` -> exit 0, 2 tests.
+  - `conda run -n ref_gs python -m py_compile scripts/summarize_smvp3d_geometry_pipeline_status.py tests/test_smvp3d_geometry_pipeline_status.py` -> exit 0.
+  - `conda run -n ref_gs python scripts/summarize_smvp3d_geometry_pipeline_status.py --postrun_json docs/superpowers/logs/rc-refgs-extract-mesh-postrun-smoke-current-missing-2026-05-23.json --gate_json docs/superpowers/logs/rc-refgs-geometry-metric-gate-current-nogo-2026-05-23.json --eval_json docs/superpowers/logs/rc-refgs-smvp3d-geometry-eval-current-blocked-2026-05-23.json --output_json docs/superpowers/logs/rc-refgs-smvp3d-geometry-pipeline-status-current-blocked-2026-05-23.json` -> exit 2 as expected for the current blocked state.
+  - Current pipeline status JSON contract check -> exit 0 with `status=blocked_pending_extraction`, `next_action=run_non_dryrun_extraction_smoke_with_explicit_compute`, `metrics_ready=false`, `metrics_computed=false`, blockers `postrun_status:summary_is_dry_run` and `missing_predicted_meshes:5`, and no Chamfer/F-score fields.
+
+**Evidence interpretation recorded:**
+- This window adds a machine-readable status handoff for the current geometry pipeline.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit training code, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for the pipeline status summarizer; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation, subsequent post-run smoke validation, geometry gate rerun, and guarded evaluator run only if the gate reports `metrics_allowed=true`; NO-GO for current real Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke, run `scripts/check_extract_mesh_smoke.py`, rerun `scripts/check_geometry_metric_gate.py`, then run `metrics/smvp3d_geometry_eval.py` only if the gate reports `metrics_allowed=true`.
+- If no explicit compute is allocated, the current machine-readable pipeline status is `blocked_pending_extraction`.
+
+---
+
+## 2026-05-23 16:03:16 CST - Board Routing Geometry Status Reconciliation
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, extraction, geometry, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- P4 remained preflighted but unlaunched, and no explicit compute allocation was present in this prompt.
+- The roadmap/status artifacts already recorded the current geometry pipeline state as `blocked_pending_extraction`, but the coordination-board next-task section still routed generic no-compute windows toward now-completed P3 geometry scaffolding.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 16:02:38 CST`:
+  - reconcile stale coordination-board next-task routing after the completed geometry gate, guarded evaluator, and pipeline status artifacts;
+  - prevent future no-compute continuation windows from repeating completed P3 scaffolding or attempting geometry metrics before explicit non-dry-run extraction;
+  - do not launch training, run extraction, compute metrics, edit code, or upgrade claims.
+
+**Actions taken:**
+- Updated `docs/superpowers/logs/rc-refgs-coordination-board.md` only.
+- Marked the no-compute P3 geometry implementation path exhausted unless a new blocker or stale artifact appears.
+- Set the next safe geometry task to one explicit-runtime non-dry-run extraction smoke, followed by post-run smoke validation, geometry gate rerun, and guarded evaluator only if `metrics_allowed=true`.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+  - process check for active RC-RefGS train/extract/geometry jobs returned no matches.
+- Targeted verification:
+  - Board marker checks confirmed completed gate/evaluator/status artifacts, `blocked_pending_extraction`, `run_non_dryrun_extraction_smoke_with_explicit_compute`, no-compute P3 implementation path exhausted unless a new blocker/stale artifact appears, explicit extraction-smoke next step, and NO-GO geometry/claim boundaries.
+
+**Evidence interpretation recorded:**
+- This window is routing-only. It adds no new metric evidence.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit code, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for coordination-board routing reconciliation; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation, subsequent post-run smoke validation, geometry gate rerun, and guarded evaluator run only if the gate reports `metrics_allowed=true`; NO-GO for current real Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke using the recorded Open3D `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` workaround.
+- If no explicit compute is allocated and no stale artifact/new blocker is found, the correct decision is to preserve the current `blocked_pending_extraction` state rather than add more dry-run geometry scaffolding.
+
+---
+
+## 2026-05-23 17:46:19 CST - Roadmap/Status Geometry Routing Reconciliation
+
+**Recovered state:**
+- Git was dirty from prior RC-RefGS roadmap, status, extraction, geometry, and SMVP3D prerequisite work.
+- Coordination board active claim was `None`.
+- No explicit compute allocation was present in this prompt, and process checks found no active RC-RefGS train/extract/geometry jobs.
+- The coordination board had been updated to say the no-compute P3 geometry implementation path is exhausted, but the roadmap and full-status current-decision text still contained older language that could route no-compute windows back into bounded P3 geometry implementation.
+
+**Round-local task claim:**
+- Claimed at `2026-05-23 17:44:55 CST`:
+  - reconcile stale roadmap and full-status no-compute routing text with the current board state;
+  - preserve that P3 no-compute geometry scaffolding is exhausted unless a new blocker or stale artifact appears;
+  - route the next real geometry step to explicit-runtime non-dry-run extraction smoke;
+  - do not launch training, run extraction, compute metrics, edit code, or upgrade claims.
+
+**Actions taken:**
+- Updated `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`.
+- Updated `docs/superpowers/logs/rc-refgs-coordination-board.md`.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery:
+  - `git status --short --branch` -> dirty with prior protocol/code artifacts.
+  - roadmap, coordination board, autonomous log, full status, and memory protocol notes were read.
+  - process check for active RC-RefGS train/extract/geometry jobs returned no matches.
+- Targeted verification:
+  - Marker checks confirmed `blocked_pending_extraction`, `run_non_dryrun_extraction_smoke_with_explicit_compute`, no-compute P3 geometry implementation path exhausted unless a new blocker/stale artifact appears, explicit compute extraction-smoke routing, and NO-GO geometry/claim boundaries.
+
+**Evidence interpretation recorded:**
+- This window is routing-only. It adds no new experiment or metric evidence.
+- It does not create predicted meshes, run extraction, compute Chamfer/F-score, launch training, edit code, or upgrade geometry/reconstruction claims.
+
+**Go/no-go decision:** GO for roadmap/status routing reconciliation; CONDITIONAL GO for one non-dry-run bounded extraction smoke only with explicit runtime/GPU allocation, subsequent post-run smoke validation, geometry gate rerun, and guarded evaluator run only if the gate reports `metrics_allowed=true`; NO-GO for current real Chamfer/F-score metric values, geometry/reconstruction claims, P4 launch in this window, or manuscript/scientific claim upgrades.
+
+**Next recommended step:**
+- If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke using the recorded Open3D `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` workaround.
+- If no explicit compute is allocated and no stale artifact/new blocker is found, preserve the current `blocked_pending_extraction` state.

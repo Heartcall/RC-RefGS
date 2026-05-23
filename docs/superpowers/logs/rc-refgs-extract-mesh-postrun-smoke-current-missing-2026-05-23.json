@@ -1,0 +1,15 @@
+{
+  "mode": "extract_mesh_postrun_smoke_check",
+  "ready": false,
+  "status": "summary_is_dry_run",
+  "metrics_computed": false,
+  "summary_mode": "mesh_extraction",
+  "summary_dry_run": true,
+  "model_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base",
+  "iteration": 300,
+  "mesh_path": "/tmp/rc_refgs_i300_validation_base_rc_20260520/teapot_base/mesh_iter300_runtime_plan.ply",
+  "mesh_exists": false,
+  "mesh_size_bytes": 0,
+  "missing_inputs": [],
+  "claim_boundary": "Post-run smoke check only; no geometry metric values are computed."
+}

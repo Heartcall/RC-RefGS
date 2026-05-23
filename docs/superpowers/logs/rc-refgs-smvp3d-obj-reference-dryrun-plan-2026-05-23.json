@@ -1,0 +1,56 @@
+{
+  "mode": "smvp3d_geometry_eval_dryrun",
+  "metrics_computed": false,
+  "dataset_root": "/data/liuly/dataset/3DGS/glossy/SMVP3D",
+  "mesh_root": "/tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523",
+  "mesh_template": "{scene}/mesh_iter{iteration}.ply",
+  "iteration": 300,
+  "scene_count": 5,
+  "reference_obj_count": 5,
+  "ready_count": 0,
+  "missing_reference_count": 0,
+  "missing_mesh_count": 5,
+  "scenes": [
+    {
+      "scene": "david",
+      "reference_obj": "/data/liuly/dataset/3DGS/glossy/SMVP3D/david/david.obj",
+      "predicted_mesh": "/tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523/david/mesh_iter300.ply",
+      "reference_exists": true,
+      "prediction_exists": false,
+      "status": "missing_prediction"
+    },
+    {
+      "scene": "dragon",
+      "reference_obj": "/data/liuly/dataset/3DGS/glossy/SMVP3D/dragon/dragon.obj",
+      "predicted_mesh": "/tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523/dragon/mesh_iter300.ply",
+      "reference_exists": true,
+      "prediction_exists": false,
+      "status": "missing_prediction"
+    },
+    {
+      "scene": "hedgehog",
+      "reference_obj": "/data/liuly/dataset/3DGS/glossy/SMVP3D/hedgehog/hedgehog.obj",
+      "predicted_mesh": "/tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523/hedgehog/mesh_iter300.ply",
+      "reference_exists": true,
+      "prediction_exists": false,
+      "status": "missing_prediction"
+    },
+    {
+      "scene": "snail",
+      "reference_obj": "/data/liuly/dataset/3DGS/glossy/SMVP3D/snail/snail.obj",
+      "predicted_mesh": "/tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523/snail/mesh_iter300.ply",
+      "reference_exists": true,
+      "prediction_exists": false,
+      "status": "missing_prediction"
+    },
+    {
+      "scene": "squirrel",
+      "reference_obj": "/data/liuly/dataset/3DGS/glossy/SMVP3D/squirrel/squirrel.obj",
+      "predicted_mesh": "/tmp/rc_refgs_smvp3d_mesh_predictions_missing_20260523/squirrel/mesh_iter300.ply",
+      "reference_exists": true,
+      "prediction_exists": false,
+      "status": "missing_prediction"
+    }
+  ],
+  "claim_boundary": "Dry-run input plan only; no geometry metric values are computed."
+}

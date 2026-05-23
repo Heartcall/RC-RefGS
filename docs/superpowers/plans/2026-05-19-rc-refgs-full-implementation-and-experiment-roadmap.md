@@ -40,6 +40,47 @@ the agent must:
 - Conservative claim framing and thresholds exist:
   - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
   - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
+- Geometry prerequisite blocker state is refreshed:
+  - `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`
+- Existing-artifact extraction dry-run/import-check smoke is recorded:
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-teapot-base-dryrun-smoke-2026-05-22.json`
+- SMVP3D `cameras.npz` transform conversion support is added and dry-run on real `dragon` metadata:
+  - `utils/smvp3d_utils.py`
+  - `scripts/convert_smvp3d_transforms.py`
+  - `tests/test_smvp3d_transform_support.py`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-dragon-transform-dryrun-2026-05-22.json`
+- SMVP3D transform conversion dry-run coverage is complete for all five scenes:
+  - `docs/superpowers/logs/rc-refgs-smvp3d-all-scene-transform-dryrun-summary-2026-05-23.json`
+- SMVP3D OBJ-reference geometry-evaluation dry-run scaffolding is added:
+  - `utils/smvp3d_geometry_plan.py`
+  - `scripts/prepare_smvp3d_geometry_eval.py`
+  - `tests/test_smvp3d_geometry_eval_plan.py`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-obj-reference-dryrun-plan-2026-05-23.json`
+- Mesh extraction Open3D runtime preflight is added:
+  - `extract_mesh.py --check_open3d`
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-2026-05-23.json`
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-open3d-preflight-ldpath-2026-05-23.json`
+- Mesh extraction dry-run runtime command planning is added:
+  - `extract_mesh.py --emit_runtime_command`
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-command-plan-2026-05-23.json`
+- Mesh extraction runtime-readiness handoff packet is recorded:
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-runtime-readiness-2026-05-23.{json,md}`
+- Mesh extraction post-run smoke validator is added:
+  - `scripts/check_extract_mesh_smoke.py`
+  - `tests/test_extract_mesh_smoke_check.py`
+  - `docs/superpowers/logs/rc-refgs-extract-mesh-postrun-smoke-current-missing-2026-05-23.json`
+- Geometry metric dry-run gate checker is added:
+  - `scripts/check_geometry_metric_gate.py`
+  - `tests/test_geometry_metric_gate.py`
+  - `docs/superpowers/logs/rc-refgs-geometry-metric-gate-current-nogo-2026-05-23.json`
+- Guarded SMVP3D geometry evaluator entrypoint is added:
+  - `metrics/smvp3d_geometry_eval.py`
+  - `tests/test_smvp3d_geometry_eval.py`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-geometry-eval-current-blocked-2026-05-23.json`
+- SMVP3D geometry pipeline status summarizer is added:
+  - `scripts/summarize_smvp3d_geometry_pipeline_status.py`
+  - `tests/test_smvp3d_geometry_pipeline_status.py`
+  - `docs/superpowers/logs/rc-refgs-smvp3d-geometry-pipeline-status-current-blocked-2026-05-23.json`
 
 ## Current Blockers
 
@@ -48,7 +89,7 @@ the agent must:
 - The P4 base/RC full-horizon matrix must not be launched opportunistically; launch only in a deliberate runtime window with explicitly allocated compute.
 - Multi-seed evidence is missing.
 - Material diagnostics exist for corrected i300 full splits, but remain Mixed / Unsupported for material-quality claims and need longer-horizon/multi-seed linkage before claim use.
-- Geometry metrics are blocked pending valid SMVP3D loader/transform/runtime path.
+- Geometry metrics are blocked pending extracted meshes. No-GPU prerequisite repairs now isolate `utils.mesh_utils` from missing top-level image-helper and unused `trimesh` import blockers, add a root `extract_mesh.py` dry-run/import-check entrypoint, verify that entrypoint on one existing corrected i300 `teapot_base` artifact with `missing_inputs=[]`, add deterministic SMVP3D `cameras.npz` to Ref-GS transform conversion support, dry-run that conversion across all five SMVP3D scenes, add an OBJ-reference dry-run plan that confirms all five OBJ references exist while expected predicted meshes are missing, add an Open3D preflight that records the plain-environment `GLIBCXX_3.4.29` failure plus the successful `LD_LIBRARY_PATH=$CONDA_PREFIX/lib` workaround, add a dry-run runtime command plan, consolidate a runtime-readiness handoff packet, add a post-run extraction smoke validator for the next extraction smoke, add a dry-run geometry metric gate, add a guarded SMVP3D geometry evaluator entrypoint, and add a pipeline status summarizer. The current gate result is `metrics_allowed=false` because the post-run report is still `summary_is_dry_run` and five predicted SMVP3D meshes are missing; the evaluator therefore writes `blocked_by_gate` and no real Chamfer/F-score values. The current pipeline summary is `blocked_pending_extraction` with next action `run_non_dryrun_extraction_smoke_with_explicit_compute`. The no-compute P3 geometry implementation path is exhausted unless a new blocker or stale artifact is found; remaining geometry work is one non-dry-run extraction smoke with explicit runtime/GPU allocation, validator pass, and gate rerun before any OBJ-reference metric result can be produced.
 - External baseline comparisons are missing.
 
 ## Definitions
@@ -168,7 +209,7 @@ Verification gate:
 
 - Highest-value next task: run matched full 31000 base/rc first on `teapot`/`toaster`/`car`, using `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json`.
 - Launch gate: do not start this six-job matrix unless compute is explicitly allocated for the window and GPU/process safety checks pass.
-- If compute is not explicitly allocated, do not repeat opportunistic no-launch audits unless state changed; use docs/status reconciliation only when a stale artifact would misroute future windows.
+- If compute is not explicitly allocated, do not repeat opportunistic no-launch audits unless state changed; preserve the current `blocked_pending_extraction` geometry state unless a new blocker or stale artifact would misroute future windows.
 - Run matched full ablations.
 - Run multi-seed repeats.
 - Optionally expand scene set and SMVP3D geometry experiments.

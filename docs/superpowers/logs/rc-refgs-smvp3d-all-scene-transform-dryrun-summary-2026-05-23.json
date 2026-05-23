@@ -1,0 +1,62 @@
+{
+  "mode": "smvp3d_all_scene_transform_dryrun_summary",
+  "date": "2026-05-23",
+  "scene_count": 5,
+  "scenes": [
+    {
+      "scene": "david",
+      "summary_path": "docs/superpowers/logs/rc-refgs-smvp3d-david-transform-dryrun-2026-05-23.json",
+      "camera_count": 48,
+      "converted_count": 48,
+      "train_count": 42,
+      "test_count": 6,
+      "missing_images": []
+    },
+    {
+      "scene": "dragon",
+      "summary_path": "docs/superpowers/logs/rc-refgs-smvp3d-dragon-transform-dryrun-2026-05-23.json",
+      "camera_count": 48,
+      "converted_count": 48,
+      "train_count": 42,
+      "test_count": 6,
+      "missing_images": []
+    },
+    {
+      "scene": "hedgehog",
+      "summary_path": "docs/superpowers/logs/rc-refgs-smvp3d-hedgehog-transform-dryrun-2026-05-23.json",
+      "camera_count": 48,
+      "converted_count": 48,
+      "train_count": 42,
+      "test_count": 6,
+      "missing_images": []
+    },
+    {
+      "scene": "snail",
+      "summary_path": "docs/superpowers/logs/rc-refgs-smvp3d-snail-transform-dryrun-2026-05-23.json",
+      "camera_count": 48,
+      "converted_count": 48,
+      "train_count": 42,
+      "test_count": 6,
+      "missing_images": []
+    },
+    {
+      "scene": "squirrel",
+      "summary_path": "docs/superpowers/logs/rc-refgs-smvp3d-squirrel-transform-dryrun-2026-05-23.json",
+      "camera_count": 48,
+      "converted_count": 48,
+      "train_count": 42,
+      "test_count": 6,
+      "missing_images": []
+    }
+  ],
+  "totals": {
+    "camera_count": 240,
+    "converted_count": 240,
+    "train_count": 210,
+    "test_count": 30,
+    "missing_images": 0
+  },
+  "all_scenes_complete": true,
+  "dataset_writes": false,
+  "claim_boundary": "NO-GO for geometry metrics or reconstruction claims; transform coverage only."
+}
