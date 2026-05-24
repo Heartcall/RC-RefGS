@@ -85,8 +85,8 @@ the agent must:
 ## Current Blockers
 
 - Bash script launcher reliability is still Mixed in nested bash/conda contexts; use the Python direct-command launcher as the primary launcher until the bash wrapper is runtime repaired.
-- Full-horizon matched runs (31000) are not executed for the full matrix.
-- The P4 base/RC full-horizon matrix must not be launched opportunistically; launch only in a deliberate runtime window with explicitly allocated compute.
+- Full-horizon matched runs (31000) are partially complete for the base/RC matrix: `teapot_base`, `teapot_rc`, and `toaster_base` have point cloud plus train/test reflection JSON closeout artifacts, while `toaster_rc`, `car_base`, and `car_rc` remain incomplete.
+- The remaining P4 base/RC full-horizon cells must not be launched opportunistically; continue only in deliberate runtime windows with explicit single-cell scheduling, GPU/process safety checks, and artifact verification.
 - Multi-seed evidence is missing.
 - Material diagnostics exist for corrected i300 full splits, but remain Mixed / Unsupported for material-quality claims and need longer-horizon/multi-seed linkage before claim use.
 - Geometry metrics are blocked pending extracted meshes. No-GPU prerequisite repairs now isolate `utils.mesh_utils` from missing top-level image-helper and unused `trimesh` import blockers, add a root `extract_mesh.py` dry-run/import-check entrypoint, verify that entrypoint on one existing corrected i300 `teapot_base` artifact with `missing_inputs=[]`, add deterministic SMVP3D `cameras.npz` to Ref-GS transform conversion support, dry-run that conversion across all five SMVP3D scenes, add an OBJ-reference dry-run plan that confirms all five OBJ references exist while expected predicted meshes are missing, add an Open3D preflight that records the plain-environment `GLIBCXX_3.4.29` failure plus the successful `LD_LIBRARY_PATH=$CONDA_PREFIX/lib` workaround, add a dry-run runtime command plan, consolidate a runtime-readiness handoff packet, add a post-run extraction smoke validator for the next extraction smoke, add a dry-run geometry metric gate, add a guarded SMVP3D geometry evaluator entrypoint, and add a pipeline status summarizer. The current gate result is `metrics_allowed=false` because the post-run report is still `summary_is_dry_run` and five predicted SMVP3D meshes are missing; the evaluator therefore writes `blocked_by_gate` and no real Chamfer/F-score values. The current pipeline summary is `blocked_pending_extraction` with next action `run_non_dryrun_extraction_smoke_with_explicit_compute`. The no-compute P3 geometry implementation path is exhausted unless a new blocker or stale artifact is found; remaining geometry work is one non-dry-run extraction smoke with explicit runtime/GPU allocation, validator pass, and gate rerun before any OBJ-reference metric result can be produced.
@@ -207,8 +207,8 @@ Verification gate:
 
 ### P4 - Full experiment execution
 
-- Highest-value next task: run matched full 31000 base/rc first on `teapot`/`toaster`/`car`, using `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json`.
-- Launch gate: do not start this six-job matrix unless compute is explicitly allocated for the window and GPU/process safety checks pass.
+- Highest-value next task: continue matched full 31000 base/rc completion for the three incomplete cells (`toaster_rc`, `car_base`, `car_rc`), using `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json` and the current completion status artifact.
+- Launch gate: do not start remaining cells unless compute is explicitly allocated for the window and GPU/process safety checks pass; prefer exactly one cell per continuation window unless the board explicitly claims a broader runtime batch.
 - If compute is not explicitly allocated, do not repeat opportunistic no-launch audits unless state changed; preserve the current `blocked_pending_extraction` geometry state unless a new blocker or stale artifact would misroute future windows.
 - Run matched full ablations.
 - Run multi-seed repeats.

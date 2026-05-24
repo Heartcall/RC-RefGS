@@ -59,7 +59,7 @@
     },
     {
       "cell": "teapot_rc_single_cell_sequence_retry",
-      "status": "incomplete_terminated",
+      "status": "completed_after_followup",
       "assigned_cuda_device": 0,
       "attempts": [
         {
@@ -75,15 +75,25 @@
           "max_iteration_observed": 9100,
           "failure_reason": "long-horizon training progressed but was terminated for bounded-window closeout (SIGKILL)",
           "reference_summary_json": null
+        },
+        {
+          "cuda_device": 0,
+          "status": "completed",
+          "training_iteration_closeout": 31000,
+          "training_elapsed_from_progress": "31:58",
+          "result": "point_cloud/iteration_31000/point_cloud.ply, reflection_consistency_train.json, and reflection_consistency_test.json generated",
+          "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run6_gpu0.json"
         }
       ]
     },
     {
       "cell": "toaster_base_full",
-      "status": "incomplete_terminated",
-      "assigned_cuda_device": 2,
-      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
-      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_base_retry_20260524.json"
+      "status": "completed_after_followup",
+      "assigned_cuda_device": 0,
+      "failure_reason": "earlier long-horizon training was terminated for bounded-window closeout (SIGTERM); follow-up direct --cuda_device 0 run completed",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_base_retry_20260524_run2_gpu0.json",
+      "training_iteration_closeout": 31000,
+      "training_elapsed_from_progress": "46:09"
     },
     {
       "cell": "toaster_rc_full",
@@ -119,18 +129,18 @@
     {
       "scene": "teapot",
       "variant": "rc",
-      "point_cloud_exists": false,
-      "reflection_consistency_train_exists": false,
-      "reflection_consistency_test_exists": false,
-      "complete": false
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
     },
     {
       "scene": "toaster",
       "variant": "base",
-      "point_cloud_exists": false,
-      "reflection_consistency_train_exists": false,
-      "reflection_consistency_test_exists": false,
-      "complete": false
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
     },
     {
       "scene": "toaster",
@@ -158,14 +168,22 @@
     }
   ],
   "summary": {
-    "completed_cells": 1,
-    "failed_or_incomplete_cells": 5,
-    "missing_expected_artifacts": 15,
+    "completed_cells": 3,
+    "failed_or_incomplete_cells": 3,
+    "missing_expected_artifacts": 9,
     "expected_artifacts_total": 18
   },
   "teapot_base_reflection_metrics": {
     "train_mean_reflection_consistency": 0.022968589095398784,
     "test_mean_reflection_consistency": 0.004133488470688462
+  },
+  "teapot_rc_reflection_metrics": {
+    "train_mean_reflection_consistency": 0.012887926865369081,
+    "test_mean_reflection_consistency": 0.002675584307871759
+  },
+  "toaster_base_reflection_metrics": {
+    "train_mean_reflection_consistency": 0.3524560987949371,
+    "test_mean_reflection_consistency": 0.15400404632091522
   },
   "decision_hint": "CONDITIONAL_GO"
 }

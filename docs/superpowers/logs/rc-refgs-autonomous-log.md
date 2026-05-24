@@ -6385,6 +6385,60 @@ Key measured values (mean reflection consistency):
 
 ---
 
+## 2026-05-24 14:17:48 CST - P4 Teapot RC Single-Cell Completion
+
+**Recovered state:**
+- Roadmap, coordination board, autonomous log, full status, P4 completion status, and latest `teapot_rc` attempt artifact were recovered before action.
+- Active claim was `None`.
+- Prelaunch process checks found no matching matrix launcher/train process.
+- GPU snapshot before launch showed GPUs `0..6` idle.
+- P4 matrix state at recovery: `1/6` complete cells and `15/18` expected artifacts missing; `teapot_rc` was still missing point cloud plus train/test reflection JSON closeout artifacts.
+
+**Round-local task claim:**
+- Claimed at `2026-05-24 13:44:00 CST`:
+  - continue exactly one unfinished P4 base/RC `i31000` cell, `teapot_rc`;
+  - use explicit single-GPU direct-launcher scheduling and artifact verification;
+  - do not launch other cells, ablations, multi-seed runs, geometry metrics, manuscript work, or claim upgrades.
+
+**Actions taken:**
+- Ran exactly one direct-launcher command:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 0 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run6_gpu0.json`
+- The training process reached iteration `31000` in `31:58` progress-clock time and then ran train/test reflection-consistency evaluation.
+- Added `docs/superpowers/logs/rc-refgs-p4-single-cell-teapot-rc-complete-2026-05-24.json`.
+- Updated `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-24.json`.
+- Updated full implementation status and the superseding roadmap from `1/6` complete to `2/6` complete.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Runtime command:
+  - direct-launcher `teapot_rc` run exited 0.
+- Launcher summary:
+  - `python -m json.tool /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run6_gpu0.json` -> exit 0 with `job_count=1`, `missing_count=0`, `skip_train=false`, `skip_metrics=false`.
+- Artifact check:
+  - `/tmp/rc_refgs_p4_base_rc_i31000_20260522/teapot_rc/point_cloud/iteration_31000/point_cloud.ply` exists, size `5465122` bytes.
+  - `/tmp/rc_refgs_p4_base_rc_i31000_20260522/teapot_rc/reflection_consistency_train.json` exists, size `249` bytes.
+  - `/tmp/rc_refgs_p4_base_rc_i31000_20260522/teapot_rc/reflection_consistency_test.json` exists, size `248` bytes.
+- Reflection-consistency metrics:
+  - train: `mean_reflection_consistency=0.012887926865369081`, `reflective_region_psnr=39.774509048461915`, `valid_pair_count=10`, `pair_mode=dynamic`.
+  - test: `mean_reflection_consistency=0.002675584307871759`, `reflective_region_psnr=39.80288314819336`, `valid_pair_count=10`, `pair_mode=dynamic`.
+- Post-run safety:
+  - matching launcher/train process probe returned no matches.
+  - GPU snapshot after completion showed GPUs `0..6` idle.
+
+**Evidence interpretation recorded:**
+- This window completed exactly one P4 full-horizon cell: `teapot_rc`.
+- P4 matrix completion is now `2/6` cells complete, with `12/18` expected artifacts still missing.
+- Remaining incomplete cells are `toaster_base`, `toaster_rc`, `car_base`, and `car_rc`.
+- This adds valid full-horizon reflection-consistency evidence for the matched teapot base/RC pair, but the three-scene base/RC matrix remains incomplete.
+- No other cells, ablations, multi-seed runs, geometry metrics, manuscript work, or claim upgrades were started.
+
+**Go/no-go decision:** GO for `teapot_rc` single-cell completion; CONDITIONAL GO for continuing P4 single-cell completion on the four remaining cells with explicit compute/GPU safety and artifact verification; NO-GO for broad rendering, geometry, material, causal, external-superiority, multi-seed, full-ablation, manuscript, or scientific claim upgrades; SWITCH MODEL not triggered.
+
+**Next recommended step:**
+- Continue exactly one remaining P4 incomplete cell, preferably `toaster_base`, only after recovery, board claim, GPU/process safety checks, and with direct-launcher single-cell scheduling.
+
+---
+
 ## 2026-05-24 04:33:35 CST - P4 Compute-Safe Completion Window
 
 **Recovered state:**

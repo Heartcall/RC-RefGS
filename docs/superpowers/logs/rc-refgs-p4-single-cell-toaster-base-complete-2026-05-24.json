@@ -1,0 +1,64 @@
+{
+  "mode": "rc_refgs_p4_single_cell_completion",
+  "date": "2026-05-24",
+  "completed_at": "2026-05-24 16:45:43 CST",
+  "window_task": "Continue exactly one unfinished P4 base/RC i31000 cell: toaster_base.",
+  "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "launcher_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_base_retry_20260524_run2_gpu0.json",
+  "cell": {
+    "scene": "toaster",
+    "variant": "base",
+    "output_path": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/toaster_base",
+    "cuda_device": 0
+  },
+  "runtime_result": {
+    "status": "completed",
+    "training_iteration_closeout": 31000,
+    "training_elapsed_from_progress": "46:09",
+    "launcher_missing_count": 0,
+    "processes_remaining_after_completion": false,
+    "gpu0_snapshot_after_completion": "idle",
+    "other_gpu_note": "GPUs 2-6 were occupied by unrelated non-RC-RefGS jobs during closeout."
+  },
+  "artifact_check_after_attempt": {
+    "point_cloud_iteration_31000_exists": true,
+    "point_cloud_iteration_31000_size_bytes": 36977367,
+    "reflection_consistency_train_exists": true,
+    "reflection_consistency_train_size_bytes": 247,
+    "reflection_consistency_test_exists": true,
+    "reflection_consistency_test_size_bytes": 248
+  },
+  "reflection_metrics": {
+    "train": {
+      "mean_reflection_consistency": 0.3524560987949371,
+      "reflective_region_psnr": 31.131171226501465,
+      "num_pairs": 10,
+      "valid_pair_count": 10,
+      "pair_mode": "dynamic",
+      "max_angle_deg": 20.0
+    },
+    "test": {
+      "mean_reflection_consistency": 0.15400404632091522,
+      "reflective_region_psnr": 21.313609504699706,
+      "num_pairs": 10,
+      "valid_pair_count": 10,
+      "pair_mode": "dynamic",
+      "max_angle_deg": 20.0
+    }
+  },
+  "matrix_snapshot_after_window": {
+    "total_cells": 6,
+    "completed_cells": 3,
+    "missing_expected_artifacts": 9,
+    "expected_artifacts_total": 18
+  },
+  "scope_guardrails": {
+    "other_cells_started": false,
+    "ablation_full_runs_started": false,
+    "multi_seed_runs_started": false,
+    "geometry_or_mesh_work_started": false,
+    "manuscript_claim_modification": false,
+    "scientific_claim_upgrade": false
+  },
+  "decision_hint": "CONDITIONAL_GO"
+}
