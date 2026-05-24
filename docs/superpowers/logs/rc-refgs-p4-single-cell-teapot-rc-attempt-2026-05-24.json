@@ -1,0 +1,52 @@
+{
+  "mode": "rc_refgs_p4_single_cell_attempt",
+  "date": "2026-05-24",
+  "window_task": "Complete one unfinished P4 base/RC i31000 cell with compute-safe single-GPU scheduling and artifact verification.",
+  "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "cell": {
+    "scene": "teapot",
+    "variant": "rc",
+    "output_path": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/teapot_rc"
+  },
+  "scope_guardrails": {
+    "ablation_full_runs_started": false,
+    "multi_seed_runs_started": false,
+    "geometry_or_mesh_work_started": false,
+    "manuscript_claim_modification": false,
+    "scientific_claim_upgrade": false
+  },
+  "prelaunch_safety": {
+    "gpu_snapshot_idle": true,
+    "stale_matrix_launcher_process_found": false,
+    "stale_matrix_train_process_found": false
+  },
+  "runtime_attempts": [
+    {
+      "attempt_id": "teapot_rc_gpu1_startup_retry",
+      "cuda_device": 1,
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 1 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run2_gpu1.json",
+      "status": "failed_startup",
+      "failure_reason": "RuntimeError: CUDA error: all CUDA-capable devices are busy or unavailable"
+    },
+    {
+      "attempt_id": "teapot_rc_gpu0_progress_retry",
+      "cuda_device": 0,
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 0",
+      "status": "incomplete_terminated",
+      "max_iteration_observed": 4690,
+      "failure_reason": "Train process terminated for bounded-window closeout (SIGKILL); full-horizon artifacts not yet reachable"
+    }
+  ],
+  "artifact_check_after_attempt": {
+    "point_cloud_iteration_31000_exists": false,
+    "reflection_consistency_train_exists": false,
+    "reflection_consistency_test_exists": false
+  },
+  "matrix_snapshot_after_window": {
+    "completed_cells": 1,
+    "total_cells": 6,
+    "missing_expected_artifacts": 15,
+    "expected_artifacts_total": 18
+  },
+  "decision_hint": "CONDITIONAL_GO"
+}

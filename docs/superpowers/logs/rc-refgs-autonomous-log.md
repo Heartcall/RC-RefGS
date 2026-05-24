@@ -6223,6 +6223,170 @@ Key measured values (mean reflection consistency):
 
 ---
 
+## 2026-05-24 03:47:21 CST - P4 Relaunch Command Packet Window
+
+**Recovered state:**
+- Git was clean on `master...origin/master`.
+- Coordination board active claim was `None`.
+- Latest completed window recorded partial P4 runtime (`16/18` expected artifacts missing) after concurrent-launch OOM on `gpu0`.
+- This prompt did not explicitly allocate compute for new runtime launch.
+
+**Round-local task claim:**
+- Claimed at `2026-05-24 03:45:54 CST`:
+  - create one bounded compute-safe P4 completion command packet for unfinished `i31000` base/RC cells only;
+  - validate command parse/execution-plan safety without launching training in this window;
+  - do not run ablation expansion, multi-seed, geometry metrics, manuscript work, or claim upgrades.
+
+**Actions taken:**
+- Recovered roadmap + board + autonomous-log state and confirmed no active matrix launcher/train process.
+- Re-checked artifact gap from the existing P4 dry-run summary:
+  - `teapot_base`: `point_cloud` and train reflection JSON exist; test reflection JSON missing;
+  - `teapot_rc`, `toaster_base`, `toaster_rc`, `car_base`, `car_rc`: all three expected artifacts missing;
+  - total gap remains `16/18`.
+- Added compute-safe relaunch packet artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-relaunch-command-packet-2026-05-24.json`
+  - includes single-active-job policy, prelaunch safety checks, launch order, and six direct-launcher commands:
+    - `teapot_base` metric-only retry (`--skip_train`)
+    - five full cell retries (`teapot_rc`, `toaster_base`, `toaster_rc`, `car_base`, `car_rc`).
+- Dry-run validated each packet command with launcher `--dry_run` and all exits were `0`.
+- Updated full implementation status to reference the new packet as the next bounded P4 completion route.
+- Released the coordination-board claim and logged this window.
+
+**Commands run and verification results:**
+- Recovery/state:
+  - `git status --short --branch` -> clean.
+  - `pgrep -af "run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json"` -> no match.
+  - `pgrep -af "train.py.*rc_refgs_p4_base_rc_i31000_20260522"` -> no match.
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` -> idle snapshot on GPUs 0-6.
+- Artifact-gap confirmation:
+  - presence check against `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-dryrun-summary-2026-05-22.json` confirmed `16/18` missing expected artifacts.
+- Packet verification:
+  - each packet command + `--dry_run` exited `0` and printed expected train/metric direct-launcher commands.
+
+**Evidence interpretation recorded:**
+- This window adds a bounded execution-ready handoff for finishing P4 base/RC `i31000` without broadening scope.
+- No training, metric computation, geometry work, or claim upgrade was performed in this window.
+
+**Go/no-go decision:** GO for the P4 completion command-packet handoff; CONDITIONAL GO for launching these commands only in an explicit-compute window with single-active-job discipline; NO-GO for broad rendering, geometry, material, causal, external-superiority, multi-seed, full ablation, manuscript, or scientific claim upgrades.
+
+**Next recommended step:**
+- In the next explicit-compute window, execute the packet commands sequentially (not concurrently), re-check artifact completeness after each cell, and only then write the full six-cell base-vs-RC summary.
+
+---
+
+## 2026-05-24 08:21:18 CST - P4 Single-Cell Compute-Safe Completion Attempt
+
+**Recovered state:**
+- Roadmap, coordination board, autonomous log, and full implementation status were recovered before action.
+- Matrix state at recovery: `1/6` completed cells and `15/18` expected artifacts missing.
+- Active stale-process checks were clean for the target matrix before launch.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - **"Complete one unfinished P4 base/RC i31000 cell with compute-safe single-GPU scheduling and artifact verification."**
+
+**Actions taken:**
+- Targeted the highest-value unfinished single cell: `teapot_rc`.
+- Verified prelaunch safety:
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader` showed GPUs `0..6` idle at launch.
+  - `pgrep` checks showed no existing matrix launcher/train process.
+- Executed direct-launcher retries for only `teapot_rc`:
+  1. `--cuda_device 1` startup retry failed with:
+     - `RuntimeError: CUDA error: all CUDA-capable devices are busy or unavailable`.
+  2. `--cuda_device 0` retry started successfully and progressed in training to observed iteration `4690`.
+- For bounded-window closeout, the GPU0 run was terminated (SIGKILL) and post-run artifacts were rechecked.
+- Wrote machine-readable attempt artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-single-cell-teapot-rc-attempt-2026-05-24.json`
+
+**Verification and outcomes:**
+- Post-window process/gpu safety:
+  - no remaining `teapot_rc` launcher/train process;
+  - GPU memory/utilization returned to idle.
+- Per-cell artifact verification for `teapot_rc` after this window:
+  - missing: `point_cloud/iteration_31000/point_cloud.ply`
+  - missing: `reflection_consistency_train.json`
+  - missing: `reflection_consistency_test.json`
+- Matrix snapshot remains unchanged:
+  - complete cells: `1/6`
+  - missing expected artifacts: `15/18`
+- Required verification gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK (60 tests)`;
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass;
+  - `git diff --check` -> pass;
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-p4-single-cell-teapot-rc-attempt-2026-05-24.json` -> `JSON_OK`.
+
+**Evidence interpretation recorded:**
+- Device startup reliability remains asymmetric in this environment (`cuda_device=1` failed while `cuda_device=0` launched).
+- This window improved execution confidence for `teapot_rc` runtime behavior but did not produce new full-horizon closeout artifacts.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- GO criteria for full P4 completion are not yet met.
+- NO-GO boundaries remain unchanged for manuscript/scientific claim upgrades, full ablation, multi-seed, geometry, material, and external-superiority claims.
+
+**Next recommended step:**
+- Continue compute-safe single-cell sequencing for the remaining incomplete P4 cells, favoring the proven stable device path for this environment, and allow each run to reach iteration `31000` closeout before progressing.
+
+---
+
+## 2026-05-24 04:33:35 CST - P4 Compute-Safe Completion Window
+
+**Recovered state:**
+- Git had protocol-log/status updates in progress from prior windows.
+- Roadmap, coordination board, autonomous log, full status, P4 manifest, prior P4 launcher logs, and current missing-artifact state were recovered.
+- Prior state confirmed `16/18` expected artifacts missing and previous OOM root cause from concurrent `gpu0` launches.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - **"Complete unfinished P4 base/RC i31000 cells with compute-safe scheduling."**
+
+**Actions taken:**
+- Verified no stale matrix launcher/train process before relaunch.
+- Reconfirmed unfinished cells from artifact checks.
+- Runtime attempts:
+  1. `teapot_base` metrics-only retry:
+     - `CUDA_VISIBLE_DEVICES=6` + `--cuda_device 0` failed (`No CUDA GPUs are available`).
+     - `--cuda_device 1` failed (`all CUDA-capable devices are busy or unavailable`).
+     - `--cuda_device 0` succeeded and produced missing `reflection_consistency_test.json`.
+  2. Full-cell retries launched with explicit device assignment and staggered one-job-per-GPU scheduling:
+     - `teapot_rc --cuda_device 0`
+     - `toaster_base --cuda_device 2`
+     - `toaster_rc --cuda_device 3`
+     - `car_base --cuda_device 4`
+     - `car_rc --cuda_device 5`
+- These five full cells progressed into long-horizon training but did not reach `iteration_31000` artifact closeout in this window.
+- For bounded-window closeout, the five full-cell runs were terminated (SIGTERM), and completion/missing state was recorded.
+- Wrote machine-readable completion artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-24.json`
+
+**Verification and outcomes:**
+- Conflict checks before launch:
+  - no matching stale `run_rc_refgs_ablation_direct.py` / matrix `train.py` process.
+- Assigned GPU recording:
+  - each launched full-cell command included explicit `--cuda_device` and these assignments are captured in the completion-status artifact.
+- Per-cell artifact verification after execution:
+  - `teapot_base`: complete (`point_cloud` + `reflection_consistency_train.json` + `reflection_consistency_test.json`)
+  - `teapot_rc`, `toaster_base`, `toaster_rc`, `car_base`, `car_rc`: incomplete (`point_cloud`/train/test JSON missing at `iteration_31000` closeout point)
+- Current matrix completion snapshot:
+  - complete cells: `1/6`
+  - missing expected artifacts: `15/18`
+- Produced/updated metrics in this window:
+  - `teapot_base/reflection_consistency_test.json` added (`mean_reflection_consistency=0.004133488470688462`, `num_pairs=10`)
+  - no new render-quality/material outputs generated.
+
+**Evidence interpretation recorded:**
+- The compute-safe scheduling fix was applied operationally via explicit per-job GPU assignment and one-job-per-GPU launch.
+- The unfinished cells remain long-horizon-incomplete in this bounded window; no claim expansion is supported.
+
+**Go/no-go decision:** CONDITIONAL GO (partial completion with honest missing-artifact/failure reporting).
+- GO criterion for full completion (all six cells complete with required artifacts) was not met.
+- NO-GO preserved for broad rendering, geometry, material, causal, external-superiority, ablation, multi-seed, manuscript, and scientific claim upgrades.
+- SWITCH MODEL not triggered.
+
+**Next recommended step:**
+- In the next explicit-compute window, rerun only the five incomplete full cells with explicit `--cuda_device` assignment and let them finish to `iteration_31000` artifact closeout before any expansion task.
+
+---
+
 ## 2026-05-23 22:31:27 CST - Geometry Handoff Artifact Staleness Audit
 
 **Recovered state:**

@@ -1,0 +1,113 @@
+{
+  "mode": "rc_refgs_p4_relaunch_command_packet",
+  "date": "2026-05-24",
+  "source_manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "source_dryrun_summary": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-dryrun-summary-2026-05-22.json",
+  "output_root": "/tmp/rc_refgs_p4_base_rc_i31000_20260522",
+  "window_scope": {
+    "no_runtime_launch_in_this_window": true,
+    "no_ablation_expansion": true,
+    "no_multi_seed": true,
+    "no_geometry_metrics": true,
+    "no_claim_upgrades": true
+  },
+  "recovery_state": {
+    "matrix_launcher_running": false,
+    "matrix_train_running": false,
+    "gpu_probe": "idle_snapshot_recorded",
+    "artifact_gap": {
+      "missing_expected_artifacts": 16,
+      "expected_total_artifacts": 18,
+      "cells": [
+        {
+          "scene": "teapot",
+          "variant": "base",
+          "point_cloud_exists": true,
+          "train_reflection_json_exists": true,
+          "test_reflection_json_exists": false
+        },
+        {
+          "scene": "teapot",
+          "variant": "rc",
+          "point_cloud_exists": false,
+          "train_reflection_json_exists": false,
+          "test_reflection_json_exists": false
+        },
+        {
+          "scene": "toaster",
+          "variant": "base",
+          "point_cloud_exists": false,
+          "train_reflection_json_exists": false,
+          "test_reflection_json_exists": false
+        },
+        {
+          "scene": "toaster",
+          "variant": "rc",
+          "point_cloud_exists": false,
+          "train_reflection_json_exists": false,
+          "test_reflection_json_exists": false
+        },
+        {
+          "scene": "car",
+          "variant": "base",
+          "point_cloud_exists": false,
+          "train_reflection_json_exists": false,
+          "test_reflection_json_exists": false
+        },
+        {
+          "scene": "car",
+          "variant": "rc",
+          "point_cloud_exists": false,
+          "train_reflection_json_exists": false,
+          "test_reflection_json_exists": false
+        }
+      ]
+    }
+  },
+  "compute_safe_execution_policy": {
+    "single_active_job": true,
+    "launch_order": [
+      "teapot_base_metrics_only",
+      "teapot_rc_full",
+      "toaster_base_full",
+      "toaster_rc_full",
+      "car_base_full",
+      "car_rc_full"
+    ],
+    "prelaunch_checks": [
+      "nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader",
+      "pgrep -af \"run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json\"",
+      "pgrep -af \"train.py.*rc_refgs_p4_base_rc_i31000_20260522\""
+    ],
+    "post_cell_checks": [
+      "verify expected artifacts for that cell",
+      "verify no lingering failed process before launching next cell"
+    ]
+  },
+  "commands": [
+    {
+      "id": "teapot_base_metrics_only",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants base --skip_train --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_base_metrics_retry_20260524.json"
+    },
+    {
+      "id": "teapot_rc_full",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524.json"
+    },
+    {
+      "id": "toaster_base_full",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes toaster --variants base --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_base_retry_20260524.json"
+    },
+    {
+      "id": "toaster_rc_full",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes toaster --variants rc --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_rc_retry_20260524.json"
+    },
+    {
+      "id": "car_base_full",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes car --variants base --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_base_retry_20260524.json"
+    },
+    {
+      "id": "car_rc_full",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes car --variants rc --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_rc_retry_20260524.json"
+    }
+  ]
+}

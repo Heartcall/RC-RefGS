@@ -1,0 +1,150 @@
+{
+  "mode": "rc_refgs_p4_base_rc_i31000_completion_status",
+  "date": "2026-05-24",
+  "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "output_root": "/tmp/rc_refgs_p4_base_rc_i31000_20260522",
+  "scope_guardrails": {
+    "ablation_full_runs_started": false,
+    "multi_seed_runs_started": false,
+    "geometry_or_mesh_work_started": false,
+    "manuscript_claim_modification": false,
+    "scientific_claim_upgrade": false
+  },
+  "prelaunch_safety": {
+    "stale_launcher_process_found": false,
+    "stale_train_process_found": false,
+    "gpu_probe": "nvidia-smi idle snapshot observed before relaunch"
+  },
+  "device_assignment_plan": [
+    {
+      "cell": "teapot_base_metrics_only",
+      "assigned_cuda_device": 0,
+      "note": "final successful retry; prior attempts with CUDA_VISIBLE_DEVICES=6 and --cuda_device 1 failed in this environment"
+    },
+    {
+      "cell": "teapot_rc_full",
+      "assigned_cuda_device": 0
+    },
+    {
+      "cell": "toaster_base_full",
+      "assigned_cuda_device": 2
+    },
+    {
+      "cell": "toaster_rc_full",
+      "assigned_cuda_device": 3
+    },
+    {
+      "cell": "car_base_full",
+      "assigned_cuda_device": 4
+    },
+    {
+      "cell": "car_rc_full",
+      "assigned_cuda_device": 5
+    }
+  ],
+  "runtime_attempts": [
+    {
+      "cell": "teapot_base_metrics_only",
+      "status": "completed",
+      "assigned_cuda_device": 0,
+      "result": "reflection_consistency_test.json generated; train/test reflection JSON and point_cloud now present",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_base_metrics_retry_20260524_run4_gpu0.json"
+    },
+    {
+      "cell": "teapot_rc_full",
+      "status": "incomplete_terminated",
+      "assigned_cuda_device": 0,
+      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524.json"
+    },
+    {
+      "cell": "toaster_base_full",
+      "status": "incomplete_terminated",
+      "assigned_cuda_device": 2,
+      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_base_retry_20260524.json"
+    },
+    {
+      "cell": "toaster_rc_full",
+      "status": "incomplete_terminated",
+      "assigned_cuda_device": 3,
+      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_rc_retry_20260524.json"
+    },
+    {
+      "cell": "car_base_full",
+      "status": "incomplete_terminated",
+      "assigned_cuda_device": 4,
+      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_base_retry_20260524.json"
+    },
+    {
+      "cell": "car_rc_full",
+      "status": "incomplete_terminated",
+      "assigned_cuda_device": 5,
+      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
+      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_rc_retry_20260524.json"
+    }
+  ],
+  "cell_status": [
+    {
+      "scene": "teapot",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    },
+    {
+      "scene": "teapot",
+      "variant": "rc",
+      "point_cloud_exists": false,
+      "reflection_consistency_train_exists": false,
+      "reflection_consistency_test_exists": false,
+      "complete": false
+    },
+    {
+      "scene": "toaster",
+      "variant": "base",
+      "point_cloud_exists": false,
+      "reflection_consistency_train_exists": false,
+      "reflection_consistency_test_exists": false,
+      "complete": false
+    },
+    {
+      "scene": "toaster",
+      "variant": "rc",
+      "point_cloud_exists": false,
+      "reflection_consistency_train_exists": false,
+      "reflection_consistency_test_exists": false,
+      "complete": false
+    },
+    {
+      "scene": "car",
+      "variant": "base",
+      "point_cloud_exists": false,
+      "reflection_consistency_train_exists": false,
+      "reflection_consistency_test_exists": false,
+      "complete": false
+    },
+    {
+      "scene": "car",
+      "variant": "rc",
+      "point_cloud_exists": false,
+      "reflection_consistency_train_exists": false,
+      "reflection_consistency_test_exists": false,
+      "complete": false
+    }
+  ],
+  "summary": {
+    "completed_cells": 1,
+    "failed_or_incomplete_cells": 5,
+    "missing_expected_artifacts": 15,
+    "expected_artifacts_total": 18
+  },
+  "teapot_base_reflection_metrics": {
+    "train_mean_reflection_consistency": 0.022968589095398784,
+    "test_mean_reflection_consistency": 0.004133488470688462
+  },
+  "decision_hint": "CONDITIONAL_GO"
+}
