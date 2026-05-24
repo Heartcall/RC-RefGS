@@ -1,7 +1,7 @@
 {
   "mode": "rc_refgs_p4_single_cell_attempt",
   "date": "2026-05-24",
-  "window_task": "Complete one unfinished P4 base/RC i31000 cell with compute-safe single-GPU scheduling and artifact verification.",
+  "window_task": "Continue unfinished P4 i31000 single-cell completion sequence.",
   "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
   "cell": {
     "scene": "teapot",
@@ -22,18 +22,19 @@
   },
   "runtime_attempts": [
     {
-      "attempt_id": "teapot_rc_gpu1_startup_retry",
-      "cuda_device": 1,
-      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 1 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run2_gpu1.json",
+      "attempt_id": "teapot_rc_gpu0_with_cuda_visible_retry",
+      "cuda_device": 0,
+      "cuda_visible_devices": "0",
+      "command": "CUDA_VISIBLE_DEVICES=0 conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 0 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run4_gpu0.json",
       "status": "failed_startup",
-      "failure_reason": "RuntimeError: CUDA error: all CUDA-capable devices are busy or unavailable"
+      "failure_reason": "RuntimeError: No CUDA GPUs are available"
     },
     {
-      "attempt_id": "teapot_rc_gpu0_progress_retry",
+      "attempt_id": "teapot_rc_gpu0_progress_retry_run5",
       "cuda_device": 0,
-      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 0",
+      "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes teapot --variants rc --cuda_device 0 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524_run5_gpu0.json",
       "status": "incomplete_terminated",
-      "max_iteration_observed": 4690,
+      "max_iteration_observed": 9100,
       "failure_reason": "Train process terminated for bounded-window closeout (SIGKILL); full-horizon artifacts not yet reachable"
     }
   ],

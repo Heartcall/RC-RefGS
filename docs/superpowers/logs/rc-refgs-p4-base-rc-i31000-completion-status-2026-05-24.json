@@ -58,6 +58,27 @@
       "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/teapot_rc_retry_20260524.json"
     },
     {
+      "cell": "teapot_rc_single_cell_sequence_retry",
+      "status": "incomplete_terminated",
+      "assigned_cuda_device": 0,
+      "attempts": [
+        {
+          "cuda_visible_devices": "0",
+          "cuda_device": 0,
+          "status": "failed_startup",
+          "failure_reason": "RuntimeError: No CUDA GPUs are available",
+          "reference_summary_json": null
+        },
+        {
+          "cuda_device": 0,
+          "status": "incomplete_terminated",
+          "max_iteration_observed": 9100,
+          "failure_reason": "long-horizon training progressed but was terminated for bounded-window closeout (SIGKILL)",
+          "reference_summary_json": null
+        }
+      ]
+    },
+    {
       "cell": "toaster_base_full",
       "status": "incomplete_terminated",
       "assigned_cuda_device": 2,

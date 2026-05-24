@@ -1,5 +1,62 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-24 09:15:28 CST - P4 Single-Cell Sequencing Continuation Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, full implementation status, P4 relaunch command packet, and latest single-cell attempt artifact.
+- Matrix snapshot at recovery remained `1/6` complete with `15/18` expected artifacts missing.
+- Previous single-cell evidence showed `teapot_rc` as next highest-value incomplete cell in sequence.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - **"Continue unfinished P4 i31000 single-cell completion sequence."**
+
+**Actions taken:**
+- Inspected relaunch packet:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-relaunch-command-packet-2026-05-24.json`
+- Inspected latest single-cell artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-single-cell-teapot-rc-attempt-2026-05-24.json`
+- Verified next incomplete cell and kept scope to one cell only (`teapot_rc`).
+- Verified no stale matrix launcher/train process and idle GPUs before launch.
+- Launched exactly one unfinished cell via Python direct launcher with explicit device assignment:
+  1. `CUDA_VISIBLE_DEVICES=0 ... --cuda_device 0` retry -> startup failure (`No CUDA GPUs are available`).
+  2. direct `--cuda_device 0` retry (no CUDA_VISIBLE override) -> stable training progress observed to iteration `9100`.
+- Bounded-window closeout:
+  - terminated the running `teapot_rc` process (SIGKILL), then confirmed no stale matrix launcher/train process and idle GPUs.
+
+**Per-cell artifact verification after run:**
+- `teapot_rc` still missing:
+  - `point_cloud/iteration_31000/point_cloud.ply`
+  - `reflection_consistency_train.json`
+  - `reflection_consistency_test.json`
+- Matrix snapshot after this window remains:
+  - complete cells: `1/6`
+  - missing expected artifacts: `15/18`
+
+**Artifacts/status updated:**
+- Updated single-cell attempt artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-single-cell-teapot-rc-attempt-2026-05-24.json`
+- Updated P4 completion status artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-24.json`
+- Updated:
+  - `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+  - `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+
+**Verification and cleanup:**
+- Process cleanup: no stale `run_rc_refgs_ablation_direct.py` or matrix `train.py` process after closeout.
+- GPU cleanup: `nvidia-smi` returned to idle across GPUs `0..6`.
+- `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+- `git diff --check` passed.
+- JSON validity checks (`python -m json.tool`) passed for touched JSON artifacts.
+- `conda run -n ref_gs python -m unittest discover tests` was not rerun because no code files changed in this window.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- The launched cell did not reach `iteration_31000` closeout artifacts in this bounded window.
+- Scope guardrails preserved: NO-GO unchanged for ablation expansion, multi-seed, geometry, manuscript, and claim upgrades.
+
+---
+
 ## 2026-05-16 13:54:04 CST
 
 **Current model/window if known:** codex implementation window.
