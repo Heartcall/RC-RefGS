@@ -1,0 +1,48 @@
+{
+  "mode": "rc_refgs_p4_single_cell_attempt",
+  "date": "2026-05-24",
+  "window_task": "Continue unfinished P4 i31000 single-cell completion sequence.",
+  "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "cell": {
+    "scene": "toaster",
+    "variant": "rc",
+    "output_path": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/toaster_rc"
+  },
+  "scope_guardrails": {
+    "ablation_full_runs_started": false,
+    "multi_seed_runs_started": false,
+    "geometry_or_mesh_work_started": false,
+    "manuscript_claim_modification": false,
+    "scientific_claim_upgrade": false
+  },
+  "prelaunch_safety": {
+    "stale_matrix_launcher_process_found": false,
+    "stale_matrix_train_process_found": false,
+    "gpu_probe_before_launch": "GPU 0/1/2 idle; GPUs 3/4/5/6 occupied by unrelated non-RC jobs"
+  },
+  "runtime_attempt": {
+    "attempt_id": "toaster_rc_gpu0_single_cell_retry_run3",
+    "cuda_device": 0,
+    "command": "conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes toaster --variants rc --cuda_device 0 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_rc_retry_20260524_run3_gpu0.json",
+    "status": "incomplete_interrupted",
+    "failure_reason": "bounded-window interruption after extended runtime; conda wrapper exited with KeyboardInterrupt",
+    "observed_runtime_signal": "ref_gs python process held ~13-14 GiB on GPU 0 during run"
+  },
+  "artifact_check_after_attempt": {
+    "point_cloud_iteration_31000_exists": false,
+    "reflection_consistency_train_exists": false,
+    "reflection_consistency_test_exists": false
+  },
+  "postrun_safety": {
+    "stale_matrix_launcher_process_found": false,
+    "stale_matrix_train_process_found": false,
+    "gpu_probe_after_cleanup": "GPU 0 returned to idle; only unrelated jobs remained on GPUs 3/4/5/6"
+  },
+  "matrix_snapshot_after_window": {
+    "completed_cells": 3,
+    "total_cells": 6,
+    "missing_expected_artifacts": 9,
+    "expected_artifacts_total": 18
+  },
+  "decision_hint": "CONDITIONAL_GO"
+}

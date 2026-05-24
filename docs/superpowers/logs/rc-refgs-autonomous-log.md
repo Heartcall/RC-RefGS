@@ -1,5 +1,81 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-24 21:24:26 CST - P4 Toaster-RC Single-Cell Continuation (Compute-Blocked) Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, and full implementation status.
+- P4 matrix status at recovery: `3/6` completed cells (`teapot_base`, `teapot_rc`, `toaster_base`) and three incomplete cells (`toaster_rc`, `car_base`, `car_rc`).
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - continue exactly one unfinished P4 `i31000` cell: `toaster_rc`, under explicit single-GPU direct-launcher scheduling and artifact verification.
+
+**Actions taken:**
+- Verified no stale RC-RefGS matrix launcher/train process was active.
+- Verified artifact state before launch attempt remained:
+  - `toaster_rc`: missing `point_cloud/iteration_31000/point_cloud.ply`, `reflection_consistency_train.json`, and `reflection_consistency_test.json`.
+- Ran GPU/process safety gate before launch:
+  - GPU 0 (the proven stable RC device path) was occupied by unrelated process:
+    - `python scripts/test.py` (PID `2745283`, user `tantao`), ~`5286 MiB`, high utilization.
+  - GPUs 2-6 were heavily occupied by unrelated jobs.
+- Because safe single-device launch conditions were not met, no `toaster_rc` training was launched in this window.
+
+**Protocol reconciliation:**
+- Released active claim and recorded this as a completed compute-blocked continuation window in the coordination board.
+
+**Verification and cleanup:**
+- Process checks:
+  - `pgrep -af "run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json"` -> no match.
+  - `pgrep -af "train.py.*rc_refgs_p4_base_rc_i31000_20260522"` -> no match.
+- Required gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` (`60` tests).
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+
+**Decision:** CONDITIONAL GO.
+- Rationale: highest-value next runtime task remains `toaster_rc`, but compute-safety gate blocked safe launch in this window; claim boundaries preserved and protocol state remains clean for immediate retry when GPU 0 is safely available.
+
+---
+
+## 2026-05-24 19:12:42 CST - P4 Stale-Claim Reconciliation Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, and coordination board.
+- Board contained a stale active claim for `toaster_base` continuation even though completion artifacts and status updates already existed.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - **"Reconcile stale P4 active-claim state against completed toaster_base artifacts and align board/log protocol state."**
+
+**Actions taken:**
+- Verified no active matrix launcher/train process remained.
+- Verified the previously claimed `toaster_base` closeout artifacts exist:
+  - `point_cloud/iteration_31000/point_cloud.ply` (36977367 bytes)
+  - `reflection_consistency_train.json` (247 bytes)
+  - `reflection_consistency_test.json` (248 bytes)
+- Confirmed test-metric payload remained consistent:
+  - `mean_reflection_consistency=0.15400404632091522`
+  - `valid_pair_count=10`
+- Reconciled board protocol state:
+  - released stale active claim;
+  - set `Active Task Claims` to `None`;
+  - recorded this reconciliation as a completed task.
+
+**Scope guardrails preserved:**
+- No new training launches.
+- No ablation/multi-seed/geometry/manuscript/claim-upgrade work.
+
+**Verification and cleanup:**
+- `pgrep` checks confirmed no matching `run_rc_refgs_ablation_direct.py` or matrix `train.py` process.
+- `conda run -n ref_gs python -m unittest discover tests` passed (60 tests, OK).
+- `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+- `git diff --check` passed.
+
+**Go/no-go decision:** GO for protocol-state reconciliation.
+- This window resolved a stale coordination-board blocker and restored clean claim state for the next single-cell P4 runtime window.
+
+---
+
 ## 2026-05-24 09:15:28 CST - P4 Single-Cell Sequencing Continuation Window
 
 **Recovered state:**
@@ -6216,6 +6292,58 @@ Key measured values (mean reflection consistency):
 **Next recommended step:**
 - If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke using the recorded Open3D `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` workaround.
 - If no explicit compute is allocated and no stale artifact/new blocker is found, preserve the current `blocked_pending_extraction` state.
+
+---
+
+## 2026-05-24 23:59:22 CST - P4 Toaster-RC Single-Cell Continuation (Bounded Interruption)
+
+**Recovered state:**
+- Recovered git, roadmap, coordination board, autonomous log, and full implementation status.
+- Matrix snapshot at recovery remained `3/6` complete with incomplete cells `toaster_rc`, `car_base`, `car_rc`.
+- Existing P4 completion/command artifacts were rechecked:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-24.json`
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-relaunch-command-packet-2026-05-24.json`
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - continue one unfinished P4 i31000 single-cell completion (`toaster_rc`) with compute-safe direct launcher scheduling and explicit device assignment.
+
+**Actions taken:**
+- Prelaunch safety checks:
+  - no stale matrix launcher process;
+  - no stale matrix `train.py` process;
+  - GPU snapshot before launch: GPU `0/1/2` idle; GPUs `3/4/5/6` occupied by unrelated non-RC jobs.
+- Launched exactly one cell with direct launcher:
+  - `conda run -n ref_gs python scripts/run_rc_refgs_ablation_direct.py --manifest_json docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json --scenes toaster --variants rc --cuda_device 0 --summary_json /tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_rc_retry_20260524_run3_gpu0.json`
+- Runtime signal:
+  - `ref_gs` python train process occupied GPU 0 at roughly `13-14 GiB` for an extended period.
+- Bounded-window closeout:
+  - interrupted the run with `KeyboardInterrupt` (Ctrl-C to conda wrapper) after extended runtime and before artifact closeout.
+- Wrote single-cell attempt artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-single-cell-toaster-rc-attempt-2026-05-24.json`
+- Updated matrix completion artifact with this new attempt status:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-24.json`
+
+**Verification and outcomes:**
+- Post-run cleanup checks:
+  - no stale matrix launcher/train process;
+  - GPU 0 returned to idle.
+- Artifact check for `toaster_rc` after this window:
+  - missing `point_cloud/iteration_31000/point_cloud.ply`
+  - missing `reflection_consistency_train.json`
+  - missing `reflection_consistency_test.json`
+- Matrix status remains:
+  - complete cells: `3/6`
+  - missing expected artifacts: `9/18`
+
+**Evidence interpretation recorded:**
+- Single-cell compute-safe execution discipline was preserved (exactly one cell launched, explicit `--cuda_device 0`, no scope expansion).
+- This window did not produce `toaster_rc` closeout artifacts; broad evidence/claim state is unchanged.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- GO for continued single-cell sequencing workflow under safety gates.
+- GO criteria for full P4 matrix completion were not met in this window.
+- NO-GO remains for ablation expansion, multi-seed, geometry/material/manuscript/scientific claim upgrades.
 
 ---
 

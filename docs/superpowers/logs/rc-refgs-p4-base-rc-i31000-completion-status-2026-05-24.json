@@ -109,14 +109,21 @@
       "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
       "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_base_retry_20260524.json"
     },
-    {
-      "cell": "car_rc_full",
-      "status": "incomplete_terminated",
-      "assigned_cuda_device": 5,
-      "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
-      "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_rc_retry_20260524.json"
-    }
-  ],
+        {
+            "cell": "car_rc_full",
+            "status": "incomplete_terminated",
+            "assigned_cuda_device": 5,
+            "failure_reason": "long-horizon training still running; terminated for bounded-window closeout (SIGTERM)",
+            "reference_summary_json": "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_rc_retry_20260524.json"
+        },
+        {
+            "cell": "toaster_rc_single_cell_sequence_retry_20260524_window2",
+            "status": "incomplete_interrupted",
+            "assigned_cuda_device": 0,
+            "failure_reason": "bounded-window interruption after extended runtime; conda wrapper exited with KeyboardInterrupt before iteration_31000 closeout artifacts",
+            "reference_summary_json": "docs/superpowers/logs/rc-refgs-p4-single-cell-toaster-rc-attempt-2026-05-24.json"
+        }
+    ],
   "cell_status": [
     {
       "scene": "teapot",
