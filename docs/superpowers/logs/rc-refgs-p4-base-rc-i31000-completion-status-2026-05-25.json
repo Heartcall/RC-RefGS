@@ -1,0 +1,78 @@
+{
+  "mode": "rc_refgs_p4_base_rc_i31000_completion_status",
+  "date": "2026-05-25",
+  "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "output_root": "/tmp/rc_refgs_p4_base_rc_i31000_20260522",
+  "source_reconciliation": "docs/superpowers/logs/rc-refgs-p4-manual-artifact-reconciliation-2026-05-25.json",
+  "source_reflection_summary": "docs/superpowers/logs/rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.json",
+  "scope_guardrails": {
+    "ablation_full_runs_started": false,
+    "multi_seed_runs_started": false,
+    "geometry_or_mesh_work_started": false,
+    "manuscript_claim_modification": false,
+    "scientific_claim_upgrade": false
+  },
+  "cell_status": [
+    {
+      "scene": "teapot",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    },
+    {
+      "scene": "teapot",
+      "variant": "rc",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    },
+    {
+      "scene": "toaster",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    },
+    {
+      "scene": "toaster",
+      "variant": "rc",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    },
+    {
+      "scene": "car",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    },
+    {
+      "scene": "car",
+      "variant": "rc",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "complete": true
+    }
+  ],
+  "summary": {
+    "completed_cells": 6,
+    "failed_or_incomplete_cells": 0,
+    "missing_expected_artifacts": 0,
+    "expected_artifacts_total": 18
+  },
+  "aggregate_reflection_deltas_rc_minus_base": {
+    "train_mean_reflection_consistency_avg_delta": -0.12140093434912462,
+    "test_mean_reflection_consistency_avg_delta": -0.04473169764969498,
+    "train_reflective_region_psnr_avg_delta": 0.21495660146077591,
+    "test_reflective_region_psnr_avg_delta": 0.1319833119710291
+  },
+  "decision_hint": "GO"
+}

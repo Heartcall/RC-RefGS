@@ -1,0 +1,112 @@
+{
+  "mode": "rc_refgs_p4_manual_artifact_reconciliation",
+  "date": "2026-05-25",
+  "manifest": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json",
+  "output_root": "/tmp/rc_refgs_p4_base_rc_i31000_20260522",
+  "reconciliation_scope": {
+    "matrix": "teapot/toaster/car x base/rc x i31000",
+    "expected_artifacts_per_cell": [
+      "point_cloud/iteration_31000/point_cloud.ply",
+      "reflection_consistency_train.json",
+      "reflection_consistency_test.json"
+    ],
+    "expected_cells_total": 6,
+    "expected_artifacts_total": 18
+  },
+  "manual_artifact_sources": {
+    "launcher_status": [
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/toaster_rc_manual_i31000.json",
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_base_manual_i31000.json",
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/car_rc_metrics_only_i31000.json"
+    ],
+    "manual_logs": [
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/manual_logs/toaster_rc_manual_i31000.log",
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/manual_logs/car_base_manual_i31000.log",
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/manual_logs/car_rc_manual_i31000.log",
+      "/tmp/rc_refgs_p4_base_rc_i31000_20260522/manual_logs/car_rc_metrics_only_i31000.log"
+    ]
+  },
+  "cell_artifact_status": [
+    {
+      "scene": "teapot",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "point_cloud_bytes": 5950202,
+      "train_json_bytes": 248,
+      "test_json_bytes": 248,
+      "completion_path": "prior protocol completion retained"
+    },
+    {
+      "scene": "teapot",
+      "variant": "rc",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "point_cloud_bytes": 5465122,
+      "train_json_bytes": 249,
+      "test_json_bytes": 248,
+      "completion_path": "prior protocol completion retained"
+    },
+    {
+      "scene": "toaster",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "point_cloud_bytes": 36977367,
+      "train_json_bytes": 247,
+      "test_json_bytes": 248,
+      "completion_path": "prior protocol completion retained"
+    },
+    {
+      "scene": "toaster",
+      "variant": "rc",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "point_cloud_bytes": 36592787,
+      "train_json_bytes": 248,
+      "test_json_bytes": 249,
+      "completion_path": "manual full rerun to i31000 + train/test reflection eval"
+    },
+    {
+      "scene": "car",
+      "variant": "base",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "point_cloud_bytes": 29122823,
+      "train_json_bytes": 247,
+      "test_json_bytes": 248,
+      "completion_path": "manual full rerun to i31000 + train/test reflection eval"
+    },
+    {
+      "scene": "car",
+      "variant": "rc",
+      "point_cloud_exists": true,
+      "reflection_consistency_train_exists": true,
+      "reflection_consistency_test_exists": true,
+      "point_cloud_bytes": 28160167,
+      "train_json_bytes": 248,
+      "test_json_bytes": 248,
+      "completion_path": "manual full rerun produced point_cloud; later metrics-only rerun produced train/test reflection JSON"
+    }
+  ],
+  "manual_failure_and_recovery_notes": [
+    {
+      "cell": "car_rc",
+      "failure_observed_in_manual_run": "metrics/reflection_consistency_eval.py failed with texture_fwd_mip device mismatch (tex/uv on different GPUs)",
+      "recovery_action": "metrics-only rerun at i31000 on explicit cuda_device 0",
+      "result": "reflection_consistency_train.json and reflection_consistency_test.json generated"
+    }
+  ],
+  "summary": {
+    "completed_cells": 6,
+    "failed_or_incomplete_cells": 0,
+    "missing_expected_artifacts": 0,
+    "expected_artifacts_total": 18
+  },
+  "decision_hint": "GO"
+}

@@ -1,0 +1,58 @@
+{
+  "mode": "rc_refgs_p5_switch_boundary_readiness_audit",
+  "date": "2026-05-25",
+  "timestamp_cst": "2026-05-25 14:21:25 CST",
+  "recovered_state": {
+    "coordination_board_active_claim_before_window": "None",
+    "p4_base_rc_i31000_matrix_complete": true,
+    "p5_claim_audit_routing_eligible": true,
+    "latest_p5_handoff": "docs/superpowers/logs/rc-refgs-p5-model-switch-handoff-2026-05-25.md"
+  },
+  "p4_completion_contract": {
+    "completion_status_json": "docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-25.json",
+    "reflection_summary_json": "docs/superpowers/logs/rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.json",
+    "completed_cells": 6,
+    "missing_expected_artifacts": 0,
+    "train_mean_reflection_consistency_rc_wins": 3,
+    "test_mean_reflection_consistency_rc_wins": 3
+  },
+  "handoff_contract": {
+    "switch_model_target": "gpt-5.5",
+    "target_task": "P5 claim audit and conservative manuscript integration",
+    "required_markers_present": [
+      "SWITCH MODEL",
+      "CONDITIONAL GO",
+      "NO-GO",
+      "Forbidden Claim Boundary",
+      "6/6",
+      "0/18",
+      "gpt-5.5"
+    ],
+    "read_order_includes_current_p4_summary": true,
+    "read_order_includes_acceptance_thresholds": true
+  },
+  "scope_guardrails": {
+    "training_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_metric_started": false,
+    "manuscript_prose_edited": false,
+    "scientific_claim_upgrade": false
+  },
+  "runtime_state_at_recovery": {
+    "matching_rc_refgs_process_found": false,
+    "gpu_runtime_expansion_attempted": false
+  },
+  "decision": {
+    "primary": "SWITCH MODEL",
+    "conditional_go": "Only for gpt-5.5 P5 claim-audit/manuscript integration that preserves evidence tags and forbidden-claim boundaries.",
+    "no_go": [
+      "additional Codex runtime work in this window",
+      "training or ablation launch",
+      "multi-seed launch",
+      "geometry metric computation",
+      "manuscript prose edits by Codex in this window",
+      "broad rendering, aggregate LPIPS, geometry, material, external-superiority, causal, full-ablation, multi-seed, manuscript, or scientific claim upgrades"
+    ]
+  }
+}

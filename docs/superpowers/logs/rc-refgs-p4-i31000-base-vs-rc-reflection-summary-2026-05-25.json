@@ -1,0 +1,115 @@
+{
+  "mode": "rc_refgs_p4_i31000_base_vs_rc_reflection_summary",
+  "date": "2026-05-25",
+  "source_completion_reconciliation": "docs/superpowers/logs/rc-refgs-p4-manual-artifact-reconciliation-2026-05-25.json",
+  "matrix": {
+    "scenes": [
+      "teapot",
+      "toaster",
+      "car"
+    ],
+    "variants": [
+      "base",
+      "rc"
+    ],
+    "iteration": 31000,
+    "splits": [
+      "train",
+      "test"
+    ],
+    "required_artifacts_complete": true
+  },
+  "by_scene": {
+    "teapot": {
+      "train": {
+        "base_mean_reflection_consistency": 0.022968589095398784,
+        "rc_mean_reflection_consistency": 0.012887926865369081,
+        "delta_mean_reflection_consistency_rc_minus_base": -0.010080662230029703,
+        "base_reflective_region_psnr": 39.46988945007324,
+        "rc_reflective_region_psnr": 39.774509048461915,
+        "delta_reflective_region_psnr_rc_minus_base": 0.30461959838867614,
+        "base_valid_pair_count": 10,
+        "rc_valid_pair_count": 10
+      },
+      "test": {
+        "base_mean_reflection_consistency": 0.004133488470688462,
+        "rc_mean_reflection_consistency": 0.002675584307871759,
+        "delta_mean_reflection_consistency_rc_minus_base": -0.0014579041628167036,
+        "base_reflective_region_psnr": 39.51081428527832,
+        "rc_reflective_region_psnr": 39.80288314819336,
+        "delta_reflective_region_psnr_rc_minus_base": 0.29206886291503764,
+        "base_valid_pair_count": 10,
+        "rc_valid_pair_count": 10
+      }
+    },
+    "toaster": {
+      "train": {
+        "base_mean_reflection_consistency": 0.3524560987949371,
+        "rc_mean_reflection_consistency": 0.15570577681064607,
+        "delta_mean_reflection_consistency_rc_minus_base": -0.19675032198429104,
+        "base_reflective_region_psnr": 31.131171226501465,
+        "rc_reflective_region_psnr": 31.444951438903807,
+        "delta_reflective_region_psnr_rc_minus_base": 0.31378021240234233,
+        "base_valid_pair_count": 10,
+        "rc_valid_pair_count": 10
+      },
+      "test": {
+        "base_mean_reflection_consistency": 0.15400404632091522,
+        "rc_mean_reflection_consistency": 0.059773179888725284,
+        "delta_mean_reflection_consistency_rc_minus_base": -0.09423086643218993,
+        "base_reflective_region_psnr": 21.313609504699706,
+        "rc_reflective_region_psnr": 21.295284843444826,
+        "delta_reflective_region_psnr_rc_minus_base": -0.01832466125487997,
+        "base_valid_pair_count": 10,
+        "rc_valid_pair_count": 10
+      }
+    },
+    "car": {
+      "train": {
+        "base_mean_reflection_consistency": 0.2950625874102116,
+        "rc_mean_reflection_consistency": 0.13769076857715845,
+        "delta_mean_reflection_consistency_rc_minus_base": -0.15737181883305312,
+        "base_reflective_region_psnr": 31.088930511474608,
+        "rc_reflective_region_psnr": 31.115400505065917,
+        "delta_reflective_region_psnr_rc_minus_base": 0.026469993591309304,
+        "base_valid_pair_count": 10,
+        "rc_valid_pair_count": 10
+      },
+      "test": {
+        "base_mean_reflection_consistency": 0.08509593829512596,
+        "rc_mean_reflection_consistency": 0.04658961594104767,
+        "delta_mean_reflection_consistency_rc_minus_base": -0.03850632235407829,
+        "base_reflective_region_psnr": 27.799021530151368,
+        "rc_reflective_region_psnr": 27.921227264404298,
+        "delta_reflective_region_psnr_rc_minus_base": 0.12220573425292969,
+        "base_valid_pair_count": 10,
+        "rc_valid_pair_count": 10
+      }
+    }
+  },
+  "aggregate": {
+    "train": {
+      "scene_count": 3,
+      "base_mean_reflection_consistency_avg": 0.22349575843351585,
+      "rc_mean_reflection_consistency_avg": 0.1020948240843912,
+      "delta_mean_reflection_consistency_avg_rc_minus_base": -0.12140093434912462,
+      "base_reflective_region_psnr_avg": 33.89666372934977,
+      "rc_reflective_region_psnr_avg": 34.111620330810545,
+      "delta_reflective_region_psnr_avg_rc_minus_base": 0.21495660146077591,
+      "mean_reflection_consistency_scene_wins_rc_lower_is_better": 3,
+      "reflective_region_psnr_scene_wins_rc_higher_is_better": 3
+    },
+    "test": {
+      "scene_count": 3,
+      "base_mean_reflection_consistency_avg": 0.08107782436224321,
+      "rc_mean_reflection_consistency_avg": 0.03634612671254824,
+      "delta_mean_reflection_consistency_avg_rc_minus_base": -0.04473169764969498,
+      "base_reflective_region_psnr_avg": 29.54114844004313,
+      "rc_reflective_region_psnr_avg": 29.67313175201416,
+      "delta_reflective_region_psnr_avg_rc_minus_base": 0.1319833119710291,
+      "mean_reflection_consistency_scene_wins_rc_lower_is_better": 3,
+      "reflective_region_psnr_scene_wins_rc_higher_is_better": 2
+    }
+  },
+  "boundary_note": "single-seed full-horizon reflection summary only; no multi-seed, no full ablation, no manuscript/scientific claim upgrade"
+}

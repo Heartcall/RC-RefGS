@@ -6347,6 +6347,97 @@ Key measured values (mean reflection consistency):
 
 ---
 
+## 2026-05-25 12:19:08 CST - P4 Manual Artifact Reconciliation + Full i31000 Base-vs-RC Reflection Summary
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, and full implementation status.
+- No stale P4 matrix launcher/train process was running.
+- Current P4 artifact state in prior status was `3/6` complete with `9/18` missing.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - reconcile manual P4 `i31000` completion artifacts;
+  - generate full `31000` base-vs-RC reflection summary;
+  - update autonomous log, coordination board, and full implementation status.
+
+**Actions taken:**
+- Reconciled manual completion artifacts under:
+  - `/tmp/rc_refgs_p4_base_rc_i31000_20260522/launcher_status/`
+  - `/tmp/rc_refgs_p4_base_rc_i31000_20260522/manual_logs/`
+- Verified all six cells now contain:
+  - `point_cloud/iteration_31000/point_cloud.ply`
+  - `reflection_consistency_train.json`
+  - `reflection_consistency_test.json`
+- Reconciled manual closure path:
+  - `toaster_rc` and `car_base` completed by manual full reruns.
+  - `car_rc` manual full rerun produced point cloud; metrics step initially failed (`texture_fwd_mip(): Inputs tex, uv must reside on the same GPU device`) and was resolved by a later metrics-only rerun on `cuda_device=0`.
+- Added reconciliation artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-manual-artifact-reconciliation-2026-05-25.json`
+- Added full reflection summary artifacts:
+  - `docs/superpowers/logs/rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.md`
+- Added final completion-status artifact:
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-25.json`
+
+**Verification and outcomes:**
+- Matrix completeness after reconciliation:
+  - completed cells: `6/6`
+  - missing expected artifacts: `0/18`
+- Aggregate reflection summary (`rc - base`):
+  - train mean reflection consistency avg delta: `-0.12140093434912462` (RC better, 3/3 scene wins)
+  - test mean reflection consistency avg delta: `-0.04473169764969498` (RC better, 3/3 scene wins)
+  - train reflective PSNR avg delta: `+0.21495660146077591` (RC better, 3/3 scene wins)
+  - test reflective PSNR avg delta: `+0.1319833119710291` (RC better, 2/3 scene wins)
+- Scope guardrails preserved:
+  - no ablation expansion
+  - no multi-seed runs
+  - no geometry/mesh expansion
+  - no manuscript/scientific claim upgrade
+
+**Go/no-go decision:** GO.
+- GO for P4 base/RC `i31000` matrix completion reconciliation and full reflection summary generation.
+- NO-GO boundaries remain for ablation, multi-seed, geometry/material/manuscript/scientific claim upgrades in this window.
+
+---
+
+## 2026-05-25 12:46:39 CST - Post-P4 Roadmap Routing Sync (Staleness Reconciliation)
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, and full implementation status.
+- Confirmed no stale P4 matrix launcher/train process.
+- Confirmed reconciled P4 artifacts already exist (`6/6` complete, `0/18` missing) from the prior window.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - reconcile stale roadmap routing after manual P4 `i31000` completion;
+  - align next-task queue to post-P4 scope;
+  - update autonomous log/coordination board/full implementation status consistency and issue protocol decision.
+
+**Actions taken:**
+- Updated roadmap (`docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`) to remove stale pre-completion P4 guidance and encode post-P4 routing:
+  - replaced stale "preflight ready but unlaunched" framing with completed/reconciled P4 evidence artifacts;
+  - replaced stale partial-completion blocker text with `6/6` complete + `0/18` missing artifact state;
+  - rewrote P4 queue from "finish incomplete cells" to post-P4 tasks (matched ablations, multi-seed, optional expansion) under explicit compute allocation;
+  - marked P5 model-switch routing as eligible because fresh full-horizon evidence now exists.
+- Updated coordination board P5 next-task guidance to mark SWITCH MODEL eligibility for claim audit.
+- Updated full implementation status model-routing line to mark SWITCH MODEL eligibility.
+
+**Verification and outcomes:**
+- Scope guardrails preserved:
+  - no new training launch;
+  - no ablation runtime expansion;
+  - no multi-seed runtime expansion;
+  - no geometry runtime expansion;
+  - no manuscript/scientific claim upgrade.
+- Routing outcome:
+  - future generic continuation prompts no longer route back to stale "P4 incomplete cell completion" instructions.
+
+**Go/no-go decision:** SWITCH MODEL.
+- This window’s claimed routing-sync task is complete.
+- Because full-horizon evidence is now reconciled and summarized, the next highest-value protocol step is P5 claim audit/manuscript-integration routing with gpt-5.5.
+
+---
+
 ## 2026-05-24 00:12:32 CST - P4 Base/RC i31000 Matrix Launch Window
 
 **Recovered state:**
@@ -6676,3 +6767,262 @@ Key measured values (mean reflection consistency):
 **Next recommended step:**
 - If explicit compute is allocated, claim exactly one bounded non-dry-run extraction smoke using the recorded Open3D `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` workaround.
 - If no explicit compute is allocated and no stale artifact/new blocker is found, preserve the current `blocked_pending_extraction` state.
+## 2026-05-25 14:42:01 CST - P5 Duplicate-Prompt SWITCH MODEL Guard
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, P5 handoff, P5 readiness audit, P4 completion status, P4 reflection summary, and runtime state.
+- Coordination board active claim was `None` before this window's claim.
+- Roadmap/status still route P5 claim audit/manuscript integration to gpt-5.5 because fresh full-horizon P4 evidence exists.
+- No matching RC-RefGS launcher/train/eval/extraction process was found.
+- GPU snapshot showed GPUs 0-2 idle and GPUs 3-6 occupied by unrelated jobs.
+
+**Round-local task claim:**
+- Claimed exactly one duplicate-prompt guard checkpoint:
+  - re-validate recovered P5 SWITCH MODEL routing;
+  - confirm no new Codex-safe runtime/manuscript task is unblocked;
+  - preserve no-runtime/no-claim-upgrade scope.
+
+**Actions taken:**
+- Re-verified the existing P5 readiness and handoff artifacts.
+- Released the coordination-board claim and logged this checkpoint.
+- No new experiment evidence, runtime launch, manuscript prose, or scientific claim artifact was created.
+
+**Verification and outcomes:**
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` -> pass.
+- Contract checker confirmed:
+  - P4 completion status still reports `completed_cells=6`;
+  - P4 completion status still reports `missing_expected_artifacts=0`;
+  - P4 reflection summary still reports RC lower mean reflection consistency in `3/3` train scenes and `3/3` test scenes;
+  - existing readiness decision is `SWITCH MODEL`;
+  - required handoff markers are present;
+  - scope guardrails are false.
+- Marker check confirmed:
+  - `SWITCH MODEL`
+  - `CONDITIONAL GO`
+  - `NO-GO`
+  - `Forbidden Claim Boundary`
+  - `6/6`
+  - `0/18`
+  - `gpt-5.5`
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` with 60 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+- Runtime safety:
+  - process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+
+**Evidence interpretation recorded:**
+- This repeated generic continuation prompt does not unblock new Codex runtime, implementation, geometry, manuscript, or claim-upgrade work.
+- The correct next state remains the model handoff boundary already recorded by the P5 handoff and readiness artifacts.
+
+**Go/no-go decision:** SWITCH MODEL.
+- SWITCH MODEL to gpt-5.5 for P5 claim audit/manuscript integration.
+- CONDITIONAL GO only for gpt-5.5 claim-audit/manuscript integration that preserves evidence tags and forbidden-claim boundaries.
+- NO-GO for additional Codex runtime work in this window, new experiment evidence, training or ablation launch, multi-seed launch, geometry metric computation, manuscript prose edits by Codex, or broad rendering, aggregate LPIPS, geometry, material, external-superiority, causal, full-ablation, multi-seed, manuscript, or scientific claim upgrades.
+
+## 2026-05-25 14:27:04 CST - P5 SWITCH MODEL Enforcement Checkpoint
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, P5 handoff, P5 readiness audit, P4 completion status, P4 reflection summary, and runtime state.
+- Coordination board active claim was `None` before this window's claim.
+- Roadmap/status still route P5 claim audit/manuscript integration to gpt-5.5 because fresh full-horizon P4 evidence exists.
+- No matching RC-RefGS launcher/train/eval/extraction process was found.
+- GPU snapshot showed GPUs 0-2 idle and GPUs 3-6 occupied by unrelated jobs; no runtime work was attempted.
+
+**Round-local task claim:**
+- Claimed exactly one P5 SWITCH MODEL enforcement checkpoint:
+  - re-verify existing P5 handoff/readiness artifacts;
+  - record no-runtime/no-manuscript-edit scope preservation;
+  - do not create new experiment evidence, launch training, run ablations, run multi-seed jobs, compute geometry metrics, edit manuscript prose, or upgrade scientific claims.
+
+**Actions taken:**
+- Re-verified the existing P5 readiness and handoff artifacts.
+- Released the coordination-board claim and logged this checkpoint.
+- No new metric, experiment, manuscript prose, or scientific claim artifact was created in this window.
+
+**Verification and outcomes:**
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` -> pass.
+- Contract checker confirmed:
+  - P4 completion status still reports `completed_cells=6`;
+  - P4 completion status still reports `missing_expected_artifacts=0`;
+  - P4 reflection summary still reports RC lower mean reflection consistency in `3/3` train scenes and `3/3` test scenes;
+  - existing readiness decision is `SWITCH MODEL`;
+  - required handoff markers are present;
+  - scope guardrails are false.
+- Marker check confirmed:
+  - `SWITCH MODEL`
+  - `CONDITIONAL GO`
+  - `NO-GO`
+  - `Forbidden Claim Boundary`
+  - `6/6`
+  - `0/18`
+  - `gpt-5.5`
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` with 60 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+- Runtime safety:
+  - process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+
+**Evidence interpretation recorded:**
+- This window adds no new evidence and does not alter claim strength.
+- The recovered state remains a P5 model-routing boundary, not a Codex runtime/manuscript-editing opportunity.
+
+**Go/no-go decision:** SWITCH MODEL.
+- SWITCH MODEL to gpt-5.5 for P5 claim audit/manuscript integration.
+- CONDITIONAL GO only for gpt-5.5 claim-audit/manuscript integration that preserves evidence tags and forbidden-claim boundaries.
+- NO-GO for additional Codex runtime work in this window, new experiment evidence, training or ablation launch, multi-seed launch, geometry metric computation, manuscript prose edits by Codex, or broad rendering, aggregate LPIPS, geometry, material, external-superiority, causal, full-ablation, multi-seed, manuscript, or scientific claim upgrades.
+
+## 2026-05-25 14:22:31 CST - P5 Switch-Boundary Readiness Audit
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, P5 handoff, P4 completion status, and P4 reflection summary.
+- Coordination board active claim was `None` before this window's claim.
+- Roadmap/status still route P5 claim audit/manuscript integration to gpt-5.5 because fresh full-horizon P4 evidence exists.
+- No matching RC-RefGS launcher/train/eval/extraction process was found at recovery.
+- GPU snapshot showed GPUs 0-2 idle and GPUs 3-6 occupied by unrelated jobs; no runtime expansion was attempted.
+
+**Round-local task claim:**
+- Claimed exactly one docs-only task:
+  - verify the fresh P5 model-switch handoff remains coherent after recovery;
+  - record a machine-readable SWITCH MODEL readiness/boundary audit;
+  - preserve no-runtime/no-manuscript-claim-upgrade scope.
+
+**Actions taken:**
+- Added `docs/superpowers/logs/rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json`.
+- Released the coordination-board claim and logged this window.
+
+**Verification and outcomes:**
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` -> pass.
+- Contract checker confirmed:
+  - P4 completion status still reports `completed_cells=6`;
+  - P4 completion status still reports `missing_expected_artifacts=0`;
+  - reflection summary reports RC lower mean reflection consistency in `3/3` train scenes and `3/3` test scenes;
+  - all required handoff markers are present;
+  - audit decision is `SWITCH MODEL`;
+  - all scope guardrails are false.
+- Marker check confirmed:
+  - `SWITCH MODEL`
+  - `CONDITIONAL GO`
+  - `NO-GO`
+  - `Forbidden Claim Boundary`
+  - `6/6`
+  - `0/18`
+  - `gpt-5.5`
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` with 60 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+
+**Evidence interpretation recorded:**
+- This window adds no experiment or new metric value.
+- The P5 handoff remains coherent and current.
+- The safe action for this Codex window is to enforce the model boundary, not to start runtime work or manuscript prose edits.
+
+**Go/no-go decision:** SWITCH MODEL.
+- SWITCH MODEL to gpt-5.5 for P5 claim audit/manuscript integration.
+- CONDITIONAL GO only for gpt-5.5 claim-audit/manuscript integration that preserves evidence tags and forbidden-claim boundaries.
+- NO-GO for additional Codex runtime work in this window, training or ablation launch, multi-seed launch, geometry metric computation, manuscript prose edits by Codex, or broad rendering, aggregate LPIPS, geometry, material, external-superiority, causal, full-ablation, multi-seed, manuscript, or scientific claim upgrades.
+
+## 2026-05-25 14:04:48 CST - P5 Model-Switch Handoff Refresh
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, current P4 completion status, and P4 reflection summary.
+- Coordination board active claim was `None` before this window's claim.
+- Current roadmap/status state says the base/RC `i31000` P4 matrix is complete and reconciled (`6/6` cells, `0/18` missing expected artifacts), and P5 claim-audit/manuscript integration is eligible for gpt-5.5 routing.
+- No matching RC-RefGS launcher/train/eval/extraction process was running at recovery.
+- GPU snapshot showed GPUs 0-2 idle and GPUs 3-6 occupied by unrelated jobs, so no runtime expansion was attempted.
+
+**Round-local task claim:**
+- Claimed exactly one docs-only task:
+  - prepare a fresh P5 model-switch handoff packet from the reconciled full-horizon `i31000` base/RC evidence;
+  - preserve NO-GO claim boundaries;
+  - route claim-audit/manuscript integration to gpt-5.5;
+  - do not launch training, ablations, multi-seed runs, geometry metrics, manuscript prose edits, or scientific claim upgrades.
+
+**Actions taken:**
+- Added `docs/superpowers/logs/rc-refgs-p5-model-switch-handoff-2026-05-25.md`.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md` so the manuscript claim-audit row points to the fresh P5 handoff.
+- Released the coordination-board claim and logged this window.
+
+**Verification and outcomes:**
+- P4 completion contract:
+  - `completed_cells=6`
+  - `missing_expected_artifacts=0`
+  - RC lower mean reflection consistency in `3/3` train scenes and `3/3` test scenes.
+- Marker check confirmed the handoff/status include:
+  - `SWITCH MODEL`
+  - `CONDITIONAL GO`
+  - `NO-GO`
+  - `6/6`
+  - `0/18`
+  - `gpt-5.5`
+  - current P4 summary references.
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` with 60 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+- Runtime safety:
+  - process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+  - no new runtime work was started.
+
+**Evidence interpretation recorded:**
+- This window adds no new metric values and no claim upgrades.
+- The highest-value safe Codex task after P4 completion was to package the fresh evidence for P5 routing, not to perform manuscript prose or claim-audit work inside this model window.
+
+**Go/no-go decision:** SWITCH MODEL.
+- SWITCH MODEL to gpt-5.5 for P5 claim audit/manuscript integration using `docs/superpowers/logs/rc-refgs-p5-model-switch-handoff-2026-05-25.md`.
+- CONDITIONAL GO for conservative claim-audit updates that preserve evidence tags and forbidden-claim boundaries.
+- NO-GO for broad rendering, aggregate LPIPS, geometry, surface reconstruction, material, external-superiority, causal, full-ablation, multi-seed, manuscript/scientific claim upgrades, or runtime expansion in the P5 writing window.
+
+## 2026-05-25 14:44:14 CST - P5 Repeat-Prompt SWITCH MODEL Guard
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, P5 handoff, readiness audit, P4 completion status, P4 reflection summary, and runtime state.
+- Coordination board active claim was `None` before this window's claim.
+- Current roadmap/status state remains post-P4: the matched `teapot/toaster/car` base/RC `i31000` matrix is complete at single-seed scope (`6/6`, `0/18` missing expected artifacts), and P5 claim-audit/manuscript integration is routed to gpt-5.5.
+
+**Round-local task claim:**
+- Claimed exactly one docs-only repeat-prompt guard checkpoint:
+  - re-validate recovered P5 SWITCH MODEL routing;
+  - confirm no new Codex-safe runtime/manuscript task is unblocked;
+  - preserve no-runtime/no-claim-upgrade scope.
+
+**Actions taken:**
+- Rechecked the existing P5 handoff/readiness artifacts and current protocol state.
+- Released the coordination-board claim.
+- No experiment evidence, training launch, ablation, multi-seed job, geometry metric, manuscript prose edit, or scientific claim upgrade was created.
+
+**Verification and outcomes:**
+- `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` -> pass.
+- Corrected schema-aware contract checker confirmed:
+  - `completed_cells=6`;
+  - `missing_expected_artifacts=0`;
+  - RC lower mean reflection consistency in `3/3` train scenes and `3/3` test scenes;
+  - existing readiness decision is `SWITCH MODEL`;
+  - required handoff markers are present;
+  - all scope guardrails are false.
+- Marker check confirmed:
+  - `SWITCH MODEL`
+  - `CONDITIONAL GO`
+  - `NO-GO`
+  - `Forbidden Claim Boundary`
+  - `6/6`
+  - `0/18`
+  - `gpt-5.5`
+  - active claim marker before release.
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` with 60 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+- Runtime probe:
+  - process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+
+**Evidence interpretation recorded:**
+- This window adds no new experiment, no new metric value, and no claim upgrade.
+- The safe action for this Codex window remains enforcing the model boundary, not starting runtime work or manuscript prose edits.
+
+**Go/no-go decision:** SWITCH MODEL.
+- SWITCH MODEL to gpt-5.5 for P5 claim audit/manuscript integration using the existing P5 handoff packet and readiness audit.
+- CONDITIONAL GO only for gpt-5.5 claim-audit/manuscript integration that preserves evidence tags and forbidden-claim boundaries.
+- NO-GO for additional Codex runtime work in this window, training or ablation launch, multi-seed launch, geometry metric computation, manuscript prose edits by Codex, or broad rendering, aggregate LPIPS, geometry, material, external-superiority, causal, full-ablation, multi-seed, manuscript, or scientific claim upgrades.

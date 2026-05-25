@@ -32,11 +32,14 @@ the agent must:
   - `docs/superpowers/logs/rc-refgs-i300-material-quality-full-summary-2026-05-21.{md,json}`
 - Reduced ablation summary is complete (30/30 cells, no missing cells):
   - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.{md,json}`
-- P4 base/RC full-horizon preflight is ready but unlaunched:
+- P4 base/RC full-horizon single-seed matrix is completed and reconciled:
   - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json`
   - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-dryrun-summary-2026-05-22.json`
   - `docs/superpowers/logs/rc-refgs-p4-full-horizon-preflight-2026-05-22.md`
   - `docs/superpowers/logs/rc-refgs-p4-launch-safety-audit-2026-05-22.md`
+  - `docs/superpowers/logs/rc-refgs-p4-manual-artifact-reconciliation-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.{json,md}`
 - Conservative claim framing and thresholds exist:
   - `docs/superpowers/logs/rc-refgs-claim-framing-packet-2026-05-18.md`
   - `docs/superpowers/logs/rc-refgs-acceptance-thresholds-2026-05-18.md`
@@ -85,8 +88,7 @@ the agent must:
 ## Current Blockers
 
 - Bash script launcher reliability is still Mixed in nested bash/conda contexts; use the Python direct-command launcher as the primary launcher until the bash wrapper is runtime repaired.
-- Full-horizon matched runs (31000) are partially complete for the base/RC matrix: `teapot_base`, `teapot_rc`, and `toaster_base` have point cloud plus train/test reflection JSON closeout artifacts, while `toaster_rc`, `car_base`, and `car_rc` remain incomplete.
-- The remaining P4 base/RC full-horizon cells must not be launched opportunistically; continue only in deliberate runtime windows with explicit single-cell scheduling, GPU/process safety checks, and artifact verification.
+- Full-horizon matched runs (31000) for the `teapot/toaster/car` base/RC single-seed matrix are complete (`6/6` cells, `0/18` missing expected artifacts). Do not relaunch this matrix unless a concrete artifact corruption/regression is found.
 - Multi-seed evidence is missing.
 - Material diagnostics exist for corrected i300 full splits, but remain Mixed / Unsupported for material-quality claims and need longer-horizon/multi-seed linkage before claim use.
 - Geometry metrics are blocked pending extracted meshes. No-GPU prerequisite repairs now isolate `utils.mesh_utils` from missing top-level image-helper and unused `trimesh` import blockers, add a root `extract_mesh.py` dry-run/import-check entrypoint, verify that entrypoint on one existing corrected i300 `teapot_base` artifact with `missing_inputs=[]`, add deterministic SMVP3D `cameras.npz` to Ref-GS transform conversion support, dry-run that conversion across all five SMVP3D scenes, add an OBJ-reference dry-run plan that confirms all five OBJ references exist while expected predicted meshes are missing, add an Open3D preflight that records the plain-environment `GLIBCXX_3.4.29` failure plus the successful `LD_LIBRARY_PATH=$CONDA_PREFIX/lib` workaround, add a dry-run runtime command plan, consolidate a runtime-readiness handoff packet, add a post-run extraction smoke validator for the next extraction smoke, add a dry-run geometry metric gate, add a guarded SMVP3D geometry evaluator entrypoint, and add a pipeline status summarizer. The current gate result is `metrics_allowed=false` because the post-run report is still `summary_is_dry_run` and five predicted SMVP3D meshes are missing; the evaluator therefore writes `blocked_by_gate` and no real Chamfer/F-score values. The current pipeline summary is `blocked_pending_extraction` with next action `run_non_dryrun_extraction_smoke_with_explicit_compute`. The no-compute P3 geometry implementation path is exhausted unless a new blocker or stale artifact is found; remaining geometry work is one non-dry-run extraction smoke with explicit runtime/GPU allocation, validator pass, and gate rerun before any OBJ-reference metric result can be produced.
@@ -207,13 +209,13 @@ Verification gate:
 
 ### P4 - Full experiment execution
 
-- Highest-value next task: continue matched full 31000 base/rc completion for the three incomplete cells (`toaster_rc`, `car_base`, `car_rc`), using `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json` and the current completion status artifact.
-- Launch gate: do not start remaining cells unless compute is explicitly allocated for the window and GPU/process safety checks pass; prefer exactly one cell per continuation window unless the board explicitly claims a broader runtime batch.
-- If compute is not explicitly allocated, do not repeat opportunistic no-launch audits unless state changed; preserve the current `blocked_pending_extraction` geometry state unless a new blocker or stale artifact would misroute future windows.
-- Run matched full ablations.
-- Run multi-seed repeats.
-- Optionally expand scene set and SMVP3D geometry experiments.
-- Summarize results into machine-readable JSON and manuscript-ready Markdown.
+- Base/RC `i31000` single-seed matrix closure is complete; keep the reconciled completion and summary artifacts as the baseline reference.
+- Next highest-value runtime tasks are post-P4 scope only (claim exactly one per window):
+  - run matched full ablations;
+  - run multi-seed repeats;
+  - optionally expand scene set and SMVP3D geometry experiments.
+- Launch gate for post-P4 runtime tasks: require explicit compute allocation, process/GPU safety checks, and strict one-claim scope discipline.
+- If compute is not explicitly allocated, do not relaunch completed base/RC cells; use bounded docs/status reconciliation or geometry-prerequisite routing checks instead.
 
 Verification gate:
 - run-matrix completion table;
@@ -222,7 +224,7 @@ Verification gate:
 
 ### P5 - Claim audit and manuscript integration
 
-- Switch to gpt-5.5 only after new full-horizon evidence artifacts exist.
+- Full-horizon evidence artifacts now exist for the matched `teapot/toaster/car` base/RC `i31000` matrix, so P5 claim-audit routing is eligible.
 - Update claim audit and manuscript integration drafts.
 - Upgrade claims only when acceptance thresholds are satisfied.
 - Preserve NO-GO boundaries for manuscript/scientific, broad rendering, geometry, material, external-superiority, causal, ablation, and multi-seed claims until evidence supports upgrades.
