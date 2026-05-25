@@ -42,7 +42,7 @@ Supported only after:
 ## Complete Experiment Package
 
 Requires:
-- Shiny Blender Synthetic + Shiny Blender Real + Glossy Synthetic complete scene coverage;
+- all three required datasets (Shiny Blender Synthetic + Shiny Blender Real + Glossy Synthetic) with complete scene coverage;
 - matched base/RC full-horizon runs;
 - full-dataset render/material/normal summaries where supported;
 - full-dataset matched ablations;

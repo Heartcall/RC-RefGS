@@ -10,7 +10,7 @@
         "teapot",
         "toaster"
       ],
-      "status": "discovered_from_local_root"
+      "status": "discovered"
     },
     "shiny_blender_real": {
       "root": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
@@ -21,23 +21,23 @@
         "maneki",
         "vase"
       ],
-      "status": "discovered_from_local_root"
-        },
-        "glossy_synthetic": {
-            "root": "/data/liuly/dataset/3DGS/GlossySynthetic",
-            "scenes": [
-                "angel",
-                "bell",
-                "cat",
-                "horse",
-                "luyu",
-                "potion",
-                "tbell",
-                "teapot"
-            ],
-            "status": "raw_nero_discovered_needs_blender_conversion",
-            "conversion_note": "Raw NeRO-style scene directories are present with 128 RGB/depth/camera files per scene and eval_pts.ply, but no transforms_train.json/transforms_test.json outputs exist yet. Run nero2blender.py for every scene and verify Blender-style outputs before any claim-bearing RC-RefGS training."
-        }
+      "status": "discovered"
+    },
+    "glossy_synthetic": {
+      "root": "/data/liuly/dataset/3DGS/GlossySynthetic",
+      "scenes": [
+        "angel",
+        "bell",
+        "cat",
+        "horse",
+        "luyu",
+        "potion",
+        "tbell",
+        "teapot"
+      ],
+      "status": "needs_conversion_or_discovery",
+      "conversion_note": "Run nero2blender.py before RC-RefGS training if raw Glossy Synthetic format is detected."
+    }
   },
   "claim_bearing_scope": "all discovered scenes in all three required datasets",
   "subset_evidence_is_not_complete_dataset_evidence": true

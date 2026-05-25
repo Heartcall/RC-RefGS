@@ -15,10 +15,11 @@ This override is high priority and supersedes any older three-scene (`teapot/toa
   - Shiny Blender Synthetic
   - Shiny Blender Real
   - Glossy Synthetic
-- Future generic continuation prompts must first read:
+- Future generic continuation prompts must first check the required full-dataset manifest before selecting runnable tasks:
   - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
   - `docs/superpowers/plans/2026-05-25-rc-refgs-full-dataset-experiment-policy.md`
-- The current `teapot/toaster/car` P4 `i31000` artifacts are completed subset evidence only.
+- A complete experiment package requires complete coverage for Shiny Blender Synthetic + Shiny Blender Real + Glossy Synthetic.
+- The current `teapot/toaster/car` P4 `i31000` artifacts remain valid subset evidence only.
 - `teapot/toaster/car` alone is not sufficient for:
   - full experiment completion,
   - complete implementation package language,
