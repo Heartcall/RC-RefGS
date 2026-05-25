@@ -7,6 +7,24 @@ Mode: Dual-Window Long-Horizon Protocol (meta-planning superseding roadmap)
 
 This roadmap supersedes ad hoc next-step selection for generic continuation prompts.
 
+## Full Dataset Scope Override (2026-05-25)
+
+This override is high priority and supersedes any older three-scene (`teapot/toaster/car`) routing for claim-bearing conclusions.
+
+- Claim-bearing RC-RefGS evidence must cover the complete scene manifests of:
+  - Shiny Blender Synthetic
+  - Shiny Blender Real
+  - Glossy Synthetic
+- Future generic continuation prompts must first read:
+  - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
+  - `docs/superpowers/plans/2026-05-25-rc-refgs-full-dataset-experiment-policy.md`
+- The current `teapot/toaster/car` P4 `i31000` artifacts are completed subset evidence only.
+- `teapot/toaster/car` alone is not sufficient for:
+  - full experiment completion,
+  - complete implementation package language,
+  - claim-bearing acceptance-threshold satisfaction.
+- Any "full implementation complete" or "complete experiment package" wording requires complete dataset coverage across all required datasets above.
+
 When the user sends:
 
 `Continue RC-RefGS autonomous execution under the Dual-Window Long-Horizon Protocol...`
@@ -32,7 +50,7 @@ the agent must:
   - `docs/superpowers/logs/rc-refgs-i300-material-quality-full-summary-2026-05-21.{md,json}`
 - Reduced ablation summary is complete (30/30 cells, no missing cells):
   - `docs/superpowers/logs/rc-refgs-reduced-ablation-summary-2026-05-19.{md,json}`
-- P4 base/RC full-horizon single-seed matrix is completed and reconciled:
+- P4 base/RC full-horizon single-seed subset matrix (`teapot/toaster/car`) is completed and reconciled:
   - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-manifest-2026-05-22.json`
   - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-dryrun-summary-2026-05-22.json`
   - `docs/superpowers/logs/rc-refgs-p4-full-horizon-preflight-2026-05-22.md`
@@ -88,7 +106,8 @@ the agent must:
 ## Current Blockers
 
 - Bash script launcher reliability is still Mixed in nested bash/conda contexts; use the Python direct-command launcher as the primary launcher until the bash wrapper is runtime repaired.
-- Full-horizon matched runs (31000) for the `teapot/toaster/car` base/RC single-seed matrix are complete (`6/6` cells, `0/18` missing expected artifacts). Do not relaunch this matrix unless a concrete artifact corruption/regression is found.
+- Full-horizon matched runs (31000) for the `teapot/toaster/car` base/RC single-seed subset matrix are complete (`6/6` cells, `0/18` missing expected artifacts), but this does not satisfy complete-dataset claim-bearing scope.
+- Full-dataset claim-bearing gate is still blocked until Glossy Synthetic is converted and all scenes in Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic are manifests-locked and executed. Shiny Blender Synthetic and Shiny Blender Real roots are discovered as of `rc-refgs-full-dataset-manifest-gate-audit-2026-05-25.{json,md}`. Glossy Synthetic raw NeRO-style root is discovered at `/data/liuly/dataset/3DGS/GlossySynthetic` with scenes `angel/bell/cat/horse/luyu/potion/tbell/teapot`, but conversion remains unvalidated because Blender-style `transforms_train.json` / `transforms_test.json` outputs are absent; see `rc-refgs-glossy-synthetic-conversion-readiness-2026-05-25.{json,md}`.
 - Multi-seed evidence is missing.
 - Material diagnostics exist for corrected i300 full splits, but remain Mixed / Unsupported for material-quality claims and need longer-horizon/multi-seed linkage before claim use.
 - Geometry metrics are blocked pending extracted meshes. No-GPU prerequisite repairs now isolate `utils.mesh_utils` from missing top-level image-helper and unused `trimesh` import blockers, add a root `extract_mesh.py` dry-run/import-check entrypoint, verify that entrypoint on one existing corrected i300 `teapot_base` artifact with `missing_inputs=[]`, add deterministic SMVP3D `cameras.npz` to Ref-GS transform conversion support, dry-run that conversion across all five SMVP3D scenes, add an OBJ-reference dry-run plan that confirms all five OBJ references exist while expected predicted meshes are missing, add an Open3D preflight that records the plain-environment `GLIBCXX_3.4.29` failure plus the successful `LD_LIBRARY_PATH=$CONDA_PREFIX/lib` workaround, add a dry-run runtime command plan, consolidate a runtime-readiness handoff packet, add a post-run extraction smoke validator for the next extraction smoke, add a dry-run geometry metric gate, add a guarded SMVP3D geometry evaluator entrypoint, and add a pipeline status summarizer. The current gate result is `metrics_allowed=false` because the post-run report is still `summary_is_dry_run` and five predicted SMVP3D meshes are missing; the evaluator therefore writes `blocked_by_gate` and no real Chamfer/F-score values. The current pipeline summary is `blocked_pending_extraction` with next action `run_non_dryrun_extraction_smoke_with_explicit_compute`. The no-compute P3 geometry implementation path is exhausted unless a new blocker or stale artifact is found; remaining geometry work is one non-dry-run extraction smoke with explicit runtime/GPU allocation, validator pass, and gate rerun before any OBJ-reference metric result can be produced.
@@ -108,6 +127,7 @@ the agent must:
 ### Complete experiment package
 
 `Complete experiment package` means all are true:
+- Complete scene coverage exists for Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic.
 - Matched base/rc/ablation runs are completed.
 - Train/test metrics are produced.
 - PSNR/SSIM/LPIPS summaries exist for all-pixel and reflective-region masks.
@@ -209,13 +229,16 @@ Verification gate:
 
 ### P4 - Full experiment execution
 
-- Base/RC `i31000` single-seed matrix closure is complete; keep the reconciled completion and summary artifacts as the baseline reference.
-- Next highest-value runtime tasks are post-P4 scope only (claim exactly one per window):
-  - run matched full ablations;
-  - run multi-seed repeats;
-  - optionally expand scene set and SMVP3D geometry experiments.
-- Launch gate for post-P4 runtime tasks: require explicit compute allocation, process/GPU safety checks, and strict one-claim scope discipline.
-- If compute is not explicitly allocated, do not relaunch completed base/RC cells; use bounded docs/status reconciliation or geometry-prerequisite routing checks instead.
+- Treat the current `teapot/toaster/car` base/RC `i31000` result as completed subset baseline only.
+- Highest-value claim-bearing tasks from this point must expand to all scenes in:
+  - Shiny Blender Synthetic
+  - Shiny Blender Real
+  - Glossy Synthetic
+- Launch gate for claim-bearing runtime tasks:
+  - first validate the required full-dataset manifest and scene discovery;
+  - current blocker: Glossy Synthetic raw root is discovered, but Blender-style conversion remains unvalidated;
+  - then require explicit compute allocation, process/GPU safety checks, and strict one-claim scope discipline.
+- If compute is not explicitly allocated, do not relaunch completed subset cells; use bounded docs/status/manifest reconciliation instead.
 
 Verification gate:
 - run-matrix completion table;
@@ -224,7 +247,7 @@ Verification gate:
 
 ### P5 - Claim audit and manuscript integration
 
-- Full-horizon evidence artifacts now exist for the matched `teapot/toaster/car` base/RC `i31000` matrix, so P5 claim-audit routing is eligible.
+- P5 claim-audit routing is eligible only after full-dataset evidence exists across Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic.
 - Update claim audit and manuscript integration drafts.
 - Upgrade claims only when acceptance thresholds are satisfied.
 - Preserve NO-GO boundaries for manuscript/scientific, broad rendering, geometry, material, external-superiority, causal, ablation, and multi-seed claims until evidence supports upgrades.
@@ -247,13 +270,13 @@ If environment blocks a command, log failure reason and downgrade decision to CO
 ## Per-Claim Acceptance Thresholds
 
 - Reflection diagnostic claim:
-  - Allowed when matched scene/split rows show lower reflection-consistency under identical settings.
+  - Allowed only when matched scene/split rows show lower reflection-consistency under identical settings across the complete required dataset manifest.
 - Rendering aggregate claim:
-  - Requires non-negative or explicitly justified cross-scene PSNR/SSIM/LPIPS trends.
+  - Requires non-negative or explicitly justified cross-scene PSNR/SSIM/LPIPS trends across the complete required dataset manifest.
 - Geometry claim:
   - Requires extracted meshes and valid reference metrics (OBJ-based), never RefNeRF `points3d.ply` as GT.
 - Causal claim (`L_ref` attribution):
-  - Requires complete matched ablation table and acceptance-threshold pass.
+  - Requires complete matched ablation table and acceptance-threshold pass across the complete required dataset manifest.
 - External-superiority claim:
   - Requires matched baseline protocol and reproducible comparative evidence.
 
@@ -266,7 +289,7 @@ Until thresholds are met: keep claim state as Supported / Mixed / Unsupported wi
 
 Switching rule:
 - Do not SWITCH MODEL for manuscript work during P0-P4 unless explicitly requested.
-- SWITCH MODEL to gpt-5.5 during P5 only when fresh full-horizon evidence artifacts are present.
+- SWITCH MODEL to gpt-5.5 during P5 only when fresh full-dataset evidence artifacts are present across Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic.
 
 ## Decision Policy
 

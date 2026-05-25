@@ -1,0 +1,131 @@
+{
+  "mode": "rc_refgs_glossy_synthetic_conversion_readiness",
+  "date": "2026-05-25",
+  "timestamp_cst": "2026-05-25 20:43:09 CST",
+  "claim": "FD-P0 docs/status-only Glossy Synthetic conversion readiness audit",
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_metric_started": false,
+    "training_code_edited": false,
+    "metric_code_edited": false,
+    "manuscript_prose_edited": false,
+    "scientific_claim_upgrade": false,
+    "conversion_executed": false
+  },
+  "raw_dataset": {
+    "root": "/data/liuly/dataset/3DGS/GlossySynthetic",
+    "status": "raw_nero_discovered_needs_blender_conversion",
+    "scenes": [
+      "angel",
+      "bell",
+      "cat",
+      "horse",
+      "luyu",
+      "potion",
+      "tbell",
+      "teapot"
+    ],
+    "per_scene_counts": {
+      "angel": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      },
+      "bell": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      },
+      "cat": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      },
+      "horse": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      },
+      "luyu": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      },
+      "potion": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true,
+        "extra_back_png": true
+      },
+      "tbell": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      },
+      "teapot": {
+        "rgb_png": 128,
+        "depth_png": 128,
+        "camera_pkl": 128,
+        "eval_pts_ply": true
+      }
+    }
+  },
+  "converted_outputs": {
+    "status": "not_present",
+    "expected_scene_suffix": "_blender",
+    "required_files_per_converted_scene": [
+      "transforms_train.json",
+      "transforms_test.json",
+      "rgb/*.png"
+    ],
+    "current_converted_scene_dirs_found": []
+  },
+  "conversion_tooling": {
+    "primary_script": "/home/liuly/Surface_Reconstruction/Glossy/GS-2M/scripts/preprocess/nero2blender.py",
+    "alternate_scripts": [
+      "/home/liuly/Surface_Reconstruction/Glossy/GS-2M_new/scripts/preprocess/nero2blender.py",
+      "/home/liuly/Surface_Reconstruction/Glossy/ref-gaussian/nero2blender.py"
+    ],
+    "help_check": "python /home/liuly/Surface_Reconstruction/Glossy/GS-2M/scripts/preprocess/nero2blender.py --help",
+    "help_check_passed": true,
+    "conversion_command_template": "python /home/liuly/Surface_Reconstruction/Glossy/GS-2M/scripts/preprocess/nero2blender.py --path /data/liuly/dataset/3DGS/GlossySynthetic --scene <scene>"
+  },
+  "ref_gs_reader_contract": {
+    "scene_detection_file": "transforms_train.json",
+    "source": "scene/__init__.py detects Blender scenes only when transforms_train.json exists; scene/dataset_readers.py reads transforms_train.json and transforms_test.json.",
+    "claim_bearing_launch_allowed_now": false
+  },
+  "gate_status": {
+    "gate_a_roots_explicit": true,
+    "gate_b_scene_discovery_complete_nonempty": true,
+    "gate_c_glossy_synthetic_conversion_validated": false,
+    "blocking_status": "raw_root_discovered_but_converted_blender_outputs_absent",
+    "claim_bearing_launch_allowed": false
+  },
+  "next_required_actions": [
+    "Run nero2blender.py once per Glossy Synthetic scene in a bounded conversion window.",
+    "Verify each <scene>_blender directory contains transforms_train.json, transforms_test.json, and non-empty rgb outputs.",
+    "Update the required full-dataset manifest to point claim-bearing runtime at the converted scene directories or a converted root layout.",
+    "Only after conversion validation, generate full-dataset dry-run expansion for Shiny Blender Synthetic, Shiny Blender Real, and converted Glossy Synthetic."
+  ],
+  "decision": {
+    "primary": "CONDITIONAL GO",
+    "go_scope": "Continue FD-P0 conversion validation or FD-P1 manifest dry-run support after converted Glossy Synthetic outputs are present.",
+    "no_go": [
+      "claim-bearing full-dataset training launch before conversion validation",
+      "complete-dataset claims",
+      "manuscript or scientific claim upgrades",
+      "broad rendering, material, geometry, external-superiority, causal, full-ablation, or multi-seed claims"
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "mode": "rc_refgs_full_dataset_manifest_gate_audit",
+  "date": "2026-05-25",
+  "timestamp_cst": "2026-05-25 16:25:21 CST",
+  "claim": "FD-P0 docs/status-only manifest gate audit",
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_metric_started": false,
+    "manuscript_prose_edited": false,
+    "scientific_claim_upgrade": false
+  },
+  "required_datasets": {
+    "shiny_blender_synthetic": {
+      "root": "/data/liuly/dataset/3DGS/refnerf",
+      "scenes": [
+        "ball",
+        "car",
+        "coffee",
+        "helmet",
+        "teapot",
+        "toaster"
+      ],
+      "status": "discovered_from_local_root",
+      "evidence": "find /data/liuly/dataset/3DGS/refnerf -maxdepth 1 -mindepth 1 -type d"
+    },
+    "shiny_blender_real": {
+      "root": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
+      "scenes": [
+        "bear",
+        "bunny",
+        "coral",
+        "maneki",
+        "vase"
+      ],
+      "status": "discovered_from_local_root",
+      "evidence": "README lists Shiny Blender Real; older research plan names /data/liuly/dataset/3DGS/glossy/GlossyReal/{bear,bunny,coral,maneki,vase}; local find confirmed those scene directories."
+    },
+    "glossy_synthetic": {
+      "root": null,
+      "scenes": [],
+      "status": "blocked_needs_conversion_or_discovery",
+      "evidence": "No converted Glossy Synthetic dataset root found under /data/liuly/dataset; NeRO synthetic config names exist under /home/liuly/Surface_Reconstruction/Glossy/NeRO/configs/material/syn, and nero2blender.py scripts exist in sibling repos.",
+      "config_scene_hints": [
+        "angel",
+        "bell",
+        "cat",
+        "horse",
+        "luyu",
+        "potion",
+        "tbell",
+        "teapot"
+      ],
+      "conversion_scripts_found": [
+        "/home/liuly/Surface_Reconstruction/Glossy/GS-2M/scripts/preprocess/nero2blender.py",
+        "/home/liuly/Surface_Reconstruction/Glossy/GS-2M_new/scripts/preprocess/nero2blender.py",
+        "/home/liuly/Surface_Reconstruction/Glossy/ref-gaussian/nero2blender.py"
+      ]
+    }
+  },
+  "gate_status": {
+    "gate_a_roots_explicit": false,
+    "gate_b_scene_discovery_complete_nonempty": false,
+    "gate_c_glossy_synthetic_conversion_validated": false,
+    "blocking_dataset": "glossy_synthetic",
+    "claim_bearing_launch_allowed": false
+  },
+  "decision": {
+    "primary": "CONDITIONAL GO",
+    "go_scope": "Manifest/status reconciliation may continue; Shiny Blender Real root is now locked in the required manifest.",
+    "no_go": [
+      "claim-bearing full-dataset training launch",
+      "complete-dataset claims",
+      "manuscript or scientific claim upgrades",
+      "broad rendering, material, geometry, external-superiority, causal, full-ablation, or multi-seed claims"
+    ],
+    "next_safe_task": "Resolve or convert Glossy Synthetic root before claim-bearing full-dataset runtime work."
+  }
+}

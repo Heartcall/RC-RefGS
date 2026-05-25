@@ -6,6 +6,9 @@
 
 ## Completed Tasks
 
+- 2026-05-25 20:43:09 CST | model/window: codex fd-p0-glossy-synthetic-conversion-readiness-window | completed: claimed exactly one FD-P0 docs/status-only task to audit local Glossy Synthetic discovery/conversion readiness, found raw NeRO-style Glossy Synthetic at `/data/liuly/dataset/3DGS/GlossySynthetic`, recorded scenes `angel/bell/cat/horse/luyu/potion/tbell/teapot`, and preserved claim-bearing launch blockage until Blender-style conversion is validated | files touched: `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`, `docs/superpowers/logs/rc-refgs-glossy-synthetic-conversion-readiness-2026-05-25.{json,md}`, roadmap, full implementation status, coordination board, autonomous log | verification: recovered git/roadmap/autonomous-log/coordination-board/full-status/full-dataset-policy state; active claim was `None` before claiming; local discovery confirmed each raw Glossy Synthetic scene has 128 RGB PNGs, 128 depth PNGs, 128 camera PKLs, and `eval_pts.ply`; no converted `<scene>_blender`, `rgb/`, `transforms_train.json`, or `transforms_test.json` outputs were found; `nero2blender.py --help` passed; manifest JSON and readiness JSON parse with `json.tool`; marker check found raw conversion blocker, `transforms_train.json`, `CONDITIONAL GO`, and `NO-GO` markers; `conda run -n ref_gs python -m unittest discover tests` passed with 60 tests; `bash -n scripts/run_rc_refgs_ablation.sh` passed; `git diff --check` passed; process probe found no matching RC-RefGS launcher/train/eval/extraction process; no training, metrics, conversion, ablation, multi-seed, geometry metric, manuscript prose edit, training-code edit, metric-code edit, or scientific claim upgrade was created.
+- 2026-05-25 16:25:21 CST | model/window: codex fd-p0-manifest-gate-audit-window | completed: claimed exactly one docs/status-only FD-P0 manifest gate audit, validated current required-dataset root availability, locked Shiny Blender Real in the required manifest, confirmed Glossy Synthetic remains the full-dataset launch blocker, and preserved no-runtime/no-claim-upgrade scope | files touched: `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`, `docs/superpowers/logs/rc-refgs-full-dataset-manifest-gate-audit-2026-05-25.{json,md}`, roadmap, full implementation status, coordination board, autonomous log | verification: recovered git/roadmap/autonomous-log/coordination-board/full-status/full-dataset-policy state; active claim was `None` before claiming; manifest JSON and audit JSON parse with `json.tool`; local discovery confirmed Shiny Blender Synthetic scenes `ball/car/coffee/helmet/teapot/toaster` under `/data/liuly/dataset/3DGS/refnerf`, Shiny Blender Real scenes `bear/bunny/coral/maneki/vase` under `/data/liuly/dataset/3DGS/glossy/GlossyReal`, no converted Glossy Synthetic root under `/data/liuly/dataset`, NeRO synthetic config hints `angel/bell/cat/horse/luyu/potion/tbell/teapot`, and available `nero2blender.py` scripts in sibling repos; schema-aware contract checker confirmed 6 synthetic scenes, 5 real scenes, Glossy Synthetic unresolved, `blocking_dataset=glossy_synthetic`, `claim_bearing_launch_allowed=false`, and all scope guardrails false; marker check found Glossy Synthetic blocker, GlossyReal scenes, `CONDITIONAL GO`, `NO-GO`, and claim-bearing launch blocked markers; `conda run -n ref_gs python -m unittest discover tests` passed with 60 tests; `bash -n scripts/run_rc_refgs_ablation.sh` passed; `git diff --check` passed; process probe found no matching RC-RefGS launcher/train/eval/extraction process; no training, metrics, ablation, multi-seed, geometry metric, manuscript prose edit, or scientific claim upgrade was created.
+- 2026-05-25 16:00:32 CST | model/window: codex full-dataset-policy-hardening window | completed: claimed exactly one task "Upgrade RC-RefGS experiment policy to require complete Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic datasets." and executed protocol/policy hardening without runtime launches | files touched: `docs/superpowers/plans/2026-05-25-rc-refgs-full-dataset-experiment-policy.md`, `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`, `docs/superpowers/logs/rc-refgs-full-dataset-acceptance-thresholds-2026-05-25.md`, roadmap, coordination board, autonomous log, full implementation status | verification: full-dataset manifest gate installed; local Shiny Blender Synthetic root/scenes discovered from `/data/liuly/dataset/3DGS/refnerf`; Shiny Blender Real and Glossy Synthetic roots explicitly unresolved (`needs_user_path` / `needs_conversion_or_discovery`); FD-P0..FD-P7 queue installed for future prompts; `teapot/toaster/car` evidence reclassified as subset/non-complete-dataset claim evidence; no training/metrics/manuscript claim-upgrade work started.
 - 2026-05-25 14:44:14 CST | model/window: codex p5-repeat-prompt-switch-boundary-guard-window | completed: claimed exactly one repeat-prompt guard checkpoint, re-validated recovered P5 SWITCH MODEL routing, confirmed no new Codex-safe runtime/manuscript task is unblocked, and preserved no-runtime/no-claim-upgrade scope | files touched: coordination board, autonomous log | verification: recovered git/roadmap/autonomous-log/coordination-board/full-status/P5 handoff/readiness/runtime state; active claim was `None` before claiming; `rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` parses with `json.tool`; corrected schema-aware contract checker confirmed `completed_cells=6`, `missing_expected_artifacts=0`, RC lower mean reflection consistency in `3/3` train and `3/3` test scenes, existing readiness decision `SWITCH MODEL`, required handoff markers present, and all scope guardrails false; marker check found `SWITCH MODEL`, `CONDITIONAL GO`, `NO-GO`, `Forbidden Claim Boundary`, `6/6`, `0/18`, `gpt-5.5`, and the active claim marker before release; `conda run -n ref_gs python -m unittest discover tests` passed with 60 tests; `bash -n scripts/run_rc_refgs_ablation.sh` passed; `git diff --check` passed; process probe found no matching RC-RefGS launcher/train/eval/extraction process; no experiment evidence, training launch, ablation, multi-seed job, geometry metric, manuscript prose edit, or scientific claim upgrade was created.
 - 2026-05-25 14:42:01 CST | model/window: codex p5-duplicate-prompt-switch-boundary-guard-window | completed: claimed exactly one duplicate-prompt guard checkpoint, re-validated recovered P5 SWITCH MODEL routing, confirmed no new Codex-safe runtime/manuscript task is unblocked, and preserved no-runtime/no-claim-upgrade scope | files touched: coordination board, autonomous log | verification: recovered git/roadmap/autonomous-log/coordination-board/full-status/runtime state; active claim was `None` before claiming; `rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` parses with `json.tool`; contract checker confirmed P4 completion status still reports `completed_cells=6` and `missing_expected_artifacts=0`, reflection summary reports RC lower mean reflection consistency in `3/3` train and `3/3` test scenes, existing readiness decision is `SWITCH MODEL`, required handoff markers are present, and scope guardrails are false; marker check found `SWITCH MODEL`, `CONDITIONAL GO`, `NO-GO`, `Forbidden Claim Boundary`, `6/6`, `0/18`, `gpt-5.5`, current handoff/readiness references, and the active claim marker before release; `conda run -n ref_gs python -m unittest discover tests` passed with 60 tests; `bash -n scripts/run_rc_refgs_ablation.sh` passed; `git diff --check` passed; process probe found no matching RC-RefGS launcher/train/eval/extraction process; no experiment evidence, training launch, ablation, multi-seed job, geometry metric, manuscript prose edit, or scientific claim upgrade was created.
 - 2026-05-25 14:27:04 CST | model/window: codex p5-switch-model-enforcement-checkpoint-window | completed: claimed exactly one P5 SWITCH MODEL enforcement checkpoint, re-verified the existing P5 handoff/readiness artifacts, and recorded no-runtime/no-manuscript-edit scope preservation | files touched: coordination board, autonomous log | verification: recovered git/roadmap/autonomous-log/coordination-board/full-status/runtime state; active claim was `None` before claiming; `rc-refgs-p5-switch-boundary-readiness-audit-2026-05-25.json` parses with `json.tool`; contract checker confirmed P4 completion status still reports `completed_cells=6` and `missing_expected_artifacts=0`, reflection summary reports RC lower mean reflection consistency in `3/3` train and `3/3` test scenes, existing readiness decision is `SWITCH MODEL`, required handoff markers are present, and scope guardrails are false; marker check found `SWITCH MODEL`, `CONDITIONAL GO`, `NO-GO`, `Forbidden Claim Boundary`, `6/6`, `0/18`, `gpt-5.5`, and current handoff/readiness references; `conda run -n ref_gs python -m unittest discover tests` passed with 60 tests; `bash -n scripts/run_rc_refgs_ablation.sh` passed; `git diff --check` passed; process probe found no matching RC-RefGS launcher/train/eval/extraction process; no experiment evidence, training launch, ablation, multi-seed job, geometry metric, manuscript prose edit, or scientific claim upgrade was created.
@@ -206,45 +209,49 @@ Go/no-go criterion: GO only if the audit confirms the reduced run matrix still t
 - Generic continuation prompts must execute this ordered queue after recovery using:
   - `docs/superpowers/plans/2026-05-19-rc-refgs-full-implementation-and-experiment-roadmap.md`
 
-- P0/P1/P2/P3 - completed for the current safe path:
-  - Python direct-command launcher is the primary launch path; keep `scripts/run_rc_refgs_ablation.sh` as syntax-verified only until nested bash/conda CUDA behavior is runtime repaired.
-  - P1 helper/fixed-pair/CUDA auto-device hardening is reflected in `rc-refgs-full-implementation-status.md`; do not route future windows back to those closed plumbing tasks unless a new regression appears.
-  - P2 manifest/dry-run orchestration exists and has produced reproducible expansion/missing-artifact summaries.
-  - Corrected i300 render-quality and material-quality full-split summaries exist for `teapot/toaster/car` base/RC, but both remain Mixed / Unsupported for broad claim upgrades.
+- Full-Dataset Scope Override:
+  - Do not treat `teapot/toaster/car` subset results as complete-dataset claim-bearing evidence.
+  - Claim-bearing experiments must cover all scenes in Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic.
+  - Required policy + manifest anchors:
+    - `docs/superpowers/plans/2026-05-25-rc-refgs-full-dataset-experiment-policy.md`
+    - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
 
-- P3 safe fallback when P4 compute is not explicitly allocated:
-  - Do not repeat P4 no-launch audits unless GPU/process state or protocol artifacts have changed.
-  - The no-GPU Codex path is now geometry-prerequisite maintenance only, grounded in `docs/superpowers/logs/rc-refgs-geometry-prereq-refresh-2026-05-22.md`.
-  - Claim exactly one bounded prerequisite before coding. Completed no-GPU geometry prerequisites now include:
-    - completed 2026-05-22 20:14:04 CST: isolate or replace the missing `utils.render_utils` dependency in `utils.mesh_utils`;
-    - completed 2026-05-22 20:14:04 CST: remove/defer unused `trimesh` import dependency or add an explicit optional-dependency failure path;
-    - preserve the Open3D `LD_LIBRARY_PATH=$CONDA_PREFIX/lib` runner workaround until the environment is repaired;
-    - completed 2026-05-22 22:04:05 CST: add a root `extract_mesh.py` dry-run/import-check entrypoint now that the first import blockers are test-covered.
-    - completed 2026-05-22 22:55:53 CST: run one bounded extraction dry-run/import-check smoke on an existing corrected i300 `teapot_base` artifact and record `rc-refgs-extract-mesh-teapot-base-dryrun-smoke-2026-05-22.json`.
-    - completed 2026-05-22 23:10:13 CST: add SMVP3D `cameras.npz` transform conversion support and dry-run it on real `dragon` metadata.
-    - completed 2026-05-23 01:29:46 CST: run all-scene SMVP3D transform dry-run coverage for `david`, `dragon`, `hedgehog`, `snail`, and `squirrel`.
-    - completed 2026-05-23 02:54:01 CST: add OBJ-reference metric scaffolding/dry-run checks that validate SMVP3D OBJ references and report missing predicted meshes without computing metric values.
-    - completed 2026-05-23 05:54:57 CST: add geometry metric dry-run gate `scripts/check_geometry_metric_gate.py`, with current result `metrics_allowed=false`.
-    - completed 2026-05-23 06:47:12 CST: add guarded SMVP3D geometry evaluator `metrics/smvp3d_geometry_eval.py`, with current real-artifact result `blocked_by_gate` and no real Chamfer/F-score values.
-    - completed 2026-05-23 14:11:29 CST: add machine-readable pipeline status summarizer `scripts/summarize_smvp3d_geometry_pipeline_status.py`, with current result `blocked_pending_extraction` and next action `run_non_dryrun_extraction_smoke_with_explicit_compute`.
-  - Current no-compute geometry status: the safe P3 implementation path is exhausted unless a new blocker or stale artifact is discovered. Do not keep extending dry-run geometry scaffolding only to make progress; the current machine-readable status already routes the next real geometry step.
-  - Next safe geometry task: with explicit runtime/GPU allocation, claim exactly one non-dry-run bounded extraction smoke using the recorded Open3D `LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH` workaround, then run `scripts/check_extract_mesh_smoke.py`, rerun `scripts/check_geometry_metric_gate.py`, and only run `metrics/smvp3d_geometry_eval.py` if the gate reports `metrics_allowed=true`.
-  - Preserve NO-GO for immediate RefNeRF Chamfer/F-score, SMVP3D geometry metrics, geometry-quality claims, reconstruction-quality claims, and manuscript/scientific claim upgrades.
+- FD-P0 — Full dataset policy and manifest verification
+  - Current status: Shiny Blender Synthetic and Shiny Blender Real roots/scenes are discovered and recorded; Glossy Synthetic remains blocked pending root discovery or conversion.
+  - Next safe step: resolve Glossy Synthetic root/conversion readiness before claim-bearing runtime.
+  - Verify Glossy Synthetic conversion status or add a conversion checklist using `nero2blender.py`.
+  - Produce a complete scene manifest only after Glossy Synthetic is unambiguous.
+  - No training launches until this manifest is unambiguous.
 
-- P4 - base/RC matrix status:
-  - Full-horizon `31000` `teapot/toaster/car` base/RC matrix is now complete at single-seed scope (`6/6` cells, `0/18` missing) after manual artifact reconciliation:
-    - `docs/superpowers/logs/rc-refgs-p4-manual-artifact-reconciliation-2026-05-25.json`
-    - `docs/superpowers/logs/rc-refgs-p4-base-rc-i31000-completion-status-2026-05-25.json`
-    - `docs/superpowers/logs/rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.{json,md}`
-  - Do not relaunch this matrix unless a concrete artifact corruption/regression is found.
+- FD-P1 — Launcher support for dataset manifests
+  - Ensure `scripts/run_rc_refgs_ablation_direct.py` can consume a dataset manifest or equivalent scene list.
+  - Add dry-run expansion over all required datasets/scenes.
+  - Ensure outputs are organized by dataset/scene/variant/seed/iteration.
+  - Add tests for manifest parsing and dry-run job expansion.
 
-- P4 after base/RC:
-  - Run matched full ablations only in a dedicated window with explicit claim and compute allocation.
-  - Run multi-seed repeats only in a dedicated window after ablation scope is agreed.
-  - Defer optional expanded scene set and SMVP3D geometry experiments until the core package is stable.
+- FD-P2 — Full-dataset base/RC i31000 execution
+  - Run matched base/RC i31000 on every scene in the three required datasets.
+  - Use explicit compute allocation.
+  - One job per GPU unless proven safe.
+  - Generate train/test reflection metrics for every scene.
 
-- P5 - Claim audit and manuscript integration
-  - Full-horizon evidence artifacts now exist for matched `teapot/toaster/car` base/RC `i31000`; SWITCH MODEL to gpt-5.5 is now eligible for P5 claim audit/manuscript integration.
+- FD-P3 — Full-dataset render/material/normal metrics
+  - For every completed base/RC scene, generate PSNR/SSIM/LPIPS, reflective-region metrics, material diagnostics, and normal diagnostics where supported.
+
+- FD-P4 — Full-dataset matched ablations
+  - Run full-dataset ablations: `base`, `rc`, `wo_ref`, `wo_conf`, `rough_only`.
+  - Do not make causal claims until ablations cover all required datasets or are explicitly caveated as partial.
+
+- FD-P5 — Multi-seed full-dataset repeats
+  - Run at least 3 seeds for claim-bearing conclusions.
+  - If compute limits prevent this, preserve one-seed caveat.
+
+- FD-P6 — Geometry / SMVP3D / mesh metrics
+  - Geometry metrics remain separate.
+  - Do not use RefNeRF `points3d.ply` as GT geometry.
+  - Only run geometry claims with valid references and completed extraction.
+
+- FD-P7 — Claim audit and manuscript integration
+  - Use gpt-5.5 only after full-dataset evidence artifacts exist.
   - Update claim audit.
-  - Upgrade claims only when acceptance thresholds are met.
-  - Preserve NO-GO boundaries for manuscript/scientific, broad rendering, geometry, material, external-superiority, causal, ablation, and multi-seed claims until evidence supports upgrades.
+  - Preserve NO-GO for broad rendering, material, geometry, external-superiority, causal, and multi-seed claims until acceptance thresholds are met on the complete required datasets.

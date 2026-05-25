@@ -1,5 +1,64 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-25 20:43:09 CST - FD-P0 Glossy Synthetic Conversion Readiness Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, and required full-dataset manifest.
+- Active coordination-board claim was `None` before this window.
+- Current roadmap queue routes generic continuation prompts through the full-dataset scope override before any claim-bearing runtime.
+
+**Round-local task claim:**
+- Claimed exactly one task in the coordination board:
+  - audit local Glossy Synthetic discovery/conversion readiness and add a concrete no-runtime conversion checklist while preserving full-dataset NO-GO boundaries.
+
+**Actions taken:**
+- Found raw Glossy Synthetic root:
+  - `/data/liuly/dataset/3DGS/GlossySynthetic`
+- Confirmed scenes:
+  - `angel`, `bell`, `cat`, `horse`, `luyu`, `potion`, `tbell`, `teapot`
+- Confirmed each scene has:
+  - 128 RGB PNGs
+  - 128 depth PNGs
+  - 128 `*-camera.pkl` files
+  - `eval_pts.ply`
+- Confirmed converted Blender-style outputs are absent:
+  - no `<scene>_blender` directories
+  - no `rgb/` converted directories
+  - no `transforms_train.json`
+  - no `transforms_test.json`
+- Confirmed the primary conversion helper imports and exposes CLI help:
+  - `python /home/liuly/Surface_Reconstruction/Glossy/GS-2M/scripts/preprocess/nero2blender.py --help`
+- Updated the required full-dataset manifest to record Glossy Synthetic as `raw_nero_discovered_needs_blender_conversion`.
+- Added conversion-readiness artifacts:
+  - `docs/superpowers/logs/rc-refgs-glossy-synthetic-conversion-readiness-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-glossy-synthetic-conversion-readiness-2026-05-25.md`
+- Updated roadmap and full implementation status to route next work to conversion validation before claim-bearing runtime.
+
+**Scope guardrails preserved:**
+- No training launch.
+- No metric run.
+- No dataset conversion.
+- No ablation or multi-seed run.
+- No geometry metric.
+- No training-code or metric-code edit.
+- No manuscript prose edit or scientific claim upgrade.
+
+**Verification and cleanup:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json` passed.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-glossy-synthetic-conversion-readiness-2026-05-25.json` passed.
+- Marker check found raw conversion blocker, `transforms_train.json`, `CONDITIONAL GO`, and `NO-GO` markers.
+- Process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+- `conda run -n ref_gs python -m unittest discover tests` passed: 60 tests, OK.
+- `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+- `git diff --check` passed.
+- Released active claim; coordination board now reports `Active Task Claims: None`.
+
+**Decision:** CONDITIONAL GO.
+- Rationale: FD-P0 improved from root-unknown to raw-root-discovered, and the conversion checklist is now concrete. Claim-bearing full-dataset runtime remains blocked until every Glossy Synthetic scene is converted and validated as Blender-style input.
+- NO-GO remains for complete-dataset claims, claim-bearing training, manuscript/scientific claim upgrades, broad rendering/material/geometry/external-superiority/causal/full-ablation/multi-seed claims, and SWITCH MODEL routing for claim-bearing P5 audit.
+
+---
+
 ## 2026-05-24 21:24:26 CST - P4 Toaster-RC Single-Cell Continuation (Compute-Blocked) Window
 
 **Recovered state:**
@@ -6438,6 +6497,61 @@ Key measured values (mean reflection consistency):
 
 ---
 
+## 2026-05-25 16:00:32 CST - Full-Dataset Policy Upgrade and Scope Hardening
+
+**Recovered state:**
+- Recovered protocol state from:
+  - `git status` and latest working diff state;
+  - `README.md`;
+  - `train.sh`;
+  - dataset-related scripts (`scripts/run_rc_refgs_ablation.sh`, `scripts/run_rc_refgs_metric_sweep_direct.py`, `train-NeRF.py`, `train-NeRO.py`, `train-real.py`);
+  - `scripts/run_rc_refgs_ablation_direct.py`;
+  - roadmap, coordination board, autonomous log, full implementation status;
+  - P4 completion/summary artifacts:
+    - `rc-refgs-p4-base-rc-i31000-completion-status-2026-05-25.json`
+    - `rc-refgs-p4-i31000-base-vs-rc-reflection-summary-2026-05-25.{json,md}`.
+
+**Round-local task claim:**
+- Claimed exactly one task in coordination board:
+  - **"Upgrade RC-RefGS experiment policy to require complete Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic datasets."**
+
+**Actions taken:**
+- Added full-dataset policy artifact:
+  - `docs/superpowers/plans/2026-05-25-rc-refgs-full-dataset-experiment-policy.md`
+- Added canonical required full-dataset manifest:
+  - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
+  - local discovery outcome:
+    - `shiny_blender_synthetic` root discovered at `/data/liuly/dataset/3DGS/refnerf` with scenes `ball, car, coffee, helmet, teapot, toaster`;
+    - `shiny_blender_real` path unresolved (`root=null`, `status=needs_user_path`);
+    - `glossy_synthetic` path unresolved (`root=null`, `status=needs_conversion_or_discovery`).
+- Updated roadmap with a high-priority Full Dataset Scope Override:
+  - future generic prompts must gate on required full-dataset manifest first;
+  - older three-scene claim-bearing routing is explicitly superseded.
+- Updated coordination board Next Suggested Tasks to FD-P0..FD-P7 full-dataset queue.
+- Updated full implementation status to:
+  - classify `teapot/toaster/car` `i31000` matrix as supported subset evidence only;
+  - mark complete-dataset experiment package as unsupported/pending;
+  - preserve NO-GO for complete-dataset claims from subset-only evidence.
+- Added full-dataset acceptance-threshold artifact:
+  - `docs/superpowers/logs/rc-refgs-full-dataset-acceptance-thresholds-2026-05-25.md`
+
+**Verification and outcomes:**
+- No training launch, no metrics execution, no manuscript claim upgrade in this window.
+- Verification gates:
+  - `rg -n "Shiny Blender Synthetic|Shiny Blender Real|Glossy Synthetic|complete dataset|claim-bearing|teapot/toaster/car" docs/superpowers`
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
+  - `python -m json.tool` on touched JSON artifacts
+  - `bash -n scripts/run_rc_refgs_ablation.sh`
+  - `git diff --check`
+- Code was not changed, so `unittest discover` was not required for this window.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- GO criteria met for policy/manifest/roadmap/board/status hardening.
+- Conditional status remains because required roots for Shiny Blender Real and Glossy Synthetic are still unresolved (`needs_user_path` / `needs_conversion_or_discovery`), so claim-bearing full-dataset execution cannot start yet.
+- NO-GO preserved for treating `teapot/toaster/car` subset results as complete-dataset claim-bearing evidence.
+
+---
+
 ## 2026-05-24 00:12:32 CST - P4 Base/RC i31000 Matrix Launch Window
 
 **Recovered state:**
@@ -7026,3 +7140,59 @@ Key measured values (mean reflection consistency):
 - SWITCH MODEL to gpt-5.5 for P5 claim audit/manuscript integration using the existing P5 handoff packet and readiness audit.
 - CONDITIONAL GO only for gpt-5.5 claim-audit/manuscript integration that preserves evidence tags and forbidden-claim boundaries.
 - NO-GO for additional Codex runtime work in this window, training or ablation launch, multi-seed launch, geometry metric computation, manuscript prose edits by Codex, or broad rendering, aggregate LPIPS, geometry, material, external-superiority, causal, full-ablation, multi-seed, manuscript, or scientific claim upgrades.
+
+## 2026-05-25 16:25:21 CST - FD-P0 Manifest Gate Audit
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, required full-dataset manifest, and acceptance thresholds.
+- Coordination board active claim was `None` before this window's claim.
+- Current state had advanced past the prior subset P5 handoff: full-dataset scope override is active, `teapot/toaster/car` evidence is subset-only, and claim-bearing P5/SWITCH MODEL routing is deferred until complete full-dataset evidence exists.
+
+**Round-local task claim:**
+- Claimed exactly one docs/status-only FD-P0 manifest gate audit:
+  - validate current required-dataset root availability;
+  - confirm full-dataset claim-bearing launch blockers;
+  - preserve no-runtime/no-claim-upgrade scope.
+
+**Actions taken:**
+- Updated `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json` to lock Shiny Blender Real at `/data/liuly/dataset/3DGS/glossy/GlossyReal` with scenes `bear`, `bunny`, `coral`, `maneki`, and `vase`.
+- Added `docs/superpowers/logs/rc-refgs-full-dataset-manifest-gate-audit-2026-05-25.{json,md}`.
+- Updated roadmap/status/coordination-board text to mark Glossy Synthetic as the remaining full-dataset manifest blocker.
+- Released the coordination-board claim.
+- No training, metric computation, ablation, multi-seed run, geometry metric, manuscript prose edit, or scientific claim upgrade was created.
+
+**Verification and outcomes:**
+- Manifest and audit JSON:
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json` -> pass.
+  - `conda run -n ref_gs python -m json.tool docs/superpowers/logs/rc-refgs-full-dataset-manifest-gate-audit-2026-05-25.json` -> pass.
+- Dataset discovery:
+  - Shiny Blender Synthetic root `/data/liuly/dataset/3DGS/refnerf` contains `ball`, `car`, `coffee`, `helmet`, `teapot`, `toaster`.
+  - Shiny Blender Real root `/data/liuly/dataset/3DGS/glossy/GlossyReal` contains `bear`, `bunny`, `coral`, `maneki`, `vase`.
+  - No converted Glossy Synthetic root was found under `/data/liuly/dataset`.
+  - NeRO synthetic config hints exist: `angel`, `bell`, `cat`, `horse`, `luyu`, `potion`, `tbell`, `teapot`.
+  - `nero2blender.py` scripts exist in sibling repos, but conversion readiness was not validated.
+- Contract checker confirmed:
+  - 6 Shiny Blender Synthetic scenes;
+  - 5 Shiny Blender Real scenes;
+  - Glossy Synthetic remains unresolved;
+  - `blocking_dataset=glossy_synthetic`;
+  - `claim_bearing_launch_allowed=false`;
+  - all scope guardrails are false.
+- Marker check confirmed the Glossy Synthetic blocker, `GlossyReal` scenes, `CONDITIONAL GO`, `NO-GO`, and claim-bearing launch blocked markers.
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` with 60 tests.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `git diff --check` -> pass.
+- Runtime probe:
+  - process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+
+**Evidence interpretation recorded:**
+- This window removes the Shiny Blender Real `needs_user_path` blocker.
+- The full-dataset claim-bearing launch gate remains blocked by Glossy Synthetic root/conversion ambiguity.
+- Existing `teapot/toaster/car` full-horizon evidence remains subset-only and cannot support complete-dataset claims.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- CONDITIONAL GO for continued manifest/status reconciliation and future Glossy Synthetic root/conversion resolution.
+- NO-GO for claim-bearing full-dataset training launch until Glossy Synthetic is resolved and the manifest is unambiguous.
+- NO-GO for complete-dataset claims, manuscript/scientific claim upgrades, broad rendering, material, geometry, external-superiority, causal, full-ablation, or multi-seed claims.
+- SWITCH MODEL is deferred because fresh complete full-dataset evidence does not exist.
