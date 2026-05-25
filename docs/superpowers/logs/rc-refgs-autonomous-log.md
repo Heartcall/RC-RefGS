@@ -1,5 +1,68 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-26 03:17:31 CST - Full-Dataset All-Experiments Runner Window
+
+**Recovered state:**
+- Recovered `git`, `README.md`, `train.sh`, `scripts/run_rc_refgs_ablation_direct.py`, full-dataset policy/manifest artifacts, roadmap, coordination board, autonomous log, and full implementation status.
+- Active coordination-board claim was `None` before this window.
+- Current routing requires complete Shiny Blender Synthetic + Shiny Blender Real + Glossy Synthetic coverage for claim-bearing evidence.
+- Prior `teapot/toaster/car` evidence remains subset-only.
+
+**Round-local task claim:**
+- Claimed exactly one task in the coordination board:
+  - Generate full-dataset all-experiments bash runner with dry-run safeguards.
+
+**Actions taken:**
+- Added runner:
+  - `scripts/run_rc_refgs_full_dataset_all_experiments.sh`
+- Added static tests:
+  - `tests/test_rc_refgs_full_dataset_runner_static.py`
+- Added documentation:
+  - `docs/superpowers/logs/rc-refgs-full-dataset-all-experiments-runner-2026-05-25.md`
+- Updated full implementation status to record the runner as supported for dry-run planning and still NO-GO for unconfirmed runtime.
+
+**Runner contract:**
+- Default mode is dry-run.
+- Real training requires `--execute --confirm_full_dataset_execute YES`.
+- Required roots are `--shiny_blender_synthetic_root`, `--shiny_blender_real_root`, and `--glossy_synthetic_root`.
+- Required runtime args are `--output_root` and `--devices`.
+- Defaults: `--seeds 0`, `--iterations 31000`, `--max_pairs 10`, variants `base,rc,wo_ref,wo_conf,rough_only`.
+- Uses `scripts/run_rc_refgs_ablation_direct.py` as the only runtime launcher.
+- Uses `--cuda_device`; does not set `CUDA_VISIBLE_DEVICES`.
+- Writes `${output_root}/full_dataset_run_status.json` and `${output_root}/full_dataset_run_status.md`.
+- Visible output structure is `${output_root}/${dataset_name}/${scene}/${variant}/seed_${seed}/`.
+- A job is complete only when `point_cloud/iteration_${iterations}/point_cloud.ply`, `reflection_consistency_train.json`, `reflection_consistency_test.json`, and `launcher_summary.json` all exist.
+- Glossy Synthetic raw NeRO-style scenes fail before planning/training and point to `nero2blender.py` conversion.
+
+**Scope guardrails preserved:**
+- No training launch.
+- No metric computation on real experiment outputs.
+- No dataset conversion.
+- No runtime use of `scripts/run_rc_refgs_ablation.sh`.
+- No training-code or metric-code edit.
+- No manuscript prose edit or scientific claim upgrade.
+
+**Verification and cleanup:**
+- RED test: `python -m unittest tests.test_rc_refgs_full_dataset_runner_static` failed because the runner was missing.
+- `chmod +x scripts/run_rc_refgs_full_dataset_all_experiments.sh` applied.
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` passed.
+- `scripts/run_rc_refgs_full_dataset_all_experiments.sh --help` printed dry-run and confirmation safeguards.
+- Nonexistent-root dry-run failed before any direct-launcher command.
+- Mock converted full-dataset dry-run generated `full_dataset_run_status.{json,md}` with planned jobs and no training.
+- Mock raw Glossy Synthetic dry-run failed with a `nero2blender.py` conversion blocker.
+- Required safety-term `rg` check passed.
+- `python -m unittest tests.test_rc_refgs_full_dataset_runner_static` passed: 7 tests, OK.
+- `conda run -n ref_gs python -m unittest discover tests` passed: 67 tests, OK.
+- `git diff --check` passed.
+- Process probe found no matching RC-RefGS launcher/train/eval/extraction process.
+- Released active claim; coordination board now reports `Active Task Claims: None`.
+
+**Decision:** GO.
+- Rationale: the runner is safe, documented, dry-run verified, skips complete jobs by default, uses only the direct Python launcher, blocks raw Glossy Synthetic conversion gaps, and cannot silently treat partial datasets as claim-bearing full evidence.
+- NO-GO remains for claim-bearing full-dataset runtime until roots/conversion/compute are explicitly valid and execution is confirmed. NO-GO also remains for manuscript/scientific claim upgrades and broad rendering/material/geometry/external-superiority/causal/full-ablation/multi-seed claims until complete evidence exists.
+
+---
+
 ## 2026-05-25 20:43:09 CST - FD-P0 Glossy Synthetic Conversion Readiness Window
 
 **Recovered state:**
