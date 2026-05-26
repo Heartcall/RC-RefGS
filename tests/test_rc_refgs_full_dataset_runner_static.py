@@ -8,6 +8,25 @@ from pathlib import Path
 
 
 class FullDatasetRunnerStaticTests(unittest.TestCase):
+    @staticmethod
+    def _write_minimal_blender_scene(scene_dir: Path) -> None:
+        train_dir = scene_dir / "train"
+        test_dir = scene_dir / "test"
+        train_dir.mkdir(parents=True, exist_ok=True)
+        test_dir.mkdir(parents=True, exist_ok=True)
+        (train_dir / "r_0.png").write_text("", encoding="utf-8")
+        (test_dir / "r_0.png").write_text("", encoding="utf-8")
+        payload = (
+            '{"camera_angle_x":0.5,"frames":[{"file_path":"./train/r_0","transform_matrix":'
+            "[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]}]}"
+        )
+        (scene_dir / "transforms_train.json").write_text(payload, encoding="utf-8")
+        payload_test = (
+            '{"camera_angle_x":0.5,"frames":[{"file_path":"./test/r_0","transform_matrix":'
+            "[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]}]}"
+        )
+        (scene_dir / "transforms_test.json").write_text(payload_test, encoding="utf-8")
+
     def test_runner_exists_is_executable_and_has_safe_shell_preamble(self):
         runner = Path("scripts/run_rc_refgs_full_dataset_all_experiments.sh")
         self.assertTrue(runner.exists(), "full-dataset runner is missing")
@@ -52,6 +71,8 @@ class FullDatasetRunnerStaticTests(unittest.TestCase):
             "subset evidence only",
             "transforms_train.json",
             "transforms_test.json",
+            "blender_scene_trainable",
+            "colmap/sparse",
             "nero2blender.py",
             "needs conversion",
         ]
@@ -134,31 +155,10 @@ class FullDatasetRunnerStaticTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="rc_refgs_dataset_root_test_") as tmp:
             dataset_root = Path(tmp) / "dataset"
             output_root = Path(tmp) / "out"
-            (dataset_root / "refnerf_synthetic" / "teapot" / "transforms_train.json").parent.mkdir(
-                parents=True
-            )
-            (dataset_root / "refnerf_synthetic" / "teapot" / "transforms_train.json").write_text(
-                "{}",
-                encoding="utf-8",
-            )
-            (dataset_root / "refnerf_synthetic" / "teapot" / "transforms_test.json").write_text(
-                "{}",
-                encoding="utf-8",
-            )
-            (dataset_root / "refnerf_real" / "bear").mkdir(parents=True)
-            (dataset_root / "refnerf_real" / "bear" / "transforms_train.json").write_text(
-                "{}",
-                encoding="utf-8",
-            )
-            (dataset_root / "refnerf_real" / "bear" / "transforms_test.json").write_text(
-                "{}",
-                encoding="utf-8",
-            )
+            self._write_minimal_blender_scene(dataset_root / "refnerf_synthetic" / "teapot")
+            self._write_minimal_blender_scene(dataset_root / "refnerf_real" / "bear")
             glossy_scene = dataset_root / "GlossySyntheticConverted" / "angel_blender"
-            (glossy_scene / "rgb").mkdir(parents=True)
-            (glossy_scene / "transforms_train.json").write_text("{}", encoding="utf-8")
-            (glossy_scene / "transforms_test.json").write_text("{}", encoding="utf-8")
-            (glossy_scene / "rgb" / "000.png").write_text("", encoding="utf-8")
+            self._write_minimal_blender_scene(glossy_scene)
 
             result = subprocess.run(
                 [
@@ -181,6 +181,66 @@ class FullDatasetRunnerStaticTests(unittest.TestCase):
             self.assertTrue(status_json.exists(), "status json missing")
             self.assertTrue(status_md.exists(), "status markdown missing")
             self.assertIn("DRY-RUN", result.stdout)
+
+    def test_dry_run_expands_shiny_real_colmap_sparse_schema_variants(self):
+        runner = Path("scripts/run_rc_refgs_full_dataset_all_experiments.sh")
+        with tempfile.TemporaryDirectory(prefix="rc_refgs_shiny_real_schema_") as tmp:
+            root = Path(tmp)
+            output_root = root / "out"
+
+            self._write_minimal_blender_scene(root / "syn" / "chair")
+            self._write_minimal_blender_scene(root / "glossy_syn" / "angel_blender")
+
+            shiny_real_root = root / "real"
+            for scene in ("bear", "bunny", "coral"):
+                sparse_root = shiny_real_root / scene / "sparse" / "0"
+                sparse_root.mkdir(parents=True, exist_ok=True)
+                (sparse_root / "images.txt").write_text("", encoding="utf-8")
+                (shiny_real_root / scene / "images").mkdir(parents=True, exist_ok=True)
+                (shiny_real_root / scene / "images" / "000.jpg").write_text("", encoding="utf-8")
+            for scene in ("maneki", "vase"):
+                sparse_root = shiny_real_root / scene / "colmap" / "sparse" / "0"
+                sparse_root.mkdir(parents=True, exist_ok=True)
+                (sparse_root / "images.txt").write_text("", encoding="utf-8")
+                (shiny_real_root / scene / "images").mkdir(parents=True, exist_ok=True)
+                (shiny_real_root / scene / "images" / "000.jpg").write_text("", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    str(runner),
+                    "--shiny_blender_synthetic_root",
+                    str(root / "syn"),
+                    "--shiny_blender_real_root",
+                    str(shiny_real_root),
+                    "--glossy_synthetic_root",
+                    str(root / "glossy_syn"),
+                    "--output_root",
+                    str(output_root),
+                    "--devices",
+                    "0",
+                    "--seeds",
+                    "0",
+                    "--iterations",
+                    "31000",
+                    "--variants",
+                    "base,rc",
+                ],
+                check=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            status_json = output_root / "full_dataset_run_status.json"
+            self.assertTrue(status_json.exists(), "status json missing")
+            payload = status_json.read_text(encoding="utf-8")
+            self.assertIn('"scene": "maneki"', payload)
+            self.assertIn('"scene": "vase"', payload)
+            self.assertIn('"scene": "bear"', payload)
+            self.assertIn('"scene": "bunny"', payload)
+            self.assertIn('"scene": "coral"', payload)
+            self.assertIn('"status": "planned"', payload)
+            self.assertIn("DRY-RUN would run:", result.stdout)
 
 
 if __name__ == "__main__":

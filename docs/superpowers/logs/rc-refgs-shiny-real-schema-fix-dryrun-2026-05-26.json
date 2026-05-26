@@ -1,0 +1,174 @@
+{
+  "mode": "rc_refgs_shiny_real_schema_fix_dryrun_gate",
+  "date": "2026-05-26",
+  "timestamp_cst": "2026-05-26 23:39:07 CST",
+  "claim": "Fix Shiny Blender Real maneki/vase discovery and rerun full-dataset dry-run gate.",
+  "required_roots": {
+    "shiny_blender_synthetic": "/data/liuly/dataset/3DGS/refnerf_synthetic",
+    "shiny_blender_real": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
+    "glossy_synthetic_converted": "/data/liuly/dataset/3DGS/GlossySyntheticConverted"
+  },
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "full_dataset_i31000_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_or_mesh_started": false,
+    "manuscript_claims_edited": false,
+    "scientific_claim_upgraded": false
+  },
+  "shiny_blender_real_schema_comparison": {
+    "expected_scenes": [
+      "bear",
+      "bunny",
+      "coral",
+      "maneki",
+      "vase"
+    ],
+    "per_scene": {
+      "bear": {
+        "transforms_train_json": false,
+        "transforms_test_json": false,
+        "images_dir_exists": true,
+        "rgb_dir_exists": false,
+        "sparse_exists": true,
+        "sparse_is_symlink": true,
+        "colmap_sparse_exists": true,
+        "colmap_sparse_0_exists": true,
+        "images_count": 97
+      },
+      "bunny": {
+        "transforms_train_json": false,
+        "transforms_test_json": false,
+        "images_dir_exists": true,
+        "rgb_dir_exists": false,
+        "sparse_exists": true,
+        "sparse_is_symlink": true,
+        "colmap_sparse_exists": true,
+        "colmap_sparse_0_exists": true,
+        "images_count": 129
+      },
+      "coral": {
+        "transforms_train_json": false,
+        "transforms_test_json": false,
+        "images_dir_exists": true,
+        "rgb_dir_exists": false,
+        "sparse_exists": true,
+        "sparse_is_symlink": true,
+        "colmap_sparse_exists": true,
+        "colmap_sparse_0_exists": true,
+        "images_count": 126
+      },
+      "maneki": {
+        "transforms_train_json": false,
+        "transforms_test_json": false,
+        "images_dir_exists": true,
+        "rgb_dir_exists": false,
+        "sparse_exists": false,
+        "sparse_is_symlink": false,
+        "colmap_sparse_exists": true,
+        "colmap_sparse_0_exists": true,
+        "images_count": 128
+      },
+      "vase": {
+        "transforms_train_json": false,
+        "transforms_test_json": false,
+        "images_dir_exists": true,
+        "rgb_dir_exists": false,
+        "sparse_exists": false,
+        "sparse_is_symlink": false,
+        "colmap_sparse_exists": true,
+        "colmap_sparse_0_exists": true,
+        "images_count": 128
+      }
+    },
+    "schema_delta_summary": "bear/bunny/coral expose top-level sparse/ symlink; maneki/vase only expose nested colmap/sparse/0.",
+    "loader_compatible_alternative_used": "COLMAP scene detection now accepts either sparse/ or colmap/sparse/ at scene root discovery time."
+  },
+  "runner_patch_summary": {
+    "file": "scripts/run_rc_refgs_full_dataset_all_experiments.sh",
+    "changes": [
+      "scene_type() now classifies COLMAP scenes when either sparse/ or colmap/sparse/ exists.",
+      "Added blender_scene_trainable() check requiring transforms_train.json + transforms_test.json and resolvable frame file references."
+    ],
+    "no_scene_name_hardcoding": true
+  },
+  "full_dataset_dry_run": {
+    "command": "scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root /data/liuly/dataset/3DGS/refnerf_synthetic --shiny_blender_real_root /data/liuly/dataset/3DGS/glossy/GlossyReal --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_dryrun_20260526 --devices 0 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc",
+    "exit_code": 0,
+    "status_json": "/tmp/rc_refgs_full_dataset_dryrun_20260526/full_dataset_run_status.json",
+    "status_md": "/tmp/rc_refgs_full_dataset_dryrun_20260526/full_dataset_run_status.md",
+    "planned_count": 42,
+    "completed_count": 0,
+    "failed_count": 0,
+    "skipped_count": 0,
+    "expanded_scene_counts": {
+      "shiny_blender_synthetic": 8,
+      "shiny_blender_real": 5,
+      "glossy_synthetic": 8
+    },
+    "expanded_scenes": {
+      "shiny_blender_synthetic": [
+        "chair",
+        "drums",
+        "ficus",
+        "hotdog",
+        "lego",
+        "materials",
+        "mic",
+        "ship"
+      ],
+      "shiny_blender_real": [
+        "bear",
+        "bunny",
+        "coral",
+        "maneki",
+        "vase"
+      ],
+      "glossy_synthetic": [
+        "angel",
+        "bell",
+        "cat",
+        "horse",
+        "luyu",
+        "potion",
+        "tbell",
+        "teapot"
+      ]
+    }
+  },
+  "tests_and_checks": {
+    "runner_static_tests": {
+      "command": "python -m unittest tests.test_rc_refgs_full_dataset_runner_static",
+      "result": "pass",
+      "tests": 9
+    },
+    "full_suite": {
+      "command": "conda run -n ref_gs python -m unittest discover tests",
+      "result": "pass",
+      "tests": 72
+    },
+    "shell_syntax": [
+      {
+        "command": "bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh",
+        "result": "pass"
+      },
+      {
+        "command": "bash -n scripts/run_rc_refgs_ablation.sh",
+        "result": "pass"
+      }
+    ],
+    "json_validation": "pass",
+    "git_diff_check": "pass",
+    "process_probe": {
+      "command": "pgrep -af \"run_rc_refgs_ablation_direct.py|train.py -s /data/liuly/dataset/3DGS|reflection_consistency_eval.py|render_quality_eval.py|material_quality_eval.py|normal_quality_eval.py\"",
+      "result": "no matching process"
+    }
+  },
+  "fd_p0_gate": {
+    "result": "go",
+    "reason": "All required datasets validate for runner discovery and dry-run expansion now includes all required scenes, including Shiny Blender Real maneki and vase."
+  },
+  "next_task": "FD-P2 full-dataset base/RC i31000 execution is next, but not started in this window."
+}

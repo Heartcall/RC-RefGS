@@ -242,13 +242,53 @@ done
 
 scene_type() {
   local dir="$1"
-  if [[ -d "${dir}/sparse" ]]; then
+  if [[ -d "${dir}/sparse" || -d "${dir}/colmap/sparse" ]]; then
     echo "colmap"
-  elif [[ -f "${dir}/transforms_train.json" && -f "${dir}/transforms_test.json" ]]; then
+  elif blender_scene_trainable "${dir}"; then
     echo "blender"
   else
     echo "invalid"
   fi
+}
+
+blender_scene_trainable() {
+  local dir="$1"
+  [[ -f "${dir}/transforms_train.json" && -f "${dir}/transforms_test.json" ]] || return 1
+
+  python - "${dir}" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+scene_dir = Path(sys.argv[1])
+transforms = [scene_dir / "transforms_train.json", scene_dir / "transforms_test.json"]
+
+def frame_exists(fp: str) -> bool:
+    p = Path(fp)
+    candidates = [p] if p.suffix else [Path(fp + ".png"), Path(fp + ".jpg"), Path(fp + ".jpeg")]
+    for cand in candidates:
+        full = cand if cand.is_absolute() else scene_dir / cand
+        if full.exists():
+            return True
+    return False
+
+for tf in transforms:
+    try:
+        payload = json.loads(tf.read_text(encoding="utf-8"))
+    except Exception:
+        raise SystemExit(1)
+    frames = payload.get("frames", [])
+    if not frames:
+        raise SystemExit(1)
+    for frame in frames:
+        fp = frame.get("file_path")
+        if not isinstance(fp, str) or not fp:
+            raise SystemExit(1)
+        if not frame_exists(fp):
+            raise SystemExit(1)
+
+raise SystemExit(0)
+PY
 }
 
 has_raw_nero_markers() {

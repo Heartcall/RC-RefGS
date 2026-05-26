@@ -24,8 +24,8 @@
         "maneki",
         "vase"
       ],
-      "status": "discovered_with_loader_schema_mismatch",
-      "note": "Directory discovery finds 5 scenes, but runner dry-run currently expands only bear/bunny/coral because maneki/vase provide COLMAP under colmap/sparse/0 without top-level sparse/."
+      "status": "discovered_and_validated_for_runner_expansion",
+      "note": "Runner discovery now accepts both top-level sparse/ and nested colmap/sparse/ COLMAP layouts; dry-run expansion includes bear, bunny, coral, maneki, and vase."
     },
     "glossy_synthetic": {
       "root": "/data/liuly/dataset/3DGS/GlossySyntheticConverted",

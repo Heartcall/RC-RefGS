@@ -7446,3 +7446,58 @@ Key measured values (mean reflection consistency):
 - NO-GO for starting FD-P2 full-dataset i31000 execution in this window.
 - NO-GO for complete-dataset claims, manuscript/scientific claim upgrades, training/metrics/ablation/multi-seed/geometry launches.
 - SWITCH MODEL is not appropriate in this window.
+
+## 2026-05-26 23:39:07 CST - Fix Shiny Blender Real maneki/vase Discovery and Rerun Full-Dataset Dry-Run Gate
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, required full-dataset manifest, GlossySyntheticConverted validation artifact, and latest root-fix dry-run artifact.
+- Coordination board active claim was set to this window task and released by the end of the window.
+
+**Round-local task claim:**
+- Claimed exactly one task: “Fix Shiny Blender Real maneki/vase discovery and rerun full-dataset dry-run gate.”
+
+**Actions taken:**
+- Inspected Shiny Blender Real root `/data/liuly/dataset/3DGS/glossy/GlossyReal` and all expected scenes `bear`, `bunny`, `coral`, `maneki`, `vase`.
+- Compared schema variants:
+  - all five scenes are COLMAP-style (`transforms_train.json`/`transforms_test.json` absent, `images/` present, `colmap/sparse/0` present);
+  - `bear/bunny/coral` additionally expose top-level `sparse` symlink;
+  - `maneki/vase` do not expose top-level `sparse`.
+- Patched smallest safe discovery logic in `scripts/run_rc_refgs_full_dataset_all_experiments.sh`:
+  - COLMAP detection now accepts either `sparse/` or `colmap/sparse/`;
+  - added generic Blender trainability check (`transforms_train.json`, `transforms_test.json`, and frame reference resolution to existing image files).
+- Updated tests in `tests/test_rc_refgs_full_dataset_runner_static.py`:
+  - schema-variant coverage for `maneki/vase` nested COLMAP layout;
+  - dry-run expansion assertion includes all five Shiny Blender Real scenes;
+  - no-training launch behavior remains dry-run.
+- Reran required dry-run command with required roots and no `--execute`.
+- Refreshed manifest/status/board/log artifacts and created:
+  - `docs/superpowers/logs/rc-refgs-shiny-real-schema-fix-dryrun-2026-05-26.json`
+  - `docs/superpowers/logs/rc-refgs-shiny-real-schema-fix-dryrun-2026-05-26.md`
+
+**Verification and outcomes:**
+- Targeted runner tests:
+  - `python -m unittest tests.test_rc_refgs_full_dataset_runner_static` -> `OK` (9 tests).
+- Required dry-run command:
+  - `scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root /data/liuly/dataset/3DGS/refnerf_synthetic --shiny_blender_real_root /data/liuly/dataset/3DGS/glossy/GlossyReal --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_dryrun_20260526 --devices 0 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc`
+  - exit code `0`;
+  - status artifacts written to `/tmp/rc_refgs_full_dataset_dryrun_20260526/full_dataset_run_status.{json,md}`;
+  - planned jobs `42`;
+  - expanded scenes: `8` Shiny Blender Synthetic, `5` Shiny Blender Real (including `maneki` and `vase`), `8` Glossy Synthetic converted.
+- Required verification gates:
+  - `python -m json.tool` on touched JSON files -> pass.
+  - `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` -> pass.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` (72 tests).
+  - `git diff --check` -> pass.
+  - process probe `pgrep -af "run_rc_refgs_ablation_direct.py|train.py -s /data/liuly/dataset/3DGS|reflection_consistency_eval.py|render_quality_eval.py|material_quality_eval.py|normal_quality_eval.py"` -> no matching process (exit `1`), confirming no RC-RefGS training/metrics launch.
+
+**Evidence interpretation recorded:**
+- Full-dataset runner dry-run now expands complete required scene coverage across all three required datasets.
+- FD-P0 manifest discovery gate is now green.
+- Prior `teapot/toaster/car` remains subset evidence only; no complete-dataset runtime claims were produced.
+
+**Go/no-go decision:** GO.
+- GO for FD-P0 full-scene discovery gate and FD-P1 dry-run orchestration gate.
+- Next task is FD-P2 full-dataset base/RC i31000 execution (not started in this window).
+- NO-GO for complete-dataset claim upgrades, manuscript/scientific upgrades, and any training/metrics/ablation/multi-seed/geometry execution in this window.
+- SWITCH MODEL is not appropriate in this window.
