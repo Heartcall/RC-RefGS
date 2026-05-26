@@ -11,6 +11,12 @@ All claim-bearing RC-RefGS experiments must cover complete scene manifests for:
 2. Shiny Blender Real
 3. Glossy Synthetic
 
+Current user-confirmed required scene sets:
+- Shiny Blender Synthetic: `ball`, `car`, `coffee`, `helmet`, `teapot`, `toaster` (6)
+- Shiny Blender Real: `gardenspheres`, `sedan`, `toycar` (3)
+- Glossy Synthetic: `angel`, `bell`, `cat`, `horse`, `luyu`, `potion`, `tbell`, `teapot` (8)
+- Total claim-bearing scene count: `17` (`6+3+8`)
+
 ## Complete-Dataset Rule
 
 - Claim-bearing evidence must include all discovered scenes under each configured required-dataset root.
@@ -35,6 +41,11 @@ All claim-bearing RC-RefGS experiments must cover complete scene manifests for:
 
 - NeRF Synthetic is optional/background only.
 - NeRF Synthetic cannot substitute for Shiny Blender Synthetic, Shiny Blender Real, and Glossy Synthetic in claim-bearing RC-RefGS conclusions.
+
+## Additional GlossyReal Rule
+
+- `/data/liuly/dataset/3DGS/glossy/GlossyReal` (`bear/bunny/coral/maneki/vase`) is optional additional glossy-real data.
+- It must not substitute for required Shiny Blender Real claim-bearing scope unless the user explicitly expands required scope.
 
 ## Glossy Synthetic Conversion Rule
 

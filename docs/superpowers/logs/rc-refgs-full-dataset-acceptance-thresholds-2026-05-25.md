@@ -7,7 +7,15 @@ Scope baseline:
   - Shiny Blender Synthetic
   - Shiny Blender Real
   - Glossy Synthetic
+- Required claim-bearing scene sets:
+  - Shiny Blender Synthetic: `ball`, `car`, `coffee`, `helmet`, `teapot`, `toaster` (6)
+  - Shiny Blender Real: `gardenspheres`, `sedan`, `toycar` (3)
+  - Glossy Synthetic: `angel`, `bell`, `cat`, `horse`, `luyu`, `potion`, `tbell`, `teapot` (8)
+- Complete claim-bearing scope for this protocol: `17` scenes total (`6+3+8`).
 - Claim-bearing scope means complete scene coverage for all discovered scenes in all required datasets.
+- Optional/background datasets:
+  - NeRF Synthetic (`chair/drums/ficus/hotdog/lego/materials/mic/ship`) is optional/background only and must not substitute for Shiny Blender Synthetic.
+  - `/data/liuly/dataset/3DGS/glossy/GlossyReal` (`bear/bunny/coral/maneki/vase`) is optional additional glossy-real data, not required Shiny Blender Real scope unless explicitly expanded later.
 - `teapot/toaster/car` subset evidence is valid pilot evidence only and cannot satisfy complete-dataset thresholds.
 
 ## Reflection-Consistency Claim

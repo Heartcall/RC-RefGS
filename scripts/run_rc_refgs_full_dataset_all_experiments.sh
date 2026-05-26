@@ -168,7 +168,9 @@ if [[ -n "${DATASET_ROOT}" ]]; then
   [[ -d "${DATASET_ROOT}" ]] || die "--dataset_root is not a directory: ${DATASET_ROOT}"
 
   if [[ -z "${SHINY_BLENDER_SYNTHETIC_ROOT}" ]]; then
-    if [[ -d "${DATASET_ROOT}/refnerf_synthetic" ]]; then
+    if [[ -d "${DATASET_ROOT}/Shiny Blender Synthetic" ]]; then
+      SHINY_BLENDER_SYNTHETIC_ROOT="${DATASET_ROOT}/Shiny Blender Synthetic"
+    elif [[ -d "${DATASET_ROOT}/refnerf_synthetic" ]]; then
       SHINY_BLENDER_SYNTHETIC_ROOT="${DATASET_ROOT}/refnerf_synthetic"
     elif [[ -d "${DATASET_ROOT}/refnerf" ]]; then
       SHINY_BLENDER_SYNTHETIC_ROOT="${DATASET_ROOT}/refnerf"
@@ -176,7 +178,9 @@ if [[ -n "${DATASET_ROOT}" ]]; then
   fi
 
   if [[ -z "${SHINY_BLENDER_REAL_ROOT}" ]]; then
-    if [[ -d "${DATASET_ROOT}/refnerf_real" ]]; then
+    if [[ -d "${DATASET_ROOT}/Shiny Blender Real" ]]; then
+      SHINY_BLENDER_REAL_ROOT="${DATASET_ROOT}/Shiny Blender Real"
+    elif [[ -d "${DATASET_ROOT}/refnerf_real" ]]; then
       SHINY_BLENDER_REAL_ROOT="${DATASET_ROOT}/refnerf_real"
     elif [[ -d "${DATASET_ROOT}/glossy/GlossyReal" ]]; then
       SHINY_BLENDER_REAL_ROOT="${DATASET_ROOT}/glossy/GlossyReal"

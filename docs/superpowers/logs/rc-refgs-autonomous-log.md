@@ -1,5 +1,149 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-27 02:02:58 CST - Finalize Shiny Real Scene-Set Policy + Full-Dataset Dry-Run GO Gate Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, required full-dataset manifest, latest organized full-dataset dry-run gate artifacts, and user-provided local dataset discovery result.
+- Active coordination-board claim was `None` before this window.
+- Full-dataset scope override remains active; prior `teapot/toaster/car` evidence remains subset-only.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Finalize Shiny Real scene-set policy and full-dataset dry-run GO gate.”**
+
+**Actions taken:**
+- Confirmed both real-like roots and scene sets:
+  - `/data/liuly/dataset/3DGS/Shiny Blender Real`: `gardenspheres`, `sedan`, `toycar`
+  - `/data/liuly/dataset/3DGS/glossy/GlossyReal`: `bear`, `bunny`, `coral`, `maneki`, `vase`
+- Finalized claim-bearing required scope per user decision:
+  - Shiny Blender Synthetic: `ball`, `car`, `coffee`, `helmet`, `teapot`, `toaster` (6)
+  - Shiny Blender Real: `gardenspheres`, `sedan`, `toycar` (3)
+  - Glossy Synthetic converted: `angel`, `bell`, `cat`, `horse`, `luyu`, `potion`, `tbell`, `teapot` (8)
+  - Total claim-bearing scenes: `17` (`6+3+8`)
+- Marked optional/background scope:
+  - NeRF Synthetic remains optional/background only and non-substitutable.
+  - `/data/liuly/dataset/3DGS/glossy/GlossyReal` (`bear/bunny/coral/maneki/vase`) is optional additional glossy-real data, not required Shiny Blender Real scope unless explicitly expanded later.
+- Reran required dry-run gate command (no `--execute`):
+  - `scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root "/data/liuly/dataset/3DGS/Shiny Blender Synthetic" --shiny_blender_real_root "/data/liuly/dataset/3DGS/Shiny Blender Real" --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_base_rc_i31000_20260527 --devices 0,1,2 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc`
+- Updated artifacts:
+  - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-full-dataset-acceptance-thresholds-2026-05-25.md`
+  - `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+  - `docs/superpowers/plans/2026-05-25-rc-refgs-full-dataset-experiment-policy.md`
+  - `docs/superpowers/logs/rc-refgs-organized-full-dataset-roots-dryrun-gate-2026-05-27.{json,md}`
+  - coordination board and autonomous log
+
+**Scope guardrails preserved:**
+- No training launch.
+- No metrics run.
+- No full-dataset i31000 execution.
+- No ablations.
+- No multi-seed.
+- No manuscript claim edits.
+- No scientific claim upgrades.
+
+**Verification and cleanup:**
+- Dry-run command exited `0`.
+- `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.{json,md}` generated.
+- Dry-run expanded exactly required claim-bearing datasets:
+  - `shiny_blender_synthetic`: `6` scenes
+  - `shiny_blender_real`: `3` scenes
+  - `glossy_synthetic`: `8` scenes
+  - `planned_count=34` (`17` scenes x `2` variants x seed `0`)
+- Optional dataset exclusion checks:
+  - no `nerf` dataset key in planned jobs;
+  - no optional GlossyReal dataset key in planned jobs;
+  - no NeRF scenes under `shiny_blender_synthetic`;
+  - no `bear/bunny/coral/maneki/vase` in claim-bearing job scenes.
+- `python -m json.tool` passed for touched JSON artifacts and dry-run status JSON.
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` passed.
+- `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+- `conda run -n ref_gs python -m unittest discover tests` passed.
+- `git diff --check` passed.
+- Process probe found no matching RC-RefGS training/metrics process.
+- Released active claim; coordination board reports `Active Task Claims: None`.
+
+**Decision:** GO.
+- Organized 6+3+8 claim-bearing full-dataset scope is accepted.
+- Dry-run gate expands exactly 34 planned jobs with zero training launch.
+- No policy blocker remains that would force `bear/bunny/coral/maneki/vase` as required Shiny Real scenes in future generic prompts.
+
+---
+
+## 2026-05-27 01:18:42 CST - Organized Full-Dataset Roots + Claim-Bearing Dry-Run Gate Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, required full-dataset manifest, and latest dry-run status artifacts.
+- Active coordination-board claim was `None` before this window.
+- Full-dataset scope override remains active; prior `teapot/toaster/car` evidence remains subset-only.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Update organized full-dataset roots and rerun claim-bearing dry-run gate.”**
+
+**Actions taken:**
+- Inspected newly organized dataset roots:
+  - Shiny Blender Synthetic: `/data/liuly/dataset/3DGS/Shiny Blender Synthetic`
+  - Shiny Blender Real: `/data/liuly/dataset/3DGS/Shiny Blender Real`
+  - Glossy Synthetic converted: `/data/liuly/dataset/3DGS/GlossySyntheticConverted`
+  - NeRF Synthetic optional/background: `/data/liuly/dataset/3DGS/NeRF Synthetic`
+- Discovered trainable scenes:
+  - Shiny Blender Synthetic: `ball`, `car`, `coffee`, `helmet`, `teapot`, `toaster` (Blender-format trainable; expected set match).
+  - Shiny Blender Real: `gardenspheres`, `sedan`, `toycar` (COLMAP-format trainable; does **not** match expected `bear/bunny/coral/maneki/vase` and is not yet validated as equivalent claim-bearing set).
+  - Glossy Synthetic converted: `angel`, `bell`, `cat`, `horse`, `luyu`, `potion`, `tbell`, `teapot` (from `*_blender` scene dirs; trainable and expected set match).
+  - NeRF Synthetic optional/background: `chair`, `drums`, `ficus`, `hotdog`, `lego`, `materials`, `mic`, `ship`.
+- Reran required dry-run gate command (no `--execute`):
+  - `scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root "/data/liuly/dataset/3DGS/Shiny Blender Synthetic" --shiny_blender_real_root "/data/liuly/dataset/3DGS/Shiny Blender Real" --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_base_rc_i31000_20260527 --devices 0,1,2 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc`
+- Patched full-dataset runner route inference to recognize organized layout names under `--dataset_root`:
+  - `Shiny Blender Synthetic`
+  - `Shiny Blender Real`
+- Added static regression coverage for organized layout inference:
+  - `tests/test_rc_refgs_full_dataset_runner_static.py::test_dataset_root_inference_supports_organized_shiny_layout`
+- Updated required manifest and added the new gate artifact:
+  - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-organized-full-dataset-roots-dryrun-gate-2026-05-27.{json,md}`
+- Updated implementation status, acceptance-threshold guardrail note, coordination board, and autonomous log.
+
+**Scope guardrails preserved:**
+- No training launch.
+- No metrics run.
+- No full-dataset i31000 execution.
+- No ablations.
+- No multi-seed.
+- No manuscript claim edits.
+- No scientific claim upgrades.
+
+**Verification and cleanup:**
+- Dry-run command exited `0`.
+- `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.{json,md}` generated.
+- Dry-run expanded required datasets only with planned jobs:
+  - `shiny_blender_synthetic`: `6` scenes
+  - `shiny_blender_real`: `3` scenes
+  - `glossy_synthetic`: `8` scenes
+  - total planned jobs: `34` (`6+3+8` scenes x `2` variants x seed `0`)
+- No NeRF substitution:
+  - no `nerf` dataset key in run-status jobs;
+  - no `chair/drums/ficus/hotdog/lego/materials/mic/ship` labels under `shiny_blender_synthetic`.
+- `python -m json.tool` passed for touched JSON artifacts.
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` passed.
+- `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+- `conda run -n ref_gs python -m unittest discover tests` passed (`73` tests, `OK`).
+- `git diff --check` passed.
+- Process probe found no matching RC-RefGS training/metrics process.
+- Released active claim; coordination board reports `Active Task Claims: None`.
+
+**Decision:** CONDITIONAL GO.
+- GO scope:
+  - organized roots are correctly routed;
+  - runner safely handles roots with spaces;
+  - dry-run gate remains non-launching and excludes NeRF substitution.
+- Blocker:
+  - Shiny Blender Real claim-bearing scene-set equivalence is unresolved (`gardenspheres/sedan/toycar` vs expected `bear/bunny/coral/maneki/vase`).
+- NO-GO scope:
+  - claim-bearing full-dataset runtime and claim upgrades remain blocked until equivalence is validated or corrected.
+
+---
+
 ## 2026-05-26 22:07:34 CST - FD-P0 Converted Root Validation + Manifest Gate Refresh Window
 
 **Recovered state:**

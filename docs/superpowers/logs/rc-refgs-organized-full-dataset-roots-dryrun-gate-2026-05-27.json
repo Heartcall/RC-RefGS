@@ -1,0 +1,127 @@
+{
+  "mode": "rc_refgs_finalize_shiny_real_policy_and_dryrun_go_gate",
+  "date": "2026-05-27",
+  "timestamp_cst": "2026-05-27 02:02:58 CST",
+  "claim": "Finalize Shiny Real scene-set policy and full-dataset dry-run GO gate.",
+  "required_roots": {
+    "shiny_blender_synthetic": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic",
+    "shiny_blender_real": "/data/liuly/dataset/3DGS/Shiny Blender Real",
+    "glossy_synthetic_converted": "/data/liuly/dataset/3DGS/GlossySyntheticConverted"
+  },
+  "optional_roots": {
+    "nerf_synthetic": "/data/liuly/dataset/3DGS/NeRF Synthetic",
+    "additional_glossy_real": "/data/liuly/dataset/3DGS/glossy/GlossyReal"
+  },
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "full_dataset_i31000_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "manuscript_claims_edited": false,
+    "scientific_claim_upgraded": false
+  },
+  "claim_bearing_scene_sets": {
+    "shiny_blender_synthetic": [
+      "ball",
+      "car",
+      "coffee",
+      "helmet",
+      "teapot",
+      "toaster"
+    ],
+    "shiny_blender_real": [
+      "gardenspheres",
+      "sedan",
+      "toycar"
+    ],
+    "glossy_synthetic": [
+      "angel",
+      "bell",
+      "cat",
+      "horse",
+      "luyu",
+      "potion",
+      "tbell",
+      "teapot"
+    ],
+    "claim_bearing_scene_count_total": 17
+  },
+  "optional_scene_sets": {
+    "nerf_synthetic": [
+      "chair",
+      "drums",
+      "ficus",
+      "hotdog",
+      "lego",
+      "materials",
+      "mic",
+      "ship"
+    ],
+    "additional_glossy_real": [
+      "bear",
+      "bunny",
+      "coral",
+      "maneki",
+      "vase"
+    ]
+  },
+  "full_dataset_dry_run": {
+    "command": "scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root \"/data/liuly/dataset/3DGS/Shiny Blender Synthetic\" --shiny_blender_real_root \"/data/liuly/dataset/3DGS/Shiny Blender Real\" --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_base_rc_i31000_20260527 --devices 0,1,2 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc",
+    "exit_code": 0,
+    "status_json": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.json",
+    "status_md": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.md",
+    "planned_count": 34,
+    "completed_count": 0,
+    "failed_count": 0,
+    "skipped_count": 0,
+    "expanded_scene_counts": {
+      "glossy_synthetic": 8,
+      "shiny_blender_real": 3,
+      "shiny_blender_synthetic": 6
+    },
+    "expanded_scenes": {
+      "glossy_synthetic": [
+        "angel",
+        "bell",
+        "cat",
+        "horse",
+        "luyu",
+        "potion",
+        "tbell",
+        "teapot"
+      ],
+      "shiny_blender_real": [
+        "gardenspheres",
+        "sedan",
+        "toycar"
+      ],
+      "shiny_blender_synthetic": [
+        "ball",
+        "car",
+        "coffee",
+        "helmet",
+        "teapot",
+        "toaster"
+      ]
+    },
+    "includes_optional_nerf_dataset": false,
+    "includes_optional_additional_glossy_real_dataset": false,
+    "includes_nerf_scenes_under_shiny_blender_synthetic": false,
+    "includes_optional_glossyreal_scenes_in_claim_bearing_jobs": false
+  },
+  "expected_job_count_check": {
+    "expected_when_6_3_8": 34,
+    "actual": 34,
+    "match": true
+  },
+  "fd_p0_gate": {
+    "result": "go",
+    "reason": "Organized 6+3+8 claim-bearing scene scope is user-confirmed and dry-run expansion matches 34 planned jobs with zero runtime launch."
+  },
+  "no_go_boundary": {
+    "nerf_synthetic_substitutes_shiny_blender_synthetic": false,
+    "optional_glossy_real_substitutes_shiny_blender_real": false,
+    "claim_bearing_full_dataset_launch_allowed_by_manifest_scope": true
+  }
+}

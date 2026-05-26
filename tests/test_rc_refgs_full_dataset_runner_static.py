@@ -182,6 +182,46 @@ class FullDatasetRunnerStaticTests(unittest.TestCase):
             self.assertTrue(status_md.exists(), "status markdown missing")
             self.assertIn("DRY-RUN", result.stdout)
 
+    def test_dataset_root_inference_supports_organized_shiny_layout(self):
+        runner = Path("scripts/run_rc_refgs_full_dataset_all_experiments.sh")
+        with tempfile.TemporaryDirectory(prefix="rc_refgs_dataset_root_organized_") as tmp:
+            dataset_root = Path(tmp) / "dataset"
+            output_root = Path(tmp) / "out"
+            self._write_minimal_blender_scene(dataset_root / "Shiny Blender Synthetic" / "ball")
+            shiny_real_scene = dataset_root / "Shiny Blender Real" / "toycar"
+            sparse_root = shiny_real_scene / "colmap" / "sparse" / "0"
+            sparse_root.mkdir(parents=True, exist_ok=True)
+            (sparse_root / "images.txt").write_text("", encoding="utf-8")
+            (shiny_real_scene / "images").mkdir(parents=True, exist_ok=True)
+            (shiny_real_scene / "images" / "000.jpg").write_text("", encoding="utf-8")
+            self._write_minimal_blender_scene(dataset_root / "GlossySyntheticConverted" / "angel_blender")
+
+            result = subprocess.run(
+                [
+                    str(runner),
+                    "--dataset_root",
+                    str(dataset_root),
+                    "--output_root",
+                    str(output_root),
+                    "--devices",
+                    "0",
+                    "--variants",
+                    "base,rc",
+                ],
+                check=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            status_json = output_root / "full_dataset_run_status.json"
+            self.assertTrue(status_json.exists(), "status json missing")
+            payload = status_json.read_text(encoding="utf-8")
+            self.assertIn('"scene": "ball"', payload)
+            self.assertIn('"scene": "toycar"', payload)
+            self.assertIn('"scene": "angel"', payload)
+            self.assertIn('"status": "planned"', payload)
+
     def test_dry_run_expands_shiny_real_colmap_sparse_schema_variants(self):
         runner = Path("scripts/run_rc_refgs_full_dataset_all_experiments.sh")
         with tempfile.TemporaryDirectory(prefix="rc_refgs_shiny_real_schema_") as tmp:

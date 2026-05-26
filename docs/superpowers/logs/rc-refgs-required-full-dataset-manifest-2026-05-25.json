@@ -1,31 +1,27 @@
 {
   "required_datasets": {
     "shiny_blender_synthetic": {
-      "root": "/data/liuly/dataset/3DGS/refnerf_synthetic",
+      "root": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic",
       "scenes": [
-        "chair",
-        "drums",
-        "ficus",
-        "hotdog",
-        "lego",
-        "materials",
-        "mic",
-        "ship"
+        "ball",
+        "car",
+        "coffee",
+        "helmet",
+        "teapot",
+        "toaster"
       ],
-      "status": "discovered_and_validated",
-      "note": "Validated in 2026-05-26 root-fix dry-run artifact: transforms/trainability indicators and frame-path references are valid for all discovered scenes."
+      "status": "discovered_and_validated_claim_bearing_set",
+      "note": "Claim-bearing synthetic dataset for RC-RefGS full-dataset scope."
     },
     "shiny_blender_real": {
-      "root": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
+      "root": "/data/liuly/dataset/3DGS/Shiny Blender Real",
       "scenes": [
-        "bear",
-        "bunny",
-        "coral",
-        "maneki",
-        "vase"
+        "gardenspheres",
+        "sedan",
+        "toycar"
       ],
-      "status": "discovered_and_validated_for_runner_expansion",
-      "note": "Runner discovery now accepts both top-level sparse/ and nested colmap/sparse/ COLMAP layouts; dry-run expansion includes bear, bunny, coral, maneki, and vase."
+      "status": "discovered_and_validated_claim_bearing_set_by_user_decision",
+      "note": "User-confirmed claim-bearing Shiny Real scene set for this protocol window."
     },
     "glossy_synthetic": {
       "root": "/data/liuly/dataset/3DGS/GlossySyntheticConverted",
@@ -39,10 +35,41 @@
         "tbell",
         "teapot"
       ],
-      "status": "converted_discovered_and_validated",
-      "conversion_note": "Converted Blender-style root validated in 2026-05-26 root-validation artifact; raw NeRO markers are absent in the converted root."
+      "status": "converted_discovered_and_validated_claim_bearing_set",
+      "note": "Converted Glossy Synthetic claim-bearing scene set validated scene-by-scene."
     }
   },
-  "claim_bearing_scope": "all discovered scenes in all three required datasets",
-  "subset_evidence_is_not_complete_dataset_evidence": true
+  "optional_datasets": {
+    "nerf_synthetic": {
+      "root": "/data/liuly/dataset/3DGS/NeRF Synthetic",
+      "scenes": [
+        "chair",
+        "drums",
+        "ficus",
+        "hotdog",
+        "lego",
+        "materials",
+        "mic",
+        "ship"
+      ],
+      "status": "optional_background_only",
+      "note": "Must not substitute for Shiny Blender Synthetic claim-bearing evidence."
+    },
+    "additional_glossy_real": {
+      "root": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
+      "scenes": [
+        "bear",
+        "bunny",
+        "coral",
+        "maneki",
+        "vase"
+      ],
+      "status": "optional_additional_real_dataset",
+      "note": "Optional additional glossy-real dataset; not required Shiny Blender Real claim-bearing scope unless explicitly requested later."
+    }
+  },
+  "claim_bearing_scope": "17 scenes = 6 Shiny Blender Synthetic + 3 Shiny Blender Real + 8 Glossy Synthetic",
+  "subset_evidence_is_not_complete_dataset_evidence": true,
+  "claim_bearing_launch_allowed": true,
+  "claim_bearing_blockers": []
 }
