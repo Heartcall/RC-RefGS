@@ -1,0 +1,88 @@
+{
+  "mode": "rc_refgs_fd_p0_fd_p1_runner_conversion_integration",
+  "date": "2026-05-26",
+  "timestamp_cst": "2026-05-26 14:53:17 CST",
+  "claim": "Verify and integrate full-dataset runner --dataset_root inference plus Glossy Synthetic conversion-prep helper with static verification and protocol updates only.",
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "dataset_conversion_executed": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_metric_started": false,
+    "manuscript_prose_edited": false,
+    "scientific_claim_upgrade": false
+  },
+  "task_outputs": {
+    "runner_dataset_root_inference_supported": true,
+    "conversion_prep_script_supported_for_dry_run_planning": true,
+    "conversion_prep_dry_run_validation_deferred": true
+  },
+  "verification": {
+    "targeted_tests": [
+      {
+        "command": "python -m unittest tests.test_prepare_glossy_synthetic_converted_static",
+        "result": "pass",
+        "tests": 3
+      },
+      {
+        "command": "python -m unittest tests.test_rc_refgs_full_dataset_runner_static",
+        "result": "pass",
+        "tests": 8
+      }
+    ],
+    "smokes": [
+      {
+        "name": "conversion_prep_mock_dry_run",
+        "result": "pass",
+        "exit_code": 0,
+        "markers": [
+          "converted_ok=1",
+          "converted_fail=0"
+        ]
+      },
+      {
+        "name": "runner_dataset_root_mock_dry_run",
+        "result": "pass",
+        "exit_code": 0,
+        "markers": [
+          "full_dataset_run_status.json present",
+          "full_dataset_run_status.md present"
+        ]
+      }
+    ],
+    "global_gates": [
+      {
+        "command": "conda run -n ref_gs python -m unittest discover tests",
+        "result": "pass"
+      },
+      {
+        "command": "bash -n scripts/run_rc_refgs_ablation.sh",
+        "result": "pass"
+      },
+      {
+        "command": "bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh",
+        "result": "pass"
+      },
+      {
+        "command": "bash -n scripts/prepare_glossy_synthetic_converted.sh",
+        "result": "pass"
+      },
+      {
+        "command": "git diff --check",
+        "result": "pass"
+      }
+    ]
+  },
+  "decision": {
+    "primary": "CONDITIONAL GO",
+    "go_scope": "FD-P1 dry-run orchestration and FD-P0 conversion-prep planning are now reproducible and regression-covered.",
+    "no_go": [
+      "claim-bearing full-dataset training launch before validated Glossy Synthetic conversion outputs",
+      "complete-dataset claims",
+      "manuscript or scientific claim upgrades",
+      "broad rendering/material/geometry/external-superiority/causal/full-ablation/multi-seed claims"
+    ],
+    "next_safe_task": "Execute bounded real Glossy Synthetic conversion with explicit operator confirmation, then refresh full-dataset manifest gate audit."
+  }
+}

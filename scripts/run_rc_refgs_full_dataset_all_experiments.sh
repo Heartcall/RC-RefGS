@@ -3,6 +3,7 @@ set -euo pipefail
 
 DRY_RUN=1
 CONFIRM_FULL_DATASET_EXECUTE=""
+DATASET_ROOT=""
 SHINY_BLENDER_SYNTHETIC_ROOT=""
 SHINY_BLENDER_REAL_ROOT=""
 GLOSSY_SYNTHETIC_ROOT=""
@@ -29,6 +30,13 @@ Required roots:
   --shiny_blender_synthetic_root PATH
   --shiny_blender_real_root PATH
   --glossy_synthetic_root PATH
+
+Convenience:
+  --dataset_root PATH                   auto-infer roots if not explicitly provided.
+                                       Expected layout examples:
+                                         <root>/refnerf_synthetic
+                                         <root>/refnerf_real
+                                         <root>/GlossySyntheticConverted
 
 Required runtime args:
   --output_root PATH
@@ -81,6 +89,10 @@ while [[ $# -gt 0 ]]; do
     --help)
       usage
       exit 0
+      ;;
+    --dataset_root)
+      DATASET_ROOT="${2:-}"
+      shift 2
       ;;
     --execute)
       DRY_RUN=0
@@ -151,6 +163,38 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ -n "${DATASET_ROOT}" ]]; then
+  [[ -d "${DATASET_ROOT}" ]] || die "--dataset_root is not a directory: ${DATASET_ROOT}"
+
+  if [[ -z "${SHINY_BLENDER_SYNTHETIC_ROOT}" ]]; then
+    if [[ -d "${DATASET_ROOT}/refnerf_synthetic" ]]; then
+      SHINY_BLENDER_SYNTHETIC_ROOT="${DATASET_ROOT}/refnerf_synthetic"
+    elif [[ -d "${DATASET_ROOT}/refnerf" ]]; then
+      SHINY_BLENDER_SYNTHETIC_ROOT="${DATASET_ROOT}/refnerf"
+    fi
+  fi
+
+  if [[ -z "${SHINY_BLENDER_REAL_ROOT}" ]]; then
+    if [[ -d "${DATASET_ROOT}/refnerf_real" ]]; then
+      SHINY_BLENDER_REAL_ROOT="${DATASET_ROOT}/refnerf_real"
+    elif [[ -d "${DATASET_ROOT}/glossy/GlossyReal" ]]; then
+      SHINY_BLENDER_REAL_ROOT="${DATASET_ROOT}/glossy/GlossyReal"
+    fi
+  fi
+
+  if [[ -z "${GLOSSY_SYNTHETIC_ROOT}" ]]; then
+    if [[ -d "${DATASET_ROOT}/GlossySyntheticConverted" ]]; then
+      GLOSSY_SYNTHETIC_ROOT="${DATASET_ROOT}/GlossySyntheticConverted"
+    elif [[ -d "${DATASET_ROOT}/GlossySynthetic" ]]; then
+      echo "WARN: Found raw GlossySynthetic at ${DATASET_ROOT}/GlossySynthetic but no GlossySyntheticConverted." >&2
+      echo "WARN: Convert each scene with nero2blender.py and place ONLY converted scene dirs under a dedicated root (e.g., ${DATASET_ROOT}/GlossySyntheticConverted)." >&2
+      # Keep going with the raw root so the runner can emit a conversion error that
+      # points to nero2blender.py, rather than failing earlier on a missing argument.
+      GLOSSY_SYNTHETIC_ROOT="${DATASET_ROOT}/GlossySynthetic"
+    fi
+  fi
+fi
 
 require_value "--shiny_blender_synthetic_root" "${SHINY_BLENDER_SYNTHETIC_ROOT}"
 require_value "--shiny_blender_real_root" "${SHINY_BLENDER_REAL_ROOT}"

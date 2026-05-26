@@ -2,6 +2,7 @@ import os
 import stat
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -127,6 +128,59 @@ class FullDatasetRunnerStaticTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("missing", result.stderr.lower())
         self.assertNotIn("run_rc_refgs_ablation_direct.py", result.stdout)
+
+    def test_dataset_root_inference_supports_converted_layout(self):
+        runner = Path("scripts/run_rc_refgs_full_dataset_all_experiments.sh")
+        with tempfile.TemporaryDirectory(prefix="rc_refgs_dataset_root_test_") as tmp:
+            dataset_root = Path(tmp) / "dataset"
+            output_root = Path(tmp) / "out"
+            (dataset_root / "refnerf_synthetic" / "teapot" / "transforms_train.json").parent.mkdir(
+                parents=True
+            )
+            (dataset_root / "refnerf_synthetic" / "teapot" / "transforms_train.json").write_text(
+                "{}",
+                encoding="utf-8",
+            )
+            (dataset_root / "refnerf_synthetic" / "teapot" / "transforms_test.json").write_text(
+                "{}",
+                encoding="utf-8",
+            )
+            (dataset_root / "refnerf_real" / "bear").mkdir(parents=True)
+            (dataset_root / "refnerf_real" / "bear" / "transforms_train.json").write_text(
+                "{}",
+                encoding="utf-8",
+            )
+            (dataset_root / "refnerf_real" / "bear" / "transforms_test.json").write_text(
+                "{}",
+                encoding="utf-8",
+            )
+            glossy_scene = dataset_root / "GlossySyntheticConverted" / "angel_blender"
+            (glossy_scene / "rgb").mkdir(parents=True)
+            (glossy_scene / "transforms_train.json").write_text("{}", encoding="utf-8")
+            (glossy_scene / "transforms_test.json").write_text("{}", encoding="utf-8")
+            (glossy_scene / "rgb" / "000.png").write_text("", encoding="utf-8")
+
+            result = subprocess.run(
+                [
+                    str(runner),
+                    "--dataset_root",
+                    str(dataset_root),
+                    "--output_root",
+                    str(output_root),
+                    "--devices",
+                    "0",
+                ],
+                check=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            status_json = output_root / "full_dataset_run_status.json"
+            status_md = output_root / "full_dataset_run_status.md"
+            self.assertTrue(status_json.exists(), "status json missing")
+            self.assertTrue(status_md.exists(), "status markdown missing")
+            self.assertIn("DRY-RUN", result.stdout)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,62 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-26 14:53:17 CST - FD-P0/FD-P1 Runner + Conversion Integration Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, and full implementation status.
+- Active coordination-board claim was `None` before this window.
+- Full-dataset routing is active; prior `teapot/toaster/car` evidence remains subset-only.
+- Workspace contained fresh uncommitted full-dataset tooling changes:
+  - modified `scripts/run_rc_refgs_full_dataset_all_experiments.sh`
+  - new `scripts/prepare_glossy_synthetic_converted.sh`
+
+**Round-local task claim:**
+- Claimed exactly one FD-P0/FD-P1 integration task:
+  - verify and integrate runner `--dataset_root` inference and conversion-prep helper behavior under no-training/no-metrics scope.
+
+**Actions taken:**
+- Added conversion-prep helper regression/static tests:
+  - `tests/test_prepare_glossy_synthetic_converted_static.py`
+- Extended runner static tests with `--dataset_root` inferred converted-layout dry-run coverage:
+  - `tests/test_rc_refgs_full_dataset_runner_static.py`
+- Fixed conversion-prep helper dry-run flow:
+  - `scripts/prepare_glossy_synthetic_converted.sh`
+  - dry-run now defers converted-output file validation and records planned conversion/collection commands instead of failing early.
+- Added this window's artifact summary:
+  - `docs/superpowers/logs/rc-refgs-fd-p0-fd-p1-runner-conversion-integration-2026-05-26.{json,md}`
+- Updated full implementation status to include the conversion-prep helper support boundary.
+
+**Scope guardrails preserved:**
+- No training launch.
+- No metric computation on experiment outputs.
+- No real dataset conversion execution.
+- No manuscript prose edit or scientific claim upgrade.
+
+**Verification and outcomes:**
+- RED->GREEN regression cycle:
+  - RED: `python -m unittest tests.test_prepare_glossy_synthetic_converted_static` failed (dry-run exited non-zero due missing transforms).
+  - GREEN: same command passed (`Ran 3 tests`, `OK`) after dry-run deferral patch.
+- Runner static suite:
+  - `python -m unittest tests.test_rc_refgs_full_dataset_runner_static` passed (`Ran 8 tests`, `OK`).
+- Syntax gates:
+  - `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` passed.
+  - `bash -n scripts/prepare_glossy_synthetic_converted.sh` passed.
+- Mock dry-run smokes:
+  - conversion-prep dry-run now exits `0` with `converted_ok=1` and `converted_fail=0`.
+  - runner `--dataset_root` dry-run exits `0` and writes `full_dataset_run_status.{json,md}`.
+- Global gates:
+  - `conda run -n ref_gs python -m unittest discover tests` passed.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+  - `git diff --check` passed.
+- Released active claim; coordination board now reports `Active Task Claims: None`.
+
+**Decision:** CONDITIONAL GO.
+- GO scope: FD-P1 dry-run orchestration and FD-P0 conversion-prep planning are now reproducible and regression-covered.
+- NO-GO scope: claim-bearing full-dataset runtime before validated Glossy Synthetic conversion outputs; complete-dataset claims; manuscript/scientific claim upgrades; broad rendering/material/geometry/external-superiority/causal/full-ablation/multi-seed claims.
+- Next safe task: execute bounded real Glossy Synthetic conversion with explicit operator confirmation, then refresh full-dataset manifest gate audit.
+
+---
+
 ## 2026-05-26 03:17:31 CST - Full-Dataset All-Experiments Runner Window
 
 **Recovered state:**
