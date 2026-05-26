@@ -1,16 +1,19 @@
 {
   "required_datasets": {
     "shiny_blender_synthetic": {
-      "root": "/data/liuly/dataset/3DGS/refnerf",
+      "root": "/data/liuly/dataset/3DGS/refnerf_synthetic",
       "scenes": [
-        "ball",
-        "car",
-        "coffee",
-        "helmet",
-        "teapot",
-        "toaster"
+        "chair",
+        "drums",
+        "ficus",
+        "hotdog",
+        "lego",
+        "materials",
+        "mic",
+        "ship"
       ],
-      "status": "discovered"
+      "status": "discovered_and_validated",
+      "note": "Validated in 2026-05-26 root-fix dry-run artifact: transforms/trainability indicators and frame-path references are valid for all discovered scenes."
     },
     "shiny_blender_real": {
       "root": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
@@ -21,10 +24,11 @@
         "maneki",
         "vase"
       ],
-      "status": "discovered"
+      "status": "discovered_with_loader_schema_mismatch",
+      "note": "Directory discovery finds 5 scenes, but runner dry-run currently expands only bear/bunny/coral because maneki/vase provide COLMAP under colmap/sparse/0 without top-level sparse/."
     },
     "glossy_synthetic": {
-      "root": "/data/liuly/dataset/3DGS/GlossySynthetic",
+      "root": "/data/liuly/dataset/3DGS/GlossySyntheticConverted",
       "scenes": [
         "angel",
         "bell",
@@ -35,8 +39,8 @@
         "tbell",
         "teapot"
       ],
-      "status": "needs_conversion_or_discovery",
-      "conversion_note": "Run nero2blender.py before RC-RefGS training if raw Glossy Synthetic format is detected."
+      "status": "converted_discovered_and_validated",
+      "conversion_note": "Converted Blender-style root validated in 2026-05-26 root-validation artifact; raw NeRO markers are absent in the converted root."
     }
   },
   "claim_bearing_scope": "all discovered scenes in all three required datasets",

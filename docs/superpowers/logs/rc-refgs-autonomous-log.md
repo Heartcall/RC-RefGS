@@ -1,5 +1,72 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-26 22:07:34 CST - FD-P0 Converted Root Validation + Manifest Gate Refresh Window
+
+**Recovered state:**
+- Recovered `git`, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, required full-dataset manifest, and FD-P0/FD-P1 runner-conversion integration artifacts.
+- Active coordination-board claim was `None` before this window.
+- Full-dataset scope override remains active; `teapot/toaster/car` stays subset-only evidence.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Validate GlossySyntheticConverted and refresh full-dataset manifest gate.”**
+
+**Actions taken:**
+- Validated converted Glossy Synthetic root:
+  - `/data/liuly/dataset/3DGS/GlossySyntheticConverted`
+- Verified expected scenes exist as converted Blender directories:
+  - `angel_blender`, `bell_blender`, `cat_blender`, `horse_blender`, `luyu_blender`, `potion_blender`, `tbell_blender`, `teapot_blender`
+- Verified per-scene trainability indicators:
+  - `transforms_train.json` exists
+  - `transforms_test.json` exists
+  - `rgb/` exists and is non-empty (`128` files each)
+  - frame references from transforms resolve (`train=112`, `test=16`, missing image refs `0`)
+- Verified converted root is not raw NeRO-only:
+  - no `*-camera.pkl`
+  - no `*-depth.png`
+- Ran required-roots full-dataset dry-run command (no `--execute`):
+  - failed at required synthetic root check:
+    - `ERROR: Shiny Blender Synthetic root missing: /data/liuly/dataset/3DGS/refnerf`
+- Ran diagnostic-only alternate dry-run (not used for required-root gate) with synthetic root `/data/liuly/dataset/3DGS/refnerf_real`:
+  - exit `0`, full dry-run expansion and status artifacts generated.
+- Added converted-root validation artifacts:
+  - `docs/superpowers/logs/rc-refgs-glossy-synthetic-converted-root-validation-2026-05-26.{json,md}`
+- Updated required manifest, full implementation status, coordination board, and autonomous log.
+
+**Scope guardrails preserved:**
+- No training launch.
+- No metrics run.
+- No full-dataset i31000 execution.
+- No ablations.
+- No multi-seed.
+- No geometry/mesh work.
+- No manuscript claim edits.
+- No scientific claim upgrades.
+
+**Verification and cleanup:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json` passed.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-glossy-synthetic-converted-root-validation-2026-05-26.json` passed.
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` passed.
+- `bash -n scripts/run_rc_refgs_ablation.sh` passed.
+- `conda run -n ref_gs python -m unittest discover tests` passed (`71` tests, `OK`).
+- `git diff --check` passed.
+- Process probe found no matching RC-RefGS training/metrics process.
+- Released active claim; coordination board now reports `Active Task Claims: None`.
+
+**Decision:** CONDITIONAL GO.
+- GO scope:
+  - `GlossySyntheticConverted` validates as Blender-trainable.
+  - manifest/status/board/log refreshes are complete.
+- Blocker:
+  - required synthetic root `/data/liuly/dataset/3DGS/refnerf` is missing in this filesystem view, so required-roots dry-run gate cannot be marked GO.
+- NO-GO scope:
+  - complete-dataset claim upgrades and all runtime-expansion claims remain blocked.
+- Routing:
+  - FD-P0 root-path reconciliation remains next.
+  - FD-P2 full-dataset base/RC i31000 remains deferred and was not started in this window.
+
+---
+
 ## 2026-05-26 14:53:17 CST - FD-P0/FD-P1 Runner + Conversion Integration Window
 
 **Recovered state:**
@@ -7316,3 +7383,66 @@ Key measured values (mean reflection consistency):
 - NO-GO for claim-bearing full-dataset training launch until Glossy Synthetic is resolved and the manifest is unambiguous.
 - NO-GO for complete-dataset claims, manuscript/scientific claim upgrades, broad rendering, material, geometry, external-superiority, causal, full-ablation, or multi-seed claims.
 - SWITCH MODEL is deferred because fresh complete full-dataset evidence does not exist.
+
+## 2026-05-26 22:36:15 CST - Fix Shiny Blender Synthetic Root and Rerun Full-Dataset Manifest Dry-Run Gate
+
+**Recovered state:**
+- Recovered git, roadmap, autonomous log, coordination board, full implementation status, full-dataset policy, required full-dataset manifest, and latest GlossySyntheticConverted validation artifacts.
+- Coordination board active claim was set to this window task and released by the end of the window.
+
+**Round-local task claim:**
+- Claimed exactly one task: “Fix Shiny Blender Synthetic root and rerun full-dataset manifest dry-run gate.”
+
+**Actions taken:**
+- Validated corrected Shiny Blender Synthetic root `/data/liuly/dataset/3DGS/refnerf_synthetic`.
+- Discovered all synthetic scene directories under that root:
+  - `chair`, `drums`, `ficus`, `hotdog`, `lego`, `materials`, `mic`, `ship`.
+- Per-scene trainability checks (Ref-GS loader-compatible indicators):
+  - `transforms_train.json` present;
+  - `transforms_test.json` present;
+  - non-empty accepted image directories (`train/`, `test/`);
+  - frame-path reference checks produced `missing=0` for train/test on all 8 scenes.
+- Preserved previously validated Glossy Synthetic converted status from `docs/superpowers/logs/rc-refgs-glossy-synthetic-converted-root-validation-2026-05-26.json`.
+- Reran required full-dataset dry-run command (no `--execute`) with:
+  - synthetic root `/data/liuly/dataset/3DGS/refnerf_synthetic`;
+  - real root `/data/liuly/dataset/3DGS/glossy/GlossyReal`;
+  - converted Glossy Synthetic root `/data/liuly/dataset/3DGS/GlossySyntheticConverted`.
+- Refreshed:
+  - `docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json`
+  - `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+  - `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- Added root-fix artifacts:
+  - `docs/superpowers/logs/rc-refgs-full-dataset-root-fix-dryrun-2026-05-26.json`
+  - `docs/superpowers/logs/rc-refgs-full-dataset-root-fix-dryrun-2026-05-26.md`
+
+**Verification and outcomes:**
+- Dry-run command:
+  - `scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root /data/liuly/dataset/3DGS/refnerf_synthetic --shiny_blender_real_root /data/liuly/dataset/3DGS/glossy/GlossyReal --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_dryrun_20260526 --devices 0 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc`
+  - exit code `0`; status artifacts written to `/tmp/rc_refgs_full_dataset_dryrun_20260526/full_dataset_run_status.{json,md}`.
+  - planned jobs: `38`.
+  - expanded scenes:
+    - Shiny Blender Synthetic: `8/8`
+    - Glossy Synthetic: `8/8`
+    - Shiny Blender Real: `3/5` (`bear`, `bunny`, `coral`).
+- Identified remaining scene-coverage blocker:
+  - `maneki` and `vase` are present under `/data/liuly/dataset/3DGS/glossy/GlossyReal`, but not expanded by current runner discovery because they keep COLMAP at `colmap/sparse/0` without top-level `sparse/`.
+- Required verification gates:
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-required-full-dataset-manifest-2026-05-25.json` -> pass.
+  - `python -m json.tool docs/superpowers/logs/rc-refgs-full-dataset-root-fix-dryrun-2026-05-26.json` -> pass.
+  - `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` -> pass.
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass.
+  - `conda run -n ref_gs python -m unittest discover tests` -> `OK` (`71` tests).
+  - `git diff --check` -> pass.
+  - process probe `pgrep -af "run_rc_refgs_ablation_direct.py|train.py -s /data/liuly/dataset/3DGS|reflection_consistency_eval.py|render_quality_eval.py|material_quality_eval.py|normal_quality_eval.py"` -> no matching process (exit `1`), confirming no RC-RefGS training/metrics launch.
+
+**Evidence interpretation recorded:**
+- The stale synthetic-root blocker is resolved.
+- Full-dataset dry-run gate now executes with required roots and validates synthetic/glossy-synthetic scene coverage.
+- Full required-scene expansion remains incomplete due Shiny Blender Real schema mismatch for `maneki` and `vase`.
+- Prior `teapot/toaster/car` results remain subset evidence only.
+
+**Go/no-go decision:** CONDITIONAL GO.
+- CONDITIONAL GO for full-dataset manifest-gate continuation and FD-P1 scene-discovery/schema alignment work.
+- NO-GO for starting FD-P2 full-dataset i31000 execution in this window.
+- NO-GO for complete-dataset claims, manuscript/scientific claim upgrades, training/metrics/ablation/multi-seed/geometry launches.
+- SWITCH MODEL is not appropriate in this window.

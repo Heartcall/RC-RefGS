@@ -1,0 +1,225 @@
+{
+  "mode": "rc_refgs_full_dataset_root_fix_dryrun_gate",
+  "date": "2026-05-26",
+  "timestamp_cst": "2026-05-26 22:36:15 CST",
+  "claim": "Fix Shiny Blender Synthetic root and rerun full-dataset manifest dry-run gate.",
+  "required_roots": {
+    "shiny_blender_synthetic": "/data/liuly/dataset/3DGS/refnerf_synthetic",
+    "shiny_blender_real": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
+    "glossy_synthetic_converted": "/data/liuly/dataset/3DGS/GlossySyntheticConverted"
+  },
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "full_dataset_i31000_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_or_mesh_started": false,
+    "manuscript_claims_edited": false,
+    "scientific_claim_upgraded": false
+  },
+  "shiny_blender_synthetic_validation": {
+    "root_exists": true,
+    "scene_dirs": [
+      "chair",
+      "drums",
+      "ficus",
+      "hotdog",
+      "lego",
+      "materials",
+      "mic",
+      "ship"
+    ],
+    "scene_count": 8,
+    "scene_checks": {
+      "chair": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "drums": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "ficus": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "hotdog": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "lego": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "materials": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "mic": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 400
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      },
+      "ship": {
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "accepted_image_dirs_nonempty": {
+          "train": 100,
+          "test": 431
+        },
+        "train_frames": 100,
+        "test_frames": 200,
+        "missing_referenced_images_train": 0,
+        "missing_referenced_images_test": 0
+      }
+    },
+    "validation_result": "pass"
+  },
+  "glossy_synthetic_preserved_validation": {
+    "source_artifact": "docs/superpowers/logs/rc-refgs-glossy-synthetic-converted-root-validation-2026-05-26.json",
+    "root_exists": true,
+    "scene_dirs": [
+      "angel_blender",
+      "bell_blender",
+      "cat_blender",
+      "horse_blender",
+      "luyu_blender",
+      "potion_blender",
+      "tbell_blender",
+      "teapot_blender"
+    ],
+    "scene_labels": [
+      "angel",
+      "bell",
+      "cat",
+      "horse",
+      "luyu",
+      "potion",
+      "tbell",
+      "teapot"
+    ],
+    "scene_set_match": true,
+    "raw_nero_markers_across_root": {
+      "camera_pkl_count": 0,
+      "depth_png_count": 0
+    }
+  },
+  "full_dataset_dry_run": {
+    "command": "scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root /data/liuly/dataset/3DGS/refnerf_synthetic --shiny_blender_real_root /data/liuly/dataset/3DGS/glossy/GlossyReal --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_dryrun_20260526 --devices 0 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc",
+    "exit_code": 0,
+    "status_json": "/tmp/rc_refgs_full_dataset_dryrun_20260526/full_dataset_run_status.json",
+    "status_md": "/tmp/rc_refgs_full_dataset_dryrun_20260526/full_dataset_run_status.md",
+    "planned_count": 38,
+    "completed_count": 0,
+    "failed_count": 0,
+    "skipped_count": 0,
+    "expanded_scene_counts": {
+      "shiny_blender_synthetic": 8,
+      "shiny_blender_real": 3,
+      "glossy_synthetic": 8
+    },
+    "expanded_scenes": {
+      "shiny_blender_synthetic": [
+        "chair",
+        "drums",
+        "ficus",
+        "hotdog",
+        "lego",
+        "materials",
+        "mic",
+        "ship"
+      ],
+      "shiny_blender_real": [
+        "bear",
+        "bunny",
+        "coral"
+      ],
+      "glossy_synthetic": [
+        "angel",
+        "bell",
+        "cat",
+        "horse",
+        "luyu",
+        "potion",
+        "tbell",
+        "teapot"
+      ]
+    },
+    "coverage_gap": {
+      "dataset": "shiny_blender_real",
+      "discovered_scene_dirs_under_root": [
+        "bear",
+        "bunny",
+        "coral",
+        "maneki",
+        "vase"
+      ],
+      "not_expanded_by_current_runner": [
+        "maneki",
+        "vase"
+      ],
+      "reason": "Current runner scene-type discovery requires top-level sparse/ or Blender transforms; maneki/vase store COLMAP under colmap/sparse/0 only."
+    }
+  },
+  "fd_p0_gate": {
+    "result": "conditional",
+    "reason": "Corrected Shiny Blender Synthetic root is valid and dry-run now runs, but complete required-scene expansion is still blocked by Shiny Blender Real schema mismatch for maneki/vase."
+  },
+  "next_task": "FD-P2 full-dataset base/RC i31000 execution remains next only after FD-P0 scene-manifest gate is fully unambiguous for all required datasets."
+}

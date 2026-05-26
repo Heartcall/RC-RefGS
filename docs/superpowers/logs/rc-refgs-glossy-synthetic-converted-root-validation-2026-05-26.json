@@ -1,0 +1,171 @@
+{
+  "mode": "rc_refgs_glossy_synthetic_converted_root_validation",
+  "date": "2026-05-26",
+  "timestamp_cst": "2026-05-26 22:07:34 CST",
+  "claim": "Validate GlossySyntheticConverted and refresh full-dataset manifest gate.",
+  "required_roots": {
+    "shiny_blender_synthetic": "/data/liuly/dataset/3DGS/refnerf",
+    "shiny_blender_real": "/data/liuly/dataset/3DGS/glossy/GlossyReal",
+    "glossy_synthetic_converted": "/data/liuly/dataset/3DGS/GlossySyntheticConverted"
+  },
+  "scope_guardrails": {
+    "training_started": false,
+    "metric_computation_started": false,
+    "full_dataset_i31000_started": false,
+    "ablation_started": false,
+    "multi_seed_started": false,
+    "geometry_or_mesh_started": false,
+    "manuscript_claims_edited": false,
+    "scientific_claim_upgraded": false
+  },
+  "glossy_converted_validation": {
+    "root_exists": true,
+    "expected_scene_dirs": [
+      "angel_blender",
+      "bell_blender",
+      "cat_blender",
+      "horse_blender",
+      "luyu_blender",
+      "potion_blender",
+      "tbell_blender",
+      "teapot_blender"
+    ],
+    "actual_scene_dirs": [
+      "angel_blender",
+      "bell_blender",
+      "cat_blender",
+      "horse_blender",
+      "luyu_blender",
+      "potion_blender",
+      "tbell_blender",
+      "teapot_blender"
+    ],
+    "scene_set_match": true,
+    "raw_nero_markers_across_root": {
+      "camera_pkl_count": 0,
+      "depth_png_count": 0
+    },
+    "scene_checks": {
+      "angel": {
+        "scene_dir": "angel_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "bell": {
+        "scene_dir": "bell_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "cat": {
+        "scene_dir": "cat_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "horse": {
+        "scene_dir": "horse_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "luyu": {
+        "scene_dir": "luyu_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "potion": {
+        "scene_dir": "potion_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "tbell": {
+        "scene_dir": "tbell_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      },
+      "teapot": {
+        "scene_dir": "teapot_blender",
+        "transforms_train_json": true,
+        "transforms_test_json": true,
+        "rgb_dir_exists": true,
+        "rgb_file_count": 128,
+        "train_frames": 112,
+        "test_frames": 16,
+        "train_missing_frame_images": 0,
+        "test_missing_frame_images": 0,
+        "non_rgb_prefix_frames_train": 0,
+        "non_rgb_prefix_frames_test": 0
+      }
+    },
+    "validation_result": "pass"
+  },
+  "full_dataset_dry_run": {
+    "required_roots_command": "scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root /data/liuly/dataset/3DGS/refnerf --shiny_blender_real_root /data/liuly/dataset/3DGS/glossy/GlossyReal --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_dryrun_20260526 --devices 0 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc",
+    "required_roots_exit_code": 2,
+    "required_roots_result": "failed",
+    "required_roots_error": "ERROR: Shiny Blender Synthetic root missing: /data/liuly/dataset/3DGS/refnerf",
+    "diagnostic_alternate_command": "scripts/run_rc_refgs_full_dataset_all_experiments.sh --shiny_blender_synthetic_root /data/liuly/dataset/3DGS/refnerf_real --shiny_blender_real_root /data/liuly/dataset/3DGS/glossy/GlossyReal --glossy_synthetic_root /data/liuly/dataset/3DGS/GlossySyntheticConverted --output_root /tmp/rc_refgs_full_dataset_dryrun_20260526_altref --devices 0 --seeds 0 --iterations 31000 --max_pairs 10 --variants base,rc",
+    "diagnostic_alternate_exit_code": 0,
+    "diagnostic_alternate_result": "pass",
+    "diagnostic_alternate_note": "Diagnostic only; not used to upgrade FD-P0 gate because required synthetic root in this window is /data/liuly/dataset/3DGS/refnerf."
+  },
+  "fd_p0_gate": {
+    "result": "conditional",
+    "reason": "GlossySyntheticConverted is valid, but required Shiny Blender Synthetic root /data/liuly/dataset/3DGS/refnerf is missing in this filesystem view, so required-roots dry-run cannot expand the complete manifest."
+  },
+  "next_task": "FD-P2 full-dataset base/RC i31000 execution remains next only after required-root manifest gate passes; do not start in this window."
+}
