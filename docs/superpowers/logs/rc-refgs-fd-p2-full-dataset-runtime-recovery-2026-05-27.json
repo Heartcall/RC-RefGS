@@ -1,0 +1,162 @@
+{
+  "date": "2026-05-27",
+  "task_claim": "Complete FD-P2 remaining full-dataset base/RC i31000 jobs with safe single-GPU recovery.",
+  "timestamp": "2026-05-27T14:32:59.041804",
+  "current_runner": null,
+  "inventory_after_recovery_run": {
+    "root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527",
+    "total_expected_jobs": 34,
+    "complete_count": 0,
+    "metrics_only_recoverable_count": 0,
+    "train_needed_count": 34,
+    "complete_jobs": [],
+    "metrics_only_recoverable_jobs": [],
+    "train_needed_jobs": [
+      {
+        "job": "shiny_blender_synthetic/ball/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/ball/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/car/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/car/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/coffee/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/coffee/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/helmet/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/helmet/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/teapot/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/teapot/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/toaster/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_synthetic/toaster/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_real/gardenspheres/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_real/gardenspheres/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_real/sedan/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_real/sedan/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_real/toycar/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "shiny_blender_real/toycar/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/angel/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/angel/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/bell/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/bell/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/cat/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/cat/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/horse/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/horse/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/luyu/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/luyu/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/potion/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/potion/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/tbell/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/tbell/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/teapot/base/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      },
+      {
+        "job": "glossy_synthetic/teapot/rc/seed_0",
+        "reason": "missing_seed_or_model_dir"
+      }
+    ]
+  },
+  "status_json_summary": {
+    "planned_count": 0,
+    "completed_count": 0,
+    "skipped_count": 0,
+    "failed_count": 34,
+    "missing_artifact_count": 136
+  },
+  "failure_signature": "ImportError: GLIBCXX_3.4.29 not found (PIL/libLerc) while invoking /home/liuly/anaconda3/bin/python train.py",
+  "log_file": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/logs/full_dataset_base_rc_i31000_retry_gpu0.log"
+}

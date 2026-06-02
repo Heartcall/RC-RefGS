@@ -62,6 +62,28 @@ class RenderQualityEvalStaticTests(unittest.TestCase):
             with self.subTest(snippet=snippet):
                 self.assertIn(snippet, source)
 
+    def test_render_quality_cuda_filtering_matches_train_behavior(self):
+        source = Path("metrics/render_quality_eval.py").read_text()
+
+        required_snippets = [
+            "_CUDA_VISIBLE_FILTERED = _maybe_set_cuda_device(sys.argv)",
+            'os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device',
+            "if _CUDA_VISIBLE_FILTERED:",
+            "return 0",
+        ]
+        for snippet in required_snippets:
+            with self.subTest(snippet=snippet):
+                self.assertIn(snippet, source)
+
+    def test_render_quality_gt_compositing_is_channel_aware(self):
+        source = Path("metrics/render_quality_eval.py").read_text()
+
+        self.assertIn("if gt.shape[0] >= 4:", source)
+        self.assertIn("alpha = gt[3:4, ...]", source)
+        self.assertIn("if gt.shape[0] == 3:", source)
+        self.assertIn("raise ValueError", source)
+        self.assertNotIn("gt[:3, ...] * gt[3:, ...]", source)
+
 
 if __name__ == "__main__":
     unittest.main()

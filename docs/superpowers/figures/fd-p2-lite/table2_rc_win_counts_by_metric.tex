@@ -1,0 +1,22 @@
+\begin{tabular}{llllllll}
+\toprule
+metric & split & better\_direction & rc\_wins & total\_pairs & win\_rate & mean\_delta & interpretation \\
+\midrule
+mean\_reflection\_consistency & train & lower & 14 & 14 & 100.0\% & -0.074349 & RC consistency-target effect \\
+mean\_reflection\_consistency & test & lower & 13 & 14 & 92.9\% & -0.030599 & RC consistency-target effect \\
+reflective\_region\_psnr & train & higher & 7 & 14 & 50.0\% & 0.024024 & Balanced outcomes; mixed render-quality effect \\
+reflective\_region\_psnr & test & higher & 8 & 14 & 57.1\% & -0.027898 & RC wins a majority; report separately from consistency \\
+full\_psnr & train & higher & 9 & 14 & 64.3\% & 0.026755 & RC wins a majority; report separately from consistency \\
+full\_psnr & test & higher & 10 & 14 & 71.4\% & 0.049286 & RC wins a majority; report separately from consistency \\
+full\_ssim & train & higher & 9 & 14 & 64.3\% & 0.000206 & RC wins a majority; report separately from consistency \\
+full\_ssim & test & higher & 11 & 14 & 78.6\% & 0.000460 & RC wins a majority; report separately from consistency \\
+full\_lpips & train & lower & 9 & 14 & 64.3\% & -0.000146 & RC wins a majority; report separately from consistency \\
+full\_lpips & test & lower & 10 & 14 & 71.4\% & -0.000356 & RC wins a majority; report separately from consistency \\
+reflective\_psnr & train & higher & 6 & 14 & 42.9\% & -0.082185 & RC wins a minority; render-quality tradeoff \\
+reflective\_psnr & test & higher & 10 & 14 & 71.4\% & -0.038935 & RC wins a majority; report separately from consistency \\
+reflective\_ssim & train & higher & 7 & 14 & 50.0\% & -0.000118 & Balanced outcomes; mixed render-quality effect \\
+reflective\_ssim & test & higher & 7 & 14 & 50.0\% & -0.000206 & Balanced outcomes; mixed render-quality effect \\
+reflective\_lpips & train & lower & 4 & 14 & 28.6\% & 0.000376 & RC wins a minority; render-quality tradeoff \\
+reflective\_lpips & test & lower & 6 & 14 & 42.9\% & 0.000437 & RC wins a minority; render-quality tradeoff \\
+\bottomrule
+\end{tabular}

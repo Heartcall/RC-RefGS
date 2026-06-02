@@ -1,5 +1,8 @@
 import unittest
 from pathlib import Path
+import ast
+
+import torch
 
 
 class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
@@ -15,11 +18,10 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
             "sys.path.insert(0, REPO_ROOT)",
             "def _extract_cuda_device(argv):",
             "def _maybe_set_cuda_device(argv):",
-            "def _cuda_device_index(cuda_device):",
             "_maybe_set_cuda_device(sys.argv)",
             'value.lower() not in {"auto", "none"}',
-            'os.environ.get("RC_REF_GS_FILTER_CUDA_VISIBLE_DEVICES") == "1"',
-            "safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))",
+            'os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device',
+            "safe_state(args.quiet)",
             'parser.add_argument("--cuda_device"',
             "--iteration",
             "dataset.white_background",
@@ -164,6 +166,59 @@ class ReflectionConsistencyEvalStaticTests(unittest.TestCase):
         for snippet in required_snippets:
             with self.subTest(snippet=snippet):
                 self.assertIn(snippet, source)
+
+    def test_metric_gt_compositing_is_channel_aware(self):
+        metric_script = Path("metrics/reflection_consistency_eval.py")
+        self.assertTrue(metric_script.exists(), "metrics/reflection_consistency_eval.py is missing")
+
+        source = metric_script.read_text()
+        self.assertNotIn("gt[:3, ...] * gt[3:, ...]", source)
+        self.assertIn("def _prepare_gt_image(gt_image, bg):", source)
+        self.assertIn("if channels >= 4:", source)
+        self.assertIn("alpha = gt_image[3:4, ...]", source)
+        self.assertIn("if channels == 3:", source)
+        self.assertIn("raise ValueError", source)
+        self.assertIn("target = _prepare_gt_image(gt, bg_color)", source)
+
+    def test_metric_prepare_gt_image_handles_rgb_and_rgba(self):
+        source = Path("metrics/reflection_consistency_eval.py").read_text()
+        module = ast.parse(source)
+
+        func_node = None
+        for node in module.body:
+            if isinstance(node, ast.FunctionDef) and node.name == "_prepare_gt_image":
+                func_node = node
+                break
+        self.assertIsNotNone(func_node, "metrics/reflection_consistency_eval.py must define _prepare_gt_image")
+
+        compiled = compile(ast.Module(body=[func_node], type_ignores=[]), filename="metrics/reflection_consistency_eval.py", mode="exec")
+        scope = {}
+        exec(compiled, scope)
+        prepare_gt_image = scope["_prepare_gt_image"]
+
+        bg = torch.tensor([0.0, 0.0, 0.0], dtype=torch.float32)
+        rgb = torch.tensor(
+            [
+                [[0.1, 0.2], [0.3, 0.4]],
+                [[0.5, 0.6], [0.7, 0.8]],
+                [[0.9, 1.0], [0.0, 0.2]],
+            ],
+            dtype=torch.float32,
+        )
+        rgb_out = prepare_gt_image(rgb, bg)
+        self.assertEqual(tuple(rgb_out.shape), (3, 2, 2))
+        self.assertTrue(torch.allclose(rgb_out, rgb))
+
+        alpha = torch.tensor([[[1.0, 0.5], [0.0, 0.25]]], dtype=torch.float32)
+        rgba = torch.cat([rgb, alpha], dim=0)
+        rgba_out = prepare_gt_image(rgba, bg)
+        expected = rgb * alpha + (1.0 - alpha) * bg[:, None, None]
+        self.assertEqual(tuple(rgba_out.shape), (3, 2, 2))
+        self.assertTrue(torch.allclose(rgba_out, expected))
+
+        gray = torch.ones((1, 2, 2), dtype=torch.float32)
+        with self.assertRaises(ValueError):
+            prepare_gt_image(gray, bg)
 
     def test_direct_ablation_launcher_writes_expansion_summary_and_checks_missing_artifacts(self):
         launcher = Path("scripts/run_rc_refgs_ablation_direct.py")

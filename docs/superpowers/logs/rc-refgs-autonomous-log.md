@@ -1,5 +1,235 @@
 # RC-RefGS Autonomous Log
 
+## 2026-05-29 07:51:10 CST - FD Ablation Metric RGB Fix + Shiny Real Recovery Policy Window
+
+**Recovered state:**
+- Recovered ablation runtime root `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528` and status/log artifacts.
+- Verified no active RC-RefGS full-dataset/direct-launcher/train/eval process before recovery actions.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Fix metric RGB/RGBA handling and add safe Shiny Real ablation recovery policy.”**
+
+**Code fix completed:**
+- Patched `metrics/reflection_consistency_eval.py` to make reflective-region GT compositing channel-aware using `_prepare_gt_image`:
+  - `>=4` channels: alpha composite with `alpha = gt_image[3:4, ...]`
+  - `==3` channels: RGB passthrough
+  - `<3` channels: `ValueError` with shape
+- Removed unsafe path `gt[:3, ...] * gt[3:, ...]`.
+- Added regression coverage in `tests/test_reflection_consistency_eval_static.py` for:
+  - static unsafe-pattern guard
+  - RGB/RGBA helper behavior
+  - invalid channel count error
+
+**Required validation:**
+- `conda run -n ref_gs python -m unittest discover tests` -> pass (`77` tests)
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` -> pass
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> pass
+- `git diff --check` -> pass
+
+**Runtime policy action (no new training):**
+- Ran metrics-only recovery on ablation root:
+  - `--skip_train --rerun_failed`
+  - variants: `wo_ref,wo_conf,rough_only`
+  - log: `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/logs/full_dataset_ablations_i31000_metrics_recovery_gpu0_postpatch.log`
+
+**Post-recovery formal inventory (ablation variants only):**
+- Expected jobs: `51` (`17 scenes x 3 variants x seed 0`)
+- Complete jobs: `18`
+- Point-cloud exists but metrics missing: `0`
+- Train-needed jobs: `33`
+- Preserved completed synthetic ablations: `18/18` (`shiny_blender_synthetic`)
+- Remaining Shiny Real train-needed jobs (`9`):
+  - `gardenspheres/{wo_ref,wo_conf,rough_only}`
+  - `sedan/{wo_ref,wo_conf,rough_only}`
+  - `toycar/{wo_ref,wo_conf,rough_only}`
+
+**Failure evidence isolated:**
+- Pre-patch metric RGB bug:
+  - `RuntimeError: The size of tensor a (3) must match the size of tensor b (0)`
+  - log evidence: `.../full_dataset_ablations_i31000_gpu5_7.log` lines `857-859`
+- Shiny Real OOM/NaN runtime behavior:
+  - `Loss=nan` with point growth to multi-million scale
+  - `RuntimeError: CUDA out of memory. Tried to allocate 1.84 GiB`
+  - log evidence: `.../full_dataset_ablations_i31000_gpu5_7.log` lines `907-918`
+
+**Bounded recovery plan prepared (not launched):**
+- Restrict to failed Shiny Real jobs only (`9` cells), no full 51-job relaunch.
+- Use explicit direct per-job commands with bounded controls:
+  - `-r 2` (fallback `-r 4`)
+  - `--densify_until_iter 8000`
+  - `--densify_grad_threshold 0.0005`
+  - `--opacity_cull 0.08`
+- Keep `--force_rerun` and multi-seed disabled.
+
+**Artifacts created:**
+- `docs/superpowers/logs/rc-refgs-fd-ablation-runtime-issue-2026-05-29.json`
+- `docs/superpowers/logs/rc-refgs-fd-ablation-runtime-issue-2026-05-29.md`
+
+**Decision:**
+- Metric patch: **GO**
+- Ablation runtime continuation: **CONDITIONAL GO**
+- Ablation claim upgrades: **NO-GO** until ablation evidence is complete or Shiny Real scope is explicitly narrowed.
+
+## 2026-05-28 18:50:03 CST - FD-P2 Shiny Real RGB/RGBA Patch + Runtime Recovery Window (In Progress)
+
+**Recovered state:**
+- Verified prior FD-P2 formal completion remained `28/34` with six missing Shiny Blender Real jobs.
+- Verified no active RC-RefGS full-dataset/train/eval process before launching recovery.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Patch train.py RGB/RGBA image compositing and complete missing Shiny Blender Real jobs.”**
+
+**Code patch applied:**
+- `train.py` ground-truth compositing is now channel-aware via `_prepare_gt_image(gt_image, bg)`:
+  - channels `>=4`: RGBA alpha compositing using `alpha = gt_image[3:4, ...]`
+  - channels `==3`: keep RGB as-is (`gt_image[:3, ...]`)
+  - channels `<3`: raise clear `ValueError` with shape
+- Removed unsafe unconditional `gt_image[3:,...]` usage path.
+- Added static+behavior regression coverage in `tests/test_rc_refgs_training_static.py`:
+  - source-level guard against unsafe pattern
+  - AST-loaded helper execution test for RGB passthrough, RGBA compositing, and `<3` channel error.
+
+**Smoke validation:**
+- Ran one-scene smoke train:
+  - `gardenspheres/base`, `iterations=100`, `seed=0`, `cuda_device=0`
+  - run completed and passed iteration-0 path without the prior channel-mismatch crash.
+
+**Runtime recovery launch status:**
+- Initial rerun_failed attempt in base env reproduced historical `GLIBCXX_3.4.29` import failure (`PIL` from py312 base).
+- Relaunched recovery under `conda run -n ref_gs` with the same FD-P2 command and `--rerun_failed`.
+- Active single queue is now running on GPU0:
+  - wrapper: `scripts/run_rc_refgs_full_dataset_all_experiments.sh ... --devices 0 --variants base,rc --rerun_failed`
+  - direct launcher child: `run_rc_refgs_ablation_direct.py` for `shiny_blender_real/gardenspheres/base`
+  - training child: `train.py --cuda_device 0 ... gardenspheres_base --iterations 31000`
+
+**Current formal completion (while queue is running):**
+- expected jobs: `34`
+- complete jobs: `28`
+- incomplete jobs: `6`
+- base/rc paired scenes complete: `14/17`
+- train/test reflection JSON present: `28/34`
+
+**Verification completed in this window so far:**
+- `conda run -n ref_gs python -m unittest tests.test_rc_refgs_training_static` -> pass
+- `conda run -n ref_gs python -m unittest discover tests` -> pass (`75` tests)
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` -> pass
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> pass
+- `git diff --check` -> pass
+
+**Decision (interim):** CONDITIONAL GO.
+- RGB/RGBA patch and smoke test are successful.
+- Full GO is pending completion of the active 6-job Shiny Blender Real runtime and formal `34/34` artifact verification.
+
+## 2026-05-28 15:12:26 CST - FD-P2 Full-Dataset Base/RC i31000 Results Analysis Window
+
+**Recovered state:**
+- Recovered `git` state, coordination board, autonomous log, full implementation status, and runtime status artifacts under `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527`.
+- Read `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.json` and `.md`.
+- Active coordination-board claim was `None` before this window.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Analyze and summarize FD-P2 full-dataset base-vs-RC i31000 results.”**
+
+**Actions taken:**
+- Performed independent formal-path-only completion inventory over:
+  - `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/<dataset>/<scene>/<variant>/seed_0/`
+- Checked required artifacts per job:
+  - `point_cloud/iteration_31000/point_cloud.ply`
+  - `reflection_consistency_train.json`
+  - `reflection_consistency_test.json`
+  - `launcher_summary.json`
+- Generated required analysis package artifacts:
+  - `docs/superpowers/logs/rc-refgs-fd-p2-base-rc-i31000-completion-audit-2026-05-28.json`
+  - `docs/superpowers/logs/rc-refgs-fd-p2-base-rc-i31000-results-analysis-2026-05-28.json`
+  - `docs/superpowers/logs/rc-refgs-fd-p2-base-rc-i31000-results-analysis-2026-05-28.md`
+  - `docs/superpowers/logs/rc-refgs-fd-p2-base-rc-i31000-scene-table-2026-05-28.csv`
+
+**Completion findings (formal output only):**
+- Expected jobs: `34`
+- Completed jobs: `28`
+- Incomplete jobs: `6`
+- Base/RC paired scenes complete: `14/17`
+- Jobs with train/test reflection JSON present: `28/34`
+- Incomplete subset is entirely `shiny_blender_real`:
+  - `gardenspheres/{base,rc}`
+  - `sedan/{base,rc}`
+  - `toycar/{base,rc}`
+- Each missing job lacks all four required artifacts in formal paths.
+
+**Protocol application:**
+- Because completion is not `34/34`, analysis upgrade is blocked.
+- No full-dataset delta/aggregate RC-vs-base conclusion was produced.
+- No training, no ablations, no multi-seed, and no optional dataset launch was executed in this window.
+
+**Verification and outcomes:**
+- `python -m json.tool /tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.json` -> pass
+- `python -m json.tool docs/superpowers/logs/rc-refgs-fd-p2-base-rc-i31000-completion-audit-2026-05-28.json` -> pass
+- `python -m json.tool docs/superpowers/logs/rc-refgs-fd-p2-base-rc-i31000-results-analysis-2026-05-28.json` -> pass
+- CSV convention recorded as 34 rows with split encoded as metric-presence columns per job.
+- Released claim; coordination board now reports `Active Task Claims: None`.
+
+**Decision:** NO-GO.
+- NO-GO for FD-P2 full-dataset base-vs-RC result upgrade.
+- Evidence status for full-dataset claim-bearing conclusion: **No support** (completion gate failed).
+- Claim status remains bounded; no manuscript/scientific upgrade beyond verified evidence.
+
+---
+
+## 2026-05-27 14:48:32 CST - FD-P2 Single-GPU Runtime Recovery Window
+
+**Recovered state:**
+- Recovered `git status`/`git diff`, coordination board, autonomous log, full implementation status, and `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527` runtime artifacts (`full_dataset_run_status.json/.md`, `.direct_launcher_work`, `logs/`).
+- Active coordination-board claim was `None` before this window.
+- Required process probe showed no active full-dataset/direct-launcher/train/eval process, so no duplicate queue handling was needed.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Complete FD-P2 remaining full-dataset base/RC i31000 jobs with safe single-GPU recovery.”**
+
+**Actions taken:**
+- Built formal-output completion inventory from `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/<dataset>/<scene>/<variant>/seed_0/<model_name>/` only:
+  - `complete=0`, `metrics_only_recoverable=0`, `train_needed=34`.
+- Confirmed there was no active runner, then launched single-device recovery on GPU0 only:
+  - `scripts/run_rc_refgs_full_dataset_all_experiments.sh ... --devices 0 --execute --confirm_full_dataset_execute YES --rerun_failed`
+  - log: `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/logs/full_dataset_base_rc_i31000_retry_gpu0.log`
+- Monitored the single active queue to completion; no second queue was launched.
+- Recomputed formal-output inventory and status after run.
+- Created runtime recovery artifacts:
+  - `docs/superpowers/logs/rc-refgs-fd-p2-full-dataset-runtime-recovery-2026-05-27.json`
+  - `docs/superpowers/logs/rc-refgs-fd-p2-full-dataset-runtime-recovery-2026-05-27.md`
+
+**Observed failure mode:**
+- Every job failed before training with the same environment import error:
+  - `ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version 'GLIBCXX_3.4.29' not found ...` from `PIL/Image.py` during `train.py` import.
+- This was deterministic across all dataset/scene/variant cells; no point cloud or metrics artifact was produced in formal output paths.
+
+**Verification and outcomes:**
+- Post-run process probe: no active full-dataset/direct-launcher/train/eval process.
+- Formal-output completion inventory after run:
+  - complete jobs: `0/34`
+  - jobs with point_cloud but missing metrics: `0`
+  - jobs with no point_cloud: `34`
+  - currently running job: none
+- `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.json`:
+  - `planned_count=0`, `completed_count=0`, `skipped_count=0`, `failed_count=34`, `missing_artifact_count=136`
+- Required checks:
+  - `python -m json.tool /tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/full_dataset_run_status.json` -> pass
+  - `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` -> pass
+  - `bash -n scripts/run_rc_refgs_ablation.sh` -> pass
+  - `git diff --check` -> pass
+  - No code changed in this window; unit tests were not necessary for runtime-only recovery.
+- Released active claim; coordination board now reports `Active Task Claims: None`.
+
+**Decision:** NO-GO.
+- NO-GO for FD-P2 completion in the current runtime environment.
+- NO-GO for claim upgrades; full claim-bearing package remains incomplete (`0/34` complete).
+- Remaining jobs are listed and structurally recoverable only after fixing the runtime environment (`GLIBCXX_3.4.29` / Python-PIL toolchain mismatch).
+
+---
+
 ## 2026-05-27 02:02:58 CST - Finalize Shiny Real Scene-Set Policy + Full-Dataset Dry-Run GO Gate Window
 
 **Recovered state:**
@@ -7645,3 +7875,475 @@ Key measured values (mean reflection consistency):
 - Next task is FD-P2 full-dataset base/RC i31000 execution (not started in this window).
 - NO-GO for complete-dataset claim upgrades, manuscript/scientific upgrades, and any training/metrics/ablation/multi-seed/geometry execution in this window.
 - SWITCH MODEL is not appropriate in this window.
+
+## 2026-05-29 16:47:12 CST - Recover FD-P2 Shiny Real base/RC cells after metric RGB/RGBA patch
+
+**Recovered state:**
+- Recovered git state, coordination board, autonomous log, full implementation status, FD-P2 formal output root, ablation output root, and latest metric RGB/RGBA patch context.
+- Process safety probe before launch showed no active full-dataset/direct-launcher/train/eval process.
+
+**Round-local task claim:**
+- Claimed exactly one task: “Recover FD-P2 Shiny Real base/RC cells after metric RGB/RGBA patch.”
+
+**Actions taken:**
+- Formal six-cell inventory (Shiny Blender Real only) before recovery: all six were missing required artifacts in formal paths.
+- Verified recovery controls from runtime:
+  - `-r 2` smoke on `gardenspheres/base` failed at iteration 0 with CUDA OOM.
+  - `-r 4` fallback smoke on `gardenspheres/base` completed (no RGB channel crash, no immediate OOM), with persistent `Loss=nan`.
+- Executed full bounded recovery for `gardenspheres/base` (i31000) on GPU0:
+  - `-r 4`
+  - `--densify_until_iter 8000`
+  - `--densify_grad_threshold 0.0005`
+  - `--opacity_cull 0.08`
+  - `PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128`
+- Generated metrics for recovered cell:
+  - `reflection_consistency_train.json`
+  - `reflection_consistency_test.json`
+- Wrote `launcher_summary.json` in the formal job directory.
+- Regenerated recovery artifacts:
+  - `docs/superpowers/logs/rc-refgs-fd-p2-shiny-real-recovery-2026-05-29.json`
+  - `docs/superpowers/logs/rc-refgs-fd-p2-shiny-real-recovery-2026-05-29.md`
+
+**Verification and outcomes:**
+- Formal FD-P2 completion inventory is now `29/34` complete.
+- Remaining incomplete jobs (all Shiny Blender Real):
+  - `gardenspheres/rc`
+  - `sedan/base`
+  - `sedan/rc`
+  - `toycar/base`
+  - `toycar/rc`
+- Six-cell Shiny Real recovery classification:
+  - `complete=1`
+  - `metrics-only recoverable=0`
+  - `training-needed=0`
+  - `OOM/NaN failed=5`
+
+**Go/no-go decision:** CONDITIONAL GO.
+- CONDITIONAL GO for continued bounded per-cell Shiny Real recovery on GPU0.
+- NO-GO for FD-P2 result/claim upgrades until formal completion reaches `34/34`.
+- NO-GO for manuscript/scientific claim upgrades in this window.
+
+## 2026-05-30 23:32:44 CST - Analyze and summarize current FD-P2 main and ablation evidence
+
+**Recovered state:**
+- Recovered git/runtime/docs/log state from:
+  - `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527`
+  - `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528`
+  - coordination board, autonomous log, full implementation status
+  - latest recovery/issue artifacts for 2026-05-29
+- Process safety probe before and after analysis found no active RC-RefGS train/eval/launcher process.
+
+**Round-local task claim:**
+- Claimed exactly one task: “Analyze and summarize current FD-P2 main and ablation evidence.”
+
+**Actions taken (analysis-only):**
+- Performed strict formal-path artifact inventory for main FD-P2 (`17 scenes x 2 variants = 34 jobs`).
+- Parsed available `reflection_consistency_{train,test}.json` metrics for complete main cells and computed base-vs-RC deltas per scene/split.
+- Performed strict formal-path artifact inventory for ablations (`17 scenes x 3 variants = 51 jobs` for `wo_ref/wo_conf/rough_only`).
+- Parsed available ablation train/test metrics and aggregated by dataset x variant.
+- Generated current evidence artifacts:
+  - `docs/superpowers/logs/rc-refgs-current-main-and-ablation-analysis-2026-05-29.json`
+  - `docs/superpowers/logs/rc-refgs-current-main-and-ablation-analysis-2026-05-29.md`
+
+**Verification and outcomes:**
+- Main FD-P2 formal completion: `29/34`.
+- Main complete base/RC scene pairs: `14/17`.
+- Main RC-lower counts on complete pairs:
+  - train: `14/14`
+  - test: `13/14`
+- Remaining main incomplete cells (all Shiny Real):
+  - `gardenspheres/rc`
+  - `sedan/base`
+  - `sedan/rc`
+  - `toycar/base`
+  - `toycar/rc`
+- Ablation formal completion: `18/51`.
+  - Shiny Blender Synthetic: `18/18`
+  - Shiny Blender Real: `0/9`
+  - Glossy Synthetic: `0/24`
+
+**Go/no-go decision:** GO (analysis artifact task only).
+- GO for artifact-grounded analysis package generation.
+- NO-GO for main/ablation claim upgrades because completion remains below required gates.
+- NO-GO for manuscript/scientific claim upgrades until main FD-P2 reaches `34/34`.
+
+## 2026-05-31 00:06:18 CST - Update current main and ablation analysis after Glossy Synthetic ablations reached 24/24
+
+**Recovered state:**
+- Recovered git/runtime/docs/log state from:
+  - `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527`
+  - `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528`
+  - latest analysis/recovery/issue artifacts under `docs/superpowers/logs/`
+- Process safety probes before and after analysis found no active RC-RefGS train/eval/launcher process.
+
+**Round-local task claim:**
+- Claimed exactly one task: “Update current main and ablation analysis after Glossy Synthetic ablations reached 24/24.”
+
+**Actions taken (analysis/docs only):**
+- Re-inventoried formal ablation artifacts under `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/glossy_synthetic`.
+- Verified formal four-artifact completion for all Glossy Synthetic ablation cells (`24/24`).
+- Recomputed complete ablation inventory and metric aggregates from formal paths with robust `seed_0` / `seed_0/<model_name>` model-dir resolution.
+- Refreshed analysis artifacts:
+  - `docs/superpowers/logs/rc-refgs-current-main-and-ablation-analysis-2026-05-29.json`
+  - `docs/superpowers/logs/rc-refgs-current-main-and-ablation-analysis-2026-05-29.md`
+
+**Verification and outcomes:**
+- Main FD-P2 formal completion remains `29/34` (incomplete due five Shiny Real base/rc cells).
+- Ablation formal completion is now `42/51`:
+  - Shiny Blender Synthetic: `18/18`
+  - Glossy Synthetic: `24/24`
+  - Non-Shiny-Real total: `42/42`
+  - Shiny Blender Real: `0/9`
+- Required stance preserved in artifacts:
+  - “All non-Shiny-Real ablation experiments are complete.”
+  - “Full ablation matrix is not complete because Shiny Blender Real remains OOM-blocked.”
+  - “FD-P2 main claim remains NO-GO until Shiny Real main cells are completed or scope is explicitly narrowed.”
+  - “No manuscript/scientific claim upgrade in this task.”
+
+**Go/no-go decision:** GO (analysis update task only).
+- GO for artifact-grounded analysis refresh after Glossy Synthetic ablation completion.
+- NO-GO for full-dataset claim upgrades while main remains `29/34` and Shiny Real ablations remain `0/9`.
+
+## 2026-05-31 00:18:51 CST - Create FD-P2-lite / non-Shiny-Real closed-loop experimental summary
+
+**Recovered state:**
+- Recovered git/runtime/docs/log state from:
+  - `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527`
+  - `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528`
+  - latest analysis/runtime issue artifacts in `docs/superpowers/logs/`
+- Process safety probe before and after analysis found no active RC-RefGS train/eval/launcher process.
+
+**Round-local task claim:**
+- Claimed exactly one task: “Create FD-P2-lite / non-Shiny-Real closed-loop experimental summary.”
+
+**Actions taken (analysis/docs only):**
+- Re-inventoried formal main artifacts for narrowed scope only:
+  - included `shiny_blender_synthetic` + `glossy_synthetic`
+  - excluded `shiny_blender_real`
+- Re-inventoried formal ablation artifacts for narrowed scope only:
+  - included `wo_ref/wo_conf/rough_only` under `shiny_blender_synthetic` + `glossy_synthetic`
+  - excluded `shiny_blender_real`
+- Used strict four-artifact completion checks with robust model-dir resolution (`seed_0` or `seed_0/<model_name>`).
+- Parsed train/test reflection metrics for all scoped complete cells and generated scoped base-vs-RC and ablation summaries.
+- Created new narrowed-scope summary artifacts:
+  - `docs/superpowers/logs/rc-refgs-fd-p2-lite-non-shiny-real-summary-2026-05-29.json`
+  - `docs/superpowers/logs/rc-refgs-fd-p2-lite-non-shiny-real-summary-2026-05-29.md`
+
+**Verification and outcomes:**
+- Main FD-P2-lite non-Shiny-Real: `28/28` complete.
+- Ablation non-Shiny-Real: `42/42` complete.
+- Scoped main RC-lower counts:
+  - train: `14/14`
+  - test: `13/14`
+  - exception: `shiny_blender_synthetic/coffee` test split (`delta=+0.002338690496981143`).
+- Full-scope boundaries remain unchanged:
+  - full 17-scene main FD-P2: incomplete (`29/34`)
+  - full 51-cell ablation: incomplete (`42/51`)
+
+**Go/no-go decision:** GO (narrowed-scope summary task only).
+- GO for artifact-grounded FD-P2-lite non-Shiny-Real closed-loop summary.
+- NO-GO for full 17-scene and full 51-cell completion claims while Shiny Real remains excluded/OOM-blocked.
+- NO-GO for manuscript/scientific broad claim upgrade in this task.
+
+## 2026-06-01 00:35:42 CST - Evaluate complete metric set for FD-P2-lite / non-Shiny-Real completed experiments
+
+**Recovered state and preflight:**
+- Process probe run before launch confirmed no active RC-RefGS train/eval launcher process.
+- `nvidia-smi` showed heavily shared GPUs; evaluation required host-level execution (sandbox CUDA unavailable).
+
+**Round-local task claim:**
+- Claimed exactly one task: “Evaluate complete metric set for FD-P2-lite / non-Shiny-Real completed experiments.”
+
+**Actions taken:**
+- Implemented scoped evaluator driver: `scripts/eval_fd_p2_lite_complete_metrics.py`.
+- Identified deterministic metric blocker from runtime trace:
+  - `RuntimeError: texture_fwd_mip(): Inputs tex, uv must reside on the same GPU device`.
+- Patched `metrics/render_quality_eval.py` to match train-side device handling:
+  - pre-import CUDA filtering via `CUDA_VISIBLE_DEVICES` when `--cuda_device` is set,
+  - logical device `cuda:0` after filtering,
+  - channel-aware GT compositing (`alpha = gt[3:4, ...]`, RGB passthrough, `<3` channels raises `ValueError`).
+- Updated static coverage in `tests/test_render_quality_eval_static.py`.
+- Verified post-patch with one direct cell:
+  - `shiny_blender_synthetic/car/base` render-quality `split=both` succeeded and wrote formal JSON.
+
+**Verification executed:**
+- `conda run -n ref_gs python -m unittest discover tests` -> **79 tests, OK**.
+- `bash -n scripts/run_rc_refgs_full_dataset_all_experiments.sh` -> OK.
+- `bash -n scripts/run_rc_refgs_ablation.sh` -> OK.
+- `git diff --check` -> OK.
+- `python -m json.tool` validated generated render-quality JSONs currently present:
+  - `.../ball/base/.../render_quality_both_iter31000.json`
+  - `.../ball/rc/.../render_quality_both_iter31000.json`
+  - `.../car/base/.../render_quality_both_iter31000.json`
+
+**Current metric-eval coverage (formal non-Shiny-Real scope):**
+- Main evaluated: **3/28**.
+- Ablation evaluated: **0/42**.
+- Missing/failed metric cells: **67**.
+- Pair-ready main scenes with complete base+rc render metrics: **1/14**.
+
+**Generated artifacts (partial, artifact-grounded):**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.json`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.md`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-main-table-2026-05-29.csv` (28 model rows)
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-ablation-table-2026-05-29.csv` (42 model rows + 6 aggregate rows)
+
+**Decision:**
+- **CONDITIONAL GO** for metric pipeline readiness (device bug fixed, tests green, direct validation passed).
+- **NO-GO** for complete-metric conclusions now, because 70-model scoped render-quality sweep is not complete yet under shared-GPU runtime conditions.
+- **NO-GO** unchanged for full 17-scene FD-P2 and full 51-cell ablation claims (Shiny Real still excluded/OOM-blocked).
+
+## 2026-06-01 14:32:19 CST - Generate final complete-metric FD-P2-lite / non-Shiny-Real analysis
+
+**Recovered state and task claim:**
+- Recovered the coordination board, autonomous log, implementation status, and both formal `/tmp` roots.
+- Claimed exactly one task: “Generate final complete-metric FD-P2-lite / non-Shiny-Real analysis.”
+- Kept the window analysis/docs/tables-only: no training, metrics, recovery, Shiny Blender Real execution, artifact deletion/movement, or method-code modification.
+
+**Existing-artifact inventory:**
+- Main render-quality JSON artifacts: `28/28`.
+- Ablation render-quality JSON artifacts: `42/42`.
+- Overall narrowed non-Shiny-Real render-quality JSON artifacts: `70/70`.
+- Strict required-field parsing found three main LPIPS ambiguities:
+  - `shiny_blender_synthetic/ball/base`
+  - `shiny_blender_synthetic/ball/rc`
+  - `shiny_blender_synthetic/car/base`
+- Each ambiguous payload has `lpips_skipped=true` and omits train/test `full_lpips` and `reflective_lpips`.
+- Strict full-required-metric coverage is therefore:
+  - main: `25/28`
+  - ablation: `42/42`
+  - overall: `67/70`
+
+**Generated artifacts:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.json`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.md`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-main-table-2026-05-29.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-ablation-table-2026-05-29.csv`
+
+**Analysis outcome:**
+- Main CSV convention: `14` paired-scene rows with train/test base, RC, delta, and RC-win columns.
+- Ablation CSV convention: `42` model rows plus `6` dataset-variant aggregate rows.
+- Main consistency RC wins:
+  - train: `14/14`
+  - test: `13/14`
+- Render-quality outcomes are mixed; no global RC-is-better claim is supported.
+- Shiny Blender Real remains excluded due to OOM and is not used for full FD-P2 claims.
+- Original full FD-P2 and full 51-cell ablation claims remain NO-GO.
+
+**Decision and release:**
+- **CONDITIONAL GO** for narrowed artifact-grounded diagnostic analysis.
+- **GO** for the strict `42/42` non-Shiny-Real ablation complete-metric package.
+- **NO-GO** for strict main/overall complete-metric wording until the three LPIPS omissions are resolved or explicitly accepted as a reporting limitation.
+- **NO-GO** unchanged for original full FD-P2 17-scene and full 51-cell ablation claims.
+
+**Verification executed:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.json` -> OK.
+- JSON schema/coverage assertion -> `70/70` artifact coverage, `67/70` strict coverage, `3` ambiguities, `14` main pair results, `42` ablation model results, `6` ablation aggregates.
+- CSV assertion -> main `14` paired-scene rows; ablation `42` model rows + `6` aggregate rows.
+- Required wording scan -> OK with strict-parser qualifications.
+- `git diff --check` -> OK.
+- RC-RefGS prohibited-process scan -> `0`.
+- No unit tests run: this round changed analysis/docs/tables only.
+
+**Claim release:**
+- Released the round-local task claim at `2026-06-01 14:34:17 CST`.
+
+## 2026-06-01 17:45:12 CST - Recover missing LPIPS fields for three FD-P2-lite main render-quality cells
+
+**Task claim:**
+- Claimed exactly one task: “Recover missing LPIPS fields for three FD-P2-lite main render-quality cells.”
+
+**Scope compliance:**
+- Evaluation-only execution; no training launched.
+- No Shiny Blender Real execution.
+- Only the three target main cells were re-evaluated:
+  1. `shiny_blender_synthetic/ball/base`
+  2. `shiny_blender_synthetic/ball/rc`
+  3. `shiny_blender_synthetic/car/base`
+
+**Preflight and runtime controls:**
+- Process probe executed before launch.
+- GPU probe selected idle GPU7.
+- Commands used:
+  - `unset CUDA_VISIBLE_DEVICES`
+  - `export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:${LD_LIBRARY_PATH:-}"`
+  - `export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128`
+
+**Artifact safety:**
+- Backups created before overwrite:
+  - `render_quality_both_iter31000.json.bak_lpips_recovery_20260601_173859`
+  - for each of the three target model directories.
+
+**Per-cell log inspection note:**
+- Existing per-cell manual logs for these three cells showed skip behavior (`[SKIP valid render_quality]`) rather than retained LPIPS exception stacks.
+- No preserved prior LPIPS stack trace was found in those logs; omission state was visible as `lpips_skipped=true` in JSON payloads.
+
+**Recovery execution outcome:**
+- Re-ran `metrics/render_quality_eval.py` on GPU7 for the three target cells with LPIPS enabled and `image_key=pbr_rgb`.
+- All three completed successfully without requiring `image_key=render` fallback.
+- Post-run JSON checks show:
+  - `lpips_skipped=false`
+  - numeric `full_lpips` and `reflective_lpips` for both `train` and `test`.
+
+**Regenerated artifacts:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.json`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.md`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-main-table-2026-05-29.csv`
+
+**Coverage update:**
+- Non-Shiny-Real artifact coverage: `70/70`.
+- Strict required-field coverage: `70/70`.
+- Parsed ambiguities: `0`.
+
+**Verification:**
+- `python -m json.tool` passed for the three recovered render-quality JSONs.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-2026-05-29.json` passed.
+- CSV row count check:
+  - main table uses paired-scene convention: `14` rows.
+- `git diff --check` passed.
+- Prohibited-process scan executed after task; no RC-RefGS train/eval process launched by this task.
+
+**Decision:**
+- **GO** for strict complete-metric coverage in the narrowed non-Shiny-Real scope (`70/70`).
+- Full 17-scene FD-P2 and full 51-cell ablation claims remain **NO-GO** because Shiny Blender Real remains excluded/OOM-blocked.
+
+## 2026-06-01 20:55:55 CST - Produce final complete-metric FD-P2-lite / non-Shiny-Real result analysis
+
+**Task claim and scope:**
+- Claimed exactly one task: “Produce final complete-metric FD-P2-lite / non-Shiny-Real result analysis.”
+- Kept execution analysis/docs/tables-only.
+- Did not launch training, metrics, recovery, or Shiny Blender Real.
+- Did not move/delete artifacts or modify method code.
+
+**Recovered and validated metric state:**
+- Parsed the existing complete-metric package and formal per-model files under:
+  - `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527`
+  - `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528`
+- Strict required-field coverage:
+  - main base/RC: `28/28`
+  - ablation: `42/42`
+  - overall non-Shiny-Real: `70/70`
+- Parsed ambiguity count: `0`.
+
+**Generated final result artifacts:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.md`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.json`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-ablation-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-tradeoff-summary-2026-06-01.csv`
+
+**Final scoped findings:**
+- RC consistency wins:
+  - train: `14/14`
+  - test: `13/14`
+- Full-image LPIPS wins:
+  - train: `9/14`
+  - test: `10/14`
+- Reflective LPIPS wins:
+  - train: `4/14`
+  - test: `6/14`
+- RC improves consistency while worsening at least one render-quality metric in `21/28` scene/split rows.
+- RC improves at least one reflective metric while worsening at least one full-image metric in `6/28` scene/split rows.
+- Render-quality effects remain mixed; no global RC-is-better claim is supported.
+- Scoped ablation interpretation:
+  - `wo_ref` degrades aggregate consistency relative to RC on both datasets and both splits;
+  - `wo_conf` also degrades consistency, generally less than `wo_ref`;
+  - `rough_only` does not reproduce RC consistency behavior;
+  - these are paired non-Shiny-Real diagnostic interpretations, not causal claims.
+
+**Claim boundaries:**
+- **GO** for final scope-limited FD-P2-lite / non-Shiny-Real complete-metric result analysis.
+- Shiny Blender Real remains excluded due to OOM.
+- Original full FD-P2 17-scene claim remains **NO-GO**.
+- Original full 51-cell ablation claim remains **NO-GO**.
+- Broad manuscript claim upgrade remains **NO-GO** unless explicitly scope-limited.
+
+**Verification executed:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.json` -> OK.
+- JSON schema assertion -> strict coverage `70/70`, ambiguities `0`, main pairs `14`, ablation aggregates `6`, tradeoff rows `28`.
+- CSV assertion -> main `14` paired-scene rows, ablation `6` dataset-variant aggregate rows, tradeoff `28` scene-split rows; headers OK.
+- Required wording scan -> OK.
+- `git diff --check` -> OK.
+- RC-RefGS prohibited-process scan -> `0`.
+- No unit tests run: this round changed analysis/docs/tables only.
+
+**Claim release:**
+- Released the round-local task claim at `2026-06-01 20:55:55 CST`.
+
+## 2026-06-01 22:18:41 CST - Draft a scope-limited Results section from the final complete-metric FD-P2-lite analysis
+
+**Task claim and scope:**
+- Claimed exactly one task: “Draft a scope-limited Results section from the final complete-metric FD-P2-lite analysis.”
+- Kept execution writing/docs-only.
+- Did not launch training, metrics, recovery, or Shiny Blender Real.
+- Did not modify method code or generated metric data.
+
+**Source artifacts:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.md`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.json`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-ablation-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-tradeoff-summary-2026-06-01.csv`
+
+**Generated artifact:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-results-section-draft-2026-06-01.md`
+
+**Draft content:**
+- Reports the FD-P2-lite / non-Shiny-Real scope with strict complete-metric coverage `70/70`.
+- Reports RC consistency wins (`14/14` train, `13/14` test) separately from mixed render-quality metrics.
+- Includes full-image LPIPS wins (`9/14` train, `10/14` test) and reflective LPIPS wins (`4/14` train, `6/14` test).
+- Includes a compact six-row dataset-by-variant ablation table.
+- Interprets `wo_ref`, `wo_conf`, and `rough_only` cautiously as paired scoped diagnostics rather than causal proof.
+- Preserves the Shiny Blender Real OOM exclusion and original full-scope unsupported boundaries.
+
+**Verification executed:**
+- Required wording scan -> OK.
+- Prohibited wording scan -> `0` hits.
+- Requested section scan -> `7/7`.
+- `git diff --check` -> OK.
+- RC-RefGS prohibited-process scan -> `0`.
+- No unit tests run: this round changed writing/docs only.
+
+**Decision and release:**
+- **GO** for the scope-limited Results section draft.
+- Original full FD-P2 17-scene and full 51-cell ablation claims remain **NO-GO**.
+- Released the round-local task claim at `2026-06-01 22:18:41 CST`.
+
+## 2026-06-02 00:20:56 CST - Generate publication-ready tables and figures for FD-P2-lite / non-Shiny-Real results
+
+**Task claim and scope:**
+- Claimed exactly one task: “Generate publication-ready tables and figures for FD-P2-lite / non-Shiny-Real results.”
+- Kept execution tables/figures/scripts/docs-only.
+- Did not launch training, metrics, recovery, or Shiny Blender Real.
+- Did not modify method code, source metric JSONs, or experiment outputs.
+
+**Source artifacts:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.json`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-ablation-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-tradeoff-summary-2026-06-01.csv`
+
+**Generated package:**
+- `docs/superpowers/figures/fd-p2-lite/README.md`
+- `docs/superpowers/figures/fd-p2-lite/make_fd_p2_lite_publication_tables_figures.py`
+- Four publication table families in CSV, Markdown, and LaTeX.
+- Five publication figure families in PDF, SVG, and 300-dpi PNG.
+- Table 4 uses the documented `28` scene-split-row convention.
+
+**Validation executed:**
+- Generator execution -> OK.
+- Generator static contract tests -> `2/2` passed.
+- `python -m py_compile docs/superpowers/figures/fd-p2-lite/make_fd_p2_lite_publication_tables_figures.py` -> OK.
+- Required generated files -> `28/28` non-empty.
+- CSV row-count and header assertions -> Table 1 `14`, Table 2 `16`, Table 3 `6`, Table 4 `28`.
+- PDF/SVG parse and PNG nonblank-content checks -> OK.
+- Deterministic two-run SHA-256 output comparison -> OK.
+- Prohibited wording scan -> `0` hits.
+- `git diff --check` -> OK.
+- RC-RefGS prohibited-process scan -> `0`.
+
+**Decision and release:**
+- **GO** for the FD-P2-lite / non-Shiny-Real publication package.
+- Shiny Blender Real remains excluded due to OOM.
+- Original full FD-P2 17-scene and full 51-cell ablation claims remain **NO-GO**.
+- Released the round-local task claim at `2026-06-02 00:20:56 CST`.

@@ -1,0 +1,127 @@
+{
+  "task_claim": "Fix metric RGB/RGBA handling and add safe Shiny Real ablation recovery policy.",
+  "generated_at": "2026-05-29 07:51:10 CST",
+  "ablation_root": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528",
+  "scope": {
+    "datasets": [
+      "shiny_blender_synthetic",
+      "shiny_blender_real",
+      "glossy_synthetic"
+    ],
+    "variants": [
+      "wo_ref",
+      "wo_conf",
+      "rough_only"
+    ],
+    "seeds": [
+      0
+    ],
+    "iterations": 31000,
+    "expected_jobs": 51
+  },
+  "code_fix": {
+    "file": "metrics/reflection_consistency_eval.py",
+    "helper": "_prepare_gt_image",
+    "behavior": {
+      "channels_gte_4": "alpha composite with alpha=gt_image[3:4,...]",
+      "channels_eq_3": "RGB passthrough gt_image[:3,...]",
+      "channels_lt_3": "raise ValueError with image shape"
+    },
+    "unsafe_pattern_removed": "gt[:3, ...] * gt[3:, ...]"
+  },
+  "regression_tests": {
+    "file": "tests/test_reflection_consistency_eval_static.py",
+    "added_checks": [
+      "static guard against gt[3:, ...] compositing",
+      "RGB passthrough behavior",
+      "RGBA alpha-composite behavior",
+      "invalid channel count raises ValueError"
+    ]
+  },
+  "verification": {
+    "unittest_discover": "pass (77 tests)",
+    "bash_n_full_dataset_runner": "pass",
+    "bash_n_ablation_runner": "pass",
+    "git_diff_check": "pass"
+  },
+  "metrics_only_recovery": {
+    "command_mode": "--skip_train --rerun_failed",
+    "executed": true,
+    "log": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/logs/full_dataset_ablations_i31000_metrics_recovery_gpu0_postpatch.log",
+    "result": "completed with status file refresh"
+  },
+  "inventory_after_metrics_recovery": {
+    "complete_jobs": 18,
+    "metrics_only_recoverable_jobs": 0,
+    "train_needed_jobs": 33,
+    "complete_by_dataset": {
+      "shiny_blender_synthetic": 18,
+      "shiny_blender_real": 0,
+      "glossy_synthetic": 0
+    },
+    "train_needed_shiny_real_jobs": [
+      "gardenspheres/wo_ref",
+      "gardenspheres/wo_conf",
+      "gardenspheres/rough_only",
+      "sedan/wo_ref",
+      "sedan/wo_conf",
+      "sedan/rough_only",
+      "toycar/wo_ref",
+      "toycar/wo_conf",
+      "toycar/rough_only"
+    ]
+  },
+  "failure_evidence": {
+    "rgb_metric_bug_pre_patch": {
+      "log_file": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/logs/full_dataset_ablations_i31000_gpu5_7.log",
+      "line_refs": [
+        857,
+        858,
+        859
+      ],
+      "error": "RuntimeError: The size of tensor a (3) must match the size of tensor b (0)"
+    },
+    "shiny_real_oom_nan": {
+      "log_file": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/logs/full_dataset_ablations_i31000_gpu5_7.log",
+      "line_refs": [
+        907,
+        908,
+        918
+      ],
+      "error": "RuntimeError: CUDA out of memory. Tried to allocate 1.84 GiB",
+      "notes": [
+        "Loss=nan observed in gardenspheres traces",
+        "point count grew to multi-million scale before OOM in Shiny Real runs"
+      ]
+    }
+  },
+  "bounded_recovery_plan_for_shiny_real_ablation": {
+    "launch_immediately": false,
+    "recommended_mode": "direct per-job commands only for failed Shiny Real jobs",
+    "controls": [
+      "lower input resolution: -r 2 (or -r 4 fallback)",
+      "reduce densification pressure: --densify_until_iter 8000 --densify_grad_threshold 0.0005 --opacity_cull 0.08"
+    ],
+    "jobs": [
+      "gardenspheres/wo_ref",
+      "gardenspheres/wo_conf",
+      "gardenspheres/rough_only",
+      "sedan/wo_ref",
+      "sedan/wo_conf",
+      "sedan/rough_only",
+      "toycar/wo_ref",
+      "toycar/wo_conf",
+      "toycar/rough_only"
+    ],
+    "prohibitions": [
+      "do not rerun full 51-job ablation matrix without explicit user approval",
+      "do not use --force_rerun",
+      "do not start multi-seed"
+    ]
+  },
+  "decisions": {
+    "metric_patch": "GO",
+    "ablation_runtime": "CONDITIONAL GO",
+    "ablation_claim_upgrade": "NO-GO"
+  }
+}

@@ -1,0 +1,2266 @@
+{
+  "generated_at": "2026-05-31 01:57:53 CST",
+  "main_output_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527",
+  "ablation_output_root": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528",
+  "main_expected_jobs": 34,
+  "main_complete_jobs": 29,
+  "main_missing_jobs": [
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "variant": "rc",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/rc/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/rc/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "base",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/base/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/base/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "rc",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/rc/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/rc/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "base",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/base/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/base/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "rc",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/rc/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/rc/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    }
+  ],
+  "main_pairwise_results": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.1712649494409561,
+          "rc_mean_reflection_consistency": 0.16639908850193025,
+          "delta_consistency": -0.004865860939025857,
+          "relative_delta_consistency_pct": -2.8411306311706066,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 37.80105285644531,
+          "rc_reflective_region_psnr": 38.0914852142334,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.04955095089972019,
+          "rc_mean_reflection_consistency": 0.04815337359905243,
+          "delta_consistency": -0.0013975773006677586,
+          "relative_delta_consistency_pct": -2.820485329325235,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 32.91583442687988,
+          "rc_reflective_region_psnr": 32.86421661376953,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.3124761778861284,
+          "rc_mean_reflection_consistency": 0.14267089404165745,
+          "delta_consistency": -0.16980528384447097,
+          "relative_delta_consistency_pct": -54.34183334972526,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 31.032323265075682,
+          "rc_reflective_region_psnr": 30.994008827209473,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.08607344292104244,
+          "rc_mean_reflection_consistency": 0.04824239648878574,
+          "delta_consistency": -0.037831046432256696,
+          "relative_delta_consistency_pct": -43.95205437170692,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 27.51102466583252,
+          "rc_reflective_region_psnr": 27.844405364990234,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.05388578325510025,
+          "rc_mean_reflection_consistency": 0.02222995525225997,
+          "delta_consistency": -0.03165582800284028,
+          "relative_delta_consistency_pct": -58.746159173336466,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 35.920494079589844,
+          "rc_reflective_region_psnr": 35.814023399353026,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.006912777572870255,
+          "rc_mean_reflection_consistency": 0.009251468069851398,
+          "delta_consistency": 0.002338690496981143,
+          "relative_delta_consistency_pct": 33.83141540904657,
+          "rc_lower_than_base": false,
+          "base_reflective_region_psnr": 29.41759090423584,
+          "rc_reflective_region_psnr": 28.612015342712404,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": false,
+      "rc_worsens_either_split": true
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.6405774474143981,
+          "rc_mean_reflection_consistency": 0.0895418930798769,
+          "delta_consistency": -0.5510355543345212,
+          "relative_delta_consistency_pct": -86.02169129723497,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 36.69405632019043,
+          "rc_reflective_region_psnr": 36.785546112060544,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.21683893352746964,
+          "rc_mean_reflection_consistency": 0.035956913605332375,
+          "delta_consistency": -0.18088201992213726,
+          "relative_delta_consistency_pct": -83.41768564325776,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 35.91402015686035,
+          "rc_reflective_region_psnr": 35.57592620849609,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.0217622350435704,
+          "rc_mean_reflection_consistency": 0.01248285542242229,
+          "delta_consistency": -0.00927937962114811,
+          "relative_delta_consistency_pct": -42.63982813607962,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 39.03930854797363,
+          "rc_reflective_region_psnr": 39.777783966064455,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.0038960183504968882,
+          "rc_mean_reflection_consistency": 0.002698267297819257,
+          "delta_consistency": -0.0011977510526776313,
+          "relative_delta_consistency_pct": -30.74295203267903,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 39.41321983337402,
+          "rc_reflective_region_psnr": 39.78558082580567,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.278150674700737,
+          "rc_mean_reflection_consistency": 0.162093286216259,
+          "delta_consistency": -0.116057388484478,
+          "relative_delta_consistency_pct": -41.72464748084628,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 31.09833469390869,
+          "rc_reflective_region_psnr": 31.214613723754884,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.10545747801661491,
+          "rc_mean_reflection_consistency": 0.057213205844163895,
+          "delta_consistency": -0.048244272172451017,
+          "relative_delta_consistency_pct": -45.74760659917364,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 22.386799240112303,
+          "rc_reflective_region_psnr": 22.110078430175783,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "base_complete": true,
+      "rc_complete": false,
+      "missing_variants": [
+        "rc"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "base_complete": false,
+      "rc_complete": false,
+      "missing_variants": [
+        "base",
+        "rc"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "base_complete": false,
+      "rc_complete": false,
+      "missing_variants": [
+        "base",
+        "rc"
+      ]
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.11610501706600189,
+          "rc_mean_reflection_consistency": 0.09975770190358162,
+          "delta_consistency": -0.016347315162420273,
+          "relative_delta_consistency_pct": -14.07976638350379,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 25.86960678100586,
+          "rc_reflective_region_psnr": 26.095824432373046,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.12240459695458412,
+          "rc_mean_reflection_consistency": 0.10779540762305259,
+          "delta_consistency": -0.014609189331531533,
+          "relative_delta_consistency_pct": -11.935163952177378,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 22.186219787597658,
+          "rc_reflective_region_psnr": 22.699249267578125,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.14781553223729132,
+          "rc_mean_reflection_consistency": 0.1433430403470993,
+          "delta_consistency": -0.004472491890192026,
+          "relative_delta_consistency_pct": -3.025725255321777,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 28.298690032958984,
+          "rc_reflective_region_psnr": 28.27375888824463,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.10971963033080101,
+          "rc_mean_reflection_consistency": 0.10774315819144249,
+          "delta_consistency": -0.0019764721393585177,
+          "relative_delta_consistency_pct": -1.801384249472515,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 25.546735572814942,
+          "rc_reflective_region_psnr": 25.735924339294435,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.12245851084589958,
+          "rc_mean_reflection_consistency": 0.11539779305458069,
+          "delta_consistency": -0.007060717791318893,
+          "relative_delta_consistency_pct": -5.765804060939481,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 28.26777744293213,
+          "rc_reflective_region_psnr": 28.245301818847658,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.15660581439733506,
+          "rc_mean_reflection_consistency": 0.14977002441883086,
+          "delta_consistency": -0.006835789978504203,
+          "relative_delta_consistency_pct": -4.364965633498552,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 27.2645055770874,
+          "rc_reflective_region_psnr": 26.788152313232423,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.19937337934970856,
+          "rc_mean_reflection_consistency": 0.17848040238022805,
+          "delta_consistency": -0.020892976969480503,
+          "relative_delta_consistency_pct": -10.479321280316677,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 24.135630226135255,
+          "rc_reflective_region_psnr": 24.255452346801757,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.22502968311309815,
+          "rc_mean_reflection_consistency": 0.19465115070343017,
+          "delta_consistency": -0.03037853240966798,
+          "relative_delta_consistency_pct": -13.49978900090259,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 22.161103630065917,
+          "rc_reflective_region_psnr": 22.394418716430664,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.11888066008687019,
+          "rc_mean_reflection_consistency": 0.11003987416625023,
+          "delta_consistency": -0.008840785920619959,
+          "relative_delta_consistency_pct": -7.436689798121656,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 25.514339637756347,
+          "rc_reflective_region_psnr": 24.714074897766114,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.1244205117225647,
+          "rc_mean_reflection_consistency": 0.1195022352039814,
+          "delta_consistency": -0.0049182765185833005,
+          "relative_delta_consistency_pct": -3.9529467050820126,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 23.33660182952881,
+          "rc_reflective_region_psnr": 22.59705638885498,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.09240107908844948,
+          "rc_mean_reflection_consistency": 0.0871635764837265,
+          "delta_consistency": -0.005237502604722985,
+          "relative_delta_consistency_pct": -5.668226666172879,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 29.079368019104002,
+          "rc_reflective_region_psnr": 29.339462089538575,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.08584570027887821,
+          "rc_mean_reflection_consistency": 0.08339374512434006,
+          "delta_consistency": -0.002451955154538152,
+          "relative_delta_consistency_pct": -2.856235252986153,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 27.773388862609863,
+          "rc_reflective_region_psnr": 28.10766887664795,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.28080115616321566,
+          "rc_mean_reflection_consistency": 0.22629243284463882,
+          "delta_consistency": -0.05450872331857684,
+          "relative_delta_consistency_pct": -19.411858577567127,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 27.632582473754884,
+          "rc_reflective_region_psnr": 27.312349319458008,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.31694277822971345,
+          "rc_mean_reflection_consistency": 0.2604417517781258,
+          "delta_consistency": -0.056501026451587666,
+          "relative_delta_consistency_pct": -17.82688558710018,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 25.764760208129882,
+          "rc_reflective_region_psnr": 25.88907070159912,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "base_complete": true,
+      "rc_complete": true,
+      "splits": {
+        "train": {
+          "base_mean_reflection_consistency": 0.3351043462753296,
+          "rc_mean_reflection_consistency": 0.29428005367517474,
+          "delta_consistency": -0.040824292600154855,
+          "relative_delta_consistency_pct": -12.182561358548499,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 23.052289962768555,
+          "rc_reflective_region_psnr": 22.858503913879396,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        },
+        "test": {
+          "base_mean_reflection_consistency": 0.29593287855386735,
+          "rc_mean_reflection_consistency": 0.25243335366249087,
+          "delta_consistency": -0.043499524891376484,
+          "relative_delta_consistency_pct": -14.69911863255791,
+          "rc_lower_than_base": true,
+          "base_reflective_region_psnr": 20.463845634460448,
+          "rc_reflective_region_psnr": 20.661319732666016,
+          "base_valid_pair_count": 10,
+          "rc_valid_pair_count": 10,
+          "base_num_pairs": 10,
+          "rc_num_pairs": 10
+        }
+      },
+      "rc_improves_both_train_test": true,
+      "rc_worsens_either_split": false
+    }
+  ],
+  "main_rc_win_counts": {
+    "complete_base_rc_pairs": 14,
+    "missing_base_rc_pairs": 3,
+    "rc_lower_on_train_count": 14,
+    "rc_lower_on_test_count": 13,
+    "scenes_rc_improves_both_train_test": 13,
+    "scenes_rc_worsens_either_split": 1
+  },
+  "ablation_expected_jobs": 51,
+  "ablation_complete_jobs": 42,
+  "ablation_missing_jobs": [
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "variant": "wo_ref",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/gardenspheres/wo_ref/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/gardenspheres/wo_ref/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "variant": "wo_conf",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/gardenspheres/wo_conf/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/gardenspheres/wo_conf/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "variant": "rough_only",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/gardenspheres/rough_only/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/gardenspheres/rough_only/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "wo_ref",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/sedan/wo_ref/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/sedan/wo_ref/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "wo_conf",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/sedan/wo_conf/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/sedan/wo_conf/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "rough_only",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/sedan/rough_only/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/sedan/rough_only/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "wo_ref",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/toycar/wo_ref/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/toycar/wo_ref/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "wo_conf",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/toycar/wo_conf/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/toycar/wo_conf/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "rough_only",
+      "seed_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/toycar/rough_only/seed_0",
+      "model_dir": "/tmp/rc_refgs_full_dataset_ablations_i31000_20260528/shiny_blender_real/toycar/rough_only/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ]
+    }
+  ],
+  "ablation_completion_by_dataset": {
+    "shiny_blender_synthetic": {
+      "complete": 18,
+      "expected": 18
+    },
+    "shiny_blender_real": {
+      "complete": 0,
+      "expected": 9
+    },
+    "glossy_synthetic": {
+      "complete": 24,
+      "expected": 24
+    }
+  },
+  "ablation_completion_non_shiny_real": {
+    "complete": 42,
+    "expected": 42
+  },
+  "ablation_summary_by_dataset_variant": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "variant": "wo_ref",
+      "complete_count": 6,
+      "expected_count": 6,
+      "mean_train_reflection_consistency": 0.21180515233427286,
+      "mean_test_reflection_consistency": 0.07545600383697698,
+      "mean_train_reflective_region_psnr": 35.50198593139648,
+      "mean_test_reflective_region_psnr": 31.39551493326823
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "variant": "wo_conf",
+      "complete_count": 6,
+      "expected_count": 6,
+      "mean_train_reflection_consistency": 0.10944761099138607,
+      "mean_test_reflection_consistency": 0.03864469725328187,
+      "mean_train_reflective_region_psnr": 35.26385898590088,
+      "mean_test_reflective_region_psnr": 31.467753442128497
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "variant": "rough_only",
+      "complete_count": 6,
+      "expected_count": 6,
+      "mean_train_reflection_consistency": 0.19319159153383225,
+      "mean_test_reflection_consistency": 0.06957012750208377,
+      "mean_train_reflective_region_psnr": 35.313420454661056,
+      "mean_test_reflective_region_psnr": 31.617156887054442
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "variant": "wo_ref",
+      "complete_count": 0,
+      "expected_count": 3,
+      "mean_train_reflection_consistency": null,
+      "mean_test_reflection_consistency": null,
+      "mean_train_reflective_region_psnr": null,
+      "mean_test_reflective_region_psnr": null
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "variant": "wo_conf",
+      "complete_count": 0,
+      "expected_count": 3,
+      "mean_train_reflection_consistency": null,
+      "mean_test_reflection_consistency": null,
+      "mean_train_reflective_region_psnr": null,
+      "mean_test_reflective_region_psnr": null
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "variant": "rough_only",
+      "complete_count": 0,
+      "expected_count": 3,
+      "mean_train_reflection_consistency": null,
+      "mean_test_reflection_consistency": null,
+      "mean_train_reflective_region_psnr": null,
+      "mean_test_reflective_region_psnr": null
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "variant": "wo_ref",
+      "complete_count": 8,
+      "expected_count": 8,
+      "mean_train_reflection_consistency": 0.17445868374779822,
+      "mean_test_reflection_consistency": 0.1798745750915259,
+      "mean_train_reflective_region_psnr": 26.341012358665466,
+      "mean_test_reflective_region_psnr": 24.311390352249145
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "variant": "wo_conf",
+      "complete_count": 8,
+      "expected_count": 8,
+      "mean_train_reflection_consistency": 0.15992845837026834,
+      "mean_test_reflection_consistency": 0.16726634963415563,
+      "mean_train_reflective_region_psnr": 26.352376079559328,
+      "mean_test_reflective_region_psnr": 24.291162776947022
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "variant": "rough_only",
+      "complete_count": 8,
+      "expected_count": 8,
+      "mean_train_reflection_consistency": 0.175582115072757,
+      "mean_test_reflection_consistency": 0.18067174167372285,
+      "mean_train_reflective_region_psnr": 26.264969444274904,
+      "mean_test_reflective_region_psnr": 24.24244463443756
+    }
+  ],
+  "ablation_summary_by_scene_variant": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.17000184431672097,
+      "test_mean_reflection_consistency": 0.04855797253549099,
+      "train_reflective_region_psnr": 37.658057022094724,
+      "test_reflective_region_psnr": 32.37107181549072,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.16729665473103522,
+      "test_mean_reflection_consistency": 0.04714860953390598,
+      "train_reflective_region_psnr": 37.18550491333008,
+      "test_reflective_region_psnr": 33.35659484863281,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.169089861959219,
+      "test_mean_reflection_consistency": 0.0486237172037363,
+      "train_reflective_region_psnr": 38.079153060913086,
+      "test_reflective_region_psnr": 34.015917205810545,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.3498593010008335,
+      "test_mean_reflection_consistency": 0.08750245831906796,
+      "train_reflective_region_psnr": 31.029361152648924,
+      "test_reflective_region_psnr": 27.554748153686525,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.18725216947495937,
+      "test_mean_reflection_consistency": 0.0709311157464981,
+      "train_reflective_region_psnr": 30.91968936920166,
+      "test_reflective_region_psnr": 27.582256698608397,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.32922439426183703,
+      "test_mean_reflection_consistency": 0.08963679447770119,
+      "train_reflective_region_psnr": 31.09470157623291,
+      "test_reflective_region_psnr": 27.827952575683593,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.050770715717226265,
+      "test_mean_reflection_consistency": 0.0074028920382261275,
+      "train_reflective_region_psnr": 36.59847717285156,
+      "test_reflective_region_psnr": 30.352484893798827,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.028463229024782776,
+      "test_mean_reflection_consistency": 0.0063940855674445626,
+      "train_reflective_region_psnr": 36.55188903808594,
+      "test_reflective_region_psnr": 30.762211036682128,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.0530368885025382,
+      "test_mean_reflection_consistency": 0.007932955538854003,
+      "train_reflective_region_psnr": 35.97505683898926,
+      "test_reflective_region_psnr": 30.968200302124025,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.3578144133090973,
+      "test_mean_reflection_consistency": 0.16892162412405015,
+      "train_reflective_region_psnr": 37.10995674133301,
+      "test_reflective_region_psnr": 35.8431396484375,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.09561121240258216,
+      "test_mean_reflection_consistency": 0.03638473078608513,
+      "train_reflective_region_psnr": 37.15206108093262,
+      "test_reflective_region_psnr": 36.1205493927002,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.3079697206616402,
+      "test_mean_reflection_consistency": 0.15542802065610886,
+      "train_reflective_region_psnr": 36.85917778015137,
+      "test_reflective_region_psnr": 36.006968307495114,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.021928569953888654,
+      "test_mean_reflection_consistency": 0.004245767323300243,
+      "train_reflective_region_psnr": 39.366471481323245,
+      "test_reflective_region_psnr": 39.846435928344725,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.016082213912159204,
+      "test_mean_reflection_consistency": 0.0038279443979263306,
+      "train_reflective_region_psnr": 38.9260555267334,
+      "test_reflective_region_psnr": 39.253265380859375,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.022073581302538513,
+      "test_mean_reflection_consistency": 0.003973538288846612,
+      "train_reflective_region_psnr": 38.82027359008789,
+      "test_reflective_region_psnr": 39.317513656616214,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.3204560697078705,
+      "test_mean_reflection_consistency": 0.13610530868172646,
+      "train_reflective_region_psnr": 31.24959201812744,
+      "test_reflective_region_psnr": 22.405209159851076,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.1619801864027977,
+      "test_mean_reflection_consistency": 0.06718169748783112,
+      "train_reflective_region_psnr": 30.84795398712158,
+      "test_reflective_region_psnr": 21.731643295288087,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.2777551025152206,
+      "test_mean_reflection_consistency": 0.1118257388472557,
+      "train_reflective_region_psnr": 31.0521598815918,
+      "test_reflective_region_psnr": 21.566389274597167,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.11755097731947899,
+      "test_mean_reflection_consistency": 0.12369450256228447,
+      "train_reflective_region_psnr": 25.99390811920166,
+      "test_reflective_region_psnr": 22.452810096740723,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.10436164811253548,
+      "test_mean_reflection_consistency": 0.11223842576146126,
+      "train_reflective_region_psnr": 26.048081970214845,
+      "test_reflective_region_psnr": 22.418060111999512,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.11523713544011116,
+      "test_mean_reflection_consistency": 0.12213612571358681,
+      "train_reflective_region_psnr": 25.640682983398438,
+      "test_reflective_region_psnr": 22.239760971069337,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.14721198454499246,
+      "test_mean_reflection_consistency": 0.11179695427417755,
+      "train_reflective_region_psnr": 28.287261962890625,
+      "test_reflective_region_psnr": 25.678668403625487,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.14324686378240586,
+      "test_mean_reflection_consistency": 0.11289171352982522,
+      "train_reflective_region_psnr": 28.281042098999023,
+      "test_reflective_region_psnr": 25.577692222595214,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.150847277790308,
+      "test_mean_reflection_consistency": 0.11192542389035225,
+      "train_reflective_region_psnr": 28.27362060546875,
+      "test_reflective_region_psnr": 25.62972640991211,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.12485129982233048,
+      "test_mean_reflection_consistency": 0.15894452929496766,
+      "train_reflective_region_psnr": 28.06360321044922,
+      "test_reflective_region_psnr": 26.87231731414795,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.11998061761260033,
+      "test_mean_reflection_consistency": 0.15441083610057832,
+      "train_reflective_region_psnr": 27.952320671081544,
+      "test_reflective_region_psnr": 27.06930446624756,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.12373049259185791,
+      "test_mean_reflection_consistency": 0.15795457512140273,
+      "train_reflective_region_psnr": 28.029560089111328,
+      "test_reflective_region_psnr": 27.137519454956056,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.1957314908504486,
+      "test_mean_reflection_consistency": 0.22322192937135696,
+      "train_reflective_region_psnr": 23.41133346557617,
+      "test_reflective_region_psnr": 22.0252893447876,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.18143763542175292,
+      "test_mean_reflection_consistency": 0.20740322172641754,
+      "train_reflective_region_psnr": 24.006666946411134,
+      "test_reflective_region_psnr": 22.150599098205568,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.19804181158542633,
+      "test_mean_reflection_consistency": 0.22210411727428436,
+      "train_reflective_region_psnr": 23.906452941894532,
+      "test_reflective_region_psnr": 22.025045585632324,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.1222952775657177,
+      "test_mean_reflection_consistency": 0.1295338213443756,
+      "train_reflective_region_psnr": 25.654272842407227,
+      "test_reflective_region_psnr": 23.29527187347412,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.10961685255169869,
+      "test_mean_reflection_consistency": 0.1201612651348114,
+      "train_reflective_region_psnr": 25.221497535705566,
+      "test_reflective_region_psnr": 22.987455940246583,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.12040221616625786,
+      "test_mean_reflection_consistency": 0.12684064954519272,
+      "train_reflective_region_psnr": 25.31834316253662,
+      "test_reflective_region_psnr": 23.070027923583986,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.09206003248691559,
+      "test_mean_reflection_consistency": 0.08513014204800129,
+      "train_reflective_region_psnr": 29.271531105041504,
+      "test_reflective_region_psnr": 27.63684673309326,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.08236022815108299,
+      "test_mean_reflection_consistency": 0.0783917885273695,
+      "train_reflective_region_psnr": 29.058702087402345,
+      "test_reflective_region_psnr": 27.707265853881836,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.09311198294162751,
+      "test_mean_reflection_consistency": 0.08532856442034245,
+      "train_reflective_region_psnr": 29.025543212890625,
+      "test_reflective_region_psnr": 27.662607955932618,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.2685814380645752,
+      "test_mean_reflection_consistency": 0.3090794920921326,
+      "train_reflective_region_psnr": 27.079141235351564,
+      "test_reflective_region_psnr": 25.925282859802245,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.23942040652036667,
+      "test_mean_reflection_consistency": 0.27822865843772887,
+      "train_reflective_region_psnr": 27.229942321777344,
+      "test_reflective_region_psnr": 25.870967674255372,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.27762067019939424,
+      "test_mean_reflection_consistency": 0.31866267025470735,
+      "train_reflective_region_psnr": 27.06384391784668,
+      "test_reflective_region_psnr": 25.775622177124024,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "wo_ref",
+      "train_mean_reflection_consistency": 0.32738696932792666,
+      "test_mean_reflection_consistency": 0.2975952297449112,
+      "train_reflective_region_psnr": 22.96704692840576,
+      "test_reflective_region_psnr": 20.604636192321777,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "wo_conf",
+      "train_mean_reflection_consistency": 0.2990034148097038,
+      "test_mean_reflection_consistency": 0.27440488785505296,
+      "train_reflective_region_psnr": 23.020755004882812,
+      "test_reflective_region_psnr": 20.54795684814453,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "rough_only",
+      "train_mean_reflection_consistency": 0.3256653338670731,
+      "test_mean_reflection_consistency": 0.30042180716991423,
+      "train_reflective_region_psnr": 22.861708641052246,
+      "test_reflective_region_psnr": 20.399246597290038,
+      "train_valid_pair_count": 10,
+      "test_valid_pair_count": 10,
+      "train_num_pairs": 10,
+      "test_num_pairs": 10
+    }
+  ],
+  "ablation_summary_by_scene_variant_split": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.17000184431672097,
+      "reflective_region_psnr": 37.658057022094724,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.04855797253549099,
+      "reflective_region_psnr": 32.37107181549072,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.16729665473103522,
+      "reflective_region_psnr": 37.18550491333008,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.04714860953390598,
+      "reflective_region_psnr": 33.35659484863281,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.169089861959219,
+      "reflective_region_psnr": 38.079153060913086,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.0486237172037363,
+      "reflective_region_psnr": 34.015917205810545,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.3498593010008335,
+      "reflective_region_psnr": 31.029361152648924,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.08750245831906796,
+      "reflective_region_psnr": 27.554748153686525,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.18725216947495937,
+      "reflective_region_psnr": 30.91968936920166,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.0709311157464981,
+      "reflective_region_psnr": 27.582256698608397,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.32922439426183703,
+      "reflective_region_psnr": 31.09470157623291,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.08963679447770119,
+      "reflective_region_psnr": 27.827952575683593,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.050770715717226265,
+      "reflective_region_psnr": 36.59847717285156,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.0074028920382261275,
+      "reflective_region_psnr": 30.352484893798827,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.028463229024782776,
+      "reflective_region_psnr": 36.55188903808594,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.0063940855674445626,
+      "reflective_region_psnr": 30.762211036682128,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.0530368885025382,
+      "reflective_region_psnr": 35.97505683898926,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.007932955538854003,
+      "reflective_region_psnr": 30.968200302124025,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.3578144133090973,
+      "reflective_region_psnr": 37.10995674133301,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.16892162412405015,
+      "reflective_region_psnr": 35.8431396484375,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.09561121240258216,
+      "reflective_region_psnr": 37.15206108093262,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.03638473078608513,
+      "reflective_region_psnr": 36.1205493927002,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.3079697206616402,
+      "reflective_region_psnr": 36.85917778015137,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.15542802065610886,
+      "reflective_region_psnr": 36.006968307495114,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.021928569953888654,
+      "reflective_region_psnr": 39.366471481323245,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.004245767323300243,
+      "reflective_region_psnr": 39.846435928344725,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.016082213912159204,
+      "reflective_region_psnr": 38.9260555267334,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.0038279443979263306,
+      "reflective_region_psnr": 39.253265380859375,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.022073581302538513,
+      "reflective_region_psnr": 38.82027359008789,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.003973538288846612,
+      "reflective_region_psnr": 39.317513656616214,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.3204560697078705,
+      "reflective_region_psnr": 31.24959201812744,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.13610530868172646,
+      "reflective_region_psnr": 22.405209159851076,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.1619801864027977,
+      "reflective_region_psnr": 30.84795398712158,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.06718169748783112,
+      "reflective_region_psnr": 21.731643295288087,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.2777551025152206,
+      "reflective_region_psnr": 31.0521598815918,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.1118257388472557,
+      "reflective_region_psnr": 21.566389274597167,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.11755097731947899,
+      "reflective_region_psnr": 25.99390811920166,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.12369450256228447,
+      "reflective_region_psnr": 22.452810096740723,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.10436164811253548,
+      "reflective_region_psnr": 26.048081970214845,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.11223842576146126,
+      "reflective_region_psnr": 22.418060111999512,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.11523713544011116,
+      "reflective_region_psnr": 25.640682983398438,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.12213612571358681,
+      "reflective_region_psnr": 22.239760971069337,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.14721198454499246,
+      "reflective_region_psnr": 28.287261962890625,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.11179695427417755,
+      "reflective_region_psnr": 25.678668403625487,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.14324686378240586,
+      "reflective_region_psnr": 28.281042098999023,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.11289171352982522,
+      "reflective_region_psnr": 25.577692222595214,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.150847277790308,
+      "reflective_region_psnr": 28.27362060546875,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.11192542389035225,
+      "reflective_region_psnr": 25.62972640991211,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.12485129982233048,
+      "reflective_region_psnr": 28.06360321044922,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.15894452929496766,
+      "reflective_region_psnr": 26.87231731414795,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.11998061761260033,
+      "reflective_region_psnr": 27.952320671081544,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.15441083610057832,
+      "reflective_region_psnr": 27.06930446624756,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.12373049259185791,
+      "reflective_region_psnr": 28.029560089111328,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.15795457512140273,
+      "reflective_region_psnr": 27.137519454956056,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.1957314908504486,
+      "reflective_region_psnr": 23.41133346557617,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.22322192937135696,
+      "reflective_region_psnr": 22.0252893447876,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.18143763542175292,
+      "reflective_region_psnr": 24.006666946411134,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.20740322172641754,
+      "reflective_region_psnr": 22.150599098205568,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.19804181158542633,
+      "reflective_region_psnr": 23.906452941894532,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.22210411727428436,
+      "reflective_region_psnr": 22.025045585632324,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.1222952775657177,
+      "reflective_region_psnr": 25.654272842407227,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.1295338213443756,
+      "reflective_region_psnr": 23.29527187347412,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.10961685255169869,
+      "reflective_region_psnr": 25.221497535705566,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.1201612651348114,
+      "reflective_region_psnr": 22.987455940246583,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.12040221616625786,
+      "reflective_region_psnr": 25.31834316253662,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.12684064954519272,
+      "reflective_region_psnr": 23.070027923583986,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.09206003248691559,
+      "reflective_region_psnr": 29.271531105041504,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.08513014204800129,
+      "reflective_region_psnr": 27.63684673309326,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.08236022815108299,
+      "reflective_region_psnr": 29.058702087402345,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.0783917885273695,
+      "reflective_region_psnr": 27.707265853881836,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.09311198294162751,
+      "reflective_region_psnr": 29.025543212890625,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.08532856442034245,
+      "reflective_region_psnr": 27.662607955932618,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.2685814380645752,
+      "reflective_region_psnr": 27.079141235351564,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.3090794920921326,
+      "reflective_region_psnr": 25.925282859802245,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.23942040652036667,
+      "reflective_region_psnr": 27.229942321777344,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.27822865843772887,
+      "reflective_region_psnr": 25.870967674255372,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.27762067019939424,
+      "reflective_region_psnr": 27.06384391784668,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.31866267025470735,
+      "reflective_region_psnr": 25.775622177124024,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "wo_ref",
+      "split": "train",
+      "mean_reflection_consistency": 0.32738696932792666,
+      "reflective_region_psnr": 22.96704692840576,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "wo_ref",
+      "split": "test",
+      "mean_reflection_consistency": 0.2975952297449112,
+      "reflective_region_psnr": 20.604636192321777,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "wo_conf",
+      "split": "train",
+      "mean_reflection_consistency": 0.2990034148097038,
+      "reflective_region_psnr": 23.020755004882812,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "wo_conf",
+      "split": "test",
+      "mean_reflection_consistency": 0.27440488785505296,
+      "reflective_region_psnr": 20.54795684814453,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "rough_only",
+      "split": "train",
+      "mean_reflection_consistency": 0.3256653338670731,
+      "reflective_region_psnr": 22.861708641052246,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "variant": "rough_only",
+      "split": "test",
+      "mean_reflection_consistency": 0.30042180716991423,
+      "reflective_region_psnr": 20.399246597290038,
+      "valid_pair_count": 10,
+      "num_pairs": 10
+    }
+  ],
+  "limitations": [
+    "All non-Shiny-Real ablation experiments are complete, but the full ablation matrix is incomplete due to Shiny Blender Real.",
+    "Shiny Blender Real ablations remain OOM-blocked; no full 51/51 ablation claim is supported.",
+    "FD-P2 main remains incomplete; five Shiny Blender Real base/rc cells are still missing required formal artifacts.",
+    "Do not infer wins/losses for missing main or ablation cells.",
+    "Single-seed evidence only; no multi-seed robustness support."
+  ],
+  "recommended_next_steps": [
+    "Finish remaining FD-P2 Shiny Real base/rc cells before any full main claim.",
+    "Keep non-Shiny-Real ablation package fixed as complete 42/42 evidence.",
+    "Defer Shiny Blender Real ablations until bounded reduced-resolution recovery is stable and reproducible.",
+    "No manuscript/scientific claim upgrade until main FD-P2 reaches 34/34 or scope is explicitly narrowed.",
+    "Do not start multi-seed until single-seed full matrix is complete and summarized."
+  ]
+}

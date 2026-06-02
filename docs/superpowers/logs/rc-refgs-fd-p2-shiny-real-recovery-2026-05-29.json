@@ -1,0 +1,206 @@
+{
+  "task": "Recover FD-P2 Shiny Real base/RC cells after metric RGB/RGBA patch",
+  "timestamp_cst": "2026-05-29 16:47:01 CST",
+  "output_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527",
+  "scope": {
+    "dataset": "shiny_blender_real",
+    "scenes": [
+      "gardenspheres",
+      "sedan",
+      "toycar"
+    ],
+    "variants": [
+      "base",
+      "rc"
+    ],
+    "seed": 0,
+    "iterations": 31000
+  },
+  "required_artifacts": [
+    "point_cloud/iteration_31000/point_cloud.ply",
+    "reflection_consistency_train.json",
+    "reflection_consistency_test.json",
+    "launcher_summary.json"
+  ],
+  "cells": [
+    {
+      "scene": "gardenspheres",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/base/seed_0",
+      "classification": "complete",
+      "missing_artifacts": [],
+      "log_evidence": [
+        "full_dataset_base_rc_i31000_missing_real_gpu0.log",
+        "full_dataset_base_rc_i31000_retry_gpu0.log",
+        "shiny_real_gardenspheres_base_smoke_r2_i100_gpu0.log"
+      ],
+      "flags": {
+        "oom": true,
+        "nan": true,
+        "rgb_channel_mismatch": true
+      }
+    },
+    {
+      "scene": "gardenspheres",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/rc/seed_0",
+      "classification": "OOM/NaN failed",
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "log_evidence": [
+        "full_dataset_base_rc_i31000_missing_real_gpu0.log",
+        "full_dataset_base_rc_i31000_retry_gpu0.log"
+      ],
+      "flags": {
+        "oom": true,
+        "nan": true,
+        "rgb_channel_mismatch": true
+      }
+    },
+    {
+      "scene": "sedan",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/base/seed_0",
+      "classification": "OOM/NaN failed",
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "log_evidence": [
+        "full_dataset_base_rc_i31000_missing_real_gpu0.log",
+        "full_dataset_base_rc_i31000_retry_gpu0.log"
+      ],
+      "flags": {
+        "oom": true,
+        "nan": true,
+        "rgb_channel_mismatch": true
+      }
+    },
+    {
+      "scene": "sedan",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/rc/seed_0",
+      "classification": "OOM/NaN failed",
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "log_evidence": [
+        "full_dataset_base_rc_i31000_missing_real_gpu0.log",
+        "full_dataset_base_rc_i31000_retry_gpu0.log"
+      ],
+      "flags": {
+        "oom": true,
+        "nan": true,
+        "rgb_channel_mismatch": true
+      }
+    },
+    {
+      "scene": "toycar",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/base/seed_0",
+      "classification": "OOM/NaN failed",
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "log_evidence": [
+        "full_dataset_base_rc_i31000_missing_real_gpu0.log",
+        "full_dataset_base_rc_i31000_retry_gpu0.log"
+      ],
+      "flags": {
+        "oom": true,
+        "nan": true,
+        "rgb_channel_mismatch": true
+      }
+    },
+    {
+      "scene": "toycar",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/rc/seed_0",
+      "classification": "OOM/NaN failed",
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "log_evidence": [
+        "full_dataset_base_rc_i31000_missing_real_gpu0.log",
+        "full_dataset_base_rc_i31000_retry_gpu0.log"
+      ],
+      "flags": {
+        "oom": true,
+        "nan": true,
+        "rgb_channel_mismatch": true
+      }
+    }
+  ],
+  "counts": {
+    "complete": 1,
+    "metrics-only recoverable": 0,
+    "training-needed": 0,
+    "OOM/NaN failed": 5
+  },
+  "executed_in_window": [
+    {
+      "step": "smoke_r2_gardenspheres_base_i100",
+      "result": "failed_oom"
+    },
+    {
+      "step": "smoke_r4_gardenspheres_base_i100",
+      "result": "passed_no_rgb_crash_no_oom_but_nan_loss"
+    },
+    {
+      "step": "full_gardenspheres_base_i31000_r4",
+      "result": "completed"
+    },
+    {
+      "step": "metrics_train_gardenspheres_base",
+      "result": "completed"
+    },
+    {
+      "step": "metrics_test_gardenspheres_base",
+      "result": "completed"
+    }
+  ],
+  "decision": "CONDITIONAL GO",
+  "remaining_cells": [
+    {
+      "scene": "gardenspheres",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/rc/seed_0"
+    },
+    {
+      "scene": "sedan",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/base/seed_0"
+    },
+    {
+      "scene": "sedan",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/rc/seed_0"
+    },
+    {
+      "scene": "toycar",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/base/seed_0"
+    },
+    {
+      "scene": "toycar",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/rc/seed_0"
+    }
+  ],
+  "next_command_template": "conda run -n ref_gs python train.py --cuda_device 0 -s \"/data/liuly/dataset/3DGS/Shiny Blender Real/<scene>\" -m /tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/<scene>/<variant>/seed_0 --eval --iterations 31000 --test_iterations 31000 --save_iterations 31000 --seed 0 --quiet -r 4 --densify_until_iter 8000 --densify_grad_threshold 0.0005 --opacity_cull 0.08"
+}

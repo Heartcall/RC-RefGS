@@ -25,7 +25,7 @@ def _extract_cuda_device(argv):
 
 def _maybe_set_cuda_device(argv):
     cuda_device = _extract_cuda_device(argv)
-    if cuda_device is not None and os.environ.get("RC_REF_GS_FILTER_CUDA_VISIBLE_DEVICES") == "1":
+    if cuda_device is not None:
         os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
 
 _maybe_set_cuda_device(sys.argv)
@@ -39,13 +39,54 @@ from utils.general_utils import safe_state
 from utils.reflection_consistency import choose_pair_camera, reflection_consistency_loss
 
 
-def _cuda_device_index(cuda_device):
-    if cuda_device is None:
-        return 0
-    cuda_device = cuda_device.strip()
-    if not cuda_device or cuda_device.lower() in {"auto", "none"}:
-        return 0
-    return int(cuda_device.split(",", 1)[0])
+def _selected_device():
+    return torch.device("cuda:0")
+
+
+def _move_camera_tensors_to_device(camera, device):
+    for attr_name in (
+        "original_image",
+        "gt_alpha_mask",
+        "world_view_transform",
+        "projection_matrix",
+        "full_proj_transform",
+        "camera_center",
+        "rays_o",
+        "rays_d",
+    ):
+        value = getattr(camera, attr_name, None)
+        if torch.is_tensor(value) and value.device != device:
+            setattr(camera, attr_name, value.to(device))
+    return camera
+
+
+def _move_gaussian_tensors_to_device(gaussians, device):
+    for attr_name in (
+        "_xyz",
+        "_features_dc",
+        "_features_rest",
+        "_scaling",
+        "_rotation",
+        "_opacity",
+        "_albedo",
+        "_roughness",
+        "_mask",
+        "_language_feature",
+        "max_radii2D",
+    ):
+        value = getattr(gaussians, attr_name, None)
+        if value is None or not torch.is_tensor(value) or value.device == device:
+            continue
+        if isinstance(value, torch.nn.Parameter):
+            value = torch.nn.Parameter(value.detach().to(device), requires_grad=value.requires_grad)
+        else:
+            value = value.to(device)
+        setattr(gaussians, attr_name, value)
+
+    gaussians.dir_encoding = gaussians.dir_encoding.to(device)
+    gaussians.light_mlp = gaussians.light_mlp.to(device)
+    gaussians.light_mlp2 = gaussians.light_mlp2.to(device)
+    return gaussians
 
 
 def masked_psnr(pred, target, mask, eps=1e-8):
@@ -58,13 +99,24 @@ def masked_psnr(pred, target, mask, eps=1e-8):
     return float((-10.0 * torch.log10(mse)).item())
 
 
+def _prepare_gt_image(gt_image, bg):
+    channels = gt_image.shape[0]
+    if channels >= 4:
+        rgb = gt_image[:3, ...]
+        alpha = gt_image[3:4, ...]
+        return rgb * alpha + (1.0 - alpha) * bg[:, None, None]
+    if channels == 3:
+        return gt_image[:3, ...]
+    raise ValueError(f"Expected ground-truth image with >=3 channels, got shape {tuple(gt_image.shape)}")
+
+
 def reflective_region_psnr(render_pkg, camera, bg_color, alpha_threshold=0.2, roughness_threshold=0.6):
     alpha = render_pkg["rend_alpha"]
     roughness = render_pkg["roughness_map"]
     pred = render_pkg["pbr_rgb"] * alpha + (1.0 - alpha) * bg_color[:, None, None]
 
-    gt = camera.original_image.cuda()
-    target = gt[:3, ...] * gt[3:, ...] + (1.0 - gt[3:, ...]) * bg_color[:, None, None]
+    gt = camera.original_image.to(device=bg_color.device)
+    target = _prepare_gt_image(gt, bg_color)
     mask = (alpha > alpha_threshold) & (roughness < roughness_threshold)
     return masked_psnr(pred, target, mask)
 
@@ -171,6 +223,9 @@ def evaluate(
         if max_pairs > 0 and num_pairs >= max_pairs:
             break
 
+        src_cam = _move_camera_tensors_to_device(src_cam, bg.device)
+        tgt_cam = _move_camera_tensors_to_device(tgt_cam, bg.device)
+
         src_pkg = render(src_cam, gaussians, pipe, bg, iteration=iteration)
         tgt_pkg = render(tgt_cam, gaussians, pipe, bg, iteration=iteration)
 
@@ -223,15 +278,17 @@ def main():
     parser.add_argument("--quiet", action="store_true")
 
     args = get_combined_args(parser)
-    safe_state(args.quiet, cuda_device=_cuda_device_index(args.cuda_device))
+    safe_state(args.quiet)
     pair_list_json = getattr(args, "pair_list_json", None)
+    eval_device = _selected_device()
 
     dataset = lp.extract(args)
     pipe = pp.extract(args)
     gaussians = GaussianModel(dataset.sh_degree, dataset)
     scene = Scene(dataset, gaussians, load_iteration=args.iteration, shuffle=False, resolution_scales=[1.0])
+    gaussians = _move_gaussian_tensors_to_device(gaussians, eval_device)
     bg_color = [1.0, 1.0, 1.0] if dataset.white_background else [0.0, 0.0, 0.0]
-    bg = torch.tensor(bg_color, dtype=torch.float32, device="cuda")
+    bg = torch.tensor(bg_color, dtype=torch.float32, device=eval_device)
 
     results = evaluate(
         scene=scene,

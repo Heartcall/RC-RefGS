@@ -1,0 +1,132 @@
+{
+  "task_claim": "Analyze and summarize FD-P2 full-dataset base-vs-RC i31000 results.",
+  "generated_at": "2026-05-28T17:32:40.151884",
+  "experiment_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527",
+  "formal_output_only": true,
+  "expected_jobs": 34,
+  "completed_jobs": 28,
+  "incomplete_jobs": 6,
+  "base_rc_paired_scenes_completed": 14,
+  "base_rc_paired_scenes_expected": 17,
+  "jobs_with_train_and_test_reflection_json": 28,
+  "completion_gate_passed": false,
+  "status_artifact_snapshot": {
+    "full_dataset_run_status_json_exists": true,
+    "full_dataset_run_status_md_exists": true,
+    "completed_count": 28,
+    "failed_count": 6,
+    "skipped_count": 0,
+    "planned_count": 0,
+    "missing_artifact_count": 24
+  },
+  "missing_jobs": [
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "variant": "base",
+      "seed": "0",
+      "job_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/base/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "has_point_cloud": false,
+      "has_reflection_consistency_train_json": false,
+      "has_reflection_consistency_test_json": false,
+      "has_launcher_summary_json": false
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "gardenspheres",
+      "variant": "rc",
+      "seed": "0",
+      "job_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/gardenspheres/rc/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "has_point_cloud": false,
+      "has_reflection_consistency_train_json": false,
+      "has_reflection_consistency_test_json": false,
+      "has_launcher_summary_json": false
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "base",
+      "seed": "0",
+      "job_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/base/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "has_point_cloud": false,
+      "has_reflection_consistency_train_json": false,
+      "has_reflection_consistency_test_json": false,
+      "has_launcher_summary_json": false
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "sedan",
+      "variant": "rc",
+      "seed": "0",
+      "job_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/sedan/rc/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "has_point_cloud": false,
+      "has_reflection_consistency_train_json": false,
+      "has_reflection_consistency_test_json": false,
+      "has_launcher_summary_json": false
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "base",
+      "seed": "0",
+      "job_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/base/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "has_point_cloud": false,
+      "has_reflection_consistency_train_json": false,
+      "has_reflection_consistency_test_json": false,
+      "has_launcher_summary_json": false
+    },
+    {
+      "dataset": "shiny_blender_real",
+      "scene": "toycar",
+      "variant": "rc",
+      "seed": "0",
+      "job_root": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_real/toycar/rc/seed_0",
+      "complete": false,
+      "missing_artifacts": [
+        "point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_consistency_train.json",
+        "reflection_consistency_test.json",
+        "launcher_summary.json"
+      ],
+      "has_point_cloud": false,
+      "has_reflection_consistency_train_json": false,
+      "has_reflection_consistency_test_json": false,
+      "has_launcher_summary_json": false
+    }
+  ]
+}

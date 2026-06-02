@@ -1,5 +1,8 @@
 import unittest
 from pathlib import Path
+import ast
+
+import torch
 
 
 class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
@@ -68,6 +71,58 @@ class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
         for snippet in required_snippets:
             with self.subTest(snippet=snippet):
                 self.assertIn(snippet, source)
+
+    def test_train_ground_truth_compositing_is_channel_aware(self):
+        source = Path("train.py").read_text()
+
+        self.assertNotIn("gt_image[:3,...] * gt_image[3:,...]", source)
+        self.assertIn("def _prepare_gt_image(gt_image, bg):", source)
+        self.assertIn("if channels >= 4:", source)
+        self.assertIn("alpha = gt_image[3:4, ...]", source)
+        self.assertIn("if channels == 3:", source)
+        self.assertIn("raise ValueError", source)
+        self.assertIn("gt_image = _prepare_gt_image(viewpoint_cam.original_image.cuda(), bg)", source)
+
+    def test_prepare_gt_image_handles_rgb_and_rgba(self):
+        source = Path("train.py").read_text()
+        module = ast.parse(source)
+
+        func_node = None
+        for node in module.body:
+            if isinstance(node, ast.FunctionDef) and node.name == "_prepare_gt_image":
+                func_node = node
+                break
+        self.assertIsNotNone(func_node, "train.py must define _prepare_gt_image")
+
+        compiled = compile(ast.Module(body=[func_node], type_ignores=[]), filename="train.py", mode="exec")
+        scope = {}
+        exec(compiled, scope)
+        prepare_gt_image = scope["_prepare_gt_image"]
+
+        bg = torch.tensor([1.0, 1.0, 1.0], dtype=torch.float32)
+
+        rgb = torch.tensor(
+            [
+                [[0.1, 0.2], [0.3, 0.4]],
+                [[0.5, 0.6], [0.7, 0.8]],
+                [[0.9, 1.0], [0.0, 0.2]],
+            ],
+            dtype=torch.float32,
+        )
+        rgb_out = prepare_gt_image(rgb, bg)
+        self.assertEqual(tuple(rgb_out.shape), (3, 2, 2))
+        self.assertTrue(torch.allclose(rgb_out, rgb))
+
+        alpha = torch.tensor([[[1.0, 0.5], [0.0, 0.25]]], dtype=torch.float32)
+        rgba = torch.cat([rgb, alpha], dim=0)
+        rgba_out = prepare_gt_image(rgba, bg)
+        expected = rgb * alpha + (1.0 - alpha) * bg[:, None, None]
+        self.assertEqual(tuple(rgba_out.shape), (3, 2, 2))
+        self.assertTrue(torch.allclose(rgba_out, expected))
+
+        gray = torch.ones((1, 2, 2), dtype=torch.float32)
+        with self.assertRaises(ValueError):
+            prepare_gt_image(gray, bg)
 
 
 if __name__ == "__main__":

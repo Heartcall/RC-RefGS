@@ -46,6 +46,17 @@ try:
 except ImportError:
     TENSORBOARD_FOUND = False
 
+
+def _prepare_gt_image(gt_image, bg):
+    channels = gt_image.shape[0]
+    if channels >= 4:
+        rgb = gt_image[:3, ...]
+        alpha = gt_image[3:4, ...]
+        return rgb * alpha + (1.0 - alpha) * bg[:, None, None]
+    if channels == 3:
+        return gt_image[:3, ...]
+    raise ValueError(f"Expected ground-truth image with >=3 channels, got shape {tuple(gt_image.shape)}")
+
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint):
     first_iter = 0
     tb_writer = prepare_output_and_logger(dataset)
@@ -96,8 +107,7 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
         visibility_filter = render_pkg["visibility_filter"]
         radii = render_pkg["radii"]
         
-        gt_image = viewpoint_cam.original_image.cuda()
-        gt_image = gt_image[:3,...] * gt_image[3:,...] + (1-gt_image[3:,...]) * bg[:, None, None]
+        gt_image = _prepare_gt_image(viewpoint_cam.original_image.cuda(), bg)
             
         loss = 0.0
         

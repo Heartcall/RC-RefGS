@@ -25,10 +25,13 @@ def _extract_cuda_device(argv):
 
 def _maybe_set_cuda_device(argv):
     cuda_device = _extract_cuda_device(argv)
-    if cuda_device is not None and os.environ.get("RC_REF_GS_FILTER_CUDA_VISIBLE_DEVICES") == "1":
-        os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
+    if cuda_device is None:
+        return False
+    # Match train.py behavior: pin process-visible CUDA devices before importing torch.
+    os.environ["CUDA_VISIBLE_DEVICES"] = cuda_device
+    return True
 
-_maybe_set_cuda_device(sys.argv)
+_CUDA_VISIBLE_FILTERED = _maybe_set_cuda_device(sys.argv)
 
 import torch
 
@@ -42,6 +45,9 @@ from utils.loss_utils import ssim
 
 
 def _cuda_device_index(cuda_device):
+    if _CUDA_VISIBLE_FILTERED:
+        # After filtering CUDA_VISIBLE_DEVICES, selected physical GPU becomes logical cuda:0.
+        return 0
     if cuda_device is None:
         return 0
     cuda_device = cuda_device.strip()
@@ -53,8 +59,11 @@ def _cuda_device_index(cuda_device):
 def composite_gt(camera, bg):
     gt = camera.original_image.cuda()
     if gt.shape[0] >= 4:
-        return gt[:3, ...] * gt[3:, ...] + (1.0 - gt[3:, ...]) * bg[:, None, None]
-    return gt[:3, ...]
+        alpha = gt[3:4, ...]
+        return gt[:3, ...] * alpha + (1.0 - alpha) * bg[:, None, None]
+    if gt.shape[0] == 3:
+        return gt[:3, ...]
+    raise ValueError(f"Expected image tensor with >=3 channels, got shape {tuple(gt.shape)}")
 
 
 def composite_prediction(render_pkg, bg, image_key):
