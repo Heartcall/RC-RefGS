@@ -8558,3 +8558,168 @@ python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_re
 - **CONDITIONAL GO** because one smoke cell was attempted and failed with a clear isolated runtime-library error.
 - **NO-GO** for quality-preserving RC result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
 - Released the round-local task claim at `2026-06-03 18:37:33 CST`.
+
+## 2026-06-03 18:51:28 CST - Quality-preserving runtime environment hardening
+
+**Task claim and scope:**
+- Claimed exactly one task: "Fix the quality-preserving pilot runner runtime environment for GLIBCXX and retry at most one smoke cell."
+- Scope was limited to runner environment handling, tests, status docs, and one smoke retry under `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_glibcxx_fix`.
+- Did not launch the full 16-job pilot, Shiny Blender Real, metric-definition changes, FD-P2-lite result changes, or any quality-improvement claim.
+
+**Fix implemented:**
+- Subprocess commands now use `sys.executable`.
+- Subprocesses receive a copied `os.environ`.
+- When `CONDA_PREFIX` is present, `$CONDA_PREFIX/lib` is prepended to `LD_LIBRARY_PATH` while preserving the existing path after it.
+- `launcher_summary.json` records `sys.executable`, `CONDA_PREFIX`, effective `LD_LIBRARY_PATH`, and the `LD_LIBRARY_PATH` prefix.
+- Execute-mode jobs run `preflight_env` before `train.py`, including the conda `libstdc++.so.6` `GLIBCXX_3.4.29` check and a same-env `torch` + `nvdiffrast.torch` import check.
+
+**Validation before retry:**
+- RED: `python -m unittest tests/test_quality_preserving_pilot_runner.py` failed with missing env/preflight APIs.
+- GREEN: `python -m unittest tests/test_quality_preserving_pilot_runner.py` passed (`13` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> OK.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json` -> OK before retry.
+- `git diff --check` -> OK before retry.
+- Prohibited-process scan -> empty.
+- GPU probe found GPU 0 idle; GPUs 4/5/6/7 were busy.
+
+**Retry outcome:**
+- Runner command executed exactly one job for `helmet/rc_qp_lam010`, `smoke_iterations=1000`, `max_jobs=1`, device `0`.
+- `pilot_status.json` reports `job_count=1`, `failed=1`, and `failed_step=preflight_env`.
+- `launcher_summary.json` reports `status=failed`, `return_codes.preflight_env=1`, and `preflight_env.failed_check=runtime_import`.
+- Conda `libstdc++.so.6` exists and contains `GLIBCXX_3.4.29`.
+- Isolated preflight failure: `ModuleNotFoundError: No module named 'nvdiffrast'`.
+- `train.py` was not started; no point cloud, reflection metric JSON, or render-quality JSON was produced.
+- Post-run prohibited-process scan -> empty.
+
+**Decision and release:**
+- **CONDITIONAL GO** because runner environment handling is hardened and the retry failed before train with a clear recorded preflight dependency error.
+- **NO-GO** for quality-preserving RC result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
+- Released the round-local task claim at `2026-06-03 18:51:28 CST`.
+
+## 2026-06-03 19:25:28 CST - Quality-preserving explicit ref_gs Python smoke retry
+
+**Task claim and scope:**
+- Claimed exactly one task: "Retry one quality-preserving RC smoke cell with the explicitly verified ref_gs Python interpreter."
+- Scope was limited to runner explicit-interpreter support, one smoke retry under `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_explicit_refgs_python`, and status documentation.
+- Did not launch the full 16-job pilot, Shiny Blender Real, metric-definition changes, FD-P2-lite result changes, package installation, or any quality-improvement claim.
+
+**Pre-smoke verification:**
+- Explicit interpreter probe: `/home/liuly/anaconda3/envs/ref_gs/bin/python`.
+- Torch probe: `1.12.1 11.3`.
+- nvdiffrast probe: `nvdiffrast import OK`.
+- Prohibited-process scan -> empty.
+- Shell-level GPU probe verified GPU 0 idle: `0, 3 MiB, 0 %`.
+
+**Runner update and validation:**
+- Added `--python_executable` support so train and metric commands use `/home/liuly/anaconda3/envs/ref_gs/bin/python`.
+- Subprocess env now infers `CONDA_PREFIX=/home/liuly/anaconda3/envs/ref_gs` from the selected interpreter.
+- Added `--devices auto`, `--candidate_devices`, `--gpu_max_memory_used_mb`, and `--gpu_max_utilization` support.
+- Auto-GPU probe now strips `LD_LIBRARY_PATH`; nevertheless, `nvidia-smi` still returned exit `9` when launched as a child of the explicit `ref_gs` Python process under the required command environment.
+- RED/GREEN targeted tests: final `python -m unittest tests/test_quality_preserving_pilot_runner.py` passed (`17` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> OK.
+- `git diff --check` -> OK before retry.
+
+**Retry outcome:**
+- Because shell-level `nvidia-smi` verified GPU 0 idle and the runner auto-probe failed before any job launch, the smoke used explicit `--devices 0` to preserve the one-cell runtime limit.
+- Exactly one job was launched for `helmet/rc_qp_lam010`, `smoke_iterations=1000`, `max_jobs=1`.
+- `pilot_status.json` reports `job_count=1`, `failed=1`, `failed_step=train`, and `python_executable=/home/liuly/anaconda3/envs/ref_gs/bin/python`.
+- `launcher_summary.json` reports `preflight_env.status=completed`, `preflight_env.stdout=runtime import OK`, `return_codes.train=1`, `CONDA_PREFIX=/home/liuly/anaconda3/envs/ref_gs`, and `LD_LIBRARY_PATH` prefix `/home/liuly/anaconda3/envs/ref_gs/lib`.
+- Isolated train failure: `RuntimeError: No CUDA GPUs are available`.
+- Save artifact, reflection metrics, and render-quality metric were not produced/run.
+- Post-run prohibited-process scan -> empty.
+
+**Decision and release:**
+- **CONDITIONAL GO** because exactly one smoke cell launched with the explicit `ref_gs` interpreter and failed with a new isolated CUDA visibility/runtime cause.
+- **NO-GO** for quality-preserving RC result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
+- Released the round-local task claim at `2026-06-03 19:25:28 CST`.
+
+## 2026-06-03 21:05:10 CST - Quality-preserving lam010 four-scene pilot gate
+
+**Task claim and scope:**
+- Claimed exactly one task: "Run the first quality-preserving RC scientific pilot: 4 target scenes with rc_qp_lam010 at 31000 iterations."
+- Scope was limited to four target scenes, variant `rc_qp_lam010`, seed `0`, `31000` iterations, and output root `/tmp/rc_refgs_quality_preserving_rc_lam010_4scene_i31000_20260603`.
+- Explicit exclusions: no full 16-job pilot, no Shiny Blender Real, no other `rc_qp_*` variants, no metric-definition changes, no FD-P2-lite result changes, and no quality-improvement claim.
+
+**Pre-launch verification:**
+- Target CSV parsed as `16` rows representing four unique target scenes repeated across variants.
+- Planned `--variants rc_qp_lam010 --max_jobs 4` job count: `4`.
+- Selected scenes: `shiny_blender_synthetic/helmet`, `shiny_blender_synthetic/coffee`, `glossy_synthetic/luyu`, `glossy_synthetic/teapot`.
+- Engineering smoke root `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_cuda0_explicit` had all required `i1000` smoke artifacts for `helmet/rc_qp_lam010`.
+- Prohibited-process scan before launch -> empty.
+- Target output root had no preexisting files.
+
+**GPU/runtime safety gate:**
+- Shell-level `nvidia-smi` was available and showed GPU 0 idle, plus idle-looking GPUs 1/2/3 and busy GPUs 4/6/7.
+- Required runtime `/home/liuly/anaconda3/envs/ref_gs/bin/python` reported `torch.cuda.is_available() False` and `device_count 0` with `CUDA_VISIBLE_DEVICES` unset.
+- The same runtime also reported `False, 0` for candidate `CUDA_VISIBLE_DEVICES=0`, `1`, `2`, `3`, and `5`.
+- Because no candidate GPU was safely visible to the required `ref_gs` PyTorch runtime, the `i31000` pilot command was not executed.
+
+**Artifacts generated:**
+- `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.md`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.json`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-comparison-2026-06-03.csv`
+
+**Outcome:**
+- Runner command executed: no.
+- `pilot_status.json`: not created.
+- Completed jobs: `0`; failed jobs: `0`; partial jobs: `0`; not-started jobs: `4`.
+- No save artifact, reflection metrics, or render-quality metric was produced for `i31000`.
+- Base vs RC vs `rc_qp_lam010` comparison is not possible because no `rc_qp_lam010` `i31000` artifacts exist.
+- Full 16-job pilot did not start; Shiny Blender Real did not run.
+
+**Decision and release:**
+- **CONDITIONAL GO** for safe no-launch gating with a clear CUDA visibility blocker.
+- **NO-GO** for full 16-job expansion and for any quality-preserving claim upgrade.
+- Released the round-local task claim at `2026-06-03 21:05:10 CST`.
+
+## 2026-06-03 21:15:44 CST - Quality-preserving runner CUDA preflight fix
+
+**Task claim and scope:**
+- Claimed exactly one task: "Fix the quality-preserving runner CUDA preflight after manual fresh-subprocess verification."
+- Scope was limited to CUDA preflight in `scripts/run_rc_refgs_quality_preserving_pilot.py`, tests, and documentation/status artifacts.
+- Did not launch training, metrics, the four-scene pilot, Shiny Blender Real, metric-definition changes, or any quality-improvement claim.
+
+**Manual verification incorporated:**
+- User-provided fresh-subprocess `ref_gs` checks showed CUDA available when `CUDA_VISIBLE_DEVICES` is set before Python launch:
+  - GPU 0/1/2/3: `available=True`, `count=1`, `NVIDIA RTX A5000`
+  - GPU 5/6/7: `available=True`, `count=1`, `NVIDIA GeForce RTX 3090 Ti`
+- Conclusion recorded: previous runner CUDA gate was a false negative in preflight implementation, not proof that CUDA is unavailable.
+
+**Code fix:**
+- Added fresh torch CUDA preflight per candidate physical GPU.
+- Child preflight env sets:
+  - `CUDA_VISIBLE_DEVICES=<candidate_gpu>`
+  - `CONDA_PREFIX=/home/liuly/anaconda3/envs/ref_gs`
+  - `LD_LIBRARY_PATH=/home/liuly/anaconda3/envs/ref_gs/lib:${LD_LIBRARY_PATH}`
+  - Python `/home/liuly/anaconda3/envs/ref_gs/bin/python`
+- `torch` is imported only inside the child subprocess after `CUDA_VISIBLE_DEVICES` is set.
+- Parent runner does not import `torch` for preflight.
+- Auto device selection now requires both `nvidia-smi` idle and fresh torch CUDA preflight pass.
+- Explicit device execution can proceed past unreliable `nvidia-smi` only if fresh torch CUDA preflight passes.
+- Mapping policy implemented and recorded:
+  - external `CUDA_VISIBLE_DEVICES=<physical_gpu>`
+  - train/metric commands use logical `--cuda_device 0`
+  - artifacts record `physical_gpu`, `cuda_visible_devices`, `cuda_device_arg`, `device_mapping`, and per-candidate `cuda_preflight_results`.
+
+**Tests:**
+- Added/updated coverage for fresh subprocess per GPU candidate, child env before torch import, no parent torch import, auto reject/accept behavior, explicit-device preflight, logical train/metric `--cuda_device 0`, mapping-policy recording, dry-run non-execution, `max_jobs` safety, and Shiny Real exclusion.
+- RED: `python -m unittest tests/test_quality_preserving_pilot_runner.py` failed for missing fresh-subprocess CUDA preflight, physical/logical mapping, and torch-checked auto selection.
+- GREEN: `python -m unittest tests/test_quality_preserving_pilot_runner.py` passed (`21` tests).
+
+**Artifacts created/updated:**
+- Created `docs/superpowers/logs/rc-refgs-cuda-preflight-diagnostic-2026-06-03.{md,json}`.
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.{md,json}`.
+- Updated `docs/superpowers/logs/rc-refgs-full-implementation-status.md`.
+
+**Validation:**
+- `python -m unittest tests/test_quality_preserving_pilot_runner.py` -> pass (`21` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> pass.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json` -> pass.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-cuda-preflight-diagnostic-2026-06-03.json` -> pass.
+- `git diff --check` -> pass.
+- Prohibited-process scan -> empty.
+
+**Decision and release:**
+- **GO** for CUDA preflight fix.
+- **NO-GO** for training, metrics, four-scene pilot launch, Shiny Blender Real, metric changes, or quality-preserving result claims.
+- Released the round-local task claim at `2026-06-03 21:15:44 CST`.

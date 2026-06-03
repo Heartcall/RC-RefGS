@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import shlex
 import subprocess
 import sys
@@ -15,6 +16,9 @@ from pathlib import Path
 
 DEFAULT_TARGET_CSV = Path("docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv")
 DEFAULT_OUTPUT_ROOT = Path("/tmp/rc_refgs_quality_preserving_rc_i31000_20260601")
+DEFAULT_REF_GS_CONDA_PREFIX = "/home/liuly/anaconda3/envs/ref_gs"
+DEFAULT_REF_GS_PYTHON = f"{DEFAULT_REF_GS_CONDA_PREFIX}/bin/python"
+LOGICAL_CUDA_DEVICE = "0"
 DEFAULT_VARIANTS = (
     "rc_qp_lam005",
     "rc_qp_lam010",
@@ -99,6 +103,254 @@ def _quote(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
+def _conda_prefix_from_python(python_executable: str) -> str:
+    python_path = Path(python_executable)
+    if python_path.name.startswith("python") and python_path.parent.name == "bin":
+        return str(python_path.parent.parent)
+    return ""
+
+
+def _subprocess_env(
+    python_executable: str | None = None,
+    *,
+    cuda_visible_devices: str | None = None,
+    conda_prefix: str | None = None,
+) -> dict[str, str]:
+    env = os.environ.copy()
+    selected_prefix = _conda_prefix_from_python(python_executable or sys.executable)
+    effective_conda_prefix = conda_prefix or selected_prefix or env.get("CONDA_PREFIX")
+    if effective_conda_prefix:
+        env["CONDA_PREFIX"] = effective_conda_prefix
+        conda_lib = str(Path(effective_conda_prefix) / "lib")
+        existing_ld_path = env.get("LD_LIBRARY_PATH", "")
+        if existing_ld_path == conda_lib or existing_ld_path.startswith(f"{conda_lib}:"):
+            env["LD_LIBRARY_PATH"] = existing_ld_path
+        else:
+            env["LD_LIBRARY_PATH"] = conda_lib if not existing_ld_path else f"{conda_lib}:{existing_ld_path}"
+    if cuda_visible_devices is not None:
+        env["CUDA_VISIBLE_DEVICES"] = str(cuda_visible_devices)
+    return env
+
+
+def _environment_summary(env: dict[str, str], python_executable: str | None = None) -> dict[str, str | bool]:
+    ld_library_path = env.get("LD_LIBRARY_PATH", "")
+    selected_python = python_executable or sys.executable
+    return {
+        "sys_executable": sys.executable,
+        "selected_python_executable": selected_python,
+        "conda_prefix": env.get("CONDA_PREFIX", ""),
+        "cuda_visible_devices": env.get("CUDA_VISIBLE_DEVICES", ""),
+        "ld_library_path": ld_library_path,
+        "ld_library_path_prefix": ld_library_path.split(":", 1)[0] if ld_library_path else "",
+        "conda_libstdcxx": str(Path(env.get("CONDA_PREFIX", "")) / "lib" / "libstdc++.so.6")
+        if env.get("CONDA_PREFIX")
+        else "",
+    }
+
+
+def _failed_preflight_result(name: str, message: str) -> dict:
+    return {
+        "status": "failed",
+        "failed_check": name,
+        "return_code": None,
+        "stdout": "",
+        "stderr": message,
+        "checks": {
+            name: {
+                "status": "failed",
+                "return_code": None,
+                "stdout": "",
+                "stderr": message,
+            }
+        },
+    }
+
+
+def _captured_check(name: str, command: list[str], cwd: Path, env: dict[str, str]) -> tuple[dict, subprocess.CompletedProcess]:
+    result = subprocess.run(
+        command,
+        cwd=str(cwd),
+        env=env,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    check = {
+        "command": _quote(command),
+        "return_code": result.returncode,
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+        "status": "completed" if result.returncode == 0 else "failed",
+    }
+    return check, result
+
+
+def _preflight_env(repo_root: Path, env: dict[str, str], python_executable: str | None = None) -> dict:
+    selected_python = python_executable or sys.executable
+    if not selected_python:
+        return _failed_preflight_result("sys_executable", "sys.executable is empty")
+    if not Path(selected_python).exists():
+        return _failed_preflight_result("sys_executable", f"selected Python executable does not exist: {selected_python}")
+
+    conda_prefix = env.get("CONDA_PREFIX")
+    if not conda_prefix:
+        return _failed_preflight_result("conda_prefix", "CONDA_PREFIX is not set")
+
+    libstdcxx = Path(conda_prefix) / "lib" / "libstdc++.so.6"
+    if not libstdcxx.exists():
+        return _failed_preflight_result("libstdcxx_exists", f"missing {libstdcxx}")
+
+    checks: dict[str, dict] = {
+        "sys_executable": {
+            "status": "completed",
+            "path": selected_python,
+            "return_code": None,
+            "stdout": "",
+            "stderr": "",
+        },
+        "conda_prefix": {
+            "status": "completed",
+            "path": conda_prefix,
+            "return_code": None,
+            "stdout": "",
+            "stderr": "",
+        },
+        "libstdcxx_exists": {
+            "status": "completed",
+            "path": str(libstdcxx),
+            "return_code": None,
+            "stdout": "",
+            "stderr": "",
+        },
+    }
+
+    strings_check, strings_result = _captured_check("libstdcxx_strings", ["strings", str(libstdcxx)], repo_root, env)
+    if strings_result.returncode != 0:
+        checks["libstdcxx_strings"] = strings_check
+        return {
+            "status": "failed",
+            "failed_check": "libstdcxx_strings",
+            "return_code": strings_result.returncode,
+            "stdout": strings_result.stdout,
+            "stderr": strings_result.stderr,
+            "checks": checks,
+        }
+    if "GLIBCXX_3.4.29" not in strings_result.stdout:
+        strings_check["status"] = "failed"
+        strings_check["stderr"] = "GLIBCXX_3.4.29 not found in conda libstdc++.so.6"
+        checks["libstdcxx_strings"] = strings_check
+        return {
+            "status": "failed",
+            "failed_check": "libstdcxx_strings",
+            "return_code": strings_result.returncode,
+            "stdout": strings_result.stdout,
+            "stderr": strings_check["stderr"],
+            "checks": checks,
+        }
+    checks["libstdcxx_strings"] = {
+        "command": strings_check["command"],
+        "return_code": strings_result.returncode,
+        "stdout": "GLIBCXX_3.4.29 found",
+        "stderr": strings_result.stderr,
+        "status": "completed",
+    }
+
+    import_command = [
+        selected_python,
+        "-c",
+        "import torch; import nvdiffrast.torch as dr; print('runtime import OK')",
+    ]
+    import_check, import_result = _captured_check("runtime_import", import_command, repo_root, env)
+    checks["runtime_import"] = import_check
+    if import_result.returncode != 0:
+        return {
+            "status": "failed",
+            "failed_check": "runtime_import",
+            "return_code": import_result.returncode,
+            "stdout": import_result.stdout,
+            "stderr": import_result.stderr,
+            "checks": checks,
+        }
+
+    return {
+        "status": "completed",
+        "return_code": 0,
+        "stdout": import_result.stdout,
+        "stderr": import_result.stderr,
+        "checks": checks,
+    }
+
+
+def _parse_torch_preflight_stdout(stdout: str) -> dict:
+    for line in reversed(stdout.splitlines()):
+        stripped = line.strip()
+        if not stripped:
+            continue
+        try:
+            parsed = json.loads(stripped)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, dict):
+            return parsed
+    return {}
+
+
+def _fresh_torch_cuda_preflight(
+    candidate_gpu: str,
+    repo_root: Path,
+    *,
+    python_executable: str = DEFAULT_REF_GS_PYTHON,
+) -> dict:
+    env = _subprocess_env(
+        python_executable,
+        cuda_visible_devices=str(candidate_gpu),
+        conda_prefix=DEFAULT_REF_GS_CONDA_PREFIX,
+    )
+    snippet = "\n".join(
+        [
+            "import json",
+            "import torch",
+            "available = bool(torch.cuda.is_available())",
+            "count = int(torch.cuda.device_count())",
+            "name = torch.cuda.get_device_name(0) if available and count > 0 else ''",
+            "print(json.dumps({",
+            "    'torch_cuda_available': available,",
+            "    'torch_device_count': count,",
+            "    'device_name': name,",
+            "}))",
+        ]
+    )
+    result = subprocess.run(
+        [python_executable, "-c", snippet],
+        cwd=str(repo_root),
+        env=env,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    parsed = _parse_torch_preflight_stdout(result.stdout)
+    torch_cuda_available = bool(parsed.get("torch_cuda_available", False))
+    try:
+        torch_device_count = int(parsed.get("torch_device_count", 0) or 0)
+    except (TypeError, ValueError):
+        torch_device_count = 0
+    device_name = str(parsed.get("device_name", "") or "")
+    decision = "pass" if result.returncode == 0 and torch_cuda_available and torch_device_count >= 1 else "fail"
+    return {
+        "candidate_gpu": str(candidate_gpu),
+        "CUDA_VISIBLE_DEVICES": str(candidate_gpu),
+        "return_code": result.returncode,
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+        "torch_cuda_available": torch_cuda_available,
+        "torch_device_count": torch_device_count,
+        "device_name": device_name,
+        "decision": decision,
+    }
+
+
 def _split_values(values: list[str] | None, default: tuple[str, ...] | None = None) -> list[str]:
     if not values:
         return list(default or [])
@@ -106,6 +358,73 @@ def _split_values(values: list[str] | None, default: tuple[str, ...] | None = No
     for value in values:
         split.extend(part for part in value.replace(",", " ").split() if part)
     return split
+
+
+def _parse_gpu_probe_row(row: str) -> tuple[str, int, int] | None:
+    parts = [part.strip() for part in row.split(",")]
+    if len(parts) != 3:
+        return None
+    index = parts[0]
+    try:
+        memory_used_mb = int(parts[1].replace("MiB", "").strip())
+        utilization = int(parts[2].replace("%", "").strip())
+    except ValueError:
+        return None
+    return index, memory_used_mb, utilization
+
+
+def _select_auto_device(
+    candidate_devices: list[str],
+    max_memory_used_mb: int,
+    max_utilization: int,
+    *,
+    repo_root: Path | None = None,
+    python_executable: str = DEFAULT_REF_GS_PYTHON,
+) -> tuple[str, str, list[dict]]:
+    if not candidate_devices:
+        raise SystemExit("--devices auto requires --candidate_devices")
+    probe_env = os.environ.copy()
+    probe_env.pop("LD_LIBRARY_PATH", None)
+    result = subprocess.run(
+        ["nvidia-smi", "--query-gpu=index,memory.used,utilization.gpu", "--format=csv,noheader"],
+        env=probe_env,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    if result.returncode != 0:
+        raise SystemExit(f"nvidia-smi unavailable for --devices auto: {result.stderr.strip() or result.stdout.strip()}")
+
+    candidates = set(candidate_devices)
+    rows = []
+    for line in result.stdout.splitlines():
+        parsed = _parse_gpu_probe_row(line)
+        if parsed is None:
+            continue
+        rows.append(parsed)
+    preflight_results: list[dict] = []
+    for index, memory_used_mb, utilization in rows:
+        if index in candidates and memory_used_mb <= max_memory_used_mb and utilization <= max_utilization:
+            preflight = _fresh_torch_cuda_preflight(index, repo_root or _repo_root(), python_executable=python_executable)
+            preflight["nvidia_smi_idle"] = True
+            preflight["nvidia_smi_memory_used_mb"] = memory_used_mb
+            preflight["nvidia_smi_utilization_gpu_percent"] = utilization
+            preflight_results.append(preflight)
+            if preflight["decision"] == "pass":
+                return index, "auto_idle_cuda_preflight", preflight_results
+
+    details = "; ".join(
+        f"{index}: memory={memory_used_mb}MiB utilization={utilization}%"
+        for index, memory_used_mb, utilization in rows
+        if index in candidates
+    )
+    if preflight_results:
+        raise SystemExit(
+            "no idle candidate GPU passed fresh torch CUDA preflight "
+            f"({details}); preflight={json.dumps(preflight_results, sort_keys=True)}"
+        )
+    raise SystemExit(f"no idle candidate GPU available for --devices auto ({details})")
 
 
 def _load_target_scenes(target_csv: Path) -> list[dict]:
@@ -141,6 +460,10 @@ def _effective_iterations(args: argparse.Namespace) -> int:
     return args.smoke_iterations if args.smoke else args.iterations
 
 
+def _python_executable(args: argparse.Namespace) -> str:
+    return args.python_executable or DEFAULT_REF_GS_PYTHON
+
+
 def _model_path(output_root: Path, dataset: str, scene: str, variant: str) -> Path:
     return output_root / dataset / scene / variant / "seed_0"
 
@@ -173,7 +496,7 @@ def _train_command(args: argparse.Namespace, source_path: str, model_path: Path,
     cfg = VARIANT_CONFIGS[variant]
     iteration = _effective_iterations(args)
     return [
-        sys.executable,
+        _python_executable(args),
         "train.py",
         "--cuda_device",
         args.device,
@@ -209,7 +532,7 @@ def _train_command(args: argparse.Namespace, source_path: str, model_path: Path,
 def _reflection_command(args: argparse.Namespace, source_path: str, model_path: Path, split: str) -> list[str]:
     iteration = _effective_iterations(args)
     return [
-        sys.executable,
+        _python_executable(args),
         "metrics/reflection_consistency_eval.py",
         "--cuda_device",
         args.device,
@@ -236,7 +559,7 @@ def _reflection_command(args: argparse.Namespace, source_path: str, model_path: 
 def _render_quality_command(args: argparse.Namespace, source_path: str, model_path: Path, image_key: str) -> list[str]:
     iteration = _effective_iterations(args)
     return [
-        sys.executable,
+        _python_executable(args),
         "metrics/render_quality_eval.py",
         "--cuda_device",
         args.device,
@@ -293,6 +616,14 @@ def build_jobs(args: argparse.Namespace) -> list[dict]:
                     "variant": variant,
                     "seed": 0,
                     "device": args.device,
+                    "physical_gpu": args.physical_gpu,
+                    "cuda_visible_devices": args.physical_gpu,
+                    "cuda_device_arg": args.device,
+                    "device_mapping": {
+                        "physical_gpu": args.physical_gpu,
+                        "external_CUDA_VISIBLE_DEVICES": args.physical_gpu,
+                        "logical_cuda_device_arg": args.device,
+                    },
                     "source_path": scene_info["source_path"],
                     "model_path": str(model_path),
                     "iterations": iteration,
@@ -310,10 +641,10 @@ def build_jobs(args: argparse.Namespace) -> list[dict]:
     return jobs
 
 
-def _run(command: list[str], cwd: Path, dry_run: bool) -> tuple[str, int | None]:
+def _run(command: list[str], cwd: Path, dry_run: bool, env: dict[str, str] | None = None) -> tuple[str, int | None]:
     if dry_run:
         return "dry_run", None
-    result = subprocess.run(command, cwd=str(cwd), check=False)
+    result = subprocess.run(command, cwd=str(cwd), env=env, check=False)
     return ("completed" if result.returncode == 0 else "failed"), result.returncode
 
 
@@ -322,20 +653,43 @@ def _write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def _write_job_summary(model_path: Path, job: dict, status: str, args: argparse.Namespace, *, render_fallback_used: bool = False) -> None:
+def _write_job_summary(
+    model_path: Path,
+    job: dict,
+    status: str,
+    args: argparse.Namespace,
+    *,
+    render_fallback_used: bool = False,
+    subprocess_env: dict[str, str] | None = None,
+    preflight_env: dict | None = None,
+    failed_step: str | None = None,
+) -> None:
+    selected_python = _python_executable(args)
+    subprocess_env = subprocess_env or _subprocess_env(
+        selected_python,
+        cuda_visible_devices=getattr(args, "physical_gpu", None),
+        conda_prefix=DEFAULT_REF_GS_CONDA_PREFIX,
+    )
     summary = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "runner": "scripts/run_rc_refgs_quality_preserving_pilot.py",
         "status": status,
+        "failed_step": failed_step,
         "dry_run": not args.execute,
         "smoke": args.smoke,
         "skip_train": args.skip_train,
         "skip_metrics": args.skip_metrics,
         "render_fallback_used": render_fallback_used,
+        "environment": _environment_summary(subprocess_env, selected_python),
+        "preflight_env": preflight_env,
         "environment_notes": {
             "cpu_side_orchestration": True,
             "cuda_device_arg": job["device"],
-            "no_cuda_visible_devices_set_by_runner": True,
+            "physical_gpu": job.get("physical_gpu", ""),
+            "external_CUDA_VISIBLE_DEVICES": subprocess_env.get("CUDA_VISIBLE_DEVICES", ""),
+            "mapping_policy": "external CUDA_VISIBLE_DEVICES=<physical_gpu>; train and metrics use --cuda_device 0",
+            "conda_lib_prepended_to_ld_library_path": bool(subprocess_env.get("CONDA_PREFIX")),
+            "no_cuda_visible_devices_set_by_runner": False,
             "headline_render_quality": "split both, mask_mode both, image_key pbr_rgb; render fallback is recorded only on pbr_rgb failure",
         },
         "job": job,
@@ -365,6 +719,17 @@ def _write_status(output_root: Path, args: argparse.Namespace, jobs: list[dict],
         "smoke_iterations": args.smoke_iterations,
         "devices": args.devices,
         "device": args.device,
+        "physical_gpu": args.physical_gpu,
+        "cuda_device_arg": args.device,
+        "cuda_visible_devices": args.physical_gpu,
+        "cuda_preflight_results": args.cuda_preflight_results,
+        "device_mapping": {
+            "physical_gpu": args.physical_gpu,
+            "external_CUDA_VISIBLE_DEVICES": args.physical_gpu,
+            "logical_cuda_device_arg": args.device,
+        },
+        "selected_device_reason": args.selected_device_reason,
+        "python_executable": _python_executable(args),
         "variants": _split_values(args.variants, DEFAULT_VARIANTS),
         "excluded_datasets": ["shiny_blender_real"],
         "safety_boundaries": [
@@ -405,47 +770,118 @@ def _write_status(output_root: Path, args: argparse.Namespace, jobs: list[dict],
 def _execute_job(job: dict, args: argparse.Namespace, repo_root: Path) -> dict:
     model_path = Path(job["model_path"])
     iteration = job["iterations"]
+    selected_python = _python_executable(args)
+    subprocess_env = _subprocess_env(
+        selected_python,
+        cuda_visible_devices=args.physical_gpu,
+        conda_prefix=DEFAULT_REF_GS_CONDA_PREFIX,
+    )
     if _is_complete(model_path, iteration):
         return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": "skipped_complete"}
 
     model_path.mkdir(parents=True, exist_ok=True)
     if not args.execute:
-        _write_job_summary(model_path, job, "dry_run", args)
+        _write_job_summary(model_path, job, "dry_run", args, subprocess_env=subprocess_env)
         return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": "dry_run"}
 
     status = "completed"
     return_codes: dict[str, int | None] = {}
+    cuda_preflight_result = _fresh_torch_cuda_preflight(args.physical_gpu, repo_root, python_executable=DEFAULT_REF_GS_PYTHON)
+    if cuda_preflight_result["decision"] != "pass":
+        _write_job_summary(
+            model_path,
+            {**job, "return_codes": {"cuda_preflight": cuda_preflight_result.get("return_code")}},
+            "failed",
+            args,
+            subprocess_env=subprocess_env,
+            preflight_env={"status": "failed", "failed_check": "cuda_preflight", "cuda_preflight": cuda_preflight_result},
+            failed_step="cuda_preflight",
+        )
+        return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": "failed", "failed_step": "cuda_preflight"}
+
+    preflight_result = _preflight_env(repo_root, subprocess_env, selected_python)
+    preflight_result = {**preflight_result, "cuda_preflight": cuda_preflight_result}
+    if preflight_result["status"] != "completed":
+        _write_job_summary(
+            model_path,
+            {**job, "return_codes": {"preflight_env": preflight_result.get("return_code")}},
+            "failed",
+            args,
+            subprocess_env=subprocess_env,
+            preflight_env=preflight_result,
+            failed_step="preflight_env",
+        )
+        return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": "failed", "failed_step": "preflight_env"}
+
     if not args.skip_train:
-        train_status, code = _run(job["train_command"], repo_root, False)
+        train_status, code = _run(job["train_command"], repo_root, False, subprocess_env)
         return_codes["train"] = code
         if train_status == "failed":
-            _write_job_summary(model_path, {**job, "return_codes": return_codes}, "failed", args)
+            _write_job_summary(
+                model_path,
+                {**job, "return_codes": return_codes},
+                "failed",
+                args,
+                subprocess_env=subprocess_env,
+                preflight_env=preflight_result,
+                failed_step="train",
+            )
             return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": "failed", "failed_step": "train"}
 
     render_fallback_used = False
     if not args.skip_metrics:
         for key in ["reflection_consistency_train", "reflection_consistency_test"]:
-            metric_status, code = _run(job["metric_commands"][key], repo_root, False)
+            metric_status, code = _run(job["metric_commands"][key], repo_root, False, subprocess_env)
             return_codes[key] = code
             if metric_status == "failed":
                 status = "failed"
-                _write_job_summary(model_path, {**job, "return_codes": return_codes}, status, args)
+                _write_job_summary(
+                    model_path,
+                    {**job, "return_codes": return_codes},
+                    status,
+                    args,
+                    subprocess_env=subprocess_env,
+                    preflight_env=preflight_result,
+                    failed_step=key,
+                )
                 return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": status, "failed_step": key}
 
-        metric_status, code = _run(job["metric_commands"]["render_quality_both_pbr_rgb"], repo_root, False)
+        metric_status, code = _run(job["metric_commands"]["render_quality_both_pbr_rgb"], repo_root, False, subprocess_env)
         return_codes["render_quality_both_pbr_rgb"] = code
         if metric_status == "failed":
             render_fallback_used = True
-            metric_status, code = _run(job["metric_commands"]["render_quality_both_render_fallback"], repo_root, False)
+            metric_status, code = _run(
+                job["metric_commands"]["render_quality_both_render_fallback"],
+                repo_root,
+                False,
+                subprocess_env,
+            )
             return_codes["render_quality_both_render_fallback"] = code
             if metric_status == "failed":
                 status = "failed"
-                _write_job_summary(model_path, {**job, "return_codes": return_codes}, status, args, render_fallback_used=True)
+                _write_job_summary(
+                    model_path,
+                    {**job, "return_codes": return_codes},
+                    status,
+                    args,
+                    render_fallback_used=True,
+                    subprocess_env=subprocess_env,
+                    preflight_env=preflight_result,
+                    failed_step="render_quality_both",
+                )
                 return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": status, "failed_step": "render_quality_both"}
 
     if not all(path.exists() for path in _expected_artifacts_before_summary(model_path, iteration)):
         status = "partial"
-    _write_job_summary(model_path, {**job, "return_codes": return_codes}, status, args, render_fallback_used=render_fallback_used)
+    _write_job_summary(
+        model_path,
+        {**job, "return_codes": return_codes},
+        status,
+        args,
+        render_fallback_used=render_fallback_used,
+        subprocess_env=subprocess_env,
+        preflight_env=preflight_result,
+    )
     return {**{k: job[k] for k in ["dataset", "scene", "variant", "model_path"]}, "status": status}
 
 
@@ -453,7 +889,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare or execute bounded RC-RefGS quality-preserving pilot jobs.")
     parser.add_argument("--target_csv", default=str(DEFAULT_TARGET_CSV))
     parser.add_argument("--output_root", default=str(DEFAULT_OUTPUT_ROOT))
-    parser.add_argument("--devices", required=True, help="Comma/space device list; only one selected device is used.")
+    parser.add_argument("--devices", required=True, help="Comma/space physical GPU list; only one selected device is used.")
+    parser.add_argument("--candidate_devices", default="", help="Candidate GPU list used only when --devices auto.")
+    parser.add_argument("--gpu_max_memory_used_mb", type=int, default=1000)
+    parser.add_argument("--gpu_max_utilization", type=int, default=10)
+    parser.add_argument("--python_executable", default=DEFAULT_REF_GS_PYTHON)
     parser.add_argument("--iterations", type=int, default=31000)
     parser.add_argument("--smoke_iterations", type=int, default=1000)
     parser.add_argument("--smoke", action="store_true", help="Use --smoke_iterations as the effective iteration count.")
@@ -473,7 +913,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     devices = _split_values([args.devices])
     if not devices:
         raise SystemExit("--devices is required")
-    args.device = devices[0]
+    if devices[0] == "auto":
+        args.physical_gpu, args.selected_device_reason, args.cuda_preflight_results = _select_auto_device(
+            _split_values([args.candidate_devices]),
+            args.gpu_max_memory_used_mb,
+            args.gpu_max_utilization,
+            repo_root=_repo_root(),
+            python_executable=DEFAULT_REF_GS_PYTHON,
+        )
+    else:
+        args.physical_gpu = devices[0]
+        args.selected_device_reason = "explicit"
+        args.cuda_preflight_results = []
+    args.device = LOGICAL_CUDA_DEVICE
     if args.execute and args.confirm_execute != "YES":
         raise SystemExit("--execute requires --confirm_execute YES")
     if args.dry_run and args.execute:

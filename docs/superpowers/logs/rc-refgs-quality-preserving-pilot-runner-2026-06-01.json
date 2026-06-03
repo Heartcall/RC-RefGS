@@ -75,7 +75,62 @@
       "implemented_at": "2026-06-03T15:01:20+08:00"
     },
     "path": "scripts/run_rc_refgs_quality_preserving_pilot.py",
-    "status": "created",
+    "runtime_environment_hardening": {
+      "cuda_preflight_fix": {
+        "diagnostic_artifact": "docs/superpowers/logs/rc-refgs-cuda-preflight-diagnostic-2026-06-03.{md,json}",
+        "explicit_device_policy": "explicit physical device execution is allowed if the fresh torch CUDA subprocess preflight passes, even when nvidia-smi is unreliable",
+        "fresh_subprocess_per_candidate": true,
+        "implemented_at": "2026-06-03T21:15:44+08:00",
+        "mapping_policy": {
+          "external_CUDA_VISIBLE_DEVICES": "<physical_gpu>",
+          "train_and_metric_cuda_device_arg": "0"
+        },
+        "parent_imports_torch": false,
+        "preflight_env": {
+          "CONDA_PREFIX": "/home/liuly/anaconda3/envs/ref_gs",
+          "LD_LIBRARY_PATH_prefix": "/home/liuly/anaconda3/envs/ref_gs/lib",
+          "python": "/home/liuly/anaconda3/envs/ref_gs/bin/python"
+        },
+        "records_per_candidate": [
+          "candidate_gpu",
+          "CUDA_VISIBLE_DEVICES",
+          "return_code",
+          "stdout",
+          "stderr",
+          "torch_cuda_available",
+          "torch_device_count",
+          "device_name",
+          "decision"
+        ]
+      },
+      "explicit_python_executable_support": {
+        "auto_gpu_probe_sanitizes_ld_library_path": true,
+        "commands_use_selected_python_executable": true,
+        "conda_prefix_inferred_from_selected_python": true,
+        "implemented_at": "2026-06-03T19:25:28+08:00",
+        "python_executable_arg": true
+      },
+      "implemented_at": "2026-06-03T18:51:28+08:00",
+      "launcher_summary_records": [
+        "sys_executable",
+        "CONDA_PREFIX",
+        "LD_LIBRARY_PATH",
+        "LD_LIBRARY_PATH prefix"
+      ],
+      "preflight_checks": [
+        "sys.executable exists",
+        "CONDA_PREFIX present",
+        "$CONDA_PREFIX/lib/libstdc++.so.6 exists",
+        "GLIBCXX_3.4.29 exists in conda libstdc++.so.6",
+        "runtime import check for torch and nvdiffrast.torch"
+      ],
+      "subprocess_env": {
+        "copies_os_environ": true,
+        "prepends_conda_prefix_lib_to_ld_library_path": true,
+        "preserves_existing_ld_library_path_after_conda_lib": true
+      },
+      "sys_executable_commands": true
+    },
     "safe_defaults": {
       "dry_run_by_default": true,
       "execute_requires": "--execute --confirm_execute YES",
@@ -83,6 +138,7 @@
       "max_jobs": 1,
       "smoke_iterations": 1000
     },
+    "status": "created",
     "writes": [
       "pilot_plan.json",
       "pilot_status.json",
@@ -90,7 +146,7 @@
       "per-job launcher_summary.json"
     ]
   },
-  "decision": "CONDITIONAL GO: runner is created and validated; one GPU0 runtime smoke was attempted and failed at train import with a GLIBCXX_3.4.29 runtime-library mismatch.",
+  "decision": "GO for CUDA preflight fix and runner validation; no training, metrics, pilot launch, Shiny Blender Real, metric change, or quality claim upgrade in the CUDA-preflight-fix window.",
   "dry_run": {
     "command": "python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_refgs_quality_preserving_rc_i31000_20260601 --devices 7 --max_jobs 16 --variants rc_qp_lam005 rc_qp_lam010 rc_qp_lam015 rc_qp_lam010_start5000_every8 --dry_run",
     "output_root": "/tmp/rc_refgs_quality_preserving_rc_i31000_20260601",
@@ -152,6 +208,112 @@
   ],
   "smoke": {
     "attempted": true,
+    "explicit_refgs_python_retry": {
+      "artifacts_produced": {
+        "point_cloud": false,
+        "reflection_consistency_test_json": false,
+        "reflection_consistency_train_json": false,
+        "render_quality_json": false
+      },
+      "attempted": true,
+      "auto_gpu_attempt": {
+        "attempted": true,
+        "reason": "nvidia-smi returned exit 9 when launched as a child of the explicit ref_gs Python process under the required LD_LIBRARY_PATH command environment",
+        "runner_command_used_devices_auto": true,
+        "status": "failed_before_job_launch"
+      },
+      "checked_at": "2026-06-03T19:25:28+08:00",
+      "command_policy": {
+        "device": 0,
+        "max_jobs": 1,
+        "output_root": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_explicit_refgs_python",
+        "python_executable": "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+        "scene": "helmet",
+        "smoke_iterations": 1000,
+        "variant": "rc_qp_lam010"
+      },
+      "engineering_validation_only": true,
+      "environment": {
+        "conda_prefix": "/home/liuly/anaconda3/envs/ref_gs",
+        "ld_library_path_prefix": "/home/liuly/anaconda3/envs/ref_gs/lib",
+        "selected_python_executable": "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+        "sys_executable": "/home/liuly/anaconda3/envs/ref_gs/bin/python"
+      },
+      "fallback_device_policy": {
+        "reason": "shell-level nvidia-smi probe verified GPU 0 idle and prohibited-process scan was empty; this avoided unsafe auto-probe failure while preserving max_jobs=1 and explicit ref_gs Python for train/metrics",
+        "used_explicit_device": "0"
+      },
+      "job_count": 1,
+      "launcher_summary_json": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_explicit_refgs_python/shiny_blender_synthetic/helmet/rc_qp_lam010/seed_0/launcher_summary.json",
+      "manual_preflight": {
+        "nvdiffrast": "nvdiffrast import OK",
+        "sys_executable": "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+        "torch": "1.12.1 CUDA 11.3"
+      },
+      "pilot_status_json": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_explicit_refgs_python/pilot_status.json",
+      "preflight": {
+        "status": "completed",
+        "stderr": "",
+        "stdout": "runtime import OK\n"
+      },
+      "quality_claim_upgrade": false,
+      "reflection_metrics_ran": false,
+      "render_quality_metric_ran": false,
+      "runner_command": "LD_LIBRARY_PATH=/home/liuly/anaconda3/envs/ref_gs/lib:${LD_LIBRARY_PATH:-} /home/liuly/anaconda3/envs/ref_gs/bin/python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_refgs_quality_preserving_rc_smoke_20260601_explicit_refgs_python --devices 0 --python_executable /home/liuly/anaconda3/envs/ref_gs/bin/python --scenes helmet --variants rc_qp_lam010 --smoke --smoke_iterations 1000 --max_jobs 1 --execute --confirm_execute YES",
+      "runner_command_executed": true,
+      "save_artifact_produced": false,
+      "status": "failed_train_no_cuda",
+      "train": {
+        "isolated_failure": "RuntimeError: No CUDA GPUs are available",
+        "return_code": 1,
+        "startup_attempted": true,
+        "startup_completed": false,
+        "status": "failed"
+      }
+    },
+    "glibcxx_fix_retry": {
+      "artifacts_produced": {
+        "point_cloud": false,
+        "reflection_consistency_test_json": false,
+        "reflection_consistency_train_json": false,
+        "render_quality_json": false
+      },
+      "attempted": true,
+      "checked_at": "2026-06-03T18:51:28+08:00",
+      "command_policy": {
+        "device": 0,
+        "max_jobs": 1,
+        "output_root": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_glibcxx_fix",
+        "scene": "helmet",
+        "smoke_iterations": 1000,
+        "variant": "rc_qp_lam010"
+      },
+      "engineering_validation_only": true,
+      "isolated_failure": "ModuleNotFoundError: No module named nvdiffrast",
+      "job_count": 1,
+      "launcher_summary_json": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_glibcxx_fix/shiny_blender_synthetic/helmet/rc_qp_lam010/seed_0/launcher_summary.json",
+      "pilot_status_json": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_glibcxx_fix/pilot_status.json",
+      "preflight": {
+        "conda_prefix": "/home/liuly/anaconda3",
+        "failed_check": "runtime_import",
+        "glibcxx_3_4_29_found_in_conda_libstdcxx": true,
+        "ld_library_path_prefix": "/home/liuly/anaconda3/lib",
+        "return_code": 1,
+        "status": "failed",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nModuleNotFoundError: No module named 'nvdiffrast'\n",
+        "stdout": "",
+        "sys_executable": "/home/liuly/anaconda3/bin/python"
+      },
+      "quality_claim_upgrade": false,
+      "reflection_metrics_ran": false,
+      "render_quality_metric_ran": false,
+      "runner_command": "python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_refgs_quality_preserving_rc_smoke_20260601_glibcxx_fix --devices 0 --scenes helmet --variants rc_qp_lam010 --smoke --smoke_iterations 1000 --max_jobs 1 --execute --confirm_execute YES",
+      "runner_command_executed": true,
+      "save_artifact_produced": false,
+      "status": "failed_preflight_env",
+      "train_started": false,
+      "train_startup_completed": false
+    },
     "latest_runtime_request": {
       "attempted": true,
       "checked_at": "2026-06-03T18:37:33+08:00",
@@ -214,7 +376,7 @@
         "status": "skipped_gpu7_busy"
       }
     ],
-    "status": "failed_train_import_glibcxx"
+    "status": "failed_train_no_cuda_after_explicit_refgs_python"
   },
   "validation": {
     "completed_before_doc_closeout": [
@@ -222,7 +384,26 @@
       "GREEN python -m unittest tests/test_quality_preserving_pilot_runner.py passed",
       "python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py passed",
       "python -m json.tool /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/pilot_status.json passed",
-      "python -m json.tool /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/pilot_plan.json passed"
-    ]
-  }
+      "python -m json.tool /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/pilot_plan.json passed",
+      "RED python -m unittest tests/test_quality_preserving_pilot_runner.py failed with missing env/preflight APIs before implementation",
+      "GREEN python -m unittest tests/test_quality_preserving_pilot_runner.py passed after env hardening",
+      "python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py passed after env hardening",
+      "python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json passed before retry",
+      "git diff --check passed before retry",
+      "preflight retry recorded failed_step=preflight_env with nvdiffrast missing; train.py was not started",
+      "RED python -m unittest tests/test_quality_preserving_pilot_runner.py failed for missing explicit-python and auto-GPU support",
+      "GREEN python -m unittest tests/test_quality_preserving_pilot_runner.py passed with 17 tests",
+      "python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py passed",
+      "git diff --check passed before explicit-ref_gs retry",
+            "manual explicit-ref_gs probes passed for sys.executable, torch 1.12.1 CUDA 11.3, and nvdiffrast import",
+            "explicit-ref_gs retry recorded job_count=1, failed_step=train, return_codes.train=1, and no save or metric artifacts",
+            "RED python -m unittest tests/test_quality_preserving_pilot_runner.py failed for missing fresh-subprocess CUDA preflight, physical/logical mapping, and torch-checked auto selection",
+            "GREEN python -m unittest tests/test_quality_preserving_pilot_runner.py passed with 21 tests after CUDA preflight fix",
+            "python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py passed after CUDA preflight fix",
+            "python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json passed after CUDA preflight fix",
+            "python -m json.tool docs/superpowers/logs/rc-refgs-cuda-preflight-diagnostic-2026-06-03.json passed",
+            "git diff --check passed after CUDA preflight fix",
+            "prohibited process scan was empty; no train.py or metric process was launched"
+        ]
+    }
 }

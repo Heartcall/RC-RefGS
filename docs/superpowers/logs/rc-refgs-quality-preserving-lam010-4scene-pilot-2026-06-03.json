@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-06-03T21:05:10+08:00",
+  "task_claim": "Run the first quality-preserving RC scientific pilot: 4 target scenes with rc_qp_lam010 at 31000 iterations.",
+  "decision": "CONDITIONAL GO: the four-scene scientific pilot was not launched because no GPU was safely available to the required ref_gs PyTorch runtime at preflight time.",
+  "scope": {
+    "variant": "rc_qp_lam010",
+    "iterations": 31000,
+    "seed": 0,
+    "max_jobs": 4,
+    "target_csv": "docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv",
+    "output_root": "/tmp/rc_refgs_quality_preserving_rc_lam010_4scene_i31000_20260603",
+    "excluded": [
+      "Shiny Blender Real",
+      "full 16-job pilot",
+      "other rc_qp variants",
+      "metric definition changes",
+      "existing FD-P2-lite base/rc/ablation result changes",
+      "global quality-preserving claim"
+    ]
+  },
+  "selected_scenes": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "selection_role": "strongest consistency gain with quality regression signal",
+      "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet"
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "selection_role": "coffee test consistency exception",
+      "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/coffee"
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "selection_role": "worst combined test full and reflective quality regression among Glossy Synthetic scenes",
+      "source_path": "/data/liuly/dataset/3DGS/GlossySynthetic/luyu"
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "selection_role": "control scene where RC improves consistency and all six test quality metrics",
+      "source_path": "/data/liuly/dataset/3DGS/GlossySynthetic/teapot"
+    }
+  ],
+  "prelaunch_checks": {
+    "target_csv_rows": 16,
+    "unique_selected_scene_count": 4,
+    "planned_job_count": 4,
+    "planned_jobs": [
+      "glossy_synthetic/luyu/rc_qp_lam010/seed_0",
+      "glossy_synthetic/teapot/rc_qp_lam010/seed_0",
+      "shiny_blender_synthetic/coffee/rc_qp_lam010/seed_0",
+      "shiny_blender_synthetic/helmet/rc_qp_lam010/seed_0"
+    ],
+    "smoke_artifacts_verified": {
+      "output_root": "/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_cuda0_explicit",
+      "job": "shiny_blender_synthetic/helmet/rc_qp_lam010/seed_0",
+      "point_cloud_iteration_1000": true,
+      "reflection_consistency_train_json": true,
+      "reflection_consistency_test_json": true,
+      "render_quality_both_iter1000_json": true,
+      "launcher_summary_json": true
+    },
+    "prohibited_process_scan_before_launch": "empty",
+    "target_output_root_preexisting_files": 0
+  },
+  "gpu_gate": {
+    "nvidia_smi_query_status": "available_from_shell",
+    "nvidia_smi_rows": [
+      "0, 3 MiB, 0 %",
+      "1, 3 MiB, 0 %",
+      "2, 3 MiB, 0 %",
+      "3, 3 MiB, 0 %",
+      "4, 19636 MiB, 100 %",
+      "5, 4632 MiB, 0 %",
+      "6, 7834 MiB, 99 %",
+      "7, 4632 MiB, 99 %"
+    ],
+    "ref_gs_cuda_probe": {
+      "python": "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+      "ld_library_path_prefix": "/home/liuly/anaconda3/envs/ref_gs/lib",
+      "no_cuda_visible_devices": {
+        "torch_cuda_is_available": false,
+        "torch_cuda_device_count": 0
+      },
+      "candidate_devices": {
+        "0": {
+          "torch_cuda_is_available": false,
+          "torch_cuda_device_count": 0
+        },
+        "1": {
+          "torch_cuda_is_available": false,
+          "torch_cuda_device_count": 0
+        },
+        "2": {
+          "torch_cuda_is_available": false,
+          "torch_cuda_device_count": 0
+        },
+        "3": {
+          "torch_cuda_is_available": false,
+          "torch_cuda_device_count": 0
+        },
+        "5": {
+          "torch_cuda_is_available": false,
+          "torch_cuda_device_count": 0
+        }
+      }
+    },
+    "launch_allowed": false,
+    "blocker": "No candidate GPU was safely visible to the required ref_gs PyTorch runtime."
+  },
+  "run_outcome": {
+    "runner_command_executed": false,
+    "pilot_status_json_exists": false,
+    "completed_jobs": 0,
+    "failed_jobs": 0,
+    "partial_jobs": 0,
+    "not_started_jobs": 4,
+    "full_16_job_pilot_started": false,
+    "shiny_blender_real_started": false
+  },
+  "artifact_requirements": {
+    "required_per_completed_job": [
+      "point_cloud/iteration_31000/point_cloud.ply",
+      "reflection_consistency_train.json",
+      "reflection_consistency_test.json",
+      "render_quality_both_iter31000.json",
+      "launcher_summary.json"
+    ],
+    "completed_job_artifacts_verified": []
+  },
+  "comparison": {
+    "comparison_csv": "docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-comparison-2026-06-03.csv",
+    "status": "not_comparable",
+    "reason": "No rc_qp_lam010 i31000 pilot artifacts exist for the four selected scenes.",
+    "global_quality_preserving_claim": "not_made"
+  },
+  "recommendation": {
+    "expand_to_full_16_job_pilot": false,
+    "next_step": "Resolve CUDA visibility for /home/liuly/anaconda3/envs/ref_gs/bin/python, then rerun the same 4-scene rc_qp_lam010 pilot before considering any full 16-job expansion."
+  }
+}

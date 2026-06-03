@@ -1,0 +1,96 @@
+{
+  "decision": "GO for CUDA preflight fix; NO-GO for training, metrics, pilot launch, Shiny Blender Real, metric changes, or quality-improvement claims.",
+  "fixed_preflight_design": {
+    "auto_selection_policy": "A candidate GPU is accepted only after nvidia-smi idle check passes and a fresh torch CUDA subprocess preflight passes.",
+    "explicit_device_policy": "If nvidia-smi is unreliable but an explicit physical device is requested, execute-mode jobs may proceed only after the fresh torch CUDA subprocess preflight passes for that physical device.",
+    "fresh_subprocess_per_candidate": true,
+    "mapping_policy": {
+      "external_CUDA_VISIBLE_DEVICES": "<physical_gpu>",
+      "recorded_fields": [
+        "physical_gpu",
+        "cuda_visible_devices",
+        "cuda_device_arg",
+        "device_mapping",
+        "cuda_preflight_results"
+      ],
+      "train_and_metric_cuda_device_arg": "0"
+    },
+    "parent_imports_torch": false,
+    "preflight_env": {
+      "CONDA_PREFIX": "/home/liuly/anaconda3/envs/ref_gs",
+      "CUDA_VISIBLE_DEVICES": "<candidate_gpu>",
+      "LD_LIBRARY_PATH_prefix": "/home/liuly/anaconda3/envs/ref_gs/lib",
+      "python": "/home/liuly/anaconda3/envs/ref_gs/bin/python"
+    },
+    "torch_import_order": "torch is imported only inside a fresh child process after CUDA_VISIBLE_DEVICES is present in the child environment"
+  },
+  "generated_at": "2026-06-03T21:15:44+08:00",
+  "manual_fresh_subprocess_verification": [
+    {
+      "available": true,
+      "candidate_gpu": "0",
+      "count": 1,
+      "device_name": "NVIDIA RTX A5000"
+    },
+    {
+      "available": true,
+      "candidate_gpu": "1",
+      "count": 1,
+      "device_name": "NVIDIA RTX A5000"
+    },
+    {
+      "available": true,
+      "candidate_gpu": "2",
+      "count": 1,
+      "device_name": "NVIDIA RTX A5000"
+    },
+    {
+      "available": true,
+      "candidate_gpu": "3",
+      "count": 1,
+      "device_name": "NVIDIA RTX A5000"
+    },
+    {
+      "available": true,
+      "candidate_gpu": "5",
+      "count": 1,
+      "device_name": "NVIDIA GeForce RTX 3090 Ti"
+    },
+    {
+      "available": true,
+      "candidate_gpu": "6",
+      "count": 1,
+      "device_name": "NVIDIA GeForce RTX 3090 Ti"
+    },
+    {
+      "available": true,
+      "candidate_gpu": "7",
+      "count": 1,
+      "device_name": "NVIDIA GeForce RTX 3090 Ti"
+    }
+  ],
+  "previous_false_negative": {
+    "artifact": "docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.json",
+    "interpretation_after_manual_verification": "The previous no-launch CUDA gate is treated as a runner preflight false negative, not proof that the environment lacks CUDA.",
+    "observed_previous_gate": "ref_gs PyTorch runtime reported torch.cuda.is_available() false and device_count 0 for checked candidates when probed by the old runner path."
+  },
+  "scope_boundaries": {
+    "metrics_launched": false,
+    "metric_definitions_changed": false,
+    "quality_claim_upgrade": false,
+    "shiny_blender_real_launched": false,
+    "training_launched": false
+  },
+  "touched_code": [
+    "scripts/run_rc_refgs_quality_preserving_pilot.py",
+    "tests/test_quality_preserving_pilot_runner.py"
+  ],
+  "validation": {
+    "git_diff_check": "passed",
+    "json_tool_runner_report": "passed",
+    "json_tool_this_file": "passed",
+    "prohibited_process_scan": "empty",
+    "python_m_py_compile_runner": "passed",
+    "runner_tests": "passed: 21 tests"
+  }
+}
