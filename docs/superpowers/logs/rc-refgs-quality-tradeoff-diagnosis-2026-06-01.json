@@ -1,0 +1,1972 @@
+{
+  "ablation_evidence": [
+    {
+      "complete_models": 6,
+      "dataset": "shiny_blender_synthetic",
+      "expected_models": 6,
+      "relations_to_rc": {
+        "full_lpips": "degrades_relative_to_rc",
+        "full_psnr": "degrades_relative_to_rc",
+        "full_ssim": "preserves_or_improves_relative_to_rc",
+        "mean_reflection_consistency": "degrades_relative_to_rc",
+        "reflective_lpips": "preserves_or_improves_relative_to_rc",
+        "reflective_psnr": "preserves_or_improves_relative_to_rc",
+        "reflective_ssim": "preserves_or_improves_relative_to_rc"
+      },
+      "test_deltas_ablation_minus_rc": {
+        "full_lpips": 2.2887861511357993e-05,
+        "full_psnr": -0.08882654984792282,
+        "full_ssim": 1.0132789611705384e-05,
+        "mean_reflection_consistency": 0.04187006635280947,
+        "reflective_lpips": -0.0003035946115414849,
+        "reflective_psnr": 0.026592790285747014,
+        "reflective_ssim": 0.00024317865570389063
+      },
+      "variant": "wo_ref"
+    },
+    {
+      "complete_models": 6,
+      "dataset": "shiny_blender_synthetic",
+      "expected_models": 6,
+      "relations_to_rc": {
+        "full_lpips": "degrades_relative_to_rc",
+        "full_psnr": "degrades_relative_to_rc",
+        "full_ssim": "degrades_relative_to_rc",
+        "mean_reflection_consistency": "degrades_relative_to_rc",
+        "reflective_lpips": "preserves_or_improves_relative_to_rc",
+        "reflective_psnr": "preserves_or_improves_relative_to_rc",
+        "reflective_ssim": "preserves_or_improves_relative_to_rc"
+      },
+      "test_deltas_ablation_minus_rc": {
+        "full_lpips": 0.0002250489593522316,
+        "full_psnr": -0.08120471795400164,
+        "full_ssim": -0.00011764779686929128,
+        "mean_reflection_consistency": 0.0050587597691143585,
+        "reflective_lpips": -0.0010916537166970885,
+        "reflective_psnr": 0.012889353434246686,
+        "reflective_ssim": 0.00022207011779151742
+      },
+      "variant": "wo_conf"
+    },
+    {
+      "complete_models": 6,
+      "dataset": "shiny_blender_synthetic",
+      "expected_models": 6,
+      "relations_to_rc": {
+        "full_lpips": "degrades_relative_to_rc",
+        "full_psnr": "degrades_relative_to_rc",
+        "full_ssim": "degrades_relative_to_rc",
+        "mean_reflection_consistency": "degrades_relative_to_rc",
+        "reflective_lpips": "preserves_or_improves_relative_to_rc",
+        "reflective_psnr": "degrades_relative_to_rc",
+        "reflective_ssim": "degrades_relative_to_rc"
+      },
+      "test_deltas_ablation_minus_rc": {
+        "full_lpips": 0.00022686739849935716,
+        "full_psnr": -0.11461620489756541,
+        "full_ssim": -0.0002004712323347979,
+        "mean_reflection_consistency": 0.03598419001791626,
+        "reflective_lpips": -0.00014870191296116608,
+        "reflective_psnr": -0.21331124146779246,
+        "reflective_ssim": -0.00019678642352416453
+      },
+      "variant": "rough_only"
+    },
+    {
+      "complete_models": 8,
+      "dataset": "glossy_synthetic",
+      "expected_models": 8,
+      "relations_to_rc": {
+        "full_lpips": "degrades_relative_to_rc",
+        "full_psnr": "degrades_relative_to_rc",
+        "full_ssim": "degrades_relative_to_rc",
+        "mean_reflection_consistency": "degrades_relative_to_rc",
+        "reflective_lpips": "preserves_or_improves_relative_to_rc",
+        "reflective_psnr": "preserves_or_improves_relative_to_rc",
+        "reflective_ssim": "preserves_or_improves_relative_to_rc"
+      },
+      "test_deltas_ablation_minus_rc": {
+        "full_lpips": 0.0010201700788456947,
+        "full_psnr": -0.055773451924324036,
+        "full_ssim": -0.0007263710722327232,
+        "mean_reflection_consistency": 0.020408221753314137,
+        "reflective_lpips": -9.218459308613092e-05,
+        "reflective_psnr": 0.08902667462825775,
+        "reflective_ssim": 0.0005716653540730476
+      },
+      "variant": "wo_ref"
+    },
+    {
+      "complete_models": 8,
+      "dataset": "glossy_synthetic",
+      "expected_models": 8,
+      "relations_to_rc": {
+        "full_lpips": "degrades_relative_to_rc",
+        "full_psnr": "degrades_relative_to_rc",
+        "full_ssim": "degrades_relative_to_rc",
+        "mean_reflection_consistency": "degrades_relative_to_rc",
+        "reflective_lpips": "degrades_relative_to_rc",
+        "reflective_psnr": "preserves_or_improves_relative_to_rc",
+        "reflective_ssim": "preserves_or_improves_relative_to_rc"
+      },
+      "test_deltas_ablation_minus_rc": {
+        "full_lpips": 0.0011804717651102692,
+        "full_psnr": -0.08498319983482361,
+        "full_ssim": -0.0010275994427502155,
+        "mean_reflection_consistency": 0.007799996295943856,
+        "reflective_lpips": 0.00025140634534182027,
+        "reflective_psnr": 0.053070396184921265,
+        "reflective_ssim": 0.00010194256901741028
+      },
+      "variant": "wo_conf"
+    },
+    {
+      "complete_models": 8,
+      "dataset": "glossy_synthetic",
+      "expected_models": 8,
+      "relations_to_rc": {
+        "full_lpips": "degrades_relative_to_rc",
+        "full_psnr": "degrades_relative_to_rc",
+        "full_ssim": "degrades_relative_to_rc",
+        "mean_reflection_consistency": "degrades_relative_to_rc",
+        "reflective_lpips": "degrades_relative_to_rc",
+        "reflective_psnr": "degrades_relative_to_rc",
+        "reflective_ssim": "preserves_or_improves_relative_to_rc"
+      },
+      "test_deltas_ablation_minus_rc": {
+        "full_lpips": 0.001184540698886849,
+        "full_psnr": -0.03263185918331146,
+        "full_ssim": -0.0008734134025871754,
+        "mean_reflection_consistency": 0.021205388335511083,
+        "reflective_lpips": 0.00018984760390594602,
+        "reflective_psnr": -0.03425690531730652,
+        "reflective_ssim": 6.364705041050911e-05
+      },
+      "variant": "rough_only"
+    }
+  ],
+  "ablation_interpretation": {
+    "limits": "These are dataset-variant aggregate comparisons, not per-scene causal ablations. They cannot isolate whether loss strength, confidence gamma, roughness stabilization, or image compositing is the dominant cause for a particular scene.",
+    "rough_only": "Roughness-only loses the reflection-consistency benefit and does not reliably rescue test full-image quality. It is therefore not a sufficient quality-preserving substitute for RC.",
+    "wo_conf": "Removing confidence weighting worsens reflection consistency and full-image metrics relative to RC in both datasets, while reflective PSNR/SSIM/LPIPS are often preserved or improved in Shiny synthetic and partly in Glossy synthetic. This suggests confidence weighting is not the sole source of full-image quality loss, but it may affect reflective-region behavior.",
+    "wo_ref": "Removing reflection loss consistently worsens mean reflection consistency relative to RC. It does not reliably improve full-image PSNR/SSIM/LPIPS; reflective metrics sometimes preserve or improve, especially in Shiny synthetic, but Glossy synthetic full-image metrics degrade relative to RC."
+  },
+  "categories_by_split": {
+    "test": {
+      "consistency_gain_full_quality_drop": [
+        "shiny_blender_synthetic/helmet"
+      ],
+      "consistency_gain_quality_gain": [
+        "shiny_blender_synthetic/teapot",
+        "glossy_synthetic/bell",
+        "glossy_synthetic/potion",
+        "glossy_synthetic/teapot"
+      ],
+      "consistency_gain_quality_mixed": [
+        "shiny_blender_synthetic/car",
+        "shiny_blender_synthetic/toaster",
+        "glossy_synthetic/cat",
+        "glossy_synthetic/luyu"
+      ],
+      "consistency_gain_reflective_quality_drop": [
+        "shiny_blender_synthetic/ball",
+        "glossy_synthetic/angel",
+        "glossy_synthetic/horse",
+        "glossy_synthetic/tbell"
+      ],
+      "no_consistency_gain": [
+        "shiny_blender_synthetic/coffee"
+      ]
+    },
+    "train": {
+      "consistency_gain_full_quality_drop": [
+        "shiny_blender_synthetic/toaster"
+      ],
+      "consistency_gain_quality_gain": [
+        "shiny_blender_synthetic/teapot",
+        "glossy_synthetic/bell",
+        "glossy_synthetic/potion"
+      ],
+      "consistency_gain_quality_mixed": [
+        "shiny_blender_synthetic/car",
+        "shiny_blender_synthetic/coffee",
+        "shiny_blender_synthetic/helmet",
+        "glossy_synthetic/angel",
+        "glossy_synthetic/luyu"
+      ],
+      "consistency_gain_reflective_quality_drop": [
+        "shiny_blender_synthetic/ball",
+        "glossy_synthetic/cat",
+        "glossy_synthetic/horse",
+        "glossy_synthetic/tbell",
+        "glossy_synthetic/teapot"
+      ],
+      "no_consistency_gain": []
+    }
+  },
+  "correlations": {
+    "interpretation": "Pearson correlation over 14 scoped scenes between positive consistency gain and quality regression severity; descriptive only, not causal.",
+    "values": {
+      "test": {
+        "full_lpips": 0.14621091244559103,
+        "full_psnr": -0.03888605253672705,
+        "full_ssim": 0.1569041999729342,
+        "reflective_lpips": -0.17332260682081504,
+        "reflective_psnr": -0.1849485344140928,
+        "reflective_ssim": -0.1601765036865633
+      },
+      "train": {
+        "full_lpips": 0.17214738119674744,
+        "full_psnr": 0.20880308760817085,
+        "full_ssim": 0.3743566194153788,
+        "reflective_lpips": -0.09923538027444465,
+        "reflective_psnr": 0.013674290625039198,
+        "reflective_ssim": 0.02737636326879811
+      }
+    }
+  },
+  "coverage": {
+    "ablation": {
+      "expected_models": 42,
+      "strict_complete_models": 42
+    },
+    "ambiguity_count": 0,
+    "main": {
+      "expected_models": 28,
+      "strict_complete_models": 28
+    },
+    "overall_non_shiny_real": {
+      "expected_models": 70,
+      "strict_complete_models": 70
+    }
+  },
+  "dataset_effects": {
+    "glossy_synthetic": {
+      "mean_test_deltas_rc_minus_base": {
+        "full_lpips": -0.0006865727773401886,
+        "full_psnr": 0.030017420649528503,
+        "full_ssim": 0.0007532197050750256,
+        "mean_reflection_consistency": -0.02014634585939348,
+        "reflective_lpips": 3.258950891904533e-05,
+        "reflective_psnr": -0.08040684461593628,
+        "reflective_ssim": -0.00023856014013290405
+      },
+      "scene_count": 8
+    },
+    "shiny_blender_synthetic": {
+      "mean_test_deltas_rc_minus_base": {
+        "full_lpips": 8.42929392820231e-05,
+        "full_psnr": 0.07497808297475157,
+        "full_ssim": 6.92976514498252e-05,
+        "mean_reflection_consistency": -0.044535662730534865,
+        "reflective_lpips": 0.0009757003444246947,
+        "reflective_psnr": 0.0163597885767602,
+        "reflective_ssim": -0.00016286343336104533
+      },
+      "scene_count": 6
+    }
+  },
+  "decision": "CONDITIONAL GO: evidence-grounded diagnosis and concrete pilot plan; no claim upgrade until new paired experiments prove quality preservation.",
+  "exclusions": [
+    "no training launched",
+    "no metric sweep launched",
+    "no Shiny Blender Real run",
+    "no metric definition, mask, split, image_key, or LPIPS setting changes",
+    "no result artifact overwrite/relabel/delete"
+  ],
+  "generated_at": "2026-06-03T13:43:42+08:00",
+  "headline_counts": {
+    "consistency_wins_test": "13/14",
+    "consistency_wins_train": "14/14",
+    "full_lpips_wins_test": "10/14",
+    "full_lpips_wins_train": "9/14",
+    "reflective_lpips_wins_test": "6/14",
+    "reflective_lpips_wins_train": "4/14"
+  },
+  "inputs": [
+    "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv",
+    "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-tradeoff-summary-2026-06-01.csv",
+    "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-ablation-summary-2026-06-01.csv",
+    "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.json"
+  ],
+  "likely_root_causes": [
+    {
+      "cause": "reflection loss strength or schedule over-regularization",
+      "support": "RC gains consistency in 14/14 train and 13/14 test pairs, but strict all-quality wins are much rarer. The large helmet consistency gain coexists with small test full SSIM/LPIPS regressions; luyu and cat show quality drops with consistency gains. Correlations between consistency-gain magnitude and quality-regression severity are weak, so over-regularization is plausible but not proven globally.",
+      "uncertainty": "Existing results use only the current lambda/start/every/gamma setting, so strength and schedule are confounded."
+    },
+    {
+      "cause": "confidence weighting and reflective-region emphasis",
+      "support": "wo_conf worsens consistency and full-image metrics relative to RC in aggregates, but reflective metrics are often preserved or improved relative to RC. Reflective LPIPS wins are only 4/14 train and 6/14 test, suggesting region-level behavior is less stable than full-image LPIPS.",
+      "uncertainty": "The aggregate wo_conf evidence cannot identify scene-level mask-confidence failures."
+    },
+    {
+      "cause": "loss-objective mismatch with LPIPS/PSNR/SSIM",
+      "support": "train.py optimizes L1 + DSSIM reconstruction plus auxiliary RC and optional regularizers; LPIPS is evaluation-only. This can improve the reflection-consistency metric without directly optimizing LPIPS or all PSNR/SSIM surfaces.",
+      "uncertainty": "Adding LPIPS loss could bias toward the metric and may trade off PSNR/SSIM unless validated separately."
+    },
+    {
+      "cause": "mask or reflective-region instability",
+      "support": "Full-image LPIPS improves more often than reflective LPIPS. Coffee is the test consistency exception while full-image quality improves and reflective quality drops, a pattern consistent with reflective-region mismatch or view-dependent mask instability.",
+      "uncertainty": "The current artifacts do not expose per-pixel masks/roughness stability over training, so this remains diagnostic rather than confirmed."
+    }
+  ],
+  "limitations": [
+    "No new training or metric sweeps were launched for this diagnosis.",
+    "Shiny Blender Real remains excluded due to the existing OOM blocker.",
+    "Ablations are aggregate paired evidence, not enough to prove per-scene causality.",
+    "LPIPS/PSNR/SSIM are evaluated after training; current RC does not directly optimize them.",
+    "The quality-preserving plan is a hypothesis until new paired rc_qp_* pilots complete."
+  ],
+  "per_scene_metrics": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "ball",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.00028942092321813245,
+            "full_psnr": 0.05638977050781335,
+            "full_ssim": 7.027328014375112e-05,
+            "mean_reflection_consistency": -0.0013975773006677586,
+            "reflective_lpips": 0.004306757408194244,
+            "reflective_psnr": 0.02190525054931669,
+            "reflective_region_psnr": -0.051617813110354405,
+            "reflective_ssim": -0.0002408763766288402
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": true,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.00040942216292023936,
+            "full_psnr": 0.13450939178466825,
+            "full_ssim": 9.24861431121915e-05,
+            "mean_reflection_consistency": -0.004865860939025857,
+            "reflective_lpips": 0.002787792077288031,
+            "reflective_psnr": 0.10556579589844262,
+            "reflective_region_psnr": 0.2904323577880916,
+            "reflective_ssim": -0.00013379156589499175
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "car",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.00027555966749787456,
+            "full_psnr": -0.018467788696288068,
+            "full_ssim": 0.00035171449184412396,
+            "mean_reflection_consistency": -0.037831046432256696,
+            "reflective_lpips": 0.0006820062431506808,
+            "reflective_psnr": 0.09973985671997099,
+            "reflective_region_psnr": 0.33338069915771484,
+            "reflective_ssim": 0.00028854668140410045
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": false,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 2.1720603108406344e-05,
+            "full_psnr": -0.23429634094237883,
+            "full_ssim": -0.00012081742286684793,
+            "mean_reflection_consistency": -0.16980528384447097,
+            "reflective_lpips": 0.0003929243655875327,
+            "reflective_psnr": -0.22739749908447493,
+            "reflective_region_psnr": -0.038314437866208806,
+            "reflective_ssim": -0.00023626208305360663
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "coffee",
+      "splits": {
+        "test": {
+          "category": "no_consistency_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0002571883797645516,
+            "full_psnr": 0.26104981422424345,
+            "full_ssim": 0.0007170370221137867,
+            "mean_reflection_consistency": 0.002338690496981143,
+            "reflective_lpips": 0.0008698629913851622,
+            "reflective_psnr": -0.25125725746155325,
+            "reflective_region_psnr": -0.8055755615234368,
+            "reflective_ssim": -0.0011351391673087852
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": false,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.0009206759184598873,
+            "full_psnr": -0.16697231292724268,
+            "full_ssim": -0.0001801222562789473,
+            "mean_reflection_consistency": -0.03165582800284028,
+            "reflective_lpips": 0.001247994315344841,
+            "reflective_psnr": -1.1526151275634788,
+            "reflective_region_psnr": -0.10647068023681783,
+            "reflective_ssim": -0.0011607414484023915
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_full_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": 3.3966358751059966e-05,
+            "full_psnr": 0.07313898086547255,
+            "full_ssim": -1.160264015198642e-05,
+            "mean_reflection_consistency": -0.18088201992213726,
+            "reflective_lpips": -3.029301762580948e-05,
+            "reflective_psnr": 0.09217839241027548,
+            "reflective_region_psnr": -0.33809394836426065,
+            "reflective_ssim": 1.2039542198194475e-05
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": true,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": false,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        },
+        "train": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.00012768996413797112,
+            "full_psnr": -0.09040214538574531,
+            "full_ssim": -0.00019710123538974056,
+            "mean_reflection_consistency": -0.5510355543345212,
+            "reflective_lpips": 0.00011674201581627144,
+            "reflective_psnr": -0.0759358215332,
+            "reflective_region_psnr": 0.09148979187011719,
+            "reflective_ssim": -0.00017991065978995024
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": true,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "teapot",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.00023662253632210188,
+            "full_psnr": 0.2536104393005374,
+            "full_ssim": 0.00011021226644514215,
+            "mean_reflection_consistency": -0.0011977510526776313,
+            "reflective_lpips": -3.6734209861606464e-05,
+            "reflective_psnr": 0.29017520904540817,
+            "reflective_region_psnr": 0.3723609924316449,
+            "reflective_ssim": 6.688624620443395e-05
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        },
+        "train": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0002479078096803277,
+            "full_psnr": 0.6897017669677723,
+            "full_ssim": 0.00010730743408204901,
+            "mean_reflection_consistency": -0.00927937962114811,
+            "reflective_lpips": -0.0001076199812814594,
+            "reflective_psnr": 0.7872386932373061,
+            "reflective_region_psnr": 0.7384754180908217,
+            "reflective_ssim": 7.850468158721036e-05
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        }
+      }
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "toaster",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.0015305827837437391,
+            "full_psnr": -0.1758527183532692,
+            "full_ssim": -0.0008218485116958663,
+            "mean_reflection_consistency": -0.048244272172451017,
+            "reflective_lpips": 6.260265130549753e-05,
+            "reflective_psnr": -0.15458271980285687,
+            "reflective_region_psnr": -0.2767208099365206,
+            "reflective_ssim": 3.136247396462455e-05
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_full_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.0004971039108931999,
+            "full_psnr": 0.056533241271971235,
+            "full_ssim": -3.7298202514635115e-05,
+            "mean_reflection_consistency": -0.116057388484478,
+            "reflective_lpips": -0.00023380448110401665,
+            "reflective_psnr": 0.2309131240844735,
+            "reflective_region_psnr": 0.11627902984619354,
+            "reflective_ssim": 0.0003405350446701316
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": true,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "angel",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0002280913759022951,
+            "full_psnr": 0.14545166492462158,
+            "full_ssim": 0.0009587965905666351,
+            "mean_reflection_consistency": -0.014609189331531533,
+            "reflective_lpips": -0.00022533495211973786,
+            "reflective_psnr": 0.06660580635070801,
+            "reflective_region_psnr": 0.5130294799804673,
+            "reflective_ssim": -0.00010592490434646606
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": -7.455100837562567e-05,
+            "full_psnr": -0.058203697204589844,
+            "full_ssim": 0.0002968721091747284,
+            "mean_reflection_consistency": -0.016347315162420273,
+            "reflective_lpips": 0.0002822676656900752,
+            "reflective_psnr": -0.1428559167044483,
+            "reflective_region_psnr": 0.22621765136718608,
+            "reflective_ssim": 0.00015184017164360242
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": false,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "bell",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0026218360289931297,
+            "full_psnr": 0.13408493995666504,
+            "full_ssim": 0.0009636580944061279,
+            "mean_reflection_consistency": -0.0019764721393585177,
+            "reflective_lpips": -0.0026768234092742205,
+            "reflective_psnr": 0.14532625675201416,
+            "reflective_region_psnr": 0.1891887664794929,
+            "reflective_ssim": 0.0011853799223899841
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        },
+        "train": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0015638924503166736,
+            "full_psnr": 0.015047652380808074,
+            "full_ssim": 0.0007078221866062551,
+            "mean_reflection_consistency": -0.004472491890192026,
+            "reflective_lpips": -0.0015305105896134472,
+            "reflective_psnr": 0.015880448477609832,
+            "reflective_region_psnr": -0.024931144714354758,
+            "reflective_ssim": 0.0007809198328426747
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": false,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "cat",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.0001604130957275629,
+            "full_psnr": -0.24275624752044678,
+            "full_ssim": -0.00024257972836494446,
+            "mean_reflection_consistency": -0.006835789978504203,
+            "reflective_lpips": 0.001455378718674183,
+            "reflective_psnr": -0.5440243482589722,
+            "reflective_region_psnr": -0.47635326385497834,
+            "reflective_ssim": -0.0019477792084217072
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0001618872962093794,
+            "full_psnr": 0.028983797345844664,
+            "full_ssim": 0.00011358516556880804,
+            "mean_reflection_consistency": -0.007060717791318893,
+            "reflective_lpips": 0.000735473503092568,
+            "reflective_psnr": -0.10545662471226791,
+            "reflective_region_psnr": -0.022475624084471235,
+            "reflective_ssim": -0.0006579469357217427
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "horse",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0003730688476935029,
+            "full_psnr": 0.07531797885894775,
+            "full_ssim": 0.0005884096026420593,
+            "mean_reflection_consistency": -0.03037853240966798,
+            "reflective_lpips": 0.00030150305246934295,
+            "reflective_psnr": 0.13630175590515137,
+            "reflective_region_psnr": 0.23331508636474751,
+            "reflective_ssim": -0.00046126917004585266
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.00022746092041155824,
+            "full_psnr": 0.03283689703260251,
+            "full_ssim": 0.0005862079560756683,
+            "mean_reflection_consistency": -0.020892976969480503,
+            "reflective_lpips": 0.00011568240422223097,
+            "reflective_psnr": 0.11284077167510986,
+            "reflective_region_psnr": 0.11982212066650177,
+            "reflective_ssim": 3.663131168907263e-05
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.001538091921247542,
+            "full_psnr": -0.4215930700302124,
+            "full_ssim": 4.503503441810608e-05,
+            "mean_reflection_consistency": -0.0049182765185833005,
+            "reflective_lpips": 0.0024174166610464454,
+            "reflective_psnr": -0.6557818651199341,
+            "reflective_region_psnr": -0.7395454406738295,
+            "reflective_ssim": -0.0009928569197654724
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_quality_mixed",
+          "deltas_rc_minus_base": {
+            "full_lpips": 0.0012365444895944405,
+            "full_psnr": -0.4600265026092565,
+            "full_ssim": -0.0003752894699573517,
+            "mean_reflection_consistency": -0.008840785920619959,
+            "reflective_lpips": 0.0017061524974581396,
+            "reflective_psnr": -0.648902382169446,
+            "reflective_region_psnr": -0.800264739990233,
+            "reflective_ssim": -0.0006756223738193512
+          },
+          "full_quality_all_metrics_improve": false,
+          "rc_wins": {
+            "full_lpips": false,
+            "full_psnr": false,
+            "full_ssim": false,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "potion",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0018666493706405163,
+            "full_psnr": 0.14168202877044678,
+            "full_ssim": 0.0010387822985649109,
+            "mean_reflection_consistency": -0.002451955154538152,
+            "reflective_lpips": -0.0002164881443604827,
+            "reflective_psnr": 0.17363882064819336,
+            "reflective_region_psnr": 0.33428001403808594,
+            "reflective_ssim": 0.0003186725080013275
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        },
+        "train": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0009858985764107514,
+            "full_psnr": 0.1997411591666136,
+            "full_ssim": 0.0005976983479091258,
+            "mean_reflection_consistency": -0.005237502604722985,
+            "reflective_lpips": -0.0007170293912557579,
+            "reflective_psnr": 0.11916245732988529,
+            "reflective_region_psnr": 0.26009407043457244,
+            "reflective_ssim": 0.00010520113365986017
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "tbell",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0010869912803173065,
+            "full_psnr": 0.23941361904144287,
+            "full_ssim": 0.0008050091564655304,
+            "mean_reflection_consistency": -0.056501026451587666,
+            "reflective_lpips": 4.9167429096996784e-05,
+            "reflective_psnr": 0.027396678924560547,
+            "reflective_region_psnr": 0.12431049346923828,
+            "reflective_ssim": -0.00024094060063362122
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        },
+        "train": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0009491842107049071,
+            "full_psnr": 0.08195296355656723,
+            "full_ssim": 0.0003746253039155212,
+            "mean_reflection_consistency": -0.05450872331857684,
+            "reflective_lpips": 0.0003034595200525868,
+            "reflective_psnr": -0.13440576621464118,
+            "reflective_region_psnr": -0.3202331542968757,
+            "reflective_ssim": -0.0003111213445663452
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": false
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "teapot",
+      "splits": {
+        "test": {
+          "category": "consistency_gain_quality_gain",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.0010144503321498632,
+            "full_psnr": 0.16853845119476318,
+            "full_ssim": 0.0018686465919017792,
+            "mean_reflection_consistency": -0.043499524891376484,
+            "reflective_lpips": -0.0008441032841801643,
+            "reflective_psnr": 0.007282137870788574,
+            "reflective_region_psnr": 0.19747409820556783,
+            "reflective_ssim": 0.00033623725175857544
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": true,
+            "reflective_psnr": true,
+            "reflective_region_psnr": true,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": true
+        },
+        "train": {
+          "category": "consistency_gain_reflective_quality_drop",
+          "deltas_rc_minus_base": {
+            "full_lpips": -0.00023269972630909908,
+            "full_psnr": 0.14516845771244746,
+            "full_ssim": 0.0009153059550693898,
+            "mean_reflection_consistency": -0.040824292600154855,
+            "reflective_lpips": 0.00016683145492736584,
+            "reflective_psnr": -0.03462137494768314,
+            "reflective_region_psnr": -0.19378604888915874,
+            "reflective_ssim": 0.00020347961357658484
+          },
+          "full_quality_all_metrics_improve": true,
+          "rc_wins": {
+            "full_lpips": true,
+            "full_psnr": true,
+            "full_ssim": true,
+            "mean_reflection_consistency": true,
+            "reflective_lpips": false,
+            "reflective_psnr": false,
+            "reflective_region_psnr": false,
+            "reflective_ssim": true
+          },
+          "reflective_quality_all_metrics_improve": false
+        }
+      }
+    }
+  ],
+  "scope": "FD-P2-lite / non-Shiny-Real quality tradeoff diagnosis from frozen final artifacts",
+  "train_test_disagreements": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_ssim",
+      "scene": "car",
+      "test_delta_rc_minus_base": 0.00035171449184412396,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.00012081742286684793,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_lpips",
+      "scene": "car",
+      "test_delta_rc_minus_base": -0.00027555966749787456,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": 2.1720603108406344e-05,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_psnr",
+      "scene": "car",
+      "test_delta_rc_minus_base": 0.09973985671997099,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.22739749908447493,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_ssim",
+      "scene": "car",
+      "test_delta_rc_minus_base": 0.00028854668140410045,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.00023626208305360663,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "mean_reflection_consistency",
+      "scene": "coffee",
+      "test_delta_rc_minus_base": 0.002338690496981143,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": -0.03165582800284028,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_psnr",
+      "scene": "coffee",
+      "test_delta_rc_minus_base": 0.26104981422424345,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.16697231292724268,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_ssim",
+      "scene": "coffee",
+      "test_delta_rc_minus_base": 0.0007170370221137867,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.0001801222562789473,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_lpips",
+      "scene": "coffee",
+      "test_delta_rc_minus_base": -0.0002571883797645516,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": 0.0009206759184598873,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_psnr",
+      "scene": "helmet",
+      "test_delta_rc_minus_base": 0.07313898086547255,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.09040214538574531,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_psnr",
+      "scene": "helmet",
+      "test_delta_rc_minus_base": 0.09217839241027548,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.0759358215332,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_ssim",
+      "scene": "helmet",
+      "test_delta_rc_minus_base": 1.2039542198194475e-05,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.00017991065978995024,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_lpips",
+      "scene": "helmet",
+      "test_delta_rc_minus_base": -3.029301762580948e-05,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": 0.00011674201581627144,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "full_psnr",
+      "scene": "toaster",
+      "test_delta_rc_minus_base": -0.1758527183532692,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": 0.056533241271971235,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_psnr",
+      "scene": "toaster",
+      "test_delta_rc_minus_base": -0.15458271980285687,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": 0.2309131240844735,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "metric": "reflective_lpips",
+      "scene": "toaster",
+      "test_delta_rc_minus_base": 6.260265130549753e-05,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": -0.00023380448110401665,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "full_psnr",
+      "scene": "angel",
+      "test_delta_rc_minus_base": 0.14545166492462158,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.058203697204589844,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_psnr",
+      "scene": "angel",
+      "test_delta_rc_minus_base": 0.06660580635070801,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.1428559167044483,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_ssim",
+      "scene": "angel",
+      "test_delta_rc_minus_base": -0.00010592490434646606,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": 0.00015184017164360242,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_lpips",
+      "scene": "angel",
+      "test_delta_rc_minus_base": -0.00022533495211973786,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": 0.0002822676656900752,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "full_psnr",
+      "scene": "cat",
+      "test_delta_rc_minus_base": -0.24275624752044678,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": 0.028983797345844664,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "full_ssim",
+      "scene": "cat",
+      "test_delta_rc_minus_base": -0.00024257972836494446,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": 0.00011358516556880804,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "full_lpips",
+      "scene": "cat",
+      "test_delta_rc_minus_base": 0.0001604130957275629,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": -0.0001618872962093794,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_ssim",
+      "scene": "horse",
+      "test_delta_rc_minus_base": -0.00046126917004585266,
+      "test_rc_wins": false,
+      "train_delta_rc_minus_base": 3.663131168907263e-05,
+      "train_rc_wins": true
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "full_ssim",
+      "scene": "luyu",
+      "test_delta_rc_minus_base": 4.503503441810608e-05,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.0003752894699573517,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_psnr",
+      "scene": "tbell",
+      "test_delta_rc_minus_base": 0.027396678924560547,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.13440576621464118,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_psnr",
+      "scene": "teapot",
+      "test_delta_rc_minus_base": 0.007282137870788574,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": -0.03462137494768314,
+      "train_rc_wins": false
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "metric": "reflective_lpips",
+      "scene": "teapot",
+      "test_delta_rc_minus_base": -0.0008441032841801643,
+      "test_rc_wins": true,
+      "train_delta_rc_minus_base": 0.00016683145492736584,
+      "train_rc_wins": false
+    }
+  ],
+  "worst_regressions": {
+    "test": {
+      "top5_any_ssim_drops": [
+        {
+          "base": 0.9824726916849613,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0019477792084217072,
+          "metric": "reflective_ssim",
+          "rc": 0.9805249124765396,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 0.9853902697563172,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0011351391673087852,
+          "metric": "reflective_ssim",
+          "rc": 0.9842551305890084,
+          "scene": "coffee",
+          "split": "test"
+        },
+        {
+          "base": 0.9687906429171562,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0009928569197654724,
+          "metric": "reflective_ssim",
+          "rc": 0.9677977859973907,
+          "scene": "luyu",
+          "split": "test"
+        },
+        {
+          "base": 0.9499877572059632,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0008218485116958663,
+          "metric": "full_ssim",
+          "rc": 0.9491659086942673,
+          "scene": "toaster",
+          "split": "test"
+        },
+        {
+          "base": 0.9688311144709587,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.00046126917004585266,
+          "metric": "reflective_ssim",
+          "rc": 0.9683698453009129,
+          "scene": "horse",
+          "split": "test"
+        }
+      ],
+      "top5_full_lpips_regressions": [
+        {
+          "base": 0.03756850026547909,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.001538091921247542,
+          "metric": "full_lpips",
+          "rc": 0.03910659218672663,
+          "scene": "luyu",
+          "split": "test"
+        },
+        {
+          "base": 0.056900130864232776,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.0015305827837437391,
+          "metric": "full_lpips",
+          "rc": 0.058430713647976515,
+          "scene": "toaster",
+          "split": "test"
+        },
+        {
+          "base": 0.03843016771133989,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.0001604130957275629,
+          "metric": "full_lpips",
+          "rc": 0.038590580807067454,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 0.014634082862176,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 3.3966358751059966e-05,
+          "metric": "full_lpips",
+          "rc": 0.01466804922092706,
+          "scene": "helmet",
+          "split": "test"
+        }
+      ],
+      "top5_full_psnr_drops": [
+        {
+          "base": 29.477797150611877,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.4215930700302124,
+          "metric": "full_psnr",
+          "rc": 29.056204080581665,
+          "scene": "luyu",
+          "split": "test"
+        },
+        {
+          "base": 33.29552483558655,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.24275624752044678,
+          "metric": "full_psnr",
+          "rc": 33.0527685880661,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 27.339037952423094,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.1758527183532692,
+          "metric": "full_psnr",
+          "rc": 27.163185234069825,
+          "scene": "toaster",
+          "split": "test"
+        },
+        {
+          "base": 31.468172369003295,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.018467788696288068,
+          "metric": "full_psnr",
+          "rc": 31.449704580307007,
+          "scene": "car",
+          "split": "test"
+        }
+      ],
+      "top5_full_ssim_drops": [
+        {
+          "base": 0.9499877572059632,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0008218485116958663,
+          "metric": "full_ssim",
+          "rc": 0.9491659086942673,
+          "scene": "toaster",
+          "split": "test"
+        },
+        {
+          "base": 0.9746747277677059,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.00024257972836494446,
+          "metric": "full_ssim",
+          "rc": 0.974432148039341,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 0.9850164332985878,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -1.160264015198642e-05,
+          "metric": "full_ssim",
+          "rc": 0.9850048306584358,
+          "scene": "helmet",
+          "split": "test"
+        }
+      ],
+      "top5_reflective_lpips_regressions": [
+        {
+          "base": 0.026680906168185175,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.004306757408194244,
+          "metric": "reflective_lpips",
+          "rc": 0.03098766357637942,
+          "scene": "ball",
+          "split": "test"
+        },
+        {
+          "base": 0.024764987407252192,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.0024174166610464454,
+          "metric": "reflective_lpips",
+          "rc": 0.027182404068298638,
+          "scene": "luyu",
+          "split": "test"
+        },
+        {
+          "base": 0.02370288805104792,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.001455378718674183,
+          "metric": "reflective_lpips",
+          "rc": 0.025158266769722104,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 0.013485323849599808,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.0008698629913851622,
+          "metric": "reflective_lpips",
+          "rc": 0.01435518684098497,
+          "scene": "coffee",
+          "split": "test"
+        },
+        {
+          "base": 0.013123404181096704,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.0006820062431506808,
+          "metric": "reflective_lpips",
+          "rc": 0.013805410424247384,
+          "scene": "car",
+          "split": "test"
+        }
+      ],
+      "top5_reflective_psnr_drops": [
+        {
+          "base": 31.369457006454468,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.6557818651199341,
+          "metric": "reflective_psnr",
+          "rc": 30.713675141334534,
+          "scene": "luyu",
+          "split": "test"
+        },
+        {
+          "base": 34.4962375164032,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.5440243482589722,
+          "metric": "reflective_psnr",
+          "rc": 33.952213168144226,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 37.00081950187683,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.25125725746155325,
+          "metric": "reflective_psnr",
+          "rc": 36.74956224441528,
+          "scene": "coffee",
+          "split": "test"
+        },
+        {
+          "base": 28.695100870132446,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.15458271980285687,
+          "metric": "reflective_psnr",
+          "rc": 28.54051815032959,
+          "scene": "toaster",
+          "split": "test"
+        }
+      ],
+      "top5_reflective_ssim_drops": [
+        {
+          "base": 0.9824726916849613,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0019477792084217072,
+          "metric": "reflective_ssim",
+          "rc": 0.9805249124765396,
+          "scene": "cat",
+          "split": "test"
+        },
+        {
+          "base": 0.9853902697563172,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0011351391673087852,
+          "metric": "reflective_ssim",
+          "rc": 0.9842551305890084,
+          "scene": "coffee",
+          "split": "test"
+        },
+        {
+          "base": 0.9687906429171562,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0009928569197654724,
+          "metric": "reflective_ssim",
+          "rc": 0.9677977859973907,
+          "scene": "luyu",
+          "split": "test"
+        },
+        {
+          "base": 0.9688311144709587,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.00046126917004585266,
+          "metric": "reflective_ssim",
+          "rc": 0.9683698453009129,
+          "scene": "horse",
+          "split": "test"
+        },
+        {
+          "base": 0.9675749987363815,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.00024094060063362122,
+          "metric": "reflective_ssim",
+          "rc": 0.9673340581357479,
+          "scene": "tbell",
+          "split": "test"
+        }
+      ]
+    },
+    "train": {
+      "top5_any_ssim_drops": [
+        {
+          "base": 0.9916090375185013,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0011607414484023915,
+          "metric": "reflective_ssim",
+          "rc": 0.9904482960700989,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 0.9796441426234586,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0006756223738193512,
+          "metric": "reflective_ssim",
+          "rc": 0.9789685202496392,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 0.989677577146462,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0006579469357217427,
+          "metric": "reflective_ssim",
+          "rc": 0.9890196302107402,
+          "scene": "cat",
+          "split": "train"
+        },
+        {
+          "base": 0.966454624065331,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0003752894699573517,
+          "metric": "full_ssim",
+          "rc": 0.9660793345953737,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 0.9790906640035766,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0003111213445663452,
+          "metric": "reflective_ssim",
+          "rc": 0.9787795426590102,
+          "scene": "tbell",
+          "split": "train"
+        }
+      ],
+      "top5_full_lpips_regressions": [
+        {
+          "base": 0.0314378451855321,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.0012365444895944405,
+          "metric": "full_lpips",
+          "rc": 0.03267438967512654,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 0.03446314841508866,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.0009206759184598873,
+          "metric": "full_lpips",
+          "rc": 0.035383824333548544,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 0.02407520922832191,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.0004971039108931999,
+          "metric": "full_lpips",
+          "rc": 0.02457231313921511,
+          "scene": "toaster",
+          "split": "train"
+        },
+        {
+          "base": 0.006331377732567489,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.00012768996413797112,
+          "metric": "full_lpips",
+          "rc": 0.0064590676967054604,
+          "scene": "helmet",
+          "split": "train"
+        },
+        {
+          "base": 0.009061134201474488,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 2.1720603108406344e-05,
+          "metric": "full_lpips",
+          "rc": 0.009082854804582895,
+          "scene": "car",
+          "split": "train"
+        }
+      ],
+      "top5_full_psnr_drops": [
+        {
+          "base": 32.07533998148782,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.4600265026092565,
+          "metric": "full_psnr",
+          "rc": 31.615313478878566,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 36.740454483032224,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.23429634094237883,
+          "metric": "full_psnr",
+          "rc": 36.506158142089845,
+          "scene": "car",
+          "split": "train"
+        },
+        {
+          "base": 39.01282356262207,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.16697231292724268,
+          "metric": "full_psnr",
+          "rc": 38.845851249694825,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 40.14170768737793,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.09040214538574531,
+          "metric": "full_psnr",
+          "rc": 40.051305541992186,
+          "scene": "helmet",
+          "split": "train"
+        },
+        {
+          "base": 32.8659302847726,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.058203697204589844,
+          "metric": "full_psnr",
+          "rc": 32.80772658756801,
+          "scene": "angel",
+          "split": "train"
+        }
+      ],
+      "top5_full_ssim_drops": [
+        {
+          "base": 0.966454624065331,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0003752894699573517,
+          "metric": "full_ssim",
+          "rc": 0.9660793345953737,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 0.9934892982244492,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.00019710123538974056,
+          "metric": "full_ssim",
+          "rc": 0.9932921969890595,
+          "scene": "helmet",
+          "split": "train"
+        },
+        {
+          "base": 0.9834073233604431,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0001801222562789473,
+          "metric": "full_ssim",
+          "rc": 0.9832272011041642,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 0.985656060576439,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.00012081742286684793,
+          "metric": "full_ssim",
+          "rc": 0.9855352431535721,
+          "scene": "car",
+          "split": "train"
+        },
+        {
+          "base": 0.9781747549772263,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -3.7298202514635115e-05,
+          "metric": "full_ssim",
+          "rc": 0.9781374567747116,
+          "scene": "toaster",
+          "split": "train"
+        }
+      ],
+      "top5_reflective_lpips_regressions": [
+        {
+          "base": 0.022803996801376344,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.002787792077288031,
+          "metric": "reflective_lpips",
+          "rc": 0.025591788878664375,
+          "scene": "ball",
+          "split": "train"
+        },
+        {
+          "base": 0.01959136130088674,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.0017061524974581396,
+          "metric": "reflective_lpips",
+          "rc": 0.02129751379834488,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 0.00982107999967411,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.001247994315344841,
+          "metric": "reflective_lpips",
+          "rc": 0.011069074315018952,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 0.018068337729865953,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": 0.000735473503092568,
+          "metric": "reflective_lpips",
+          "rc": 0.01880381123295852,
+          "scene": "cat",
+          "split": "train"
+        },
+        {
+          "base": 0.005930654965341091,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": 0.0003929243655875327,
+          "metric": "reflective_lpips",
+          "rc": 0.006323579330928624,
+          "scene": "car",
+          "split": "train"
+        }
+      ],
+      "top5_reflective_psnr_drops": [
+        {
+          "base": 42.35140979766846,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -1.1526151275634788,
+          "metric": "reflective_psnr",
+          "rc": 41.19879467010498,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 33.95423786980765,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.648902382169446,
+          "metric": "reflective_psnr",
+          "rc": 33.3053354876382,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 38.13613090515137,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.22739749908447493,
+          "metric": "reflective_psnr",
+          "rc": 37.908733406066894,
+          "scene": "car",
+          "split": "train"
+        },
+        {
+          "base": 34.376462493624004,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.1428559167044483,
+          "metric": "reflective_psnr",
+          "rc": 34.233606576919556,
+          "scene": "angel",
+          "split": "train"
+        },
+        {
+          "base": 34.00247841221945,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.13440576621464118,
+          "metric": "reflective_psnr",
+          "rc": 33.86807264600481,
+          "scene": "tbell",
+          "split": "train"
+        }
+      ],
+      "top5_reflective_ssim_drops": [
+        {
+          "base": 0.9916090375185013,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.0011607414484023915,
+          "metric": "reflective_ssim",
+          "rc": 0.9904482960700989,
+          "scene": "coffee",
+          "split": "train"
+        },
+        {
+          "base": 0.9796441426234586,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0006756223738193512,
+          "metric": "reflective_ssim",
+          "rc": 0.9789685202496392,
+          "scene": "luyu",
+          "split": "train"
+        },
+        {
+          "base": 0.989677577146462,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0006579469357217427,
+          "metric": "reflective_ssim",
+          "rc": 0.9890196302107402,
+          "scene": "cat",
+          "split": "train"
+        },
+        {
+          "base": 0.9790906640035766,
+          "dataset": "glossy_synthetic",
+          "delta_rc_minus_base": -0.0003111213445663452,
+          "metric": "reflective_ssim",
+          "rc": 0.9787795426590102,
+          "scene": "tbell",
+          "split": "train"
+        },
+        {
+          "base": 0.9891319018602371,
+          "dataset": "shiny_blender_synthetic",
+          "delta_rc_minus_base": -0.00023626208305360663,
+          "metric": "reflective_ssim",
+          "rc": 0.9888956397771835,
+          "scene": "car",
+          "split": "train"
+        }
+      ]
+    }
+  }
+}

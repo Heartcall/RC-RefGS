@@ -1,0 +1,156 @@
+{
+  "acceptance_criteria": {
+    "across_scoped_scenes": [
+      "at least 12/14 test reflection-consistency wins",
+      "at least 12/14 test full_lpips wins",
+      "at least 12/14 test full_psnr or full_ssim wins"
+    ],
+    "fallback": "If all metrics exceeding base is infeasible, report exact Pareto tradeoff and choose settings that improve quality counts without erasing the consistency gain.",
+    "target_scene": [
+      "beat base on test full_lpips/full_psnr/full_ssim where possible",
+      "beat or match base on reflective_lpips/reflective_psnr/reflective_ssim where possible",
+      "retain lower test mean_reflection_consistency than base"
+    ]
+  },
+  "candidate_variants": [
+    {
+      "expected_effect": "largest reduction in RC pressure; should reduce quality regressions but may lose some consistency gain",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.005,
+      "ref_consistency_every": 4,
+      "ref_consistency_gamma": 2.0,
+      "ref_consistency_start": 3000,
+      "variant": "rc_qp_lam005"
+    },
+    {
+      "expected_effect": "middle point likely to preserve most consistency gain while easing quality pressure",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.01,
+      "ref_consistency_every": 4,
+      "ref_consistency_gamma": 2.0,
+      "ref_consistency_start": 3000,
+      "variant": "rc_qp_lam010"
+    },
+    {
+      "expected_effect": "lets reconstruction settle and halves RC update frequency; primary quality-preserving schedule candidate",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.01,
+      "ref_consistency_every": 8,
+      "ref_consistency_gamma": 2.0,
+      "ref_consistency_start": 5000,
+      "variant": "rc_qp_lam010_start5000_every8"
+    },
+    {
+      "expected_effect": "tests whether confidence weighting sharpness contributes to reflective-region quality regressions",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.01,
+      "ref_consistency_every": 4,
+      "ref_consistency_gamma": 1.0,
+      "ref_consistency_start": 3000,
+      "variant": "rc_qp_lam010_gamma10"
+    },
+    {
+      "expected_effect": "phase-2 bridge toward current rc baseline if 0.005/0.010 underfit consistency",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.015,
+      "ref_consistency_every": 4,
+      "ref_consistency_gamma": 2.0,
+      "ref_consistency_start": 3000,
+      "variant": "rc_qp_lam015"
+    },
+    {
+      "expected_effect": "phase-2 delayed-start diagnostic if start5000 still harms quality",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.01,
+      "ref_consistency_every": 8,
+      "ref_consistency_gamma": 2.0,
+      "ref_consistency_start": 7000,
+      "variant": "rc_qp_lam010_start7000_every8"
+    },
+    {
+      "expected_effect": "phase-2 middle confidence weighting diagnostic",
+      "lambda_dssim": 0.2,
+      "lambda_ref_consistency": 0.01,
+      "ref_consistency_every": 4,
+      "ref_consistency_gamma": 1.5,
+      "ref_consistency_start": 3000,
+      "variant": "rc_qp_lam010_gamma15"
+    }
+  ],
+  "claim_update_rules": [
+    "If quality improves, report as FD-P2-lite non-Shiny-Real pilot evidence only until full required-dataset coverage exists.",
+    "If tradeoff remains, state that RC is a reflection-consistency regularizer with mixed render-quality impact and keep broad rendering claims NO-GO."
+  ],
+  "example_one_cell_commands": {
+    "model_path": "/tmp/rc_refgs_quality_preserving_rc_i31000_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0",
+    "reflection_metric_test_command": "conda run -n ref_gs python metrics/reflection_consistency_eval.py --cuda_device 0 --model_path /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0 --source_path \"/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet\" --iteration 31000 --split test --max_pairs 10 --max_angle_deg 20.0 --gamma 2.0 --output_json /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0/reflection_consistency_test.json",
+    "render_quality_metric_command": "conda run -n ref_gs python metrics/render_quality_eval.py --cuda_device 0 --model_path /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0 --source_path \"/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet\" --iteration 31000 --split both --mask_mode both --image_key pbr_rgb --output_json /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0/render_quality_both_iter31000.json",
+    "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet",
+    "train_command": "conda run -n ref_gs python train.py --cuda_device 0 -s \"/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet\" -m /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0 --eval --iterations 31000 --test_iterations 31000 --save_iterations 31000 --seed 0 --lambda_ref_consistency 0.01 --ref_consistency_start 5000 --ref_consistency_every 8 --ref_consistency_max_angle 20.0 --ref_consistency_gamma 2.0"
+  },
+  "future_optional_loss_proposals": [
+    "Add lambda_lpips_loss only behind a disabled-by-default option and validate with explicit metric-targeting caveat.",
+    "If added, apply only after reconstruction warmup; do not make default without paired evidence.",
+    "Sweep lambda_dssim 0.1, 0.2, 0.3 only in a small matrix combined with reduced RC weight after first-wave pilots.",
+    "Investigate stable reflective masks or delayed reflective loss only if first-wave data still shows reflective-region quality drops."
+  ],
+  "generated_at": "2026-06-03T13:43:42+08:00",
+  "launcher_support": {
+    "current_supports_custom_rc_qp_variants": false,
+    "evidence": [
+      "scripts/run_rc_refgs_ablation_direct.py DEFAULT_VARIANTS is limited to base, rc, wo_ref, wo_conf, rough_only and exits on unknown variants.",
+      "scripts/run_rc_refgs_full_dataset_all_experiments.sh validate_variant accepts only base, rc, wo_ref, wo_conf, rough_only.",
+      "Direct train.py can express candidate knobs manually, but batch-safe pilot naming requires a launcher extension."
+    ],
+    "minimal_extension": [
+      "Add rc_qp_* variant metadata support in scripts/run_rc_refgs_ablation_direct.py without changing existing variant behavior.",
+      "Allow safe extra_train_args or explicit per-variant config fields only for new rc_qp_* variants.",
+      "Update full-dataset runner variant validation to accept rc_qp_* only when metadata is supplied.",
+      "Add static tests for command construction and unknown-variant rejection."
+    ]
+  },
+  "non_negotiable_rules": [
+    "Do not change headline metric definitions, masks, splits, image_key, or LPIPS settings.",
+    "Do not run Shiny Blender Real in this pilot scope.",
+    "Do not overwrite base, rc, or existing ablation outputs.",
+    "Use new output root /tmp/rc_refgs_quality_preserving_rc_i31000_20260601 and rc_qp_* variant names.",
+    "Do not claim the quality-preserving variant exceeds base until paired experiments prove it."
+  ],
+  "objective": "Design a quality-preserving RC variant that preserves most reflection-consistency gain while beating or matching base on PSNR/SSIM/LPIPS where possible.",
+  "pilot_matrix_csv": "docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv",
+  "pilot_scene_selection": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "evidence": "test consistency delta -0.180882; test full LPIPS delta +0.00003397 and full SSIM delta -0.0000116",
+      "scene": "helmet",
+      "selection_reason": "strongest consistency gain with quality regression signal",
+      "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet"
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "evidence": "test consistency delta +0.002339; reflective PSNR/SSIM/LPIPS all regress on test",
+      "scene": "coffee",
+      "selection_reason": "test consistency exception",
+      "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/coffee"
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "evidence": "test full LPIPS delta +0.001538; reflective LPIPS delta +0.002417; full PSNR delta -0.421593; reflective PSNR delta -0.655782",
+      "scene": "luyu",
+      "selection_reason": "worst combined test full and reflective quality regression among Glossy Synthetic scenes",
+      "source_path": "/data/liuly/dataset/3DGS/GlossySynthetic/luyu"
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "evidence": "test consistency delta -0.043500; full/reflective PSNR, SSIM, and LPIPS all improve on test",
+      "scene": "teapot",
+      "selection_reason": "control scene where RC improves consistency and all six test quality metrics",
+      "source_path": "/data/liuly/dataset/3DGS/GlossySynthetic/teapot"
+    }
+  ],
+  "stop_criteria": [
+    "Stop a candidate if it loses test consistency versus base on more than one pilot scene.",
+    "Stop a candidate if it worsens test full LPIPS and full PSNR on two or more pilot scenes.",
+    "Stop full-scope expansion if pilot results only shift the consistency-quality tradeoff without increasing Pareto wins."
+  ]
+}

@@ -8347,3 +8347,214 @@ Key measured values (mean reflection consistency):
 - Shiny Blender Real remains excluded due to OOM.
 - Original full FD-P2 17-scene and full 51-cell ablation claims remain **NO-GO**.
 - Released the round-local task claim at `2026-06-02 00:20:56 CST`.
+
+## 2026-06-03 13:49:30 CST - Diagnose LPIPS/PSNR/SSIM tradeoffs and plan quality-preserving RC
+
+**Task claim and scope:**
+- Claimed exactly one task: "Diagnose LPIPS/PSNR/SSIM tradeoffs and update the improvement plan for a quality-preserving RC variant."
+- Kept execution analysis/docs/CSV/JSON-only from existing FD-P2-lite final artifacts.
+- Did not launch training, full metric sweeps, recovery, or Shiny Blender Real.
+- Did not edit metric definitions, masks, splits, image_key, LPIPS settings, method code, or existing result artifacts.
+- Did not claim the new plan exceeds base.
+
+**Source artifacts:**
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.{json,md}`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-ablation-summary-2026-06-01.csv`
+- `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-tradeoff-summary-2026-06-01.csv`
+- `docs/superpowers/figures/fd-p2-lite/*`
+
+**Generated artifacts:**
+- `docs/superpowers/logs/rc-refgs-quality-tradeoff-diagnosis-2026-06-01.md`
+- `docs/superpowers/logs/rc-refgs-quality-tradeoff-diagnosis-2026-06-01.json`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-rc-plan-2026-06-01.md`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-rc-plan-2026-06-01.json`
+- `docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv`
+
+**Diagnosis outcome:**
+- RC consistency wins remain strong: train `14/14`, test `13/14`.
+- Render quality remains mixed: full-image LPIPS wins are train `9/14`, test `10/14`; reflective LPIPS wins are train `4/14`, test `6/14`.
+- Worst test full/reflective quality regressions include `glossy_synthetic/luyu`, `glossy_synthetic/cat`, `shiny_blender_synthetic/toaster`, and the coffee test exception.
+- Ablation evidence suggests removing reflection loss or confidence weighting does not cleanly rescue full-image quality; current artifacts are insufficient for causal root-cause claims.
+- Planned first-wave pilot is bounded to `4 scenes x 4 configs = 16 jobs` under `/tmp/rc_refgs_quality_preserving_rc_i31000_20260601`, with `rc_qp_*` variant names only.
+
+**Validation executed:**
+- Preflight RC-RefGS prohibited-process scan -> `0`.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-tradeoff-diagnosis-2026-06-01.json` -> OK.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-rc-plan-2026-06-01.json` -> OK.
+- JSON/CSV assertions -> `per_scene=14`, `pilot_rows=16`, `scenes=4`, `variants=4`, and no Shiny Real rows.
+- `git diff --check` -> OK.
+- RC-RefGS prohibited-process scan -> `0`.
+- No unit tests run: this round changed docs/analysis/status artifacts only.
+
+**Decision and release:**
+- **CONDITIONAL GO** for an evidence-grounded quality-tradeoff diagnosis and concrete quality-preserving RC pilot plan.
+- **NO-GO** for quality-preserving claim upgrades until new paired experiments prove them.
+- Shiny Blender Real remains excluded due to OOM.
+- Original full FD-P2 17-scene and full 51-cell ablation claims remain **NO-GO**.
+- Released the round-local task claim at `2026-06-03 13:49:30 CST`.
+
+## 2026-06-03 14:27:09 CST - Prepare and validate minimal quality-preserving RC pilot runner
+
+**Task claim and scope:**
+- Claimed exactly one task: "Prepare and validate a minimal rc_qp_* pilot runner for quality-preserving RC experiments."
+- Kept execution to runner/tests/docs/status and a dry-run command plan.
+- Did not launch training, metric sweeps, Shiny Blender Real, multi-seed, full 16-job execution, or full `i31000` pilot execution.
+- Did not modify metric definitions, headline masks, splits, image_key, LPIPS settings, or existing base/RC/ablation result artifacts.
+- Did not claim quality-preserving RC succeeds.
+
+**Source artifacts:**
+- `docs/superpowers/logs/rc-refgs-quality-preserving-rc-plan-2026-06-01.{json,md}`
+- `docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv`
+- `train.py`
+- `arguments/__init__.py`
+- `scripts/run_rc_refgs_full_dataset_all_experiments.sh`
+- `scripts/run_rc_refgs_ablation_direct.py`
+
+**Generated artifacts:**
+- `scripts/run_rc_refgs_quality_preserving_pilot.py`
+- `tests/test_quality_preserving_pilot_runner.py`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.md`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json`
+- Dry-run status under `/tmp/rc_refgs_quality_preserving_rc_i31000_20260601/pilot_{plan,status}.{json,md}`
+
+**Runner outcome:**
+- Existing full-dataset/direct ablation launchers are not sufficient for `rc_qp_*` without modification because they reject unknown variants.
+- New standalone runner defaults to dry-run, requires `--execute --confirm_execute YES` for runtime, defaults `max_jobs=1`, excludes Shiny Real, writes formal paths under `<output_root>/<dataset>/<scene>/<variant>/seed_0/`, and records exact train/reflection/render commands.
+- Required first-wave variants are supported: `rc_qp_lam005`, `rc_qp_lam010`, `rc_qp_lam015`, and `rc_qp_lam010_start5000_every8`.
+- Dry-run generated the bounded 16-job plan from the target CSV with `dry_run=16`, `completed=0`, `failed=0`, `partial=0`, `skipped_complete=0`, and no Shiny Real rows.
+
+**Smoke status:**
+- Pre-smoke process probe returned no active `train.py`, `render_quality_eval`, `reflection_consistency_eval`, `run_rc_refgs`, or `quality_preserving` process.
+- `nvidia-smi` exited `9` with `NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver.`
+- Smoke was skipped because GPU 5/6/7 idleness could not be verified.
+
+**Validation executed:**
+- RED: `python -m unittest tests/test_quality_preserving_pilot_runner.py` failed before the runner existed.
+- GREEN: `python -m unittest tests/test_quality_preserving_pilot_runner.py` passed.
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> OK.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json` -> OK.
+- `python -m json.tool /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/pilot_status.json` -> OK.
+- `python -m json.tool /tmp/rc_refgs_quality_preserving_rc_i31000_20260601/pilot_plan.json` -> OK.
+- Pilot status assertions -> `job_count=16`, `dry_run=16`, four required variants, no Shiny Real rows.
+
+**Decision and release:**
+- **CONDITIONAL GO** for quality-preserving RC pilot-runner readiness.
+- Smoke remains pending until a GPU probe can verify an idle device.
+- **NO-GO** for quality-preserving result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
+- Original full FD-P2 17-scene and full 51-cell ablation claims remain **NO-GO**.
+- Released the round-local task claim at `2026-06-03 14:27:09 CST`.
+
+## 2026-06-03 15:03:15 CST - Harden quality-preserving pilot runner safety coverage
+
+**Task claim and scope:**
+- Claimed exactly one task: "Harden quality-preserving pilot runner safety coverage and artifact-state handling."
+- Kept execution to tests/runner/docs/status only.
+- Did not launch training, metrics, smoke, full 16-job pilot, Shiny Blender Real, or multi-seed.
+- Did not modify metric definitions, headline masks, splits, image_key, LPIPS settings, or existing base/RC/ablation result artifacts.
+- Did not claim quality-preserving RC succeeds.
+
+**Files touched:**
+- `scripts/run_rc_refgs_quality_preserving_pilot.py`
+- `tests/test_quality_preserving_pilot_runner.py`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.{md,json}`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+
+**Hardening outcome:**
+- Added regression coverage for artifact-state handling: dry-run `launcher_summary.json` can no longer make a job eligible for `skipped_complete`.
+- Skip-complete now requires all expected artifacts plus a `launcher_summary.json` status of `completed` or `skipped_complete`.
+- Added coverage that smoke mode uses `--smoke_iterations` in train commands and expected render-quality artifact names.
+- Ran a non-executing smoke dry-run command under `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601_dryrun_check`, which wrote a valid one-job dry-run status with `iterations=123`, `dry_run=1`, and no Shiny Real rows.
+
+**Validation executed:**
+- RED: `python -m unittest tests/test_quality_preserving_pilot_runner.py` failed with `skipped_complete=1` for a dry-run launcher summary.
+- GREEN: `python -m unittest tests/test_quality_preserving_pilot_runner.py` passed (`6` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> OK.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.json` -> OK.
+- Dry-run smoke command with `--smoke_iterations 123` -> OK, dry-run only.
+- `python -m json.tool /tmp/rc_refgs_quality_preserving_rc_smoke_20260601_dryrun_check/pilot_status.json` -> OK.
+- `python -m json.tool /tmp/rc_refgs_quality_preserving_rc_smoke_20260601_dryrun_check/pilot_plan.json` -> OK.
+
+**Decision and release:**
+- **GO** for runner safety hardening.
+- **CONDITIONAL GO** remains for runtime smoke readiness because GPU state still needs a valid probe before any execution.
+- **NO-GO** for quality-preserving result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
+- Released the round-local task claim at `2026-06-03 15:03:15 CST`.
+
+## 2026-06-03 18:29:06 CST - Quality-preserving runtime smoke safety gate
+
+**Task claim and scope:**
+- Claimed exactly one task: "Run one runtime smoke cell for the quality-preserving RC pilot runner if GPU status is verifiable."
+- Scope was limited to at most one smoke cell under `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601` with variant `rc_qp_lam010`, `smoke_iterations=1000`, `max_jobs=1`, and GPU 7 only if verified idle.
+- Did not launch the full 16-job pilot, Shiny Blender Real, metric-definition changes, or any quality-improvement claim.
+
+**Safety probes:**
+- Prohibited-process probe for `train.py`, `render_quality_eval`, `reflection_consistency_eval`, `quality_preserving`, and `run_rc_refgs` returned empty.
+- GPU probe command:
+  - `nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader`
+- GPU probe result:
+  - `0, 3 MiB, 0 %`
+  - `1, 3 MiB, 0 %`
+  - `2, 3 MiB, 0 %`
+  - `3, 3 MiB, 0 %`
+  - `4, 19636 MiB, 100 %`
+  - `5, 4632 MiB, 98 %`
+  - `6, 8144 MiB, 98 %`
+  - `7, 4632 MiB, 99 %`
+
+**Smoke outcome:**
+- GPU status was verifiable, but target GPU 7 was busy.
+- Per stop condition, no smoke runner command was invoked.
+- No train startup, point-cloud save artifact, reflection metric, or render-quality metric was attempted.
+- `pilot_status.json` and per-job `launcher_summary.json` checks are not applicable for this runtime request because the runner was not invoked.
+
+**Files touched:**
+- `docs/superpowers/logs/rc-refgs-quality-preserving-pilot-runner-2026-06-01.{md,json}`
+- `docs/superpowers/logs/rc-refgs-autonomous-log.md`
+- `docs/superpowers/logs/rc-refgs-coordination-board.md`
+- `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+
+**Decision and release:**
+- **CONDITIONAL GO** for runtime smoke readiness, safety-skipped because GPU 7 was verifiably busy.
+- **NO-GO** for quality-preserving RC result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
+- Released the round-local task claim at `2026-06-03 18:29:06 CST`.
+
+## 2026-06-03 18:37:33 CST - Quality-preserving runtime smoke GPU0 attempt
+
+**Task claim and scope:**
+- Claimed exactly one task: "Run one runtime smoke cell for the quality-preserving RC pilot runner if GPU status is verifiable."
+- Used the user-approved target GPU 0 after live verification.
+- Scope was limited to one smoke cell under `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601`, scene `helmet`, variant `rc_qp_lam010`, `smoke_iterations=1000`, and `max_jobs=1`.
+- Did not launch the full 16-job pilot, Shiny Blender Real, metric-definition changes, multi-seed work, or any quality-improvement claim.
+
+**Safety probes:**
+- Prohibited-process probe for `train.py`, `render_quality_eval`, `reflection_consistency_eval`, `quality_preserving`, and `run_rc_refgs` returned empty.
+- GPU probe showed GPU 0 idle:
+  - `0, 3 MiB, 0 %`
+- Compute-app query listed active jobs only on other GPUs, not GPU 0.
+
+**Command executed:**
+```bash
+python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_refgs_quality_preserving_rc_smoke_20260601 --devices 0 --scenes helmet --variants rc_qp_lam010 --max_jobs 1 --smoke --smoke_iterations 1000 --execute --confirm_execute YES
+```
+
+**Smoke artifacts checked:**
+- `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601/pilot_plan.json` exists.
+- `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601/pilot_status.json` exists and parses.
+- `/tmp/rc_refgs_quality_preserving_rc_smoke_20260601/shiny_blender_synthetic/helmet/rc_qp_lam010/seed_0/launcher_summary.json` exists and parses.
+- No point cloud, reflection-consistency JSON, or render-quality JSON was produced.
+
+**Outcome:**
+- Exactly one smoke job was launched.
+- `pilot_status.json` reports `job_count=1`, `failed=1`, `failed_step=train`, `dry_run=false`, `smoke=true`, and `iterations=1000`.
+- `launcher_summary.json` reports `status=failed` and `return_codes.train=1`.
+- Training failed during import before startup completed:
+  - `ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.29 not found (required by .../libLerc.so.4)`
+- Reflection and render-quality metric commands were generated but not executed because train failed.
+
+**Decision and release:**
+- **CONDITIONAL GO** because one smoke cell was attempted and failed with a clear isolated runtime-library error.
+- **NO-GO** for quality-preserving RC result claims, full pilot execution, Shiny Real, or full-scope claim upgrade.
+- Released the round-local task claim at `2026-06-03 18:37:33 CST`.
