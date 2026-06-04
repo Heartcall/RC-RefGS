@@ -1,0 +1,157 @@
+{
+  "claim_boundary": {
+    "notes": "This is an engineering/runtime gate result only.",
+    "quality_improvement_claim": false,
+    "scientific_result_for_stage1_variants": false
+  },
+  "comparison_csv": "/home/liuly/Surface_Reconstruction/Glossy/Ref-GS/docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv",
+  "comparison_status": "No new rc_qp_lam005 or rc_qp_lam010_start5000_every8 metrics exist because the manual CUDA gate failed before rerun.",
+  "decision": "CONDITIONAL GO",
+  "decision_reason": "Runner trust mode and tests are implemented, but the required same-shell manual CUDA check failed with torch_cuda_available=false and torch_device_count=0, so the Stage 1 rerun was not launched.",
+  "generated_at": "2026-06-04T12:33:16+08:00",
+  "previous_stage1_attempt": {
+    "pilot_status": {
+      "cuda_device_arg": "0",
+      "cuda_preflight_results": [],
+      "cuda_visible_devices": "0",
+      "device": "0",
+      "device_mapping": {
+        "external_CUDA_VISIBLE_DEVICES": "0",
+        "logical_cuda_device_arg": "0",
+        "physical_gpu": "0"
+      },
+      "devices": "0",
+      "dry_run": false,
+      "excluded_datasets": [
+        "shiny_blender_real"
+      ],
+      "execute": true,
+      "generated_at": "2026-06-04T04:33:17",
+      "iterations": 31000,
+      "job_count": 4,
+      "jobs": [
+        {
+          "dataset": "glossy_synthetic",
+          "failed_step": "cuda_preflight",
+          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam005/seed_0",
+          "scene": "luyu",
+          "status": "failed",
+          "variant": "rc_qp_lam005"
+        },
+        {
+          "dataset": "glossy_synthetic",
+          "failed_step": "cuda_preflight",
+          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam010_start5000_every8/seed_0",
+          "scene": "luyu",
+          "status": "failed",
+          "variant": "rc_qp_lam010_start5000_every8"
+        },
+        {
+          "dataset": "shiny_blender_synthetic",
+          "failed_step": "cuda_preflight",
+          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam005/seed_0",
+          "scene": "helmet",
+          "status": "failed",
+          "variant": "rc_qp_lam005"
+        },
+        {
+          "dataset": "shiny_blender_synthetic",
+          "failed_step": "cuda_preflight",
+          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0",
+          "scene": "helmet",
+          "status": "failed",
+          "variant": "rc_qp_lam010_start5000_every8"
+        }
+      ],
+      "max_jobs": 4,
+      "output_root": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604",
+      "physical_gpu": "0",
+      "python_executable": "/home/liuly/anaconda3/envs/ref_gs/bin/python",
+      "requested_iterations": 31000,
+      "runner": "scripts/run_rc_refgs_quality_preserving_pilot.py",
+      "safety_boundaries": [
+        "dry-run by default",
+        "execute requires --execute --confirm_execute YES",
+        "no Shiny Blender Real",
+        "new output root only",
+        "no metric definition changes",
+        "no claim upgrade from smoke"
+      ],
+      "selected_device_reason": "explicit",
+      "smoke": false,
+      "smoke_iterations": 1000,
+      "summary": {
+        "completed": 0,
+        "dry_run": 0,
+        "failed": 4,
+        "partial": 0,
+        "skipped_complete": 0
+      },
+      "target_csv": "docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv",
+      "variants": [
+        "rc_qp_lam005",
+        "rc_qp_lam010_start5000_every8"
+      ]
+    },
+    "pilot_status_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/pilot_status.json",
+    "summary": "Existing root still records the previous four requested jobs, all failed at cuda_preflight before train/metrics."
+  },
+  "runner_feature": {
+    "default_behavior_unchanged_when_absent": true,
+    "flag": "--trust_manual_cuda_preflight YES",
+    "guards": [
+      "rejects --devices auto",
+      "requires parent CUDA_VISIBLE_DEVICES",
+      "requires CUDA_VISIBLE_DEVICES to match explicit --devices",
+      "requires --execute --confirm_execute YES",
+      "does not allow dry-run trust success"
+    ],
+    "implemented": true,
+    "manual_preflight_recording": "manual_cuda_preflight is recorded in pilot_status.json and launcher_summary.json when the trusted path is used by the runner.",
+    "trusted_mapping_policy": "external CUDA_VISIBLE_DEVICES=<device>; train and metrics use --cuda_device 0"
+  },
+  "scope_boundaries": {
+    "fourteen_scene_validation_started": false,
+    "full_16_job_pilot_started": false,
+    "global_quality_preserving_claim": false,
+    "jobs_launched_this_task": 0,
+    "metrics_launched_this_task": false,
+    "metrics_modified": false,
+    "output_root": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604",
+    "requested_stage1_jobs": 4,
+    "shiny_blender_real_started": false,
+    "stage1_rerun_launched": false,
+    "train_launched_this_task": false
+  },
+  "stage": "Stage 1 helmet/luyu follow-up manual-CUDA trust-mode gate",
+  "task_claim": "Add a guarded manual-CUDA-preflight trust mode and rerun the Stage 1 follow-up only if manual CUDA check passes.",
+  "validation": {
+    "before_rerun": {
+      "git diff --check": "PASS",
+      "python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py": "PASS",
+      "python -m unittest tests/test_quality_preserving_pilot_runner.py": "PASS: Ran 32 tests OK"
+    },
+    "manual_cuda_check": {
+      "command": "export CUDA_VISIBLE_DEVICES=0; /home/liuly/anaconda3/envs/ref_gs/bin/python - <<PY ...",
+      "decision": "fail",
+      "required_to_rerun": true,
+      "return_code": 1,
+      "stage1_rerun_launched": false,
+      "status": "failed",
+      "stderr_tail": "AssertionError after assert torch.cuda.is_available()",
+      "stdout_json": {
+        "CUDA_VISIBLE_DEVICES": "0",
+        "device_name": null,
+        "torch_cuda_available": false,
+        "torch_device_count": 0
+      }
+    }
+  },
+  "variant_assessment": {
+    "assessment": "Unresolved; neither Stage 1 follow-up variant produced train or metric artifacts in this task.",
+    "expand_one_variant_to_4_scenes": false,
+    "expansion_reason": "Do not expand until the same four Stage 1 cells complete and are compared against base, current rc, and rc_qp_lam010.",
+    "rc_qp_lam005_more_promising": null,
+    "rc_qp_lam010_start5000_every8_more_promising": null
+  }
+}

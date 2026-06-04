@@ -52,6 +52,21 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
                 "expected_effect": "low pressure",
                 "acceptance_criteria": "future criteria",
             },
+            {
+                "dataset": "glossy_synthetic",
+                "scene": "teapot",
+                "source_path": "/data/glossy/teapot",
+                "selection_reason": "control scene",
+                "evidence": "delta evidence",
+                "variant": "rc_qp_lam010",
+                "lambda_ref_consistency": "0.010",
+                "ref_consistency_start": "3000",
+                "ref_consistency_every": "4",
+                "ref_consistency_gamma": "2.0",
+                "lambda_dssim": "0.2",
+                "expected_effect": "middle point",
+                "acceptance_criteria": "future criteria",
+            },
         ]
         with path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=list(rows[0]))
@@ -183,6 +198,103 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
         self.assertIn("--split both", metric_commands)
         self.assertIn("--mask_mode both", metric_commands)
         self.assertIn("--image_key pbr_rgb", metric_commands)
+
+    def test_glossy_synthetic_paths_resolve_to_converted_root(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            glossy_root = root / "GlossySyntheticConverted"
+            for scene in ["luyu", "teapot"]:
+                scene_root = glossy_root / scene
+                scene_root.mkdir(parents=True)
+                (scene_root / "transforms_train.json").write_text("{}", encoding="utf-8")
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(root / "out"),
+                    "--devices",
+                    "0",
+                    "--glossy_synthetic_root",
+                    str(glossy_root),
+                    "--variants",
+                    "rc_qp_lam010",
+                    "--scenes",
+                    "luyu",
+                    "teapot",
+                    "--max_jobs",
+                    "2",
+                ]
+            )
+            jobs = runner.build_jobs(args)
+
+        by_scene = {job["scene"]: job for job in jobs}
+        self.assertEqual(by_scene["luyu"]["source_path"], str(glossy_root / "luyu"))
+        self.assertEqual(by_scene["teapot"]["source_path"], str(glossy_root / "teapot"))
+        self.assertIn(str(glossy_root / "luyu"), " ".join(by_scene["luyu"]["train_command"]))
+        self.assertIn(str(glossy_root / "teapot"), " ".join(by_scene["teapot"]["train_command"]))
+
+    def test_glossy_synthetic_paths_can_resolve_converted_blender_alias(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            glossy_root = root / "GlossySyntheticConverted"
+            for scene in ["luyu_blender", "teapot_blender"]:
+                scene_root = glossy_root / scene
+                scene_root.mkdir(parents=True)
+                (scene_root / "transforms_train.json").write_text("{}", encoding="utf-8")
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(root / "out"),
+                    "--devices",
+                    "0",
+                    "--glossy_synthetic_root",
+                    str(glossy_root),
+                    "--variants",
+                    "rc_qp_lam010",
+                    "--scenes",
+                    "luyu",
+                    "teapot",
+                    "--max_jobs",
+                    "2",
+                ]
+            )
+            jobs = runner.build_jobs(args)
+
+        by_scene = {job["scene"]: job for job in jobs}
+        self.assertEqual(by_scene["luyu"]["source_path"], str(glossy_root / "luyu_blender"))
+        self.assertEqual(by_scene["teapot"]["source_path"], str(glossy_root / "teapot_blender"))
+
+    def test_shiny_blender_synthetic_paths_remain_on_shiny_root(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(root / "out"),
+                    "--devices",
+                    "0",
+                    "--variants",
+                    "rc_qp_lam010",
+                    "--scenes",
+                    "helmet",
+                    "--max_jobs",
+                    "1",
+                ]
+            )
+            job = runner.build_jobs(args)[0]
+
+        self.assertEqual(job["source_path"], "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet")
 
     def test_dry_run_launcher_summary_does_not_make_job_complete(self):
         runner = Path("scripts/run_rc_refgs_quality_preserving_pilot.py")
@@ -515,6 +627,197 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
 
         self.assertIn("no idle candidate GPU passed fresh torch CUDA preflight", str(caught.exception))
 
+    def test_trust_manual_cuda_preflight_rejects_auto_devices(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            target_csv = self._write_target_csv(Path(tmp))
+            with mock.patch.object(runner, "_select_auto_device", return_value=("0", "auto_idle_cuda_preflight", [])):
+                with mock.patch.dict(os.environ, {"CUDA_VISIBLE_DEVICES": "0"}, clear=True):
+                    with self.assertRaises(SystemExit) as caught:
+                        runner.parse_args(
+                            [
+                                "--target_csv",
+                                str(target_csv),
+                                "--output_root",
+                                str(Path(tmp) / "out"),
+                                "--devices",
+                                "auto",
+                                "--candidate_devices",
+                                "0",
+                                "--trust_manual_cuda_preflight",
+                                "YES",
+                                "--execute",
+                                "--confirm_execute",
+                                "YES",
+                            ]
+                        )
+
+        self.assertIn("--trust_manual_cuda_preflight requires explicit --devices", str(caught.exception))
+
+    def test_trust_manual_cuda_preflight_rejects_missing_cuda_visible_devices(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            target_csv = self._write_target_csv(Path(tmp))
+            with mock.patch.dict(os.environ, {}, clear=True):
+                with self.assertRaises(SystemExit) as caught:
+                    runner.parse_args(
+                        [
+                            "--target_csv",
+                            str(target_csv),
+                            "--output_root",
+                            str(Path(tmp) / "out"),
+                            "--devices",
+                            "0",
+                            "--trust_manual_cuda_preflight",
+                            "YES",
+                            "--execute",
+                            "--confirm_execute",
+                            "YES",
+                        ]
+                    )
+
+        self.assertIn("requires parent CUDA_VISIBLE_DEVICES", str(caught.exception))
+
+    def test_trust_manual_cuda_preflight_rejects_mismatched_cuda_visible_devices(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            target_csv = self._write_target_csv(Path(tmp))
+            with mock.patch.dict(os.environ, {"CUDA_VISIBLE_DEVICES": "1"}, clear=True):
+                with self.assertRaises(SystemExit) as caught:
+                    runner.parse_args(
+                        [
+                            "--target_csv",
+                            str(target_csv),
+                            "--output_root",
+                            str(Path(tmp) / "out"),
+                            "--devices",
+                            "0",
+                            "--trust_manual_cuda_preflight",
+                            "YES",
+                            "--execute",
+                            "--confirm_execute",
+                            "YES",
+                        ]
+                    )
+
+        self.assertIn("must match explicit --devices", str(caught.exception))
+
+    def test_trust_manual_cuda_preflight_passes_and_skips_fresh_cuda_preflight(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            with mock.patch.dict(os.environ, {"CUDA_VISIBLE_DEVICES": "0"}, clear=True):
+                args = runner.parse_args(
+                    [
+                        "--target_csv",
+                        str(target_csv),
+                        "--output_root",
+                        str(root / "out"),
+                        "--devices",
+                        "0",
+                        "--trust_manual_cuda_preflight",
+                        "YES",
+                        "--variants",
+                        "rc_qp_lam010",
+                        "--scenes",
+                        "helmet",
+                        "--max_jobs",
+                        "1",
+                        "--execute",
+                        "--confirm_execute",
+                        "YES",
+                    ]
+                )
+            job = runner.build_jobs(args)[0]
+            manual_result = {
+                "status": "completed",
+                "decision": "pass",
+                "return_code": 0,
+                "stdout": '{"CUDA_VISIBLE_DEVICES":"0","torch_cuda_available":true,"torch_device_count":1,"device_name":"GPU"}\n',
+                "stderr": "",
+                "CUDA_VISIBLE_DEVICES": "0",
+                "torch_cuda_available": True,
+                "torch_device_count": 1,
+                "device_name": "GPU",
+            }
+
+            with mock.patch.object(runner, "_validate_source_path", return_value={"status": "completed"}):
+                with mock.patch.object(runner, "_manual_cuda_preflight", return_value=manual_result) as manual:
+                    with mock.patch.object(runner, "_fresh_torch_cuda_preflight") as fresh:
+                        with mock.patch.object(runner, "_preflight_env", return_value={"status": "completed"}):
+                            with mock.patch.object(runner, "_run_captured", return_value={"status": "completed", "return_code": 0}) as train_run:
+                                with mock.patch.object(runner, "_run", return_value=("completed", 0)) as metric_run:
+                                    with mock.patch.object(runner, "_expected_artifacts_before_summary", return_value=[]):
+                                        status = runner._execute_job(job, args, Path.cwd())
+            summary = json.loads((Path(job["model_path"]) / "launcher_summary.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(status["status"], "completed")
+        manual.assert_called_once()
+        self.assertFalse(fresh.called)
+        self.assertEqual(job["train_command"][job["train_command"].index("--cuda_device") + 1], "0")
+        for command in job["metric_commands"].values():
+            self.assertEqual(command[command.index("--cuda_device") + 1], "0")
+        train_run.assert_called_once()
+        self.assertGreaterEqual(metric_run.call_count, 3)
+        self.assertEqual(summary["manual_cuda_preflight"]["decision"], "pass")
+        self.assertEqual(summary["preflight_env"]["manual_cuda_preflight"]["decision"], "pass")
+
+    def test_trust_manual_cuda_preflight_failure_blocks_train_and_writes_status(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            with mock.patch.dict(os.environ, {"CUDA_VISIBLE_DEVICES": "0"}, clear=True):
+                args = runner.parse_args(
+                    [
+                        "--target_csv",
+                        str(target_csv),
+                        "--output_root",
+                        str(root / "out"),
+                        "--devices",
+                        "0",
+                        "--trust_manual_cuda_preflight",
+                        "YES",
+                        "--variants",
+                        "rc_qp_lam010",
+                        "--scenes",
+                        "helmet",
+                        "--max_jobs",
+                        "1",
+                        "--execute",
+                        "--confirm_execute",
+                        "YES",
+                    ]
+                )
+            job = runner.build_jobs(args)[0]
+            manual_result = {
+                "status": "failed",
+                "decision": "fail",
+                "return_code": 1,
+                "stdout": '{"CUDA_VISIBLE_DEVICES":"0","torch_cuda_available":false,"torch_device_count":0}\n',
+                "stderr": "cuda unavailable",
+                "CUDA_VISIBLE_DEVICES": "0",
+                "torch_cuda_available": False,
+                "torch_device_count": 0,
+            }
+
+            with mock.patch.object(runner, "_validate_source_path", return_value={"status": "completed"}):
+                with mock.patch.object(runner, "_manual_cuda_preflight", return_value=manual_result):
+                    with mock.patch.object(runner, "_fresh_torch_cuda_preflight") as fresh:
+                        with mock.patch.object(runner, "_preflight_env") as env_preflight:
+                            with mock.patch.object(runner, "_run_captured") as train_run:
+                                status = runner._execute_job(job, args, Path.cwd())
+            summary = json.loads((Path(job["model_path"]) / "launcher_summary.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(status["status"], "failed")
+        self.assertEqual(status["failed_step"], "manual_cuda_preflight")
+        self.assertFalse(fresh.called)
+        self.assertFalse(env_preflight.called)
+        self.assertFalse(train_run.called)
+        self.assertEqual(summary["failed_step"], "manual_cuda_preflight")
+        self.assertEqual(summary["manual_cuda_preflight"]["stderr"], "cuda unavailable")
+
     def test_explicit_device_uses_fresh_torch_preflight_before_train(self):
         runner = _load_runner()
         with tempfile.TemporaryDirectory() as tmp:
@@ -556,16 +859,19 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
                     "decision": "pass",
                 },
             ) as preflight:
-                with mock.patch.object(runner, "_preflight_env", return_value={"status": "completed"}):
-                    with mock.patch.object(runner, "_run", return_value=("completed", 0)) as run:
-                        with mock.patch.object(runner, "_expected_artifacts_before_summary", return_value=[]):
-                            status = runner._execute_job(job, args, Path.cwd())
+                with mock.patch.object(runner, "_validate_source_path", return_value={"status": "completed"}):
+                    with mock.patch.object(runner, "_preflight_env", return_value={"status": "completed"}):
+                        with mock.patch.object(runner, "_run_captured", return_value={"status": "completed", "return_code": 0}) as train_run:
+                            with mock.patch.object(runner, "_run", return_value=("completed", 0)) as metric_run:
+                                with mock.patch.object(runner, "_expected_artifacts_before_summary", return_value=[]):
+                                    status = runner._execute_job(job, args, Path.cwd())
 
         self.assertEqual(status["status"], "completed")
         preflight.assert_called_once()
         self.assertEqual(preflight.call_args.args[0], "5")
         self.assertEqual(job["train_command"][job["train_command"].index("--cuda_device") + 1], "0")
-        self.assertEqual(run.call_args.kwargs if hasattr(run.call_args, "kwargs") else {}, {})
+        train_run.assert_called_once()
+        self.assertGreaterEqual(metric_run.call_count, 3)
 
     def test_preflight_failure_prevents_train_execution_and_writes_status(self):
         runner = _load_runner()
@@ -621,6 +927,117 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
             self.assertEqual(summary["status"], "failed")
             self.assertEqual(summary["failed_step"], "preflight_env")
             self.assertEqual(summary["preflight_env"]["stderr"], "missing conda")
+
+    def test_failed_source_path_validation_blocks_train(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            missing_root = root / "missing_glossy"
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(root / "out"),
+                    "--devices",
+                    "0",
+                    "--glossy_synthetic_root",
+                    str(missing_root),
+                    "--variants",
+                    "rc_qp_lam010",
+                    "--scenes",
+                    "luyu",
+                    "--max_jobs",
+                    "1",
+                    "--execute",
+                    "--confirm_execute",
+                    "YES",
+                ]
+            )
+            job = runner.build_jobs(args)[0]
+            with mock.patch.object(runner, "_fresh_torch_cuda_preflight") as cuda_preflight:
+                with mock.patch.object(runner, "_preflight_env") as env_preflight:
+                    with mock.patch.object(runner, "_run") as run:
+                        status = runner._execute_job(job, args, Path.cwd())
+
+            self.assertEqual(status["status"], "failed")
+            self.assertEqual(status["failed_step"], "source_path_validation")
+            self.assertFalse(cuda_preflight.called)
+            self.assertFalse(env_preflight.called)
+            self.assertFalse(run.called)
+            summary = json.loads((Path(job["model_path"]) / "launcher_summary.json").read_text(encoding="utf-8"))
+            self.assertEqual(summary["failed_step"], "source_path_validation")
+            self.assertEqual(summary["source_path_validation"]["status"], "failed")
+
+    def test_failed_train_records_stdout_and_stderr_tail(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            glossy_root = root / "GlossySyntheticConverted"
+            scene_root = glossy_root / "luyu"
+            scene_root.mkdir(parents=True)
+            (scene_root / "transforms_train.json").write_text("{}", encoding="utf-8")
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(root / "out"),
+                    "--devices",
+                    "0",
+                    "--glossy_synthetic_root",
+                    str(glossy_root),
+                    "--variants",
+                    "rc_qp_lam010",
+                    "--scenes",
+                    "luyu",
+                    "--max_jobs",
+                    "1",
+                    "--execute",
+                    "--confirm_execute",
+                    "YES",
+                ]
+            )
+            job = runner.build_jobs(args)[0]
+            with mock.patch.object(
+                runner,
+                "_fresh_torch_cuda_preflight",
+                return_value={
+                    "candidate_gpu": "0",
+                    "CUDA_VISIBLE_DEVICES": "0",
+                    "return_code": 0,
+                    "stdout": "{}",
+                    "stderr": "",
+                    "torch_cuda_available": True,
+                    "torch_device_count": 1,
+                    "device_name": "NVIDIA RTX A5000",
+                    "decision": "pass",
+                },
+            ):
+                with mock.patch.object(runner, "_preflight_env", return_value={"status": "completed"}):
+                    with mock.patch.object(
+                        runner,
+                        "_run_captured",
+                        return_value={
+                            "status": "failed",
+                            "return_code": 7,
+                            "stdout_tail": "stdout tail",
+                            "stderr_tail": "stderr tail",
+                            "command": "train command",
+                        },
+                    ):
+                        status = runner._execute_job(job, args, Path.cwd())
+
+            self.assertEqual(status["failed_step"], "train")
+            summary = json.loads((Path(job["model_path"]) / "launcher_summary.json").read_text(encoding="utf-8"))
+            train_result = summary["command_results"]["train"]
+            self.assertEqual(train_result["return_code"], 7)
+            self.assertEqual(train_result["stdout_tail"], "stdout tail")
+            self.assertEqual(train_result["stderr_tail"], "stderr tail")
+            self.assertEqual(train_result["source_path"], str(scene_root))
+            self.assertEqual(train_result["env_CUDA_VISIBLE_DEVICES"], "0")
 
     def test_launcher_summary_records_environment_info(self):
         runner = _load_runner()
@@ -736,6 +1153,41 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
 
         self.assertEqual(len(jobs), 1)
         self.assertEqual(jobs[0]["iterations"], 1000)
+
+    def test_retry_can_target_only_luyu_and_teapot_with_max_jobs_two(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_csv = self._write_target_csv(root)
+            glossy_root = root / "GlossySyntheticConverted"
+            for scene in ["luyu", "teapot"]:
+                scene_root = glossy_root / scene
+                scene_root.mkdir(parents=True)
+                (scene_root / "transforms_train.json").write_text("{}", encoding="utf-8")
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(root / "out"),
+                    "--devices",
+                    "0",
+                    "--glossy_synthetic_root",
+                    str(glossy_root),
+                    "--variants",
+                    "rc_qp_lam010",
+                    "--scenes",
+                    "luyu",
+                    "teapot",
+                    "--max_jobs",
+                    "2",
+                ]
+            )
+            jobs = runner.build_jobs(args)
+
+        self.assertEqual(len(jobs), 2)
+        self.assertEqual({job["scene"] for job in jobs}, {"luyu", "teapot"})
+        self.assertEqual({job["dataset"] for job in jobs}, {"glossy_synthetic"})
 
 
 if __name__ == "__main__":

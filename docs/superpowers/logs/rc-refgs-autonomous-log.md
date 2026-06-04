@@ -8723,3 +8723,193 @@ python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_re
 - **GO** for CUDA preflight fix.
 - **NO-GO** for training, metrics, four-scene pilot launch, Shiny Blender Real, metric changes, or quality-preserving result claims.
 - Released the round-local task claim at `2026-06-03 21:15:44 CST`.
+
+## 2026-06-04 01:37:28 CST - Glossy Synthetic converted source-path retry
+
+**Task claim and scope:**
+- Claimed exactly one task: "Fix Glossy Synthetic source_path to use GlossySyntheticConverted and retry only the two failed rc_qp_lam010 Glossy pilot jobs."
+- Scope was limited to `glossy_synthetic` source-path resolution and the two failed jobs:
+  - `glossy_synthetic/luyu/rc_qp_lam010/seed_0`
+  - `glossy_synthetic/teapot/rc_qp_lam010/seed_0`
+- Did not rerun `shiny_blender_synthetic/coffee` or `shiny_blender_synthetic/helmet`.
+- Did not start the full 16-job pilot, Shiny Blender Real, metric changes, base/rc/ablation output changes, or quality-improvement claims.
+
+**Code fix:**
+- Updated `scripts/run_rc_refgs_quality_preserving_pilot.py` so `glossy_synthetic` defaults to `/data/liuly/dataset/3DGS/GlossySyntheticConverted`.
+- Kept `shiny_blender_synthetic` at `/data/liuly/dataset/3DGS/Shiny Blender Synthetic`.
+- Added `--glossy_synthetic_root`.
+- Added source resolution and validation before training:
+  - prefer `<root>/<scene>` when present;
+  - otherwise use `<root>/<scene>_blender` when present;
+  - require one of `transforms_train.json`, `transforms_test.json`, `points3d.ply`, `sparse`, or `colmap/sparse`.
+- Added failed-train logging for return code, bounded stdout/stderr tails, command, source path, and `CUDA_VISIBLE_DEVICES`.
+
+**Retry:**
+- Previous failed raw-path-only `seed_0` dirs were backed up as:
+  - `seed_0.failed_raw_glossy_path_20260604`
+- The retry command targeted only `luyu` and `teapot`, variant `rc_qp_lam010`, `iterations=31000`, `max_jobs=2`, output root `/tmp/rc_refgs_quality_preserving_rc_lam010_4scene_i31000_20260603`.
+- Auto-device retry failed before job launch because `nvidia-smi` was unavailable inside the runner child context.
+- Explicit device `0` retry generated exactly the two requested jobs.
+- Both jobs passed source-path validation against:
+  - `/data/liuly/dataset/3DGS/GlossySyntheticConverted/luyu_blender`
+  - `/data/liuly/dataset/3DGS/GlossySyntheticConverted/teapot_blender`
+- Both jobs stopped at fresh torch CUDA preflight with `torch_cuda_available=false`, `torch_device_count=0`.
+- Because CUDA preflight failed, no train or metric command was launched for luyu/teapot.
+
+**Artifacts updated:**
+- `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.md`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.json`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-comparison-2026-06-03.csv`
+- `docs/superpowers/logs/rc-refgs-full-implementation-status.md`
+
+**Current 4-scene state:**
+- `coffee`: completed from prior run; preserved.
+- `helmet`: completed from prior run; preserved.
+- `luyu`: incomplete; failed at `cuda_preflight`.
+- `teapot`: incomplete; failed at `cuda_preflight`.
+- The comparison CSV is regenerated. Coffee and helmet are comparable against existing base/rc summaries; luyu and teapot are marked `not_comparable_cuda_preflight`.
+
+**Validation:**
+- `python -m unittest tests/test_quality_preserving_pilot_runner.py` -> pass (`27` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> pass.
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.json` -> pass.
+- `git diff --check` -> pass.
+- Prohibited-process scan -> empty.
+
+**Decision and release:**
+- **CONDITIONAL GO**: source-path bug is fixed, the retry was scoped safely, and the remaining failure is isolated to CUDA preflight.
+- **NO-GO** for quality-preserving result claims, because the 4-scene pilot is still incomplete.
+- Released the round-local task claim at `2026-06-04 01:37:28 CST`.
+
+## 2026-06-04 04:01:38 CST - rc_qp_lam010 4-scene pilot analysis
+
+**Task claim and scope:**
+- Claimed exactly one task: "Analyze the completed 4-scene rc_qp_lam010 pilot and decide whether to expand."
+- Scope was analysis/reporting only from completed `seed_0` directories under `/tmp/rc_refgs_quality_preserving_rc_lam010_4scene_i31000_20260603`.
+- Did not launch training, metrics, Shiny Blender Real, metric changes, or global quality-preserving claims.
+- Ignored failed raw-path backup directories named `seed_0.failed_raw_glossy_path_20260604`.
+
+**Artifact check:**
+- `shiny_blender_synthetic/coffee`: required artifacts `5/5`.
+- `shiny_blender_synthetic/helmet`: required artifacts `5/5`.
+- `glossy_synthetic/luyu`: required artifacts `5/5`.
+- `glossy_synthetic/teapot`: required artifacts `5/5`.
+- Pilot completion is `4/4`.
+
+**Analysis generated:**
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.md`.
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.json`.
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-comparison-2026-06-03.csv`.
+- Comparison CSV is documented as scene-split format with `8` rows.
+
+**Main findings:**
+- Test consistency:
+  - `rc_qp_lam010` beats base in `3/4` scenes.
+  - `rc_qp_lam010` loses to current `rc` in `4/4` scenes.
+- Test quality:
+  - `rc_qp_lam010` beats base in `11/24` quality metric cells.
+  - `rc_qp_lam010` beats current `rc` in `17/24` quality metric cells.
+  - Full-image test quality wins are `6/12` vs base and `8/12` vs current `rc`.
+  - Reflective-region test quality wins are `5/12` vs base and `9/12` vs current `rc`.
+- Scene dependence:
+  - `teapot` is favorable across test quality and base consistency.
+  - `helmet` is unfavorable across test quality.
+  - `luyu` improves over current `rc` quality but not over base quality.
+  - `coffee` improves test quality but remains the known test consistency exception.
+
+**Expansion decision:**
+- Do not expand directly to the full 16-job pilot from this evidence alone.
+- Recommended next step is a narrower variant/schedule sweep:
+  - `rc_qp_lam005` for lower reflection-consistency weight.
+  - `rc_qp_lam010_start5000_every8` for delayed/lower-frequency consistency.
+  - Prioritize `helmet` and `luyu` first if compute is constrained.
+
+**Validation:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-2026-06-03.json` -> pass.
+- CSV assertion -> `8` scene-split rows, required columns present, all four scenes completed, no failed backup rows.
+- `git diff --check` -> pass.
+- Prohibited-process scan -> empty.
+
+**Decision and release:**
+- **GO** for evidence-grounded 4-scene analysis and expansion decision.
+- **NO-GO** for global quality-preserving claims or direct full expansion based only on this pilot.
+- Released the round-local task claim at `2026-06-04 04:01:38 CST`.
+
+## 2026-06-04 04:35:06 CST - Quality-preserving Stage 1 follow-up attempt
+
+**Task claim and scope:**
+- Claimed exactly one task: "Autonomously design, implement, and evaluate a quality-preserving RC-RefGS variant that can outperform the original Ref-GS baseline under fixed metrics."
+- Constrained execution to the requested Stage 1 matrix:
+  - `shiny_blender_synthetic/helmet` x `rc_qp_lam005`
+  - `shiny_blender_synthetic/helmet` x `rc_qp_lam010_start5000_every8`
+  - `glossy_synthetic/luyu` x `rc_qp_lam005`
+  - `glossy_synthetic/luyu` x `rc_qp_lam010_start5000_every8`
+- Output root: `/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604`.
+- Did not launch Shiny Blender Real, the full 16-job pilot, the 14-scene validation, metric changes, or global quality-preserving claims.
+
+**Preflight:**
+- Runner already supported the requested variants and source-path policy:
+  - `rc_qp_lam005`
+  - `rc_qp_lam010_start5000_every8`
+  - `glossy_synthetic` resolves to `/data/liuly/dataset/3DGS/GlossySyntheticConverted/*_blender`.
+- `python -m unittest tests/test_quality_preserving_pilot_runner.py` passed (`27` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` passed.
+- `git diff --check` passed before launch.
+- Prohibited-process scan was empty before launch.
+- Dry run asserted exactly `4` jobs, variants `{rc_qp_lam005, rc_qp_lam010_start5000_every8}`, scenes `{helmet,luyu}`, and no Shiny Real.
+
+**Runtime outcome:**
+- Auto-device command failed before job launch because `nvidia-smi` was unavailable inside the runner child context.
+- Shell-level `nvidia-smi` had shown GPU0 idle, but fresh `/home/liuly/anaconda3/envs/ref_gs/bin/python` torch probes reported CUDA unavailable for explicit GPUs `0`, `6`, and `7`.
+- Explicit `--devices 0` runner invocation recorded exactly the four Stage 1 jobs.
+- All four jobs failed at `cuda_preflight`:
+  - `torch_cuda_available=false`
+  - `torch_device_count=0`
+  - `CUDA_VISIBLE_DEVICES=0`
+- Source-path validation completed for all four jobs.
+- No `train.py`, `reflection_consistency_eval.py`, or `render_quality_eval.py` command was launched.
+
+**Artifacts created:**
+- `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.md`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.json`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv`
+
+**Decision:**
+- **CONDITIONAL GO** for a bounded Stage 1 attempt with exact isolated CUDA-preflight blocker.
+- **NO-GO** for Stage 2, full 16-job pilot, 14-scene validation, or any quality-preserving/global superiority claim.
+- Next safe action after CUDA visibility is restored: rerun the same four Stage 1 cells before implementing angle-aware/gated RC.
+- Released the round-local task claim at `2026-06-04 04:35:06 CST`.
+
+
+## 2026-06-04 12:33:58 CST - Guarded manual-CUDA-preflight trust mode for Stage 1 follow-up
+
+**Task claim and scope:**
+- Claimed exactly one task: "Add a guarded manual-CUDA-preflight trust mode and rerun the Stage 1 follow-up only if manual CUDA check passes."
+- Scope was limited to runner/tests, manual CUDA gate, and the existing Stage 1 follow-up root for `helmet,luyu` x `rc_qp_lam005,rc_qp_lam010_start5000_every8`.
+- Did not launch training, metrics, Shiny Blender Real, the full 16-job pilot, the 14-scene validation, metric changes, or global quality-improvement claims.
+
+**Implementation:**
+- Added `--trust_manual_cuda_preflight YES` to `scripts/run_rc_refgs_quality_preserving_pilot.py`.
+- Guarded trust mode so it requires explicit `--devices`, parent `CUDA_VISIBLE_DEVICES`, matching device value, and `--execute --confirm_execute YES`.
+- The trusted path records `manual_cuda_preflight` and skips the runner's internal fresh CUDA preflight only after the manual check passes; train/metrics still use logical `--cuda_device 0`.
+- Updated `tests/test_quality_preserving_pilot_runner.py` with trust-mode rejection, pass, failure, recording, logical-device, dry-run, no-Shiny-Real, and max-job coverage.
+
+**Validation before rerun:**
+- `python -m unittest tests/test_quality_preserving_pilot_runner.py` -> pass (`32` tests).
+- `python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py` -> pass.
+- `git diff --check` -> pass.
+
+**Manual CUDA gate:**
+- Command used `CUDA_VISIBLE_DEVICES=0` with `/home/liuly/anaconda3/envs/ref_gs/bin/python`.
+- Result: `torch_cuda_available=false`, `torch_device_count=0`, `device_name=null`.
+- Because the manual gate failed, the Stage 1 rerun was not launched.
+
+**Artifacts updated:**
+- `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.md`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.json`
+- `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv`
+
+**Decision and release:**
+- **CONDITIONAL GO** for runner hardening with exact manual CUDA blocker.
+- **NO-GO** for Stage 1 scientific conclusions, Stage 2, full 16-job pilot, 14-scene validation, Shiny Blender Real, or any quality-preserving/global superiority claim.
+- Released the round-local task claim at `2026-06-04 12:33:58 CST`.
