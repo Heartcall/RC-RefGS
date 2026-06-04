@@ -1,0 +1,3 @@
+split,valid_paired_rows,rc_wins,mean_rc_minus_base_delta,median_rc_minus_base_delta,mean_improvement_base_minus_rc,median_improvement_base_minus_rc,win_rate
+test,14,13,-0.03059892857142857,-0.0107225,0.03059892857142857,0.0107225,92.85714285714286
+train,14,14,-0.07434885714285713,-0.018619999999999998,0.07434885714285713,0.018619999999999998,100.0

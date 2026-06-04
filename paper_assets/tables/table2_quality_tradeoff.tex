@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\caption{Rendering-quality trade-offs under RC training. Metric direction is listed explicitly; mean delta is RC minus base.}
+\label{tab:rc_quality_tradeoff}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrrlll}
+\toprule
+Metric & Split & Better & RC wins & Rows & Win rate & Mean delta & Interpretation \\
+\midrule
+Reflection consistency & train & lower & 14 & 14 & 100.0\% & -0.07435 & RC consistency-target effect \\
+Reflection consistency & test & lower & 13 & 14 & 92.9\% & -0.03060 & RC consistency-target effect \\
+Region PSNR & train & higher & 7 & 14 & 50.0\% & 0.02 & Balanced outcomes; mixed render-quality effect \\
+Region PSNR & test & higher & 8 & 14 & 57.1\% & -0.03 & RC wins a majority; report separately from consistency \\
+Full PSNR & train & higher & 9 & 14 & 64.3\% & 0.03 & RC wins a majority; report separately from consistency \\
+Full PSNR & test & higher & 10 & 14 & 71.4\% & 0.05 & RC wins a majority; report separately from consistency \\
+Full SSIM & train & higher & 9 & 14 & 64.3\% & 0.000 & RC wins a majority; report separately from consistency \\
+Full SSIM & test & higher & 11 & 14 & 78.6\% & 0.000 & RC wins a majority; report separately from consistency \\
+Full LPIPS & train & lower & 9 & 14 & 64.3\% & -0.000 & RC wins a majority; report separately from consistency \\
+Full LPIPS & test & lower & 10 & 14 & 71.4\% & -0.000 & RC wins a majority; report separately from consistency \\
+Reflective PSNR & train & higher & 6 & 14 & 42.9\% & -0.08 & RC wins a minority; render-quality tradeoff \\
+Reflective PSNR & test & higher & 10 & 14 & 71.4\% & -0.04 & RC wins a majority; report separately from consistency \\
+Reflective SSIM & train & higher & 7 & 14 & 50.0\% & -0.000 & Balanced outcomes; mixed render-quality effect \\
+Reflective SSIM & test & higher & 7 & 14 & 50.0\% & -0.000 & Balanced outcomes; mixed render-quality effect \\
+Reflective LPIPS & train & lower & 4 & 14 & 28.6\% & 0.000 & RC wins a minority; render-quality tradeoff \\
+Reflective LPIPS & test & lower & 6 & 14 & 42.9\% & 0.000 & RC wins a minority; render-quality tradeoff \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

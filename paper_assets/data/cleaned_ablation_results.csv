@@ -1,0 +1,97 @@
+dataset,dataset_label,variant,split,metric,value,better_direction,completed_runs,expected_runs,interpretation_short,normalized_score
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,mean_reflection_consistency,0.211805,lower,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,mean_reflection_consistency,0.109448,lower,6,6,Neutralized confidence weighting; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,mean_reflection_consistency,0.193192,lower,6,6,Roughness-only regularization; compare cautiously to RC.,0.18184393837255872
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,reflective_region_psnr,35.501986,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,reflective_region_psnr,35.263859,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,reflective_region_psnr,35.31342,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.20812843566669462
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,full_psnr,39.974134,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,full_psnr,39.910465,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,full_psnr,39.962747,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.8211531514551881
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,full_ssim,0.988553,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.5822784810129784
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,full_ssim,0.988507,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,full_ssim,0.988586,higher,6,6,Roughness-only regularization; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,full_lpips,0.018039,lower,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.5327102803738485
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,full_lpips,0.018096,lower,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,full_lpips,0.017989,lower,6,6,Roughness-only regularization; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,reflective_psnr,41.602831,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,reflective_psnr,41.498613,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.5634153289319213
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,reflective_psnr,41.364119,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,reflective_ssim,0.992931,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.5373134328360435
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,reflective_ssim,0.992962,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,reflective_ssim,0.992895,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,train,reflective_lpips,0.009892,lower,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,train,reflective_lpips,0.009294,lower,6,6,Neutralized confidence weighting; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,train,reflective_lpips,0.009786,lower,6,6,Roughness-only regularization; compare cautiously to RC.,0.17725752508361248
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,mean_reflection_consistency,0.075456,lower,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,mean_reflection_consistency,0.038645,lower,6,6,Neutralized confidence weighting; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,mean_reflection_consistency,0.06957,lower,6,6,Roughness-only regularization; compare cautiously to RC.,0.15989785661894512
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,reflective_region_psnr,31.395515,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,reflective_region_psnr,31.467753,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.3259219822957695
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,reflective_region_psnr,31.617157,higher,6,6,Roughness-only regularization; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,full_psnr,35.642333,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.7718783670538084
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,full_psnr,35.649955,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,full_psnr,35.616543,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,full_ssim,0.977039,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,full_ssim,0.976911,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.3933649289097606
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,full_ssim,0.976828,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,full_lpips,0.029531,lower,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,full_lpips,0.029733,lower,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.009803921568637288
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,full_lpips,0.029735,lower,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,reflective_psnr,36.887973,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,reflective_psnr,36.87427,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.9428813191943468
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,reflective_psnr,36.648069,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,reflective_ssim,0.984427,higher,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,reflective_ssim,0.984406,higher,6,6,Neutralized confidence weighting; compare cautiously to RC.,0.952272727272628
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,reflective_ssim,0.983987,higher,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+shiny_blender_synthetic,Shiny-Syn.,wo_ref,test,reflective_lpips,0.017958,lower,6,6,Removal of reflection-consistency supervision; compare cautiously to RC.,0.16436903499470037
+shiny_blender_synthetic,Shiny-Syn.,wo_conf,test,reflective_lpips,0.01717,lower,6,6,Neutralized confidence weighting; compare cautiously to RC.,1.0
+shiny_blender_synthetic,Shiny-Syn.,rough_only,test,reflective_lpips,0.018113,lower,6,6,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,mean_reflection_consistency,0.174459,lower,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.0717388526894075
+glossy_synthetic,Glossy-Syn.,wo_conf,train,mean_reflection_consistency,0.159928,lower,8,8,Neutralized confidence weighting; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,rough_only,train,mean_reflection_consistency,0.175582,lower,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,reflective_region_psnr,26.341012,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.8699875296028863
+glossy_synthetic,Glossy-Syn.,wo_conf,train,reflective_region_psnr,26.352376,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,rough_only,train,reflective_region_psnr,26.264969,higher,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,full_psnr,32.888937,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_conf,train,full_psnr,32.895391,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.1644079885876726
+glossy_synthetic,Glossy-Syn.,rough_only,train,full_psnr,32.928193,higher,8,8,Roughness-only regularization; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,full_ssim,0.973714,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.7105263157887433
+glossy_synthetic,Glossy-Syn.,wo_conf,train,full_ssim,0.97366,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,rough_only,train,full_ssim,0.973736,higher,8,8,Roughness-only regularization; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,full_lpips,0.035164,lower,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,train,full_lpips,0.035251,lower,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,rough_only,train,full_lpips,0.035228,lower,8,8,Roughness-only regularization; compare cautiously to RC.,0.2643678160919091
+glossy_synthetic,Glossy-Syn.,wo_ref,train,reflective_psnr,34.140334,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.736034018716148
+glossy_synthetic,Glossy-Syn.,wo_conf,train,reflective_psnr,34.176524,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,rough_only,train,reflective_psnr,34.039423,higher,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,reflective_ssim,0.98018,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.7904761904764422
+glossy_synthetic,Glossy-Syn.,wo_conf,train,reflective_ssim,0.980014,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,rough_only,train,reflective_ssim,0.980224,higher,8,8,Roughness-only regularization; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_ref,train,reflective_lpips,0.024096,lower,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,train,reflective_lpips,0.024236,lower,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.14634146341463156
+glossy_synthetic,Glossy-Syn.,rough_only,train,reflective_lpips,0.02426,lower,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,mean_reflection_consistency,0.179875,lower,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.059450992093092056
+glossy_synthetic,Glossy-Syn.,wo_conf,test,mean_reflection_consistency,0.167266,lower,8,8,Neutralized confidence weighting; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,rough_only,test,mean_reflection_consistency,0.180672,lower,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,reflective_region_psnr,24.31139,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,test,reflective_region_psnr,24.291163,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.7066212198129143
+glossy_synthetic,Glossy-Syn.,rough_only,test,reflective_region_psnr,24.242445,higher,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,full_psnr,30.163602,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,0.5579645087964267
+glossy_synthetic,Glossy-Syn.,wo_conf,test,full_psnr,30.134392,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,rough_only,test,full_psnr,30.186743,higher,8,8,Roughness-only regularization; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,full_ssim,0.956734,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,test,full_ssim,0.956433,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,rough_only,test,full_ssim,0.956587,higher,8,8,Roughness-only regularization; compare cautiously to RC.,0.5116279069767099
+glossy_synthetic,Glossy-Syn.,wo_ref,test,full_lpips,0.043789,lower,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,test,full_lpips,0.04395,lower,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.024242424242406656
+glossy_synthetic,Glossy-Syn.,rough_only,test,full_lpips,0.043954,lower,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,reflective_psnr,31.465795,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,test,reflective_psnr,31.429838,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.7083400927938801
+glossy_synthetic,Glossy-Syn.,rough_only,test,reflective_psnr,31.342511,higher,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,reflective_ssim,0.968753,higher,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,test,reflective_ssim,0.968283,higher,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.07662082514737259
+glossy_synthetic,Glossy-Syn.,rough_only,test,reflective_ssim,0.968244,higher,8,8,Roughness-only regularization; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,wo_ref,test,reflective_lpips,0.03114,lower,8,8,Removal of reflection-consistency supervision; compare cautiously to RC.,1.0
+glossy_synthetic,Glossy-Syn.,wo_conf,test,reflective_lpips,0.031484,lower,8,8,Neutralized confidence weighting; compare cautiously to RC.,0.0
+glossy_synthetic,Glossy-Syn.,rough_only,test,reflective_lpips,0.031422,lower,8,8,Roughness-only regularization; compare cautiously to RC.,0.18023255813953512

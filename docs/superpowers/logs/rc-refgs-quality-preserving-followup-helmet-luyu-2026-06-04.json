@@ -1,157 +1,4197 @@
 {
-  "claim_boundary": {
-    "notes": "This is an engineering/runtime gate result only.",
-    "quality_improvement_claim": false,
-    "scientific_result_for_stage1_variants": false
-  },
-  "comparison_csv": "/home/liuly/Surface_Reconstruction/Glossy/Ref-GS/docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv",
-  "comparison_status": "No new rc_qp_lam005 or rc_qp_lam010_start5000_every8 metrics exist because the manual CUDA gate failed before rerun.",
-  "decision": "CONDITIONAL GO",
-  "decision_reason": "Runner trust mode and tests are implemented, but the required same-shell manual CUDA check failed with torch_cuda_available=false and torch_device_count=0, so the Stage 1 rerun was not launched.",
-  "generated_at": "2026-06-04T12:33:16+08:00",
-  "previous_stage1_attempt": {
-    "pilot_status": {
-      "cuda_device_arg": "0",
-      "cuda_preflight_results": [],
-      "cuda_visible_devices": "0",
-      "device": "0",
-      "device_mapping": {
-        "external_CUDA_VISIBLE_DEVICES": "0",
-        "logical_cuda_device_arg": "0",
-        "physical_gpu": "0"
-      },
-      "devices": "0",
-      "dry_run": false,
-      "excluded_datasets": [
-        "shiny_blender_real"
-      ],
-      "execute": true,
-      "generated_at": "2026-06-04T04:33:17",
-      "iterations": 31000,
-      "job_count": 4,
-      "jobs": [
-        {
-          "dataset": "glossy_synthetic",
-          "failed_step": "cuda_preflight",
-          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam005/seed_0",
-          "scene": "luyu",
-          "status": "failed",
-          "variant": "rc_qp_lam005"
-        },
-        {
-          "dataset": "glossy_synthetic",
-          "failed_step": "cuda_preflight",
-          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam010_start5000_every8/seed_0",
-          "scene": "luyu",
-          "status": "failed",
-          "variant": "rc_qp_lam010_start5000_every8"
-        },
-        {
-          "dataset": "shiny_blender_synthetic",
-          "failed_step": "cuda_preflight",
-          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam005/seed_0",
-          "scene": "helmet",
-          "status": "failed",
-          "variant": "rc_qp_lam005"
-        },
-        {
-          "dataset": "shiny_blender_synthetic",
-          "failed_step": "cuda_preflight",
-          "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0",
-          "scene": "helmet",
-          "status": "failed",
-          "variant": "rc_qp_lam010_start5000_every8"
-        }
-      ],
-      "max_jobs": 4,
-      "output_root": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604",
-      "physical_gpu": "0",
-      "python_executable": "/home/liuly/anaconda3/envs/ref_gs/bin/python",
-      "requested_iterations": 31000,
-      "runner": "scripts/run_rc_refgs_quality_preserving_pilot.py",
-      "safety_boundaries": [
-        "dry-run by default",
-        "execute requires --execute --confirm_execute YES",
-        "no Shiny Blender Real",
-        "new output root only",
-        "no metric definition changes",
-        "no claim upgrade from smoke"
-      ],
-      "selected_device_reason": "explicit",
-      "smoke": false,
-      "smoke_iterations": 1000,
-      "summary": {
-        "completed": 0,
-        "dry_run": 0,
-        "failed": 4,
-        "partial": 0,
-        "skipped_complete": 0
-      },
-      "target_csv": "docs/superpowers/logs/rc-refgs-quality-regression-target-scenes-2026-06-01.csv",
-      "variants": [
-        "rc_qp_lam005",
-        "rc_qp_lam010_start5000_every8"
-      ]
-    },
-    "pilot_status_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/pilot_status.json",
-    "summary": "Existing root still records the previous four requested jobs, all failed at cuda_preflight before train/metrics."
-  },
-  "runner_feature": {
-    "default_behavior_unchanged_when_absent": true,
-    "flag": "--trust_manual_cuda_preflight YES",
-    "guards": [
-      "rejects --devices auto",
-      "requires parent CUDA_VISIBLE_DEVICES",
-      "requires CUDA_VISIBLE_DEVICES to match explicit --devices",
-      "requires --execute --confirm_execute YES",
-      "does not allow dry-run trust success"
-    ],
-    "implemented": true,
-    "manual_preflight_recording": "manual_cuda_preflight is recorded in pilot_status.json and launcher_summary.json when the trusted path is used by the runner.",
-    "trusted_mapping_policy": "external CUDA_VISIBLE_DEVICES=<device>; train and metrics use --cuda_device 0"
-  },
+  "generated_at": "2026-06-05T00:20:38+08:00",
+  "task_claim": "Analyze completed Stage 1 follow-up results and choose the next RC-RefGS candidate.",
+  "decision": "GO",
   "scope_boundaries": {
-    "fourteen_scene_validation_started": false,
-    "full_16_job_pilot_started": false,
-    "global_quality_preserving_claim": false,
-    "jobs_launched_this_task": 0,
-    "metrics_launched_this_task": false,
-    "metrics_modified": false,
+    "stage1_completion": "4/4 completed",
     "output_root": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604",
-    "requested_stage1_jobs": 4,
-    "shiny_blender_real_started": false,
-    "stage1_rerun_launched": false,
-    "train_launched_this_task": false
+    "analysis_only": true,
+    "training_launched_by_this_task": false,
+    "metrics_launched_by_this_task": false,
+    "metric_definitions_modified": false,
+    "rerun_jobs": false,
+    "shiny_blender_real_included": false,
+    "full_16_job_pilot_started": false,
+    "fourteen_scene_validation_started": false,
+    "global_quality_preserving_claim": false,
+    "full_fd_p2_claim_upgrade": false
   },
-  "stage": "Stage 1 helmet/luyu follow-up manual-CUDA trust-mode gate",
-  "task_claim": "Add a guarded manual-CUDA-preflight trust mode and rerun the Stage 1 follow-up only if manual CUDA check passes.",
-  "validation": {
-    "before_rerun": {
-      "git diff --check": "PASS",
-      "python -m py_compile scripts/run_rc_refgs_quality_preserving_pilot.py": "PASS",
-      "python -m unittest tests/test_quality_preserving_pilot_runner.py": "PASS: Ran 32 tests OK"
+  "source_artifacts": {
+    "baseline_analysis_json": "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-results-analysis-2026-06-01.json",
+    "baseline_main_summary_csv": "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv",
+    "baseline_tradeoff_summary_csv": "docs/superpowers/logs/rc-refgs-fd-p2-lite-final-tradeoff-summary-2026-06-01.csv",
+    "rc_qp_lam010_reference_csv": "docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-comparison-2026-06-03.csv",
+    "stage1_output_root": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604",
+    "stage1_pilot_status_json": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/pilot_status.json",
+    "comparison_csv": "docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv"
+  },
+  "pilot_status_summary": {
+    "completed": 4,
+    "dry_run": 0,
+    "failed": 0,
+    "partial": 0,
+    "skipped_complete": 0
+  },
+  "manual_cuda_preflight": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "command": "/home/liuly/anaconda3/envs/ref_gs/bin/python -c 'import os, torch, json\nprint(json.dumps({\n  '\"'\"'CUDA_VISIBLE_DEVICES'\"'\"': os.environ.get('\"'\"'CUDA_VISIBLE_DEVICES'\"'\"'),\n  '\"'\"'torch_cuda_available'\"'\"': torch.cuda.is_available(),\n  '\"'\"'torch_device_count'\"'\"': torch.cuda.device_count(),\n  '\"'\"'device_name'\"'\"': torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,\n}))'",
+    "decision": "pass",
+    "device_name": "NVIDIA RTX A5000",
+    "expected_CUDA_VISIBLE_DEVICES": "0",
+    "return_code": 0,
+    "status": "completed",
+    "stderr": "",
+    "stdout": "{\"CUDA_VISIBLE_DEVICES\": \"0\", \"torch_cuda_available\": true, \"torch_device_count\": 1, \"device_name\": \"NVIDIA RTX A5000\"}\n",
+    "torch_cuda_available": true,
+    "torch_device_count": 1
+  },
+  "artifact_checks": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc_qp_lam005",
+      "job_dir": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam005/seed_0",
+      "complete": true,
+      "launcher_status": "completed",
+      "failed_step": null,
+      "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet",
+      "artifacts": {
+        "point_cloud/iteration_31000/point_cloud.ply": true,
+        "reflection_consistency_train.json": true,
+        "reflection_consistency_test.json": true,
+        "render_quality_both_iter31000.json": true,
+        "launcher_summary.json": true
+      }
     },
-    "manual_cuda_check": {
-      "command": "export CUDA_VISIBLE_DEVICES=0; /home/liuly/anaconda3/envs/ref_gs/bin/python - <<PY ...",
-      "decision": "fail",
-      "required_to_rerun": true,
-      "return_code": 1,
-      "stage1_rerun_launched": false,
-      "status": "failed",
-      "stderr_tail": "AssertionError after assert torch.cuda.is_available()",
-      "stdout_json": {
-        "CUDA_VISIBLE_DEVICES": "0",
-        "device_name": null,
-        "torch_cuda_available": false,
-        "torch_device_count": 0
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc_qp_lam010_start5000_every8",
+      "job_dir": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0",
+      "complete": true,
+      "launcher_status": "completed",
+      "failed_step": null,
+      "source_path": "/data/liuly/dataset/3DGS/Shiny Blender Synthetic/helmet",
+      "artifacts": {
+        "point_cloud/iteration_31000/point_cloud.ply": true,
+        "reflection_consistency_train.json": true,
+        "reflection_consistency_test.json": true,
+        "render_quality_both_iter31000.json": true,
+        "launcher_summary.json": true
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc_qp_lam005",
+      "job_dir": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam005/seed_0",
+      "complete": true,
+      "launcher_status": "completed",
+      "failed_step": null,
+      "source_path": "/data/liuly/dataset/3DGS/GlossySyntheticConverted/luyu_blender",
+      "artifacts": {
+        "point_cloud/iteration_31000/point_cloud.ply": true,
+        "reflection_consistency_train.json": true,
+        "reflection_consistency_test.json": true,
+        "render_quality_both_iter31000.json": true,
+        "launcher_summary.json": true
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc_qp_lam010_start5000_every8",
+      "job_dir": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam010_start5000_every8/seed_0",
+      "complete": true,
+      "launcher_status": "completed",
+      "failed_step": null,
+      "source_path": "/data/liuly/dataset/3DGS/GlossySyntheticConverted/luyu_blender",
+      "artifacts": {
+        "point_cloud/iteration_31000/point_cloud.ply": true,
+        "reflection_consistency_train.json": true,
+        "reflection_consistency_test.json": true,
+        "render_quality_both_iter31000.json": true,
+        "launcher_summary.json": true
+      }
+    }
+  ],
+  "win_counts": {
+    "rc_qp_lam005": {
+      "train": {
+        "vs_base": {
+          "consistency": {
+            "wins": 1,
+            "total": 2,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.10914838276803493,
+                "reference": 0.6405774474143981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11925425454974174,
+                "reference": 0.11888066008687019
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.14808807373047,
+                "reference": 40.14170768737793
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9934311312437057,
+                "reference": 0.9934892982244492
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006445235863793641,
+                "reference": 0.006331377732567489
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 31.80471876689366,
+                "reference": 32.07533998148782
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9657866757895265,
+                "reference": 0.966454624065331
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.03285967275899436,
+                "reference": 0.0314378451855321
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.870964546203616,
+                "reference": 40.846081199645994
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.994061131477356,
+                "reference": 0.9941075021028518
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005090323155745864,
+                "reference": 0.004997115402948111
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 33.699717674936565,
+                "reference": 33.95423786980765
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9790708023522582,
+                "reference": 0.9796441426234586
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.021184347719619318,
+                "reference": 0.01959136130088674
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 2,
+            "total": 12,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.14808807373047,
+                "reference": 40.14170768737793
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9934311312437057,
+                "reference": 0.9934892982244492
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006445235863793641,
+                "reference": 0.006331377732567489
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.870964546203616,
+                "reference": 40.846081199645994
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.994061131477356,
+                "reference": 0.9941075021028518
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005090323155745864,
+                "reference": 0.004997115402948111
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 31.80471876689366,
+                "reference": 32.07533998148782
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9657866757895265,
+                "reference": 0.966454624065331
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.03285967275899436,
+                "reference": 0.0314378451855321
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 33.699717674936565,
+                "reference": 33.95423786980765
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9790708023522582,
+                "reference": 0.9796441426234586
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.021184347719619318,
+                "reference": 0.01959136130088674
+              }
+            ]
+          }
+        },
+        "vs_rc": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.10914838276803493,
+                "reference": 0.0895418930798769
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11925425454974174,
+                "reference": 0.11003987416625023
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 4,
+            "total": 6,
+            "rate": 0.6666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.14808807373047,
+                "reference": 40.051305541992186
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9934311312437057,
+                "reference": 0.9932921969890595
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.006445235863793641,
+                "reference": 0.0064590676967054604
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 31.80471876689366,
+                "reference": 31.615313478878566
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9657866757895265,
+                "reference": 0.9660793345953737
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.03285967275899436,
+                "reference": 0.03267438967512654
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 6,
+            "total": 6,
+            "rate": 1.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.870964546203616,
+                "reference": 40.770145378112794
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.994061131477356,
+                "reference": 0.9939275914430619
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.005090323155745864,
+                "reference": 0.005113857418764383
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 33.699717674936565,
+                "reference": 33.3053354876382
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9790708023522582,
+                "reference": 0.9789685202496392
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.021184347719619318,
+                "reference": 0.02129751379834488
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 10,
+            "total": 12,
+            "rate": 0.8333333333333334,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.14808807373047,
+                "reference": 40.051305541992186
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9934311312437057,
+                "reference": 0.9932921969890595
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.006445235863793641,
+                "reference": 0.0064590676967054604
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.870964546203616,
+                "reference": 40.770145378112794
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.994061131477356,
+                "reference": 0.9939275914430619
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.005090323155745864,
+                "reference": 0.005113857418764383
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 31.80471876689366,
+                "reference": 31.615313478878566
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9657866757895265,
+                "reference": 0.9660793345953737
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.03285967275899436,
+                "reference": 0.03267438967512654
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 33.699717674936565,
+                "reference": 33.3053354876382
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9790708023522582,
+                "reference": 0.9789685202496392
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.021184347719619318,
+                "reference": 0.02129751379834488
+              }
+            ]
+          }
+        },
+        "vs_rc_qp_lam010": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.10914838276803493,
+                "reference": 0.0978540290147
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11925425454974174,
+                "reference": 0.115317115188
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 40.14808807373047,
+                "reference": 40.1660605621
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9934311312437057,
+                "reference": 0.993429845572
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.006445235863793641,
+                "reference": 0.00652566800825
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 31.80471876689366,
+                "reference": 31.9564231804
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9657866757895265,
+                "reference": 0.965698321483
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.03285967275899436,
+                "reference": 0.0321352286431
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.870964546203616,
+                "reference": 40.8880712509
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.994061131477356,
+                "reference": 0.994082311392
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.005090323155745864,
+                "reference": 0.00517804526491
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 33.699717674936565,
+                "reference": 33.9518160479
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9790708023522582,
+                "reference": 0.979634701141
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.021184347719619318,
+                "reference": 0.0197575792055
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 4,
+            "total": 12,
+            "rate": 0.3333333333333333,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 40.14808807373047,
+                "reference": 40.1660605621
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9934311312437057,
+                "reference": 0.993429845572
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.006445235863793641,
+                "reference": 0.00652566800825
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.870964546203616,
+                "reference": 40.8880712509
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.994061131477356,
+                "reference": 0.994082311392
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.005090323155745864,
+                "reference": 0.00517804526491
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 31.80471876689366,
+                "reference": 31.9564231804
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9657866757895265,
+                "reference": 0.965698321483
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.03285967275899436,
+                "reference": 0.0321352286431
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 33.699717674936565,
+                "reference": 33.9518160479
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9790708023522582,
+                "reference": 0.979634701141
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.021184347719619318,
+                "reference": 0.0197575792055
+              }
+            ]
+          }
+        }
+      },
+      "test": {
+        "vs_base": {
+          "consistency": {
+            "wins": 1,
+            "total": 2,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.047587974742054936,
+                "reference": 0.21683893352746964
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.12577563151717186,
+                "reference": 0.1244205117225647
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 0,
+            "total": 6,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.634143114089966,
+                "reference": 35.8392297744751
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9847475454211235,
+                "reference": 0.9850164332985878
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015142580589745193,
+                "reference": 0.014634082862176
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 29.296981692314148,
+                "reference": 29.477797150611877
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9476628489792347,
+                "reference": 0.947934940457344
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.038661042461171746,
+                "reference": 0.03756850026547909
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 0,
+            "total": 6,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.25130001068115,
+                "reference": 36.46292031288147
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9866704487800598,
+                "reference": 0.9869083300232887
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.011743516454007476,
+                "reference": 0.011352510314900428
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.159745693206787,
+                "reference": 31.369457006454468
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.968465406447649,
+                "reference": 0.9687906429171562
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.026320869801566005,
+                "reference": 0.024764987407252192
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 0,
+            "total": 12,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.634143114089966,
+                "reference": 35.8392297744751
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9847475454211235,
+                "reference": 0.9850164332985878
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015142580589745193,
+                "reference": 0.014634082862176
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.25130001068115,
+                "reference": 36.46292031288147
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9866704487800598,
+                "reference": 0.9869083300232887
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.011743516454007476,
+                "reference": 0.011352510314900428
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 29.296981692314148,
+                "reference": 29.477797150611877
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9476628489792347,
+                "reference": 0.947934940457344
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.038661042461171746,
+                "reference": 0.03756850026547909
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.159745693206787,
+                "reference": 31.369457006454468
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.968465406447649,
+                "reference": 0.9687906429171562
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.026320869801566005,
+                "reference": 0.024764987407252192
+              }
+            ]
+          }
+        },
+        "vs_rc": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.047587974742054936,
+                "reference": 0.035956913605332375
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.12577563151717186,
+                "reference": 0.1195022352039814
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 2,
+            "total": 6,
+            "rate": 0.3333333333333333,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.634143114089966,
+                "reference": 35.91236875534057
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9847475454211235,
+                "reference": 0.9850048306584358
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015142580589745193,
+                "reference": 0.01466804922092706
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.296981692314148,
+                "reference": 29.056204080581665
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9476628489792347,
+                "reference": 0.9479799754917622
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.038661042461171746,
+                "reference": 0.03910659218672663
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.25130001068115,
+                "reference": 36.55509870529175
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9866704487800598,
+                "reference": 0.9869203695654869
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.011743516454007476,
+                "reference": 0.011322217297274619
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.159745693206787,
+                "reference": 30.713675141334534
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.968465406447649,
+                "reference": 0.9677977859973907
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.026320869801566005,
+                "reference": 0.027182404068298638
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 5,
+            "total": 12,
+            "rate": 0.4166666666666667,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.634143114089966,
+                "reference": 35.91236875534057
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9847475454211235,
+                "reference": 0.9850048306584358
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015142580589745193,
+                "reference": 0.01466804922092706
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.25130001068115,
+                "reference": 36.55509870529175
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9866704487800598,
+                "reference": 0.9869203695654869
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.011743516454007476,
+                "reference": 0.011322217297274619
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.296981692314148,
+                "reference": 29.056204080581665
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9476628489792347,
+                "reference": 0.9479799754917622
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.038661042461171746,
+                "reference": 0.03910659218672663
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.159745693206787,
+                "reference": 30.713675141334534
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.968465406447649,
+                "reference": 0.9677977859973907
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.026320869801566005,
+                "reference": 0.027182404068298638
+              }
+            ]
+          }
+        },
+        "vs_rc_qp_lam010": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.047587974742054936,
+                "reference": 0.0389604449272
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.12577563151717186,
+                "reference": 0.122564553469
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.634143114089966,
+                "reference": 35.6922024536
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9847475454211235,
+                "reference": 0.984486527443
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015142580589745193,
+                "reference": 0.015002853875
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.296981692314148,
+                "reference": 29.2722738981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9476628489792347,
+                "reference": 0.94689290598
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.038661042461171746,
+                "reference": 0.0381974545307
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.25130001068115,
+                "reference": 36.31802701
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9866704487800598,
+                "reference": 0.986445338726
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.011743516454007476,
+                "reference": 0.0117289610812
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.159745693206787,
+                "reference": 31.1600471735
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.968465406447649,
+                "reference": 0.968595538288
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.026320869801566005,
+                "reference": 0.0254110972164
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 4,
+            "total": 12,
+            "rate": 0.3333333333333333,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.634143114089966,
+                "reference": 35.6922024536
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9847475454211235,
+                "reference": 0.984486527443
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015142580589745193,
+                "reference": 0.015002853875
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.25130001068115,
+                "reference": 36.31802701
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9866704487800598,
+                "reference": 0.986445338726
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.011743516454007476,
+                "reference": 0.0117289610812
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.296981692314148,
+                "reference": 29.2722738981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9476628489792347,
+                "reference": 0.94689290598
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.038661042461171746,
+                "reference": 0.0381974545307
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.159745693206787,
+                "reference": 31.1600471735
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.968465406447649,
+                "reference": 0.968595538288
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.026320869801566005,
+                "reference": 0.0254110972164
+              }
+            ]
+          }
+        }
+      }
+    },
+    "rc_qp_lam010_start5000_every8": {
+      "train": {
+        "vs_base": {
+          "consistency": {
+            "wins": 1,
+            "total": 2,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.11068877838551998,
+                "reference": 0.6405774474143981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11910557597875596,
+                "reference": 0.11888066008687019
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 0,
+            "total": 6,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 39.903987617492675,
+                "reference": 40.14170768737793
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9931504726409912,
+                "reference": 0.9934892982244492
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006568520180881023,
+                "reference": 0.006331377732567489
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 32.046742711748394,
+                "reference": 32.07533998148782
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9660794005862304,
+                "reference": 0.966454624065331
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.031736212566361895,
+                "reference": 0.0314378451855321
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.61093963623047,
+                "reference": 40.846081199645994
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9937761986255645,
+                "reference": 0.9941075021028518
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005226330831646919,
+                "reference": 0.004997115402948111
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 34.02911715848105,
+                "reference": 33.95423786980765
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9798216638820512,
+                "reference": 0.9796441426234586
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.019491881157071993,
+                "reference": 0.01959136130088674
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 3,
+            "total": 12,
+            "rate": 0.25,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 39.903987617492675,
+                "reference": 40.14170768737793
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9931504726409912,
+                "reference": 0.9934892982244492
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006568520180881023,
+                "reference": 0.006331377732567489
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.61093963623047,
+                "reference": 40.846081199645994
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9937761986255645,
+                "reference": 0.9941075021028518
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005226330831646919,
+                "reference": 0.004997115402948111
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 32.046742711748394,
+                "reference": 32.07533998148782
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9660794005862304,
+                "reference": 0.966454624065331
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.031736212566361895,
+                "reference": 0.0314378451855321
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 34.02911715848105,
+                "reference": 33.95423786980765
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9798216638820512,
+                "reference": 0.9796441426234586
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.019491881157071993,
+                "reference": 0.01959136130088674
+              }
+            ]
+          }
+        },
+        "vs_rc": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11068877838551998,
+                "reference": 0.0895418930798769
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11910557597875596,
+                "reference": 0.11003987416625023
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 39.903987617492675,
+                "reference": 40.051305541992186
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9931504726409912,
+                "reference": 0.9932921969890595
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006568520180881023,
+                "reference": 0.0064590676967054604
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 32.046742711748394,
+                "reference": 31.615313478878566
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9660794005862304,
+                "reference": 0.9660793345953737
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.031736212566361895,
+                "reference": 0.03267438967512654
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.61093963623047,
+                "reference": 40.770145378112794
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9937761986255645,
+                "reference": 0.9939275914430619
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005226330831646919,
+                "reference": 0.005113857418764383
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 34.02911715848105,
+                "reference": 33.3053354876382
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9798216638820512,
+                "reference": 0.9789685202496392
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.019491881157071993,
+                "reference": 0.02129751379834488
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 6,
+            "total": 12,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 39.903987617492675,
+                "reference": 40.051305541992186
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9931504726409912,
+                "reference": 0.9932921969890595
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006568520180881023,
+                "reference": 0.0064590676967054604
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.61093963623047,
+                "reference": 40.770145378112794
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9937761986255645,
+                "reference": 0.9939275914430619
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005226330831646919,
+                "reference": 0.005113857418764383
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 32.046742711748394,
+                "reference": 31.615313478878566
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9660794005862304,
+                "reference": 0.9660793345953737
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.031736212566361895,
+                "reference": 0.03267438967512654
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 34.02911715848105,
+                "reference": 33.3053354876382
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9798216638820512,
+                "reference": 0.9789685202496392
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.019491881157071993,
+                "reference": 0.02129751379834488
+              }
+            ]
+          }
+        },
+        "vs_rc_qp_lam010": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11068877838551998,
+                "reference": 0.0978540290147
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.11910557597875596,
+                "reference": 0.115317115188
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 39.903987617492675,
+                "reference": 40.1660605621
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9931504726409912,
+                "reference": 0.993429845572
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006568520180881023,
+                "reference": 0.00652566800825
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 32.046742711748394,
+                "reference": 31.9564231804
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9660794005862304,
+                "reference": 0.965698321483
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.031736212566361895,
+                "reference": 0.0321352286431
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.61093963623047,
+                "reference": 40.8880712509
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9937761986255645,
+                "reference": 0.994082311392
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005226330831646919,
+                "reference": 0.00517804526491
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 34.02911715848105,
+                "reference": 33.9518160479
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9798216638820512,
+                "reference": 0.979634701141
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.019491881157071993,
+                "reference": 0.0197575792055
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 6,
+            "total": 12,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 39.903987617492675,
+                "reference": 40.1660605621
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9931504726409912,
+                "reference": 0.993429845572
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.006568520180881023,
+                "reference": 0.00652566800825
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 40.61093963623047,
+                "reference": 40.8880712509
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9937761986255645,
+                "reference": 0.994082311392
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.005226330831646919,
+                "reference": 0.00517804526491
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 32.046742711748394,
+                "reference": 31.9564231804
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9660794005862304,
+                "reference": 0.965698321483
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.031736212566361895,
+                "reference": 0.0321352286431
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 34.02911715848105,
+                "reference": 33.9518160479
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9798216638820512,
+                "reference": 0.979634701141
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.019491881157071993,
+                "reference": 0.0197575792055
+              }
+            ]
+          }
+        }
+      },
+      "test": {
+        "vs_base": {
+          "consistency": {
+            "wins": 1,
+            "total": 2,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.04388582669198513,
+                "reference": 0.21683893352746964
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.12836674004793167,
+                "reference": 0.1244205117225647
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.76594744682312,
+                "reference": 35.8392297744751
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9848878797888756,
+                "reference": 0.9850164332985878
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.01458565926644951,
+                "reference": 0.014634082862176
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 29.357118129730225,
+                "reference": 29.477797150611877
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.947377122938633,
+                "reference": 0.947934940457344
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.037928342120721936,
+                "reference": 0.03756850026547909
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 2,
+            "total": 6,
+            "rate": 0.3333333333333333,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.36155174255371,
+                "reference": 36.46292031288147
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9867762404680253,
+                "reference": 0.9869083300232887
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.011285552345216275,
+                "reference": 0.011352510314900428
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.264265179634094,
+                "reference": 31.369457006454468
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9688131958246231,
+                "reference": 0.9687906429171562
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.024794823839329183,
+                "reference": 0.024764987407252192
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 3,
+            "total": 12,
+            "rate": 0.25,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.76594744682312,
+                "reference": 35.8392297744751
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9848878797888756,
+                "reference": 0.9850164332985878
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.01458565926644951,
+                "reference": 0.014634082862176
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.36155174255371,
+                "reference": 36.46292031288147
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9867762404680253,
+                "reference": 0.9869083300232887
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.011285552345216275,
+                "reference": 0.011352510314900428
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 29.357118129730225,
+                "reference": 29.477797150611877
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.947377122938633,
+                "reference": 0.947934940457344
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.037928342120721936,
+                "reference": 0.03756850026547909
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.264265179634094,
+                "reference": 31.369457006454468
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9688131958246231,
+                "reference": 0.9687906429171562
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.024794823839329183,
+                "reference": 0.024764987407252192
+              }
+            ]
+          }
+        },
+        "vs_rc": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.04388582669198513,
+                "reference": 0.035956913605332375
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.12836674004793167,
+                "reference": 0.1195022352039814
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.76594744682312,
+                "reference": 35.91236875534057
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9848878797888756,
+                "reference": 0.9850048306584358
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.01458565926644951,
+                "reference": 0.01466804922092706
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.357118129730225,
+                "reference": 29.056204080581665
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.947377122938633,
+                "reference": 0.9479799754917622
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.037928342120721936,
+                "reference": 0.03910659218672663
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 4,
+            "total": 6,
+            "rate": 0.6666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.36155174255371,
+                "reference": 36.55509870529175
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9867762404680253,
+                "reference": 0.9869203695654869
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.011285552345216275,
+                "reference": 0.011322217297274619
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.264265179634094,
+                "reference": 30.713675141334534
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9688131958246231,
+                "reference": 0.9677977859973907
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.024794823839329183,
+                "reference": 0.027182404068298638
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 7,
+            "total": 12,
+            "rate": 0.5833333333333334,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.76594744682312,
+                "reference": 35.91236875534057
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.9848878797888756,
+                "reference": 0.9850048306584358
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.01458565926644951,
+                "reference": 0.01466804922092706
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.36155174255371,
+                "reference": 36.55509870529175
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.9867762404680253,
+                "reference": 0.9869203695654869
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.011285552345216275,
+                "reference": 0.011322217297274619
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.357118129730225,
+                "reference": 29.056204080581665
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.947377122938633,
+                "reference": 0.9479799754917622
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.037928342120721936,
+                "reference": 0.03910659218672663
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.264265179634094,
+                "reference": 30.713675141334534
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9688131958246231,
+                "reference": 0.9677977859973907
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.024794823839329183,
+                "reference": 0.027182404068298638
+              }
+            ]
+          }
+        },
+        "vs_rc_qp_lam010": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.04388582669198513,
+                "reference": 0.0389604449272
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.12836674004793167,
+                "reference": 0.122564553469
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 6,
+            "total": 6,
+            "rate": 1.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 35.76594744682312,
+                "reference": 35.6922024536
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9848878797888756,
+                "reference": 0.984486527443
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.01458565926644951,
+                "reference": 0.015002853875
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.357118129730225,
+                "reference": 29.2722738981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.947377122938633,
+                "reference": 0.94689290598
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.037928342120721936,
+                "reference": 0.0381974545307
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 6,
+            "total": 6,
+            "rate": 1.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 36.36155174255371,
+                "reference": 36.31802701
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9867762404680253,
+                "reference": 0.986445338726
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.011285552345216275,
+                "reference": 0.0117289610812
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.264265179634094,
+                "reference": 31.1600471735
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9688131958246231,
+                "reference": 0.968595538288
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.024794823839329183,
+                "reference": 0.0254110972164
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 12,
+            "total": 12,
+            "rate": 1.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 35.76594744682312,
+                "reference": 35.6922024536
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.9848878797888756,
+                "reference": 0.984486527443
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.01458565926644951,
+                "reference": 0.015002853875
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 36.36155174255371,
+                "reference": 36.31802701
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9867762404680253,
+                "reference": 0.986445338726
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.011285552345216275,
+                "reference": 0.0117289610812
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.357118129730225,
+                "reference": 29.2722738981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.947377122938633,
+                "reference": 0.94689290598
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.037928342120721936,
+                "reference": 0.0381974545307
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.264265179634094,
+                "reference": 31.1600471735
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.9688131958246231,
+                "reference": 0.968595538288
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.024794823839329183,
+                "reference": 0.0254110972164
+              }
+            ]
+          }
+        }
+      }
+    },
+    "rc_qp_lam010": {
+      "train": {
+        "vs_base": {
+          "consistency": {
+            "wins": 2,
+            "total": 2,
+            "rate": 1.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.0978540290147,
+                "reference": 0.6405774474143981
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.115317115188,
+                "reference": 0.11888066008687019
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.1660605621,
+                "reference": 40.14170768737793
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.993429845572,
+                "reference": 0.9934892982244492
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.00652566800825,
+                "reference": 0.006331377732567489
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 31.9564231804,
+                "reference": 32.07533998148782
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.965698321483,
+                "reference": 0.966454624065331
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.0321352286431,
+                "reference": 0.0314378451855321
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 1,
+            "total": 6,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.8880712509,
+                "reference": 40.846081199645994
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.994082311392,
+                "reference": 0.9941075021028518
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.00517804526491,
+                "reference": 0.004997115402948111
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 33.9518160479,
+                "reference": 33.95423786980765
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.979634701141,
+                "reference": 0.9796441426234586
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0197575792055,
+                "reference": 0.01959136130088674
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 2,
+            "total": 12,
+            "rate": 0.16666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.1660605621,
+                "reference": 40.14170768737793
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.993429845572,
+                "reference": 0.9934892982244492
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.00652566800825,
+                "reference": 0.006331377732567489
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.8880712509,
+                "reference": 40.846081199645994
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.994082311392,
+                "reference": 0.9941075021028518
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.00517804526491,
+                "reference": 0.004997115402948111
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 31.9564231804,
+                "reference": 32.07533998148782
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.965698321483,
+                "reference": 0.966454624065331
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.0321352286431,
+                "reference": 0.0314378451855321
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 33.9518160479,
+                "reference": 33.95423786980765
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.979634701141,
+                "reference": 0.9796441426234586
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0197575792055,
+                "reference": 0.01959136130088674
+              }
+            ]
+          }
+        },
+        "vs_rc": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.0978540290147,
+                "reference": 0.0895418930798769
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.115317115188,
+                "reference": 0.11003987416625023
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 4,
+            "total": 6,
+            "rate": 0.6666666666666666,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.1660605621,
+                "reference": 40.051305541992186
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.993429845572,
+                "reference": 0.9932921969890595
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.00652566800825,
+                "reference": 0.0064590676967054604
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 31.9564231804,
+                "reference": 31.615313478878566
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.965698321483,
+                "reference": 0.9660793345953737
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.0321352286431,
+                "reference": 0.03267438967512654
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 5,
+            "total": 6,
+            "rate": 0.8333333333333334,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.8880712509,
+                "reference": 40.770145378112794
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.994082311392,
+                "reference": 0.9939275914430619
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.00517804526491,
+                "reference": 0.005113857418764383
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 33.9518160479,
+                "reference": 33.3053354876382
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.979634701141,
+                "reference": 0.9789685202496392
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.0197575792055,
+                "reference": 0.02129751379834488
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 9,
+            "total": 12,
+            "rate": 0.75,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 40.1660605621,
+                "reference": 40.051305541992186
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": true,
+                "candidate": 0.993429845572,
+                "reference": 0.9932921969890595
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.00652566800825,
+                "reference": 0.0064590676967054604
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 40.8880712509,
+                "reference": 40.770145378112794
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.994082311392,
+                "reference": 0.9939275914430619
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.00517804526491,
+                "reference": 0.005113857418764383
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 31.9564231804,
+                "reference": 31.615313478878566
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.965698321483,
+                "reference": 0.9660793345953737
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.0321352286431,
+                "reference": 0.03267438967512654
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 33.9518160479,
+                "reference": 33.3053354876382
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.979634701141,
+                "reference": 0.9789685202496392
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.0197575792055,
+                "reference": 0.02129751379834488
+              }
+            ]
+          }
+        }
+      },
+      "test": {
+        "vs_base": {
+          "consistency": {
+            "wins": 2,
+            "total": 2,
+            "rate": 1.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.0389604449272,
+                "reference": 0.21683893352746964
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": true,
+                "candidate": 0.122564553469,
+                "reference": 0.1244205117225647
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 0,
+            "total": 6,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.6922024536,
+                "reference": 35.8392297744751
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.984486527443,
+                "reference": 0.9850164332985878
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015002853875,
+                "reference": 0.014634082862176
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 29.2722738981,
+                "reference": 29.477797150611877
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.94689290598,
+                "reference": 0.947934940457344
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.0381974545307,
+                "reference": 0.03756850026547909
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 0,
+            "total": 6,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.31802701,
+                "reference": 36.46292031288147
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.986445338726,
+                "reference": 0.9869083300232887
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0117289610812,
+                "reference": 0.011352510314900428
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.1600471735,
+                "reference": 31.369457006454468
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.968595538288,
+                "reference": 0.9687906429171562
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0254110972164,
+                "reference": 0.024764987407252192
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 0,
+            "total": 12,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.6922024536,
+                "reference": 35.8392297744751
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.984486527443,
+                "reference": 0.9850164332985878
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015002853875,
+                "reference": 0.014634082862176
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.31802701,
+                "reference": 36.46292031288147
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.986445338726,
+                "reference": 0.9869083300232887
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0117289610812,
+                "reference": 0.011352510314900428
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 29.2722738981,
+                "reference": 29.477797150611877
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.94689290598,
+                "reference": 0.947934940457344
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.0381974545307,
+                "reference": 0.03756850026547909
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 31.1600471735,
+                "reference": 31.369457006454468
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.968595538288,
+                "reference": 0.9687906429171562
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0254110972164,
+                "reference": 0.024764987407252192
+              }
+            ]
+          }
+        },
+        "vs_rc": {
+          "consistency": {
+            "wins": 0,
+            "total": 2,
+            "rate": 0.0,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.0389604449272,
+                "reference": 0.035956913605332375
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "mean_reflection_consistency",
+                "win": false,
+                "candidate": 0.122564553469,
+                "reference": 0.1195022352039814
+              }
+            ]
+          },
+          "full_quality": {
+            "wins": 2,
+            "total": 6,
+            "rate": 0.3333333333333333,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.6922024536,
+                "reference": 35.91236875534057
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.984486527443,
+                "reference": 0.9850048306584358
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015002853875,
+                "reference": 0.01466804922092706
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.2722738981,
+                "reference": 29.056204080581665
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.94689290598,
+                "reference": 0.9479799754917622
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.0381974545307,
+                "reference": 0.03910659218672663
+              }
+            ]
+          },
+          "reflective_quality": {
+            "wins": 3,
+            "total": 6,
+            "rate": 0.5,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.31802701,
+                "reference": 36.55509870529175
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.986445338726,
+                "reference": 0.9869203695654869
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0117289610812,
+                "reference": 0.011322217297274619
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.1600471735,
+                "reference": 30.713675141334534
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.968595538288,
+                "reference": 0.9677977859973907
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.0254110972164,
+                "reference": 0.027182404068298638
+              }
+            ]
+          },
+          "all_quality": {
+            "wins": 5,
+            "total": 12,
+            "rate": 0.4166666666666667,
+            "items": [
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_psnr",
+                "win": false,
+                "candidate": 35.6922024536,
+                "reference": 35.91236875534057
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.984486527443,
+                "reference": 0.9850048306584358
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "full_lpips",
+                "win": false,
+                "candidate": 0.015002853875,
+                "reference": 0.01466804922092706
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_psnr",
+                "win": false,
+                "candidate": 36.31802701,
+                "reference": 36.55509870529175
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_ssim",
+                "win": false,
+                "candidate": 0.986445338726,
+                "reference": 0.9869203695654869
+              },
+              {
+                "dataset": "shiny_blender_synthetic",
+                "scene": "helmet",
+                "metric": "reflective_lpips",
+                "win": false,
+                "candidate": 0.0117289610812,
+                "reference": 0.011322217297274619
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_psnr",
+                "win": true,
+                "candidate": 29.2722738981,
+                "reference": 29.056204080581665
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_ssim",
+                "win": false,
+                "candidate": 0.94689290598,
+                "reference": 0.9479799754917622
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "full_lpips",
+                "win": true,
+                "candidate": 0.0381974545307,
+                "reference": 0.03910659218672663
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_psnr",
+                "win": true,
+                "candidate": 31.1600471735,
+                "reference": 30.713675141334534
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_ssim",
+                "win": true,
+                "candidate": 0.968595538288,
+                "reference": 0.9677977859973907
+              },
+              {
+                "dataset": "glossy_synthetic",
+                "scene": "luyu",
+                "metric": "reflective_lpips",
+                "win": true,
+                "candidate": 0.0254110972164,
+                "reference": 0.027182404068298638
+              }
+            ]
+          }
+        }
       }
     }
   },
-  "variant_assessment": {
-    "assessment": "Unresolved; neither Stage 1 follow-up variant produced train or metric artifacts in this task.",
-    "expand_one_variant_to_4_scenes": false,
-    "expansion_reason": "Do not expand until the same four Stage 1 cells complete and are compared against base, current rc, and rc_qp_lam010.",
-    "rc_qp_lam005_more_promising": null,
-    "rc_qp_lam010_start5000_every8_more_promising": null
-  }
+  "pareto_summary": [
+    {
+      "variant": "rc_qp_lam005",
+      "test_consistency_vs_base": 1,
+      "test_consistency_vs_rc": 0,
+      "test_quality_vs_base": 0,
+      "test_quality_vs_rc": 5,
+      "test_quality_vs_rc_qp_lam010": 4
+    },
+    {
+      "variant": "rc_qp_lam010_start5000_every8",
+      "test_consistency_vs_base": 1,
+      "test_consistency_vs_rc": 0,
+      "test_quality_vs_base": 3,
+      "test_quality_vs_rc": 7,
+      "test_quality_vs_rc_qp_lam010": 12
+    },
+    {
+      "variant": "rc_qp_lam010",
+      "test_consistency_vs_base": 2,
+      "test_consistency_vs_rc": 0,
+      "test_quality_vs_base": 0,
+      "test_quality_vs_rc": 5,
+      "test_quality_vs_rc_qp_lam010": null
+    }
+  ],
+  "recommendation": {
+    "best_stage1_variant": "rc_qp_lam010_start5000_every8",
+    "is_best_variant_promising_enough_for_4scene_confirmation": false,
+    "next_rc_refgs_candidate": "logic_level_angle_aware_or_confidence_gated_rc",
+    "recommended_variant_name": "rc_qp_angle10_or_angle_gated_stage1",
+    "rationale": [
+      "rc_qp_lam010_start5000_every8 is strongest among the two new variants because on the test split it beats rc_qp_lam010 on 12/12 quality metrics and current rc on 7/12 quality metrics.",
+      "However, rc_qp_lam010_start5000_every8 beats base on only 3/12 test quality metrics and only 1/2 test consistency scenes, so it does not satisfy the quality-preserving objective.",
+      "rc_qp_lam005 is weaker: it beats base on 0/12 test quality metrics and loses to rc_qp_lam010 on most quality metrics.",
+      "Both new variants lose to current rc and rc_qp_lam010 on test consistency in both scenes, indicating pure weight/schedule changes do not preserve enough consistency.",
+      "The next useful candidate should change the RC logic, not just the scalar schedule: compare only geometrically comparable reflection pairs via angle-aware or confidence-gated RC."
+    ],
+    "expand_to_4scene_confirmation_now": false,
+    "global_claim_supported": false
+  },
+  "per_scene": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "splits": {
+        "train": {
+          "variants": {
+            "base": {
+              "mean_reflection_consistency": 0.6405774474143981,
+              "full_psnr": 40.14170768737793,
+              "full_ssim": 0.9934892982244492,
+              "full_lpips": 0.006331377732567489,
+              "reflective_psnr": 40.846081199645994,
+              "reflective_ssim": 0.9941075021028518,
+              "reflective_lpips": 0.004997115402948111
+            },
+            "rc": {
+              "mean_reflection_consistency": 0.0895418930798769,
+              "full_psnr": 40.051305541992186,
+              "full_ssim": 0.9932921969890595,
+              "full_lpips": 0.0064590676967054604,
+              "reflective_psnr": 40.770145378112794,
+              "reflective_ssim": 0.9939275914430619,
+              "reflective_lpips": 0.005113857418764383
+            },
+            "rc_qp_lam010": {
+              "mean_reflection_consistency": 0.0978540290147,
+              "full_psnr": 40.1660605621,
+              "full_ssim": 0.993429845572,
+              "full_lpips": 0.00652566800825,
+              "reflective_psnr": 40.8880712509,
+              "reflective_ssim": 0.994082311392,
+              "reflective_lpips": 0.00517804526491
+            },
+            "rc_qp_lam005": {
+              "mean_reflection_consistency": 0.10914838276803493,
+              "full_psnr": 40.14808807373047,
+              "full_ssim": 0.9934311312437057,
+              "full_lpips": 0.006445235863793641,
+              "reflective_psnr": 40.870964546203616,
+              "reflective_ssim": 0.994061131477356,
+              "reflective_lpips": 0.005090323155745864
+            },
+            "rc_qp_lam010_start5000_every8": {
+              "mean_reflection_consistency": 0.11068877838551998,
+              "full_psnr": 39.903987617492675,
+              "full_ssim": 0.9931504726409912,
+              "full_lpips": 0.006568520180881023,
+              "reflective_psnr": 40.61093963623047,
+              "reflective_ssim": 0.9937761986255645,
+              "reflective_lpips": 0.005226330831646919
+            }
+          }
+        },
+        "test": {
+          "variants": {
+            "base": {
+              "mean_reflection_consistency": 0.21683893352746964,
+              "full_psnr": 35.8392297744751,
+              "full_ssim": 0.9850164332985878,
+              "full_lpips": 0.014634082862176,
+              "reflective_psnr": 36.46292031288147,
+              "reflective_ssim": 0.9869083300232887,
+              "reflective_lpips": 0.011352510314900428
+            },
+            "rc": {
+              "mean_reflection_consistency": 0.035956913605332375,
+              "full_psnr": 35.91236875534057,
+              "full_ssim": 0.9850048306584358,
+              "full_lpips": 0.01466804922092706,
+              "reflective_psnr": 36.55509870529175,
+              "reflective_ssim": 0.9869203695654869,
+              "reflective_lpips": 0.011322217297274619
+            },
+            "rc_qp_lam010": {
+              "mean_reflection_consistency": 0.0389604449272,
+              "full_psnr": 35.6922024536,
+              "full_ssim": 0.984486527443,
+              "full_lpips": 0.015002853875,
+              "reflective_psnr": 36.31802701,
+              "reflective_ssim": 0.986445338726,
+              "reflective_lpips": 0.0117289610812
+            },
+            "rc_qp_lam005": {
+              "mean_reflection_consistency": 0.047587974742054936,
+              "full_psnr": 35.634143114089966,
+              "full_ssim": 0.9847475454211235,
+              "full_lpips": 0.015142580589745193,
+              "reflective_psnr": 36.25130001068115,
+              "reflective_ssim": 0.9866704487800598,
+              "reflective_lpips": 0.011743516454007476
+            },
+            "rc_qp_lam010_start5000_every8": {
+              "mean_reflection_consistency": 0.04388582669198513,
+              "full_psnr": 35.76594744682312,
+              "full_ssim": 0.9848878797888756,
+              "full_lpips": 0.01458565926644951,
+              "reflective_psnr": 36.36155174255371,
+              "reflective_ssim": 0.9867762404680253,
+              "reflective_lpips": 0.011285552345216275
+            }
+          }
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "splits": {
+        "train": {
+          "variants": {
+            "base": {
+              "mean_reflection_consistency": 0.11888066008687019,
+              "full_psnr": 32.07533998148782,
+              "full_ssim": 0.966454624065331,
+              "full_lpips": 0.0314378451855321,
+              "reflective_psnr": 33.95423786980765,
+              "reflective_ssim": 0.9796441426234586,
+              "reflective_lpips": 0.01959136130088674
+            },
+            "rc": {
+              "mean_reflection_consistency": 0.11003987416625023,
+              "full_psnr": 31.615313478878566,
+              "full_ssim": 0.9660793345953737,
+              "full_lpips": 0.03267438967512654,
+              "reflective_psnr": 33.3053354876382,
+              "reflective_ssim": 0.9789685202496392,
+              "reflective_lpips": 0.02129751379834488
+            },
+            "rc_qp_lam010": {
+              "mean_reflection_consistency": 0.115317115188,
+              "full_psnr": 31.9564231804,
+              "full_ssim": 0.965698321483,
+              "full_lpips": 0.0321352286431,
+              "reflective_psnr": 33.9518160479,
+              "reflective_ssim": 0.979634701141,
+              "reflective_lpips": 0.0197575792055
+            },
+            "rc_qp_lam005": {
+              "mean_reflection_consistency": 0.11925425454974174,
+              "full_psnr": 31.80471876689366,
+              "full_ssim": 0.9657866757895265,
+              "full_lpips": 0.03285967275899436,
+              "reflective_psnr": 33.699717674936565,
+              "reflective_ssim": 0.9790708023522582,
+              "reflective_lpips": 0.021184347719619318
+            },
+            "rc_qp_lam010_start5000_every8": {
+              "mean_reflection_consistency": 0.11910557597875596,
+              "full_psnr": 32.046742711748394,
+              "full_ssim": 0.9660794005862304,
+              "full_lpips": 0.031736212566361895,
+              "reflective_psnr": 34.02911715848105,
+              "reflective_ssim": 0.9798216638820512,
+              "reflective_lpips": 0.019491881157071993
+            }
+          }
+        },
+        "test": {
+          "variants": {
+            "base": {
+              "mean_reflection_consistency": 0.1244205117225647,
+              "full_psnr": 29.477797150611877,
+              "full_ssim": 0.947934940457344,
+              "full_lpips": 0.03756850026547909,
+              "reflective_psnr": 31.369457006454468,
+              "reflective_ssim": 0.9687906429171562,
+              "reflective_lpips": 0.024764987407252192
+            },
+            "rc": {
+              "mean_reflection_consistency": 0.1195022352039814,
+              "full_psnr": 29.056204080581665,
+              "full_ssim": 0.9479799754917622,
+              "full_lpips": 0.03910659218672663,
+              "reflective_psnr": 30.713675141334534,
+              "reflective_ssim": 0.9677977859973907,
+              "reflective_lpips": 0.027182404068298638
+            },
+            "rc_qp_lam010": {
+              "mean_reflection_consistency": 0.122564553469,
+              "full_psnr": 29.2722738981,
+              "full_ssim": 0.94689290598,
+              "full_lpips": 0.0381974545307,
+              "reflective_psnr": 31.1600471735,
+              "reflective_ssim": 0.968595538288,
+              "reflective_lpips": 0.0254110972164
+            },
+            "rc_qp_lam005": {
+              "mean_reflection_consistency": 0.12577563151717186,
+              "full_psnr": 29.296981692314148,
+              "full_ssim": 0.9476628489792347,
+              "full_lpips": 0.038661042461171746,
+              "reflective_psnr": 31.159745693206787,
+              "reflective_ssim": 0.968465406447649,
+              "reflective_lpips": 0.026320869801566005
+            },
+            "rc_qp_lam010_start5000_every8": {
+              "mean_reflection_consistency": 0.12836674004793167,
+              "full_psnr": 29.357118129730225,
+              "full_ssim": 0.947377122938633,
+              "full_lpips": 0.037928342120721936,
+              "reflective_psnr": 31.264265179634094,
+              "reflective_ssim": 0.9688131958246231,
+              "reflective_lpips": 0.024794823839329183
+            }
+          }
+        }
+      }
+    }
+  ]
 }

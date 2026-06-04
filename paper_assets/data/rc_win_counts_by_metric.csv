@@ -1,0 +1,17 @@
+metric,split,better_direction,rc_wins,total_pairs,win_rate,mean_delta,interpretation,win_rate_percent
+mean_reflection_consistency,train,lower,14,14,100.0%,-0.074349,RC consistency-target effect,100.0
+mean_reflection_consistency,test,lower,13,14,92.9%,-0.030599,RC consistency-target effect,92.9
+reflective_region_psnr,train,higher,7,14,50.0%,0.024024,Balanced outcomes; mixed render-quality effect,50.0
+reflective_region_psnr,test,higher,8,14,57.1%,-0.027898,RC wins a majority; report separately from consistency,57.1
+full_psnr,train,higher,9,14,64.3%,0.026755,RC wins a majority; report separately from consistency,64.3
+full_psnr,test,higher,10,14,71.4%,0.049286,RC wins a majority; report separately from consistency,71.4
+full_ssim,train,higher,9,14,64.3%,0.000206,RC wins a majority; report separately from consistency,64.3
+full_ssim,test,higher,11,14,78.6%,0.00046,RC wins a majority; report separately from consistency,78.6
+full_lpips,train,lower,9,14,64.3%,-0.000146,RC wins a majority; report separately from consistency,64.3
+full_lpips,test,lower,10,14,71.4%,-0.000356,RC wins a majority; report separately from consistency,71.4
+reflective_psnr,train,higher,6,14,42.9%,-0.082185,RC wins a minority; render-quality tradeoff,42.9
+reflective_psnr,test,higher,10,14,71.4%,-0.038935,RC wins a majority; report separately from consistency,71.4
+reflective_ssim,train,higher,7,14,50.0%,-0.000118,Balanced outcomes; mixed render-quality effect,50.0
+reflective_ssim,test,higher,7,14,50.0%,-0.000206,Balanced outcomes; mixed render-quality effect,50.0
+reflective_lpips,train,lower,4,14,28.6%,0.000376,RC wins a minority; render-quality tradeoff,28.6
+reflective_lpips,test,lower,6,14,42.9%,0.000437,RC wins a minority; render-quality tradeoff,42.9

@@ -110,6 +110,41 @@ class QualityPreservingPilotRunnerTests(unittest.TestCase):
         self.assertEqual({job["cuda_device_arg"] for job in jobs}, {"0"})
         self.assertNotIn("shiny_blender_real", json.dumps(jobs))
 
+    def test_angle10_sched_variant_uses_strict_angle_with_delayed_schedule(self):
+        runner = _load_runner()
+        with tempfile.TemporaryDirectory() as tmp:
+            target_csv = self._write_target_csv(Path(tmp))
+            args = runner.parse_args(
+                [
+                    "--target_csv",
+                    str(target_csv),
+                    "--output_root",
+                    str(Path(tmp) / "out"),
+                    "--devices",
+                    "0",
+                    "--variants",
+                    "rc_qp_angle10_sched",
+                    "--scenes",
+                    "helmet",
+                    "luyu",
+                    "--max_jobs",
+                    "2",
+                ]
+            )
+            jobs = runner.build_jobs(args)
+
+        self.assertEqual(len(jobs), 2)
+        self.assertEqual({job["variant"] for job in jobs}, {"rc_qp_angle10_sched"})
+        for job in jobs:
+            command = " ".join(job["train_command"])
+            self.assertIn("--lambda_ref_consistency 0.01", command)
+            self.assertIn("--ref_consistency_start 5000", command)
+            self.assertIn("--ref_consistency_every 8", command)
+            self.assertIn("--ref_consistency_max_angle 10.0", command)
+            self.assertIn("--ref_consistency_gamma 2.0", command)
+            self.assertIn("--lambda_dssim 0.2", command)
+            self.assertEqual(job["variant_config"]["ref_consistency_max_angle"], "10.0")
+
     def test_defaults_are_dry_run_and_execute_requires_confirmation(self):
         runner = Path("scripts/run_rc_refgs_quality_preserving_pilot.py")
         with tempfile.TemporaryDirectory() as tmp:

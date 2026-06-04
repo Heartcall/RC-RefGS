@@ -1,0 +1,2540 @@
+{
+  "generated_at": "2026-06-05T03:41:34+08:00",
+  "task": "Analyze completed rc_qp_angle10_sched Stage 1 results and decide whether it is worth expanding.",
+  "decision": "GO for analysis; NO-GO for 4-scene expansion",
+  "candidate": "rc_qp_angle10_sched",
+  "output_root": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604",
+  "completion_status": {
+    "jobs_completed": 2,
+    "jobs_expected": 2,
+    "required_artifacts": {
+      "shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0": {
+        "point_cloud": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0/point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_train": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0/reflection_consistency_train.json",
+        "reflection_test": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0/reflection_consistency_test.json",
+        "render_quality": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0/render_quality_both_iter31000.json",
+        "launcher_summary": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0/launcher_summary.json",
+        "all_exist": true
+      },
+      "glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0": {
+        "point_cloud": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0/point_cloud/iteration_31000/point_cloud.ply",
+        "reflection_train": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0/reflection_consistency_train.json",
+        "reflection_test": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0/reflection_consistency_test.json",
+        "render_quality": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0/render_quality_both_iter31000.json",
+        "launcher_summary": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0/launcher_summary.json",
+        "all_exist": true
+      }
+    },
+    "manual_cuda_preflight": {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "command": "/home/liuly/anaconda3/envs/ref_gs/bin/python -c 'import os, torch, json\nprint(json.dumps({\n  '\"'\"'CUDA_VISIBLE_DEVICES'\"'\"': os.environ.get('\"'\"'CUDA_VISIBLE_DEVICES'\"'\"'),\n  '\"'\"'torch_cuda_available'\"'\"': torch.cuda.is_available(),\n  '\"'\"'torch_device_count'\"'\"': torch.cuda.device_count(),\n  '\"'\"'device_name'\"'\"': torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,\n}))'",
+      "decision": "pass",
+      "device_name": "NVIDIA RTX A5000",
+      "expected_CUDA_VISIBLE_DEVICES": "0",
+      "return_code": 0,
+      "status": "completed",
+      "stderr": "",
+      "stdout": "{\"CUDA_VISIBLE_DEVICES\": \"0\", \"torch_cuda_available\": true, \"torch_device_count\": 1, \"device_name\": \"NVIDIA RTX A5000\"}\n",
+      "torch_cuda_available": true,
+      "torch_device_count": 1
+    },
+    "shiny_blender_real": false,
+    "full_16_job_pilot": false,
+    "fourteen_scene_validation": false,
+    "metric_changes": false
+  },
+  "references": [
+    "base",
+    "rc",
+    "rc_qp_lam010",
+    "rc_qp_lam005",
+    "rc_qp_lam010_start5000_every8"
+  ],
+  "metrics": [
+    "mean_reflection_consistency",
+    "full_psnr",
+    "full_ssim",
+    "full_lpips",
+    "reflective_psnr",
+    "reflective_ssim",
+    "reflective_lpips"
+  ],
+  "metric_directions": {
+    "lower_better": [
+      "full_lpips",
+      "mean_reflection_consistency",
+      "reflective_lpips"
+    ],
+    "higher_better": [
+      "full_psnr",
+      "full_ssim",
+      "reflective_psnr",
+      "reflective_ssim"
+    ]
+  },
+  "per_scene_test_summary": [
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "candidate_metrics": {
+        "mean_reflection_consistency": 0.0481265626847744,
+        "full_psnr": 35.774457931518555,
+        "full_ssim": 0.9849920955300331,
+        "full_lpips": 0.014744123264681547,
+        "reflective_psnr": 36.377449645996094,
+        "reflective_ssim": 0.9868403565883637,
+        "reflective_lpips": 0.011476712876465171
+      },
+      "vs": {
+        "base": {
+          "consistency_win": true,
+          "quality_wins": 0,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": -0.16871237084222562,
+            "full_psnr": -0.06477184298144323,
+            "full_ssim": -2.4337768966931073e-05,
+            "full_lpips": 0.00011004040248154684,
+            "reflective_psnr": -0.08547066690390892,
+            "reflective_ssim": -6.797343463638139e-05,
+            "reflective_lpips": 0.00012420256156517144
+          }
+        },
+        "rc": {
+          "consistency_win": false,
+          "quality_wins": 0,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.012169649079474404,
+            "full_psnr": -0.13791082378144637,
+            "full_ssim": -1.2735127966956306e-05,
+            "full_lpips": 7.607404378154672e-05,
+            "reflective_psnr": -0.17764905930390285,
+            "reflective_ssim": -8.001297663629003e-05,
+            "reflective_lpips": 0.0001544955791651717
+          }
+        },
+        "rc_qp_lam010": {
+          "consistency_win": false,
+          "quality_wins": 6,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.0091661177575744,
+            "full_psnr": 0.08225547791855803,
+            "full_ssim": 0.0005055680870330592,
+            "full_lpips": -0.00025873061031845244,
+            "reflective_psnr": 0.059422635996092765,
+            "reflective_ssim": 0.00039501786236362246,
+            "reflective_lpips": -0.0002522482047348281
+          }
+        },
+        "rc_qp_lam005": {
+          "consistency_win": false,
+          "quality_wins": 6,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.0005385879426744039,
+            "full_psnr": 0.140314817418556,
+            "full_ssim": 0.0002445501090331259,
+            "full_lpips": -0.00039845732501845275,
+            "reflective_psnr": 0.1261496352960947,
+            "reflective_ssim": 0.00016990780836367847,
+            "reflective_lpips": -0.0002668035775348285
+          }
+        },
+        "rc_qp_lam010_start5000_every8": {
+          "consistency_win": false,
+          "quality_wins": 4,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.0042407359927744,
+            "full_psnr": 0.0085104847185562,
+            "full_ssim": 0.00010421574103303133,
+            "full_lpips": 0.00015846399828154702,
+            "reflective_psnr": 0.015897903396094648,
+            "reflective_ssim": 6.411612036361092e-05,
+            "reflective_lpips": 0.00019116053126517173
+          }
+        }
+      }
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "candidate_metrics": {
+        "mean_reflection_consistency": 0.12829604670405387,
+        "full_psnr": 28.976022481918335,
+        "full_ssim": 0.9469333551824093,
+        "full_lpips": 0.03940609691198915,
+        "reflective_psnr": 30.539820432662964,
+        "reflective_ssim": 0.966637872159481,
+        "reflective_lpips": 0.027881017420440912
+      },
+      "vs": {
+        "base": {
+          "consistency_win": false,
+          "quality_wins": 0,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.003875534981053863,
+            "full_psnr": -0.5017746686816658,
+            "full_ssim": -0.0010015852745907106,
+            "full_lpips": 0.0018375966464891508,
+            "reflective_psnr": -0.8296365738370355,
+            "reflective_ssim": -0.0021527707575189625,
+            "reflective_lpips": 0.0031160300131409108
+          }
+        },
+        "rc": {
+          "consistency_win": false,
+          "quality_wins": 0,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.008793811500053872,
+            "full_psnr": -0.08018159868166563,
+            "full_ssim": -0.0010466203095906845,
+            "full_lpips": 0.00029950472528915417,
+            "reflective_psnr": -0.17385470863703745,
+            "reflective_ssim": -0.0011599138375189,
+            "reflective_lpips": 0.0006986133521409109
+          }
+        },
+        "rc_qp_lam010": {
+          "consistency_win": false,
+          "quality_wins": 1,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.005731493235053869,
+            "full_psnr": -0.29625141618166495,
+            "full_ssim": 4.044920240930949e-05,
+            "full_lpips": 0.0012086423812891559,
+            "reflective_psnr": -0.6202267408370368,
+            "reflective_ssim": -0.001957666128518998,
+            "reflective_lpips": 0.002469920204040913
+          }
+        },
+        "rc_qp_lam005": {
+          "consistency_win": false,
+          "quality_wins": 0,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": 0.0025204151870538705,
+            "full_psnr": -0.3209592103816661,
+            "full_ssim": -0.0007294937965907078,
+            "full_lpips": 0.000745054450789151,
+            "reflective_psnr": -0.6199252605370376,
+            "reflective_ssim": -0.001827534288519006,
+            "reflective_lpips": 0.0015601476188409139
+          }
+        },
+        "rc_qp_lam010_start5000_every8": {
+          "consistency_win": true,
+          "quality_wins": 0,
+          "quality_total": 6,
+          "deltas": {
+            "mean_reflection_consistency": -7.069334394613214e-05,
+            "full_psnr": -0.3810956477816667,
+            "full_ssim": -0.0004437677565907183,
+            "full_lpips": 0.00147775479128915,
+            "reflective_psnr": -0.724444746937035,
+            "reflective_ssim": -0.00217532366551898,
+            "reflective_lpips": 0.0030861935811409107
+          }
+        }
+      }
+    }
+  ],
+  "win_counts": {
+    "base": {
+      "all_splits_quality": {
+        "wins": 0,
+        "losses": 24,
+        "ties": 0,
+        "total": 24,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 40.09171688079834,
+            "reference": 40.1417076874,
+            "delta": -0.049990806601662996,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9933982276916504,
+            "reference": 0.993489298224,
+            "delta": -9.107053234957974e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.006386382014025003,
+            "reference": 0.00633137773257,
+            "delta": 5.5004281455002524e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 40.81075328826904,
+            "reference": 40.8460811996,
+            "delta": -0.035327911330959694,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.994019483923912,
+            "reference": 0.994107502103,
+            "delta": -8.80181790879897e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.005069471064489335,
+            "reference": 0.00499711540295,
+            "delta": 7.23556615393351e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.8392297745,
+            "delta": -0.06477184298144323,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.985016433299,
+            "delta": -2.4337768966931073e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0146340828622,
+            "delta": 0.00011004040248154684,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.4629203129,
+            "delta": -0.08547066690390892,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986908330023,
+            "delta": -6.797343463638139e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0113525103149,
+            "delta": 0.00012420256156517144,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 31.54883110523224,
+            "reference": 32.0753399815,
+            "delta": -0.5265088762677621,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9655847964542252,
+            "reference": 0.966454624065,
+            "delta": -0.0008698276107748093,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.03283534335371639,
+            "reference": 0.0314378451855,
+            "delta": 0.0013974981682163892,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 33.159773639270234,
+            "reference": 33.9542378698,
+            "delta": -0.794464230529762,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.9780297348541873,
+            "reference": 0.979644142623,
+            "delta": -0.00161440776881272,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.021753731333384558,
+            "reference": 0.0195913613009,
+            "delta": 0.002162370032484557,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.4777971506,
+            "delta": -0.5017746686816658,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947934940457,
+            "delta": -0.0010015852745907106,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0375685002655,
+            "delta": 0.0018375966464891508,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.3694570065,
+            "delta": -0.8296365738370355,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968790642917,
+            "delta": -0.0021527707575189625,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0247649874073,
+            "delta": 0.0031160300131409108,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_quality": {
+        "wins": 0,
+        "losses": 12,
+        "ties": 0,
+        "total": 12,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.8392297745,
+            "delta": -0.06477184298144323,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.985016433299,
+            "delta": -2.4337768966931073e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0146340828622,
+            "delta": 0.00011004040248154684,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.4629203129,
+            "delta": -0.08547066690390892,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986908330023,
+            "delta": -6.797343463638139e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0113525103149,
+            "delta": 0.00012420256156517144,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.4777971506,
+            "delta": -0.5017746686816658,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947934940457,
+            "delta": -0.0010015852745907106,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0375685002655,
+            "delta": 0.0018375966464891508,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.3694570065,
+            "delta": -0.8296365738370355,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968790642917,
+            "delta": -0.0021527707575189625,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0247649874073,
+            "delta": 0.0031160300131409108,
+            "result": "loss"
+          }
+        ]
+      },
+      "all_splits_consistency": {
+        "wins": 2,
+        "losses": 2,
+        "ties": 0,
+        "total": 4,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.1128150276839733,
+            "reference": 0.640577447414,
+            "delta": -0.5277624197300267,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.216838933527,
+            "delta": -0.16871237084222562,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12255109623074531,
+            "reference": 0.118880660087,
+            "delta": 0.0036704361437453065,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.124420511723,
+            "delta": 0.003875534981053863,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_consistency": {
+        "wins": 1,
+        "losses": 1,
+        "ties": 0,
+        "total": 2,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.216838933527,
+            "delta": -0.16871237084222562,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.124420511723,
+            "delta": 0.003875534981053863,
+            "result": "loss"
+          }
+        ]
+      }
+    },
+    "rc": {
+      "all_splits_quality": {
+        "wins": 6,
+        "losses": 18,
+        "ties": 0,
+        "total": 24,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 40.09171688079834,
+            "reference": 40.051305542,
+            "delta": 0.040411338798335805,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9933982276916504,
+            "reference": 0.993292196989,
+            "delta": 0.00010603070265047254,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.006386382014025003,
+            "reference": 0.00645906769671,
+            "delta": -7.268568268499736e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 40.81075328826904,
+            "reference": 40.7701453781,
+            "delta": 0.04060791016904375,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.994019483923912,
+            "reference": 0.993927591443,
+            "delta": 9.189248091201474e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.005069471064489335,
+            "reference": 0.00511385741876,
+            "delta": -4.438635427066531e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.9123687553,
+            "delta": -0.13791082378144637,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.985004830658,
+            "delta": -1.2735127966956306e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0146680492209,
+            "delta": 7.607404378154672e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.5550987053,
+            "delta": -0.17764905930390285,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986920369565,
+            "delta": -8.001297663629003e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0113222172973,
+            "delta": 0.0001544955791651717,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 31.54883110523224,
+            "reference": 31.6153134789,
+            "delta": -0.06648237366776044,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9655847964542252,
+            "reference": 0.966079334595,
+            "delta": -0.000494538140774714,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.03283534335371639,
+            "reference": 0.0326743896751,
+            "delta": 0.00016095367861639065,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 33.159773639270234,
+            "reference": 33.3053354876,
+            "delta": -0.1455618483297627,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.9780297348541873,
+            "reference": 0.97896852025,
+            "delta": -0.0009387853958127135,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.021753731333384558,
+            "reference": 0.0212975137983,
+            "delta": 0.00045621753508455834,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.0562040806,
+            "delta": -0.08018159868166563,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947979975492,
+            "delta": -0.0010466203095906845,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0391065921867,
+            "delta": 0.00029950472528915417,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 30.7136751413,
+            "delta": -0.17385470863703745,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.967797785997,
+            "delta": -0.0011599138375189,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0271824040683,
+            "delta": 0.0006986133521409109,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_quality": {
+        "wins": 0,
+        "losses": 12,
+        "ties": 0,
+        "total": 12,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.9123687553,
+            "delta": -0.13791082378144637,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.985004830658,
+            "delta": -1.2735127966956306e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0146680492209,
+            "delta": 7.607404378154672e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.5550987053,
+            "delta": -0.17764905930390285,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986920369565,
+            "delta": -8.001297663629003e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0113222172973,
+            "delta": 0.0001544955791651717,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.0562040806,
+            "delta": -0.08018159868166563,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947979975492,
+            "delta": -0.0010466203095906845,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0391065921867,
+            "delta": 0.00029950472528915417,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 30.7136751413,
+            "delta": -0.17385470863703745,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.967797785997,
+            "delta": -0.0011599138375189,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0271824040683,
+            "delta": 0.0006986133521409109,
+            "result": "loss"
+          }
+        ]
+      },
+      "all_splits_consistency": {
+        "wins": 0,
+        "losses": 4,
+        "ties": 0,
+        "total": 4,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.1128150276839733,
+            "reference": 0.0895418930799,
+            "delta": 0.023273134604073306,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.0359569136053,
+            "delta": 0.012169649079474404,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12255109623074531,
+            "reference": 0.110039874166,
+            "delta": 0.012511222064745309,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.119502235204,
+            "delta": 0.008793811500053872,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_consistency": {
+        "wins": 0,
+        "losses": 2,
+        "ties": 0,
+        "total": 2,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.0359569136053,
+            "delta": 0.012169649079474404,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.119502235204,
+            "delta": 0.008793811500053872,
+            "result": "loss"
+          }
+        ]
+      }
+    },
+    "rc_qp_lam010": {
+      "all_splits_quality": {
+        "wins": 9,
+        "losses": 15,
+        "ties": 0,
+        "total": 24,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 40.09171688079834,
+            "reference": 40.1660605621,
+            "delta": -0.07434368130166291,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9933982276916504,
+            "reference": 0.993429845572,
+            "delta": -3.161788034955482e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.006386382014025003,
+            "reference": 0.00652566800825,
+            "delta": -0.00013928599422499688,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 40.81075328826904,
+            "reference": 40.8880712509,
+            "delta": -0.07731796263095703,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.994019483923912,
+            "reference": 0.994082311392,
+            "delta": -6.282746808794482e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.005069471064489335,
+            "reference": 0.00517804526491,
+            "delta": -0.00010857420042066548,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.6922024536,
+            "delta": 0.08225547791855803,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.984486527443,
+            "delta": 0.0005055680870330592,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.015002853875,
+            "delta": -0.00025873061031845244,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.31802701,
+            "delta": 0.059422635996092765,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986445338726,
+            "delta": 0.00039501786236362246,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0117289610812,
+            "delta": -0.0002522482047348281,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 31.54883110523224,
+            "reference": 31.9564231804,
+            "delta": -0.40759207516776286,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9655847964542252,
+            "reference": 0.965698321483,
+            "delta": -0.00011352502877481907,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.03283534335371639,
+            "reference": 0.0321352286431,
+            "delta": 0.0007001147106163938,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 33.159773639270234,
+            "reference": 33.9518160479,
+            "delta": -0.7920424086297686,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.9780297348541873,
+            "reference": 0.979634701141,
+            "delta": -0.0016049662868127257,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.021753731333384558,
+            "reference": 0.0197575792055,
+            "delta": 0.001996152127884558,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.2722738981,
+            "delta": -0.29625141618166495,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.94689290598,
+            "delta": 4.044920240930949e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0381974545307,
+            "delta": 0.0012086423812891559,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.1600471735,
+            "delta": -0.6202267408370368,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968595538288,
+            "delta": -0.001957666128518998,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0254110972164,
+            "delta": 0.002469920204040913,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_quality": {
+        "wins": 7,
+        "losses": 5,
+        "ties": 0,
+        "total": 12,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.6922024536,
+            "delta": 0.08225547791855803,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.984486527443,
+            "delta": 0.0005055680870330592,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.015002853875,
+            "delta": -0.00025873061031845244,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.31802701,
+            "delta": 0.059422635996092765,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986445338726,
+            "delta": 0.00039501786236362246,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0117289610812,
+            "delta": -0.0002522482047348281,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.2722738981,
+            "delta": -0.29625141618166495,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.94689290598,
+            "delta": 4.044920240930949e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0381974545307,
+            "delta": 0.0012086423812891559,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.1600471735,
+            "delta": -0.6202267408370368,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968595538288,
+            "delta": -0.001957666128518998,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0254110972164,
+            "delta": 0.002469920204040913,
+            "result": "loss"
+          }
+        ]
+      },
+      "all_splits_consistency": {
+        "wins": 0,
+        "losses": 4,
+        "ties": 0,
+        "total": 4,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.1128150276839733,
+            "reference": 0.0978540290147,
+            "delta": 0.014960998669273307,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.0389604449272,
+            "delta": 0.0091661177575744,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12255109623074531,
+            "reference": 0.115317115188,
+            "delta": 0.007233981042745308,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.122564553469,
+            "delta": 0.005731493235053869,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_consistency": {
+        "wins": 0,
+        "losses": 2,
+        "ties": 0,
+        "total": 2,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.0389604449272,
+            "delta": 0.0091661177575744,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.122564553469,
+            "delta": 0.005731493235053869,
+            "result": "loss"
+          }
+        ]
+      }
+    },
+    "rc_qp_lam005": {
+      "all_splits_quality": {
+        "wins": 9,
+        "losses": 15,
+        "ties": 0,
+        "total": 24,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 40.09171688079834,
+            "reference": 40.1480880737,
+            "delta": -0.05637119290166481,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9933982276916504,
+            "reference": 0.993431131244,
+            "delta": -3.290355234952802e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.006386382014025003,
+            "reference": 0.00644523586379,
+            "delta": -5.885384976499729e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 40.81075328826904,
+            "reference": 40.8709645462,
+            "delta": -0.06021125793095905,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.994019483923912,
+            "reference": 0.994061131477,
+            "delta": -4.1647553087997835e-05,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.005069471064489335,
+            "reference": 0.00509032315575,
+            "delta": -2.0852091260664847e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.6341431141,
+            "delta": 0.140314817418556,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.984747545421,
+            "delta": 0.0002445501090331259,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0151425805897,
+            "delta": -0.00039845732501845275,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.2513000107,
+            "delta": 0.1261496352960947,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.98667044878,
+            "delta": 0.00016990780836367847,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.011743516454,
+            "delta": -0.0002668035775348285,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 31.54883110523224,
+            "reference": 31.8047187669,
+            "delta": -0.2558876616677601,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9655847964542252,
+            "reference": 0.96578667579,
+            "delta": -0.00020187933577475725,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.03283534335371639,
+            "reference": 0.032859672759,
+            "delta": -2.4329405283608774e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 33.159773639270234,
+            "reference": 33.6997176749,
+            "delta": -0.539944035629766,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.9780297348541873,
+            "reference": 0.979070802352,
+            "delta": -0.001041067497812631,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.021753731333384558,
+            "reference": 0.0211843477196,
+            "delta": 0.0005693836137845576,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.2969816923,
+            "delta": -0.3209592103816661,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947662848979,
+            "delta": -0.0007294937965907078,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0386610424612,
+            "delta": 0.000745054450789151,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.1597456932,
+            "delta": -0.6199252605370376,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968465406448,
+            "delta": -0.001827534288519006,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0263208698016,
+            "delta": 0.0015601476188409139,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_quality": {
+        "wins": 6,
+        "losses": 6,
+        "ties": 0,
+        "total": 12,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.6341431141,
+            "delta": 0.140314817418556,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.984747545421,
+            "delta": 0.0002445501090331259,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0151425805897,
+            "delta": -0.00039845732501845275,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.2513000107,
+            "delta": 0.1261496352960947,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.98667044878,
+            "delta": 0.00016990780836367847,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.011743516454,
+            "delta": -0.0002668035775348285,
+            "result": "win"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.2969816923,
+            "delta": -0.3209592103816661,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947662848979,
+            "delta": -0.0007294937965907078,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0386610424612,
+            "delta": 0.000745054450789151,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.1597456932,
+            "delta": -0.6199252605370376,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968465406448,
+            "delta": -0.001827534288519006,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0263208698016,
+            "delta": 0.0015601476188409139,
+            "result": "loss"
+          }
+        ]
+      },
+      "all_splits_consistency": {
+        "wins": 0,
+        "losses": 4,
+        "ties": 0,
+        "total": 4,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.1128150276839733,
+            "reference": 0.109148382768,
+            "delta": 0.0036666449159733078,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.0475879747421,
+            "delta": 0.0005385879426744039,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12255109623074531,
+            "reference": 0.11925425455,
+            "delta": 0.003296841680745316,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.125775631517,
+            "delta": 0.0025204151870538705,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_consistency": {
+        "wins": 0,
+        "losses": 2,
+        "ties": 0,
+        "total": 2,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.0475879747421,
+            "delta": 0.0005385879426744039,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.125775631517,
+            "delta": 0.0025204151870538705,
+            "result": "loss"
+          }
+        ]
+      }
+    },
+    "rc_qp_lam010_start5000_every8": {
+      "all_splits_quality": {
+        "wins": 10,
+        "losses": 14,
+        "ties": 0,
+        "total": 24,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 40.09171688079834,
+            "reference": 39.9039876175,
+            "delta": 0.18772926329833695,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9933982276916504,
+            "reference": 0.993150472641,
+            "delta": 0.00024775505065044445,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.006386382014025003,
+            "reference": 0.00656852018088,
+            "delta": -0.00018213816685499692,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 40.81075328826904,
+            "reference": 40.6109396362,
+            "delta": 0.19981365206903945,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.994019483923912,
+            "reference": 0.993776198626,
+            "delta": 0.00024328529791206588,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.005069471064489335,
+            "reference": 0.00522633083165,
+            "delta": -0.00015685976716066537,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.7659474468,
+            "delta": 0.0085104847185562,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.984887879789,
+            "delta": 0.00010421574103303133,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0145856592664,
+            "delta": 0.00015846399828154702,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.3615517426,
+            "delta": 0.015897903396094648,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986776240468,
+            "delta": 6.411612036361092e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0112855523452,
+            "delta": 0.00019116053126517173,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_psnr",
+            "candidate": 31.54883110523224,
+            "reference": 32.0467427117,
+            "delta": -0.4979116064677598,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_ssim",
+            "candidate": 0.9655847964542252,
+            "reference": 0.966079400586,
+            "delta": -0.0004946041317747119,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "full_lpips",
+            "candidate": 0.03283534335371639,
+            "reference": 0.0317362125664,
+            "delta": 0.0010991307873163894,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_psnr",
+            "candidate": 33.159773639270234,
+            "reference": 34.0291171585,
+            "delta": -0.8693435192297656,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_ssim",
+            "candidate": 0.9780297348541873,
+            "reference": 0.979821663882,
+            "delta": -0.0017919290278126665,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "reflective_lpips",
+            "candidate": 0.021753731333384558,
+            "reference": 0.0194918811571,
+            "delta": 0.002261850176284559,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.3571181297,
+            "delta": -0.3810956477816667,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947377122939,
+            "delta": -0.0004437677565907183,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0379283421207,
+            "delta": 0.00147775479128915,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.2642651796,
+            "delta": -0.724444746937035,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968813195825,
+            "delta": -0.00217532366551898,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0247948238393,
+            "delta": 0.0030861935811409107,
+            "result": "loss"
+          }
+        ]
+      },
+      "test_quality": {
+        "wins": 4,
+        "losses": 8,
+        "ties": 0,
+        "total": 12,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 35.774457931518555,
+            "reference": 35.7659474468,
+            "delta": 0.0085104847185562,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9849920955300331,
+            "reference": 0.984887879789,
+            "delta": 0.00010421574103303133,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.014744123264681547,
+            "reference": 0.0145856592664,
+            "delta": 0.00015846399828154702,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 36.377449645996094,
+            "reference": 36.3615517426,
+            "delta": 0.015897903396094648,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.9868403565883637,
+            "reference": 0.986776240468,
+            "delta": 6.411612036361092e-05,
+            "result": "win"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.011476712876465171,
+            "reference": 0.0112855523452,
+            "delta": 0.00019116053126517173,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_psnr",
+            "candidate": 28.976022481918335,
+            "reference": 29.3571181297,
+            "delta": -0.3810956477816667,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_ssim",
+            "candidate": 0.9469333551824093,
+            "reference": 0.947377122939,
+            "delta": -0.0004437677565907183,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "full_lpips",
+            "candidate": 0.03940609691198915,
+            "reference": 0.0379283421207,
+            "delta": 0.00147775479128915,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_psnr",
+            "candidate": 30.539820432662964,
+            "reference": 31.2642651796,
+            "delta": -0.724444746937035,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_ssim",
+            "candidate": 0.966637872159481,
+            "reference": 0.968813195825,
+            "delta": -0.00217532366551898,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "reflective_lpips",
+            "candidate": 0.027881017420440912,
+            "reference": 0.0247948238393,
+            "delta": 0.0030861935811409107,
+            "result": "loss"
+          }
+        ]
+      },
+      "all_splits_consistency": {
+        "wins": 1,
+        "losses": 3,
+        "ties": 0,
+        "total": 4,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.1128150276839733,
+            "reference": 0.110688778386,
+            "delta": 0.0021262492979733094,
+            "result": "loss"
+          },
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.043885826692,
+            "delta": 0.0042407359927744,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "train",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12255109623074531,
+            "reference": 0.119105575979,
+            "delta": 0.0034455202517453126,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.128366740048,
+            "delta": -7.069334394613214e-05,
+            "result": "win"
+          }
+        ]
+      },
+      "test_consistency": {
+        "wins": 1,
+        "losses": 1,
+        "ties": 0,
+        "total": 2,
+        "details": [
+          {
+            "dataset": "shiny_blender_synthetic",
+            "scene": "helmet",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.0481265626847744,
+            "reference": 0.043885826692,
+            "delta": 0.0042407359927744,
+            "result": "loss"
+          },
+          {
+            "dataset": "glossy_synthetic",
+            "scene": "luyu",
+            "split": "test",
+            "metric": "mean_reflection_consistency",
+            "candidate": 0.12829604670405387,
+            "reference": 0.128366740048,
+            "delta": -7.069334394613214e-05,
+            "result": "win"
+          }
+        ]
+      }
+    }
+  },
+  "summary": {
+    "test_vs_base_quality": "0/12",
+    "test_vs_base_consistency": "1/2",
+    "test_vs_current_rc_quality": "0/12",
+    "test_vs_schedule_quality": "4/12",
+    "test_vs_schedule_consistency": "1/2"
+  },
+  "interpretation": {
+    "angle_vs_pure_schedule": "Not Pareto-better than rc_qp_lam010_start5000_every8 on helmet/luyu. It wins only 4/12 test quality metrics and 1/2 test consistency scenes versus that schedule variant.",
+    "quality_vs_current_rc": "Does not improve test quality versus current rc on this Stage 1 pair: 0/12 test quality wins across helmet/luyu.",
+    "quality_vs_base": "Clearly fails the base-quality target: 0/12 test quality wins vs base, with both helmet and luyu weaker than base on all six test quality metrics.",
+    "consistency_vs_base": "Retains useful consistency on helmet but not luyu, giving 1/2 test consistency wins vs base.",
+    "dataset_dependence": "Both scenes fail base quality. Helmet retains lower consistency than base but loses all test quality metrics; luyu loses both consistency and all test quality metrics vs base."
+  },
+  "expansion_recommendation": "NO-GO for 4-scene expansion",
+  "claim_boundary": {
+    "two_scene_stage1_only": true,
+    "global_rc_refgs_over_refgs_claim": false,
+    "shiny_real_claim": false,
+    "full_fd_p2_claim": false
+  }
+}

@@ -1,0 +1,9 @@
+metric,better_direction,paper_label
+mean_reflection_consistency,lower,Reflection consistency
+reflective_region_psnr,higher,Region PSNR
+full_psnr,higher,Full PSNR
+full_ssim,higher,Full SSIM
+full_lpips,lower,Full LPIPS
+reflective_psnr,higher,Reflective PSNR
+reflective_ssim,higher,Reflective SSIM
+reflective_lpips,lower,Reflective LPIPS

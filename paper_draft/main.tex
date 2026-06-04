@@ -8,15 +8,17 @@
 \usepackage{booktabs}
 \usepackage{hyperref}
 
+\newcommand{\Ind}[1]{\mathbf{1}\!\left[#1\right]}
+
 \begin{document}
 
 \section{Introduction}
 
 高反射场景重建是神经渲染与新视角合成中的长期挑战。与近似朗伯表面不同，镜面反射、折射、近场照明以及复杂材质会产生强烈的 view-dependent effects，使同一空间区域在不同观察方向下呈现显著不同的颜色、高光形状和反射内容。这类效应在真实物体采集、数字资产生成、可编辑三维内容生产、增强现实和机器人感知中都十分常见，因此高质量反射场景重建不仅要求合成图像在像素层面逼真，还要求反射外观与底层几何、可见性和材质线索保持可解释的关系。
 
-近年来，NeRF-like 方法、3D Gaussian Splatting、2D Gaussian Splatting 及一系列 Gaussian-based renderer 显著提升了新视角合成的质量和效率 \cite{mildenhall2020nerf,kerbl20233dgs,huang20242dgs}。然而，在高反射区域，常规多视角 photometric loss 并不自动区分由真实几何支撑的反射变化与由单视角颜色拟合得到的局部残差。模型可以通过 view-dependent color query、emission radiance、局部特征、法线扰动或不透明度调整来解释某一训练视角中的 specular appearance，却不必保证相邻视角中同一表面区域的反射预测具有稳定的几何对应关系。这种歧义使高光容易被当作逐视角颜色现象，而不是被约束为由表面、视线和可见性共同决定的跨视角结构。
+近年来，NeRF-like 方法、3D Gaussian Splatting、2D Gaussian Splatting 及一系列 Gaussian-based renderer 显著提升了新视角合成的质量和效率。然而，在高反射区域，常规多视角 photometric loss 并不自动区分由真实几何支撑的反射变化与由单视角颜色拟合得到的局部残差。模型可以通过 view-dependent color query、emission radiance、局部特征、法线扰动或不透明度调整来解释某一训练视角中的 specular appearance，却不必保证相邻视角中同一表面区域的反射预测具有稳定的几何对应关系。这种歧义使高光容易被当作逐视角颜色现象，而不是被约束为由表面、视线和可见性共同决定的跨视角结构。
 
-为缓解这一问题，已有工作引入了方向查询、反射方向编码、deferred shading、材质分解和 directional factorization 等机制 \cite{verbin2022refnerf,zhang2024refgs,jiang20243dgsdr,jiang2024gaussianshader}。这些方法改善了模型表达视角相关颜色的方式，使反射分量能够显式依赖观察方向、表面法线、粗糙度或 learned appearance features。Ref-GS 等方向分解类方法进一步分析了 orientation-viewing ambiguity，并通过更结构化的方向表示降低颜色、法线和方向查询之间的耦合。然而，这类方法主要回答的是“如何表示视角相关外观”，而不是“同一表面在不同视角中的反射预测是否具有几何一致性”。当监督仍主要来自最终 RGB 重建时，反射分量仍可能在不同视角间缺少显式约束。
+为缓解这一问题，已有工作引入了方向查询、反射方向编码、deferred shading、材质分解和 directional factorization 等机制。这些方法改善了模型表达视角相关颜色的方式，使反射分量能够显式依赖观察方向、表面法线、粗糙度或 learned appearance features。Ref-GS 等方向分解类方法进一步分析了 orientation-viewing ambiguity，并通过更结构化的方向表示降低颜色、法线和方向查询之间的耦合。然而，这类方法主要回答的是“如何表示视角相关外观”，而不是“同一表面在不同视角中的反射预测是否具有几何一致性”。当监督仍主要来自最终 RGB 重建时，反射分量仍可能在不同视角间缺少显式约束。
 
 我们观察到，反射外观虽然天然随视角变化，但许多错误的高光拟合表现为缺少几何支撑的局部单视角残差。若一个可微 renderer 能够输出 specular、depth、alpha、normal 和 confidence 等 renderer intermediate buffers，则可以在相邻视角之间通过几何投影建立同一表面区域的候选对应，并在这些对应上约束反射预测的稳定性。需要强调的是，本文并不假设同一表面点在不同视角中的真实 specular radiance 必须相等；我们约束的是可见、几何一致且置信度较高的相邻视角对应区域中的反射预测稳定性。这一约束是面向优化的正则化目标，而不是严格的物理守恒定律。
 
@@ -97,25 +99,25 @@ v(u) &= \pi(\tilde{\mathbf{p}}_t(u)),\\
 跨视角投影可能受到遮挡、深度误差、低透明度区域、法线不一致以及非反射材质的影响。因此，本文不对所有 source 像素等权施加反射一致性，而是先定义一组可靠性条件。有效投影 mask 为
 \begin{equation}
 M_{\mathrm{proj}}(u)=
-\mathbb{1}[v(u)\in\Omega_t]\,
-\mathbb{1}[\hat{z}_t(u)>0],
+\Ind{v(u)\in\Omega_t}\,
+\Ind{\hat{z}_t(u)>0}.
 \end{equation}
-其中 \(\mathbb{1}[\cdot]\) 是指示函数。
+其中 \(\Ind{\cdot}\) 表示指示函数。
 
 为排除被遮挡或投影到错误表面的点，我们定义 depth consistency mask：
 \begin{equation}
 M_{\mathrm{depth}}(u)=
-\mathbb{1}\left[
+\Ind{
 \frac{|\tilde{D}_{t\leftarrow s}(u)-\hat{z}_t(u)|}
 {\max(\hat{z}_t(u),\epsilon)}
 <\tau_d
-\right],
+}.
 \end{equation}
 其中 \(\tau_d\) 是相对深度容忍阈值，\(\epsilon\) 是数值稳定项。visibility mask 定义为
 \begin{equation}
 M_{\alpha}(u)=
-\mathbb{1}[A_s(u)>\tau_\alpha]\,
-\mathbb{1}[\tilde{A}_{t\leftarrow s}(u)>\tau_\alpha],
+\Ind{A_s(u)>\tau_\alpha}\,
+\Ind{\tilde{A}_{t\leftarrow s}(u)>\tau_\alpha}.
 \end{equation}
 用于保证 source 和 target 中均存在可见表面。
 
@@ -235,8 +237,8 @@ Q(u)=A(u)\max(0,\langle N^r(u),N^d(u)\rangle).
 第二类指标是 reflective-region image quality。给定由 \(C\)、alpha 或 specular intensity 定义的 reflective mask \(M_{\mathrm{refl}}\)，可在反射区域内报告 PSNR、SSIM 和 LPIPS 等指标：
 \begin{equation}
 M_{\mathrm{refl}}(u)=
-\mathbb{1}[A(u)>\tau_\alpha]\,
-\mathbb{1}[C(u)>\tau_c],
+\Ind{A(u)>\tau_\alpha}\,
+\Ind{C(u)>\tau_c}.
 \end{equation}
 其中 \(\tau_c\) 是反射置信度阈值。该类指标关注反射区域的图像重建质量，但不与跨视角反射稳定性等价。
 

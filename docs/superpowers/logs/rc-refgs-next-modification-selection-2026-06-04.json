@@ -1,0 +1,123 @@
+{
+  "generated_at": "2026-06-05T00:51:41+08:00",
+  "chosen_candidate": "rc_qp_angle10_sched",
+  "chosen_family": "Family A - Angle-aware RC gating, implemented as a strict 10 degree training pair angle with the best delayed schedule.",
+  "selection_basis_artifacts": [
+    "docs/superpowers/logs/rc-refgs-quality-preserving-lam010-4scene-pilot-comparison-2026-06-03.csv",
+    "docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv",
+    "docs/superpowers/logs/rc-refgs-quality-tradeoff-diagnosis-2026-06-01.json"
+  ],
+  "evidence_summary": {
+    "rc_qp_lam010_4scene_test": {
+      "consistency_vs_base": {
+        "wins": 3,
+        "total": 4
+      },
+      "consistency_vs_rc": {
+        "wins": 0,
+        "total": 4
+      },
+      "quality_vs_base": {
+        "wins": 11,
+        "total": 24
+      },
+      "quality_vs_rc": {
+        "wins": 17,
+        "total": 24
+      }
+    },
+    "stage1_test": {
+      "rc_qp_lam005": {
+        "consistency_vs_base": {
+          "wins": 1,
+          "total": 2
+        },
+        "consistency_vs_rc": {
+          "wins": 0,
+          "total": 2
+        },
+        "consistency_vs_lam010": {
+          "wins": 0,
+          "total": 2
+        },
+        "quality_vs_base": {
+          "wins": 0,
+          "total": 12
+        },
+        "quality_vs_rc": {
+          "wins": 5,
+          "total": 12
+        },
+        "quality_vs_lam010": {
+          "wins": 4,
+          "total": 12
+        }
+      },
+      "rc_qp_lam010_start5000_every8": {
+        "consistency_vs_base": {
+          "wins": 1,
+          "total": 2
+        },
+        "consistency_vs_rc": {
+          "wins": 0,
+          "total": 2
+        },
+        "consistency_vs_lam010": {
+          "wins": 0,
+          "total": 2
+        },
+        "quality_vs_base": {
+          "wins": 3,
+          "total": 12
+        },
+        "quality_vs_rc": {
+          "wins": 7,
+          "total": 12
+        },
+        "quality_vs_lam010": {
+          "wins": 12,
+          "total": 12
+        }
+      }
+    }
+  },
+  "rationale": [
+    "Pure weight/schedule tuning is insufficient: rc_qp_lam010_start5000_every8 was best among those options but still achieved only 3/12 test quality wins vs base on helmet/luyu and 1/2 test consistency wins vs base.",
+    "The completed lam010 pilot and Stage 1 follow-up show quality can improve relative to current RC when regularization pressure is reduced, but consistency weakens versus current RC, suggesting the loss is applied to pairs that are not physically comparable rather than just too strong.",
+    "Reflection is view-dependent, so narrowing the RC training pair angle is the lowest-risk logic change: it regularizes only more comparable reflection configurations without changing metric definitions or train.py behavior.",
+    "rc_qp_angle10_sched keeps the strongest schedule from the prior follow-up (lambda=0.01, start=5000, every=8, gamma=2.0) and adds strict training max_angle=10.0."
+  ],
+  "expected_effect": {
+    "consistency": "May improve over pure schedule by focusing RC on physically comparable pairs; may still be weaker than current rc because fewer pairs are regularized.",
+    "quality": "Expected to reduce view-dependent over-regularization and improve PSNR/SSIM/LPIPS relative to current rc and possibly rc_qp_lam010_start5000_every8 on stress scenes.",
+    "risk": "Too few valid pairs or overly strict angular gating may weaken reflection consistency or make gains scene-dependent, especially in sparse reflective views."
+  },
+  "implementation_plan": {
+    "code_path": "scripts/run_rc_refgs_quality_preserving_pilot.py variant mapping only",
+    "train_py_modified": false,
+    "metric_scripts_modified": false,
+    "variant_config": {
+      "lambda_ref_consistency": "0.01",
+      "ref_consistency_start": "5000",
+      "ref_consistency_every": "8",
+      "ref_consistency_max_angle": "10.0",
+      "ref_consistency_gamma": "2.0",
+      "lambda_dssim": "0.2"
+    },
+    "evaluation_fixed": "render_quality_eval split both mask_mode both image_key pbr_rgb; reflection metric command unchanged from runner default."
+  },
+  "scope_boundaries": {
+    "scenes": [
+      "helmet",
+      "luyu"
+    ],
+    "new_variants": [
+      "rc_qp_angle10_sched"
+    ],
+    "max_jobs": 2,
+    "no_shiny_real": true,
+    "no_full_16_job_pilot": true,
+    "no_14_scene_validation": true,
+    "no_global_quality_claim": true
+  }
+}

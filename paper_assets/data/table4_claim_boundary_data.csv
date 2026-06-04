@@ -1,0 +1,7 @@
+Claim,Supported?,Evidence type,Scope,Safe wording,Unsafe wording
+RC improves mean reflection consistency.,"Yes, scoped",completed paired scene/split CSV,FD-P2-lite non-Shiny-Real,RC improves cross-view reflection consistency in the completed setting.,RC universally improves all reflective reconstruction results.
+RC improves full-image PSNR/SSIM/LPIPS.,No universal support,metric-specific win counts,available rows only,"Full-image metrics show mixed, metric-dependent changes.",RC guarantees better full-image rendering quality.
+Reflective-region quality always improves.,No,reflective-region metric win counts,available rows only,Reflective-region quality should be reported separately from consistency.,RC consistently improves all reflective-region metrics.
+Confidence weighting contributes to RC.,Trend only,scoped ablation aggregate,wo_conf diagnostic rows,Removing confidence weighting weakens the observed consistency behavior in this ablation scope.,Confidence weighting is always the dominant factor.
+Roughness smoothness alone reproduces RC.,No,rough_only ablation aggregate,available non-Shiny-Real rows,Roughness-only regularization does not reproduce the main RC consistency behavior.,Roughness smoothness is the central theoretical contribution.
+RC improves mesh or geometry quality.,No,no independent geometry metric table,current result package,Geometry filtering is an engineering extension requiring separate evaluation.,RC necessarily improves mesh quality.

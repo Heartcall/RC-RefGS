@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Ablation aggregates for completed FD-P2-lite non-Shiny-Real runs. Reflection-consistency values are lower-is-better; normalized score is computed within available ablation variants after aligning metric directions.}
+\label{tab:rc_ablation}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrllllllll}
+\toprule
+Variant & Valid runs & Train RC metric & Test RC metric & Train full PSNR & Test full PSNR & Train refl. PSNR & Test refl. PSNR & Norm. score & Interpretation \\
+\midrule
+wo\_ref & 14 & 0.19046 & 0.13512 & 35.93 & 32.51 & 37.34 & 33.79 & 0.668 & Removal of reflection-consistency supervision; compare cautiously to RC. \\
+wo\_conf & 14 & 0.13829 & 0.11214 & 35.90 & 32.50 & 37.31 & 33.76 & 0.469 & Neutralized confidence weighting; compare cautiously to RC. \\
+rough\_only & 14 & 0.18313 & 0.13306 & 35.94 & 32.51 & 37.18 & 33.62 & 0.297 & Roughness-only regularization; compare cautiously to RC. \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

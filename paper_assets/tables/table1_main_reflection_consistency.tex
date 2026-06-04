@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\caption{Main comparison on cross-view reflection consistency in completed FD-P2-lite non-Shiny-Real runs. Delta denotes RC minus base; lower is better, so positive improvement means base minus RC.}
+\label{tab:rc_main_consistency}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrlllll}
+\toprule
+Split & Rows & RC wins & Mean delta & Median delta & Mean improvement & Median improvement & Win rate \\
+\midrule
+test & 14 & 13 & -0.03060 & -0.01072 & 0.03060 & 0.01072 & 92.9\% \\
+train & 14 & 14 & -0.07435 & -0.01862 & 0.07435 & 0.01862 & 100.0\% \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

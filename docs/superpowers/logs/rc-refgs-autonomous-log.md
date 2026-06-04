@@ -8724,6 +8724,55 @@ python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_re
 - **NO-GO** for training, metrics, four-scene pilot launch, Shiny Blender Real, metric changes, or quality-preserving result claims.
 - Released the round-local task claim at `2026-06-03 21:15:44 CST`.
 
+## 2026-06-05 03:42:30 CST - Completed rc_qp_angle10_sched Stage 1 analysis
+
+**Task claim and scope:**
+- Claimed exactly one task: "Analyze completed rc_qp_angle10_sched Stage 1 results and decide whether it is worth expanding."
+- Analysis only; no training, metrics, reruns, Shiny Blender Real, full 16-job pilot, 14-scene validation, metric changes, or global quality claim.
+
+**Artifact verification:**
+- Verified `2/2` completed jobs under `/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604`: `shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0` and `glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0`.
+- Each job has `point_cloud/iteration_31000/point_cloud.ply`, train/test reflection JSONs, `render_quality_both_iter31000.json`, and `launcher_summary.json`.
+- `pilot_status.json` records manual CUDA preflight pass with `CUDA_VISIBLE_DEVICES=0`, `torch_cuda_available=true`, `torch_device_count=1`, device `NVIDIA RTX A5000`.
+
+**Main result:**
+- Test consistency vs base: `1/2`.
+- Test quality vs base: `0/12`.
+- Test quality vs current `rc`: `0/12`.
+- Test quality vs `rc_qp_lam010_start5000_every8`: `4/12`.
+- `rc_qp_angle10_sched` is not Pareto-better than the best prior pure schedule candidate and still fails base-quality targets.
+
+**Decision:**
+- **GO** for analysis/report generation.
+- **NO-GO** for 4-scene expansion and any quality-preserving/global claim.
+
+## 2026-06-05 00:56:00 CST - Next modification candidate rc_qp_angle10_sched blocked at manual CUDA gate
+
+**Task claim and scope:**
+- Claimed exactly one task: "Autonomously choose and test the next RC-RefGS modification direction after weight/schedule tuning proved insufficient."
+- Scope was exactly one new variant, `rc_qp_angle10_sched`, on exactly `helmet` and `luyu` at `31000` iterations under `/tmp/rc_refgs_quality_preserving_rc_rc_qp_angle10_sched_helmet_luyu_i31000_20260604`.
+- Did not run coffee, teapot, Shiny Blender Real, a full 16-job pilot, 14-scene validation, metric changes, or any global quality claim.
+
+**Implementation:**
+- Selected angle-aware RC gating because pure weight/schedule tuning remained insufficient.
+- Added `rc_qp_angle10_sched` as a runner-only variant with `lambda_ref_consistency=0.01`, `ref_consistency_start=5000`, `ref_consistency_every=8`, `ref_consistency_max_angle=10.0`, `ref_consistency_gamma=2.0`, and `lambda_dssim=0.2`.
+- Added unit coverage for the new train-command flags.
+- `train.py` and metric scripts were not changed.
+
+**Runtime gate:**
+- Required manual CUDA command failed with `AssertionError` because `torch.cuda.is_available()` was false under `CUDA_VISIBLE_DEVICES=0`.
+- Follow-up diagnostics showed `torch_cuda_available=false`, `torch_device_count=0` both with and without the conda `LD_LIBRARY_PATH`, while `nvidia-smi` showed GPU 0 idle (`3 MiB`, `0%`).
+- The runner was not launched; no training or metric process was started.
+
+**Artifacts:**
+- `docs/superpowers/logs/rc-refgs-next-modification-selection-2026-06-04.{md,json}`
+- `docs/superpowers/logs/rc-refgs-next-modification-stage1-2026-06-04.{md,json}`
+- `docs/superpowers/logs/rc-refgs-next-modification-stage1-comparison-2026-06-04.csv`
+
+**Decision:**
+- **CONDITIONAL GO** for candidate implementation and static readiness.
+- Runtime is blocked at manual CUDA preflight; no expansion and no quality-preserving claim.
+
 ## 2026-06-04 01:37:28 CST - Glossy Synthetic converted source-path retry
 
 **Task claim and scope:**
@@ -8879,6 +8928,58 @@ python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_re
 - **NO-GO** for Stage 2, full 16-job pilot, 14-scene validation, or any quality-preserving/global superiority claim.
 - Next safe action after CUDA visibility is restored: rerun the same four Stage 1 cells before implementing angle-aware/gated RC.
 - Released the round-local task claim at `2026-06-04 04:35:06 CST`.
+
+## 2026-06-05 00:20:44 CST - Completed Stage 1 follow-up analysis
+
+**Task claim and scope:**
+- Claimed exactly one task: "Analyze completed Stage 1 follow-up results and choose the next RC-RefGS candidate."
+- Scope was analysis/reporting only from completed artifacts under `/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604`.
+- Did not launch training, metrics, reruns, Shiny Blender Real, metric changes, full 16-job pilot, 14-scene validation, or any global quality-preserving claim.
+
+**Artifact verification:**
+- `glossy_synthetic/luyu/rc_qp_lam005`: required artifacts `5/5`.
+- `glossy_synthetic/luyu/rc_qp_lam010_start5000_every8`: required artifacts `5/5`.
+- `shiny_blender_synthetic/helmet/rc_qp_lam005`: required artifacts `5/5`.
+- `shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8`: required artifacts `5/5`.
+- `pilot_status.json` reports Stage 1 completion `4/4` and manual CUDA preflight `decision=pass`, `torch_cuda_available=true`, `torch_device_count=1`, device `NVIDIA RTX A5000`.
+
+**Analysis generated:**
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.md`.
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.json`.
+- Updated `docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-comparison-2026-06-04.csv`.
+- Comparison CSV uses `20` scene/split/variant rows for `base`, current `rc`, prior `rc_qp_lam010`, `rc_qp_lam005`, and `rc_qp_lam010_start5000_every8`.
+
+**Main findings:**
+- `rc_qp_lam010_start5000_every8` is the stronger of the two new Stage 1 variants:
+  - test quality vs base: `3/12`;
+  - test quality vs current `rc`: `7/12`;
+  - test quality vs prior `rc_qp_lam010`: `12/12`;
+  - test consistency vs base: `1/2`;
+  - test consistency vs current `rc`: `0/2`;
+  - test consistency vs prior `rc_qp_lam010`: `0/2`.
+- `rc_qp_lam005` is weaker:
+  - test quality vs base: `0/12`;
+  - test quality vs current `rc`: `5/12`;
+  - test quality vs prior `rc_qp_lam010`: `4/12`;
+  - test consistency vs base: `1/2`;
+  - test consistency vs current `rc`: `0/2`;
+  - test consistency vs prior `rc_qp_lam010`: `0/2`.
+
+**Next candidate decision:**
+- Do not expand either Stage 1 variant to 4-scene confirmation.
+- Choose a logic-level angle-aware or confidence-gated RC candidate next, e.g. `rc_qp_angle10` or an angle-gated Stage 1 variant.
+- Rationale: pure weight/schedule changes improved some tradeoffs but still fail the base-quality target on the two stress scenes and lose consistency relative to current `rc`.
+
+**Validation:**
+- `python -m json.tool docs/superpowers/logs/rc-refgs-quality-preserving-followup-helmet-luyu-2026-06-04.json` -> pass.
+- CSV assertion -> `20` rows, expected variants/scenes/splits, all Stage 1 rows completed.
+- `git diff --check` -> pass.
+- Prohibited-process scan -> empty.
+
+**Decision and release:**
+- **GO** for analysis and next-candidate selection.
+- **NO-GO** for global quality-preserving claims or expansion.
+- Released the round-local task claim at `2026-06-05 00:20:44 CST`.
 
 
 ## 2026-06-04 12:33:58 CST - Guarded manual-CUDA-preflight trust mode for Stage 1 follow-up

@@ -41,6 +41,7 @@ OPTIONAL_VARIANTS = (
     "rc_qp_lam010_gamma15",
     "rc_qp_lam010_dssim01",
     "rc_qp_lam010_dssim03",
+    "rc_qp_angle10_sched",
 )
 VARIANT_CONFIGS = {
     "rc_qp_lam005": {
@@ -68,6 +69,14 @@ VARIANT_CONFIGS = {
         "lambda_ref_consistency": "0.01",
         "ref_consistency_start": "5000",
         "ref_consistency_every": "8",
+        "ref_consistency_gamma": "2.0",
+        "lambda_dssim": "0.2",
+    },
+    "rc_qp_angle10_sched": {
+        "lambda_ref_consistency": "0.01",
+        "ref_consistency_start": "5000",
+        "ref_consistency_every": "8",
+        "ref_consistency_max_angle": "10.0",
         "ref_consistency_gamma": "2.0",
         "lambda_dssim": "0.2",
     },
@@ -626,7 +635,7 @@ def _train_command(args: argparse.Namespace, source_path: str, model_path: Path,
         "--ref_consistency_every",
         cfg["ref_consistency_every"],
         "--ref_consistency_max_angle",
-        str(args.ref_consistency_max_angle),
+        cfg.get("ref_consistency_max_angle", str(args.ref_consistency_max_angle)),
         "--ref_consistency_gamma",
         cfg["ref_consistency_gamma"],
         "--lambda_dssim",
