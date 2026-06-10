@@ -1,0 +1,505 @@
+{
+  "mode": "rc_refgs_geometry_quality_eval",
+  "status": "proxy_only",
+  "iteration": 31000,
+  "rows": [
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/glossy_synthetic/luyu/base/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 155704,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": 55704,
+      "geometry_proxy_bbox_diag": 2.436008983017052,
+      "mean_reflection_consistency": 0.1244205117225647,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 29.477797150611877,
+      "full_ssim": 0.947934940457344,
+      "full_lpips": 0.03756850026547909,
+      "reflective_psnr": 31.369457006454468,
+      "reflective_ssim": 0.9687906429171562,
+      "reflective_lpips": 0.024764987407252192
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/glossy_synthetic/luyu/rc/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 166906,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": 66906,
+      "geometry_proxy_bbox_diag": 2.4309956207289236,
+      "mean_reflection_consistency": 0.1195022352039814,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 29.056204080581665,
+      "full_ssim": 0.9479799754917622,
+      "full_lpips": 0.03910659218672663,
+      "reflective_psnr": 30.713675141334534,
+      "reflective_ssim": 0.9677977859973907,
+      "reflective_lpips": 0.027182404068298638
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc_qp_angle10_sched",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_angle10_sched/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 171522,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": 71522,
+      "geometry_proxy_bbox_diag": 2.440431803041994,
+      "mean_reflection_consistency": 0.12829604670405387,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 28.976022481918335,
+      "full_ssim": 0.9469333551824093,
+      "full_lpips": 0.03940609691198915,
+      "reflective_psnr": 30.539820432662964,
+      "reflective_ssim": 0.966637872159481,
+      "reflective_lpips": 0.027881017420440912
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc_qp_lam005",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam005/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 162253,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": 62253,
+      "geometry_proxy_bbox_diag": 2.445485553210973,
+      "mean_reflection_consistency": 0.12577563151717186,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 29.296981692314148,
+      "full_ssim": 0.9476628489792347,
+      "full_lpips": 0.038661042461171746,
+      "reflective_psnr": 31.159745693206787,
+      "reflective_ssim": 0.968465406447649,
+      "reflective_lpips": 0.026320869801566005
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc_qp_lam010",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_lam010_4scene_i31000_20260603/glossy_synthetic/luyu/rc_qp_lam010/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 155943,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": 55943,
+      "geometry_proxy_bbox_diag": 2.4413573750179345,
+      "mean_reflection_consistency": 0.12256455346941948,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 29.272273898124695,
+      "full_ssim": 0.9468929059803486,
+      "full_lpips": 0.038197454530745745,
+      "reflective_psnr": 31.16004717350006,
+      "reflective_ssim": 0.9685955382883549,
+      "reflective_lpips": 0.025411097216419876
+    },
+    {
+      "dataset": "glossy_synthetic",
+      "scene": "luyu",
+      "variant": "rc_qp_lam010_start5000_every8",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/glossy_synthetic/luyu/rc_qp_lam010_start5000_every8/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 157172,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": 57172,
+      "geometry_proxy_bbox_diag": 2.434791582410234,
+      "mean_reflection_consistency": 0.12836674004793167,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 29.357118129730225,
+      "full_ssim": 0.947377122938633,
+      "full_lpips": 0.037928342120721936,
+      "reflective_psnr": 31.264265179634094,
+      "reflective_ssim": 0.9688131958246231,
+      "reflective_lpips": 0.024794823839329183
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "base",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_synthetic/helmet/base/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 60619,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": -39381,
+      "geometry_proxy_bbox_diag": 3.1117898624991978,
+      "mean_reflection_consistency": 0.21683893352746964,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 35.8392297744751,
+      "full_ssim": 0.9850164332985878,
+      "full_lpips": 0.014634082862176,
+      "reflective_psnr": 36.46292031288147,
+      "reflective_ssim": 0.9869083300232887,
+      "reflective_lpips": 0.011352510314900428
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc",
+      "model_path": "/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527/shiny_blender_synthetic/helmet/rc/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 60312,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": -39688,
+      "geometry_proxy_bbox_diag": 3.1134405101621865,
+      "mean_reflection_consistency": 0.035956913605332375,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 35.91236875534057,
+      "full_ssim": 0.9850048306584358,
+      "full_lpips": 0.01466804922092706,
+      "reflective_psnr": 36.55509870529175,
+      "reflective_ssim": 0.9869203695654869,
+      "reflective_lpips": 0.011322217297274619
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc_qp_angle10_sched",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_angle10_sched_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_angle10_sched/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 62057,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": -37943,
+      "geometry_proxy_bbox_diag": 3.1134008007112834,
+      "mean_reflection_consistency": 0.0481265626847744,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 35.774457931518555,
+      "full_ssim": 0.9849920955300331,
+      "full_lpips": 0.014744123264681547,
+      "reflective_psnr": 36.377449645996094,
+      "reflective_ssim": 0.9868403565883637,
+      "reflective_lpips": 0.011476712876465171
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc_qp_lam005",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam005/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 62064,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": -37936,
+      "geometry_proxy_bbox_diag": 3.1127103994877325,
+      "mean_reflection_consistency": 0.047587974742054936,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 35.634143114089966,
+      "full_ssim": 0.9847475454211235,
+      "full_lpips": 0.015142580589745193,
+      "reflective_psnr": 36.25130001068115,
+      "reflective_ssim": 0.9866704487800598,
+      "reflective_lpips": 0.011743516454007476
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc_qp_lam010",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_lam010_4scene_i31000_20260603/shiny_blender_synthetic/helmet/rc_qp_lam010/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 61267,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": -38733,
+      "geometry_proxy_bbox_diag": 3.1142498391876496,
+      "mean_reflection_consistency": 0.03896044492721558,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 35.692202453613284,
+      "full_ssim": 0.9844865274429321,
+      "full_lpips": 0.015002853875048459,
+      "reflective_psnr": 36.31802700996399,
+      "reflective_ssim": 0.9864453387260437,
+      "reflective_lpips": 0.011728961081244051
+    },
+    {
+      "dataset": "shiny_blender_synthetic",
+      "scene": "helmet",
+      "variant": "rc_qp_lam010_start5000_every8",
+      "model_path": "/tmp/rc_refgs_quality_preserving_rc_followup_helmet_luyu_i31000_20260604/shiny_blender_synthetic/helmet/rc_qp_lam010_start5000_every8/seed_0",
+      "status": "proxy_only",
+      "true_depth_metrics_computed": false,
+      "true_normal_metrics_computed": false,
+      "true_mesh_metrics_computed": false,
+      "geometry_proxy_vertex_count": 61286,
+      "geometry_proxy_input_vertex_count": 100000,
+      "geometry_proxy_vertex_count_delta_from_input": -38714,
+      "geometry_proxy_bbox_diag": 3.1130202553077946,
+      "mean_reflection_consistency": 0.04388582669198513,
+      "unavailable_reasons": [
+        "missing_gt_depth",
+        "missing_rendered_depth_buffers",
+        "missing_rendered_normal_buffers",
+        "normal_coordinate_space_unverified",
+        "missing_gt_mesh_or_point_cloud",
+        "predicted_mesh_not_extracted"
+      ],
+      "full_psnr": 35.76594744682312,
+      "full_ssim": 0.9848878797888756,
+      "full_lpips": 0.01458565926644951,
+      "reflective_psnr": 36.36155174255371,
+      "reflective_ssim": 0.9867762404680253,
+      "reflective_lpips": 0.011285552345216275
+    }
+  ],
+  "row_count": 12,
+  "computed_metrics": [
+    "geometry_proxy_vertex_count",
+    "geometry_proxy_bbox_diag"
+  ],
+  "unavailable_metrics": {
+    "depth_mae_rmse_absrel": "missing GT depth and saved rendered depth buffers",
+    "normal_mae_cosine": "missing saved rendered normal buffers and unverified normal coordinate space",
+    "chamfer_fscore": "missing GT mesh/eval point cloud and predicted mesh extraction"
+  },
+  "win_counts": {
+    "base": {
+      "geometry_quality_metrics_available": false,
+      "proxy_vertex_count_lower_than_reference": 9,
+      "proxy_vertex_count_not_lower_than_reference": 1,
+      "unavailable": 0,
+      "claim_boundary": "Proxy count is not a geometry quality win."
+    },
+    "rc": {
+      "geometry_quality_metrics_available": false,
+      "proxy_vertex_count_lower_than_reference": 6,
+      "proxy_vertex_count_not_lower_than_reference": 4,
+      "unavailable": 0,
+      "claim_boundary": "Proxy count is not a geometry quality win."
+    }
+  },
+  "correlations": {
+    "reflection_consistency_vs_reflective_lpips": 0.4903215991051819,
+    "reflection_consistency_vs_proxy_vertex_count": 0.49408289477263756,
+    "true_depth_error_correlation": null,
+    "true_normal_error_correlation": null,
+    "true_mesh_metric_correlation": null
+  },
+  "counterexamples": {
+    "consistency_improves_but_rgb_worsens": [
+      {
+        "dataset": "glossy_synthetic",
+        "scene": "luyu",
+        "variant": "rc",
+        "mean_reflection_consistency_delta_vs_base": -0.0049182765185833005,
+        "full_lpips_delta_vs_base": 0.001538091921247542,
+        "reflective_lpips_delta_vs_base": 0.0024174166610464454
+      },
+      {
+        "dataset": "glossy_synthetic",
+        "scene": "luyu",
+        "variant": "rc_qp_lam010",
+        "mean_reflection_consistency_delta_vs_base": -0.001855958253145218,
+        "full_lpips_delta_vs_base": 0.0006289542652666569,
+        "reflective_lpips_delta_vs_base": 0.0006461098091676831
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc",
+        "mean_reflection_consistency_delta_vs_base": -0.18088201992213726,
+        "full_lpips_delta_vs_base": 3.3966358751059966e-05,
+        "reflective_lpips_delta_vs_base": -3.029301762580948e-05
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_angle10_sched",
+        "mean_reflection_consistency_delta_vs_base": -0.16871237084269525,
+        "full_lpips_delta_vs_base": 0.00011004040250554674,
+        "reflective_lpips_delta_vs_base": 0.00012420256156474296
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_lam005",
+        "mean_reflection_consistency_delta_vs_base": -0.16925095878541468,
+        "full_lpips_delta_vs_base": 0.0005084977275691925,
+        "reflective_lpips_delta_vs_base": 0.0003910061391070481
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_lam010",
+        "mean_reflection_consistency_delta_vs_base": -0.17787848860025407,
+        "full_lpips_delta_vs_base": 0.0003687710128724587,
+        "reflective_lpips_delta_vs_base": 0.00037645076634362264
+      }
+    ],
+    "consistency_improves_but_depth_worsens": "unavailable_missing_depth_metrics",
+    "consistency_improves_but_normal_worsens": "unavailable_missing_normal_metrics",
+    "rgb_improves_but_geometry_worsens": "unavailable_true_geometry_metrics",
+    "consistency_improves_but_proxy_vertex_count_increases": [
+      {
+        "dataset": "glossy_synthetic",
+        "scene": "luyu",
+        "variant": "rc",
+        "proxy_vertex_count_delta_vs_base": 11202.0
+      },
+      {
+        "dataset": "glossy_synthetic",
+        "scene": "luyu",
+        "variant": "rc_qp_lam010",
+        "proxy_vertex_count_delta_vs_base": 239.0
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_angle10_sched",
+        "proxy_vertex_count_delta_vs_base": 1438.0
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_lam005",
+        "proxy_vertex_count_delta_vs_base": 1445.0
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_lam010",
+        "proxy_vertex_count_delta_vs_base": 648.0
+      },
+      {
+        "dataset": "shiny_blender_synthetic",
+        "scene": "helmet",
+        "variant": "rc_qp_lam010_start5000_every8",
+        "proxy_vertex_count_delta_vs_base": 667.0
+      }
+    ]
+  },
+  "claim_boundary": "Proxy diagnostics only; true geometry metrics unavailable; no mesh/surface improvement claim.",
+  "analysis_generated_at": "2026-06-05T11:22:46+08:00",
+  "stage1_scope": {
+    "scenes": [
+      "helmet",
+      "luyu"
+    ],
+    "variants": [
+      "base",
+      "rc",
+      "rc_qp_angle10_sched",
+      "rc_qp_lam005",
+      "rc_qp_lam010",
+      "rc_qp_lam010_start5000_every8"
+    ],
+    "row_count": 12
+  },
+  "answers": {
+    "does_reflection_consistency_correlate_with_depth_normal_mesh_quality": "Cannot be answered from current artifacts: true depth, normal, and mesh metrics are unavailable.",
+    "does_current_rc_improve_or_hurt_geometry_relative_to_base": "Cannot claim true geometry improvement/harm. Proxy vertex count changes are available only as artifact diagnostics: helmet rc has fewer splats than base, luyu rc has more splats than base; this is not geometry quality.",
+    "do_quality_preserving_variants_improve_geometry": "Cannot determine true geometry. Proxy-only rows do not support geometry improvement claims.",
+    "consistency_improves_but_geometry_rgb_worsens": "RGB counterexamples exist; true geometry counterexamples cannot be evaluated without depth/normal/mesh metrics.",
+    "is_geometry_aware_rc_loss_justified": "Yes as a research direction, but only as a guarded future objective after adding depth/normal diagnostics or mesh evaluation; current evidence justifies instrumentation, not a success claim."
+  }
+}

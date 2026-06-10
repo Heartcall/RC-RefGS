@@ -1,0 +1,31 @@
+\begin{table*}[t]
+\centering
+\caption{Main experiment geometry proxy diagnostics by dataset. No GT mesh or extracted predicted mesh is available; these values are point-cloud artifact proxies, not mesh-quality metrics.}
+\label{tab:main_geometry_metrics_by_dataset}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllcccccc}
+\toprule
+Dataset & Split & Scene & \multicolumn{2}{c}{proxy\_vertex\_count} & \multicolumn{2}{c}{proxy\_bbox\_diag} & \multicolumn{2}{c}{proxy\_vertex\_count\_delta\_from\_input} \\
+& &  & Base & RC & Base & RC & Base & RC \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+\midrule
+glossy\_synthetic & all & angel & 170191 & 170763 & 2.057 & 2.059 & 70191 & 70763 \\
+ &  & bell & 72881 & 75282 & 2.364 & 2.365 & -27119 & -24718 \\
+ &  & cat & 69090 & 66158 & 2.515 & 2.416 & -30910 & -33842 \\
+ &  & horse & 211650 & 204831 & 2.171 & 2.172 & 111650 & 104831 \\
+ &  & luyu & 155704 & 166906 & 2.436 & 2.431 & 55704 & 66906 \\
+ &  & potion & 71997 & 73966 & 2.764 & 2.767 & -28003 & -26034 \\
+ &  & tbell & 80006 & 79138 & 2.657 & 2.654 & -19994 & -20862 \\
+ &  & teapot & 142774 & 135908 & 2.490 & 2.481 & 42774 & 35908 \\
+ & & Avg. & 121787 & 121619 & 2.432 & 2.418 & 21787 & 21619 \\
+\midrule
+shiny\_blender\_synthetic & all & ball & 43555 & 43856 & 3.458 & 3.459 & -56445 & -56144 \\
+ &  & car & 106794 & 102952 & 2.752 & 2.745 & 6794 & 2952 \\
+ &  & coffee & 49223 & 50156 & 3.216 & 3.214 & -50777 & -49844 \\
+ &  & helmet & 60619 & 60312 & 3.112 & 3.113 & -39381 & -39688 \\
+ &  & teapot & 21759 & 20536 & 1.784 & 1.785 & -78241 & -79464 \\
+ &  & toaster & 139788 & 138856 & 3.126 & 3.131 & 39788 & 38856 \\
+ & & Avg. & 70290 & 69445 & 2.908 & 2.908 & -29710 & -30555 \\
+\bottomrule
+\end{tabular}}
+\end{table*}

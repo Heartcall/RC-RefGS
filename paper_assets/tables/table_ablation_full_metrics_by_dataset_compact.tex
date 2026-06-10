@@ -1,0 +1,175 @@
+\begin{table*}[t]
+\centering
+\caption{Compact ablation comparison by dataset using reflection consistency and full-image metrics.}
+\label{tab:ablation_full_metrics_by_dataset_compact}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllcccc}
+\toprule
+Dataset & Split & Scene & Variant & RC$\downarrow$ & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ \\
+\midrule
+glossy\_synthetic & train & angel & base & 0.11611 & 32.87 & 0.974 & 0.033 \\
+glossy\_synthetic & train & angel & rc & \textbf{0.09976} & 32.81 & \textbf{0.974} & 0.032 \\
+glossy\_synthetic & train & angel & wo\_ref & 0.11755 & \textbf{32.90} & 0.974 & 0.032 \\
+glossy\_synthetic & train & angel & wo\_conf & 0.10436 & 32.89 & 0.974 & \textbf{0.032} \\
+glossy\_synthetic & train & angel & rough\_only & 0.11524 & 32.64 & 0.974 & 0.033 \\
+glossy\_synthetic & train & bell & base & 0.14782 & 34.26 & 0.977 & 0.033 \\
+glossy\_synthetic & train & bell & rc & 0.14334 & \textbf{34.27} & \textbf{0.978} & \textbf{0.031} \\
+glossy\_synthetic & train & bell & wo\_ref & 0.14721 & 34.10 & 0.976 & 0.033 \\
+glossy\_synthetic & train & bell & wo\_conf & \textbf{0.14325} & 34.23 & 0.977 & 0.033 \\
+glossy\_synthetic & train & bell & rough\_only & 0.15085 & 34.23 & 0.977 & 0.033 \\
+glossy\_synthetic & train & cat & base & 0.12246 & 36.01 & 0.986 & 0.029 \\
+glossy\_synthetic & train & cat & rc & \textbf{0.11540} & \textbf{36.04} & \textbf{0.986} & \textbf{0.029} \\
+glossy\_synthetic & train & cat & wo\_ref & 0.12485 & 35.67 & 0.985 & 0.031 \\
+glossy\_synthetic & train & cat & wo\_conf & 0.11998 & 35.65 & 0.985 & 0.031 \\
+glossy\_synthetic & train & cat & rough\_only & 0.12373 & 35.88 & 0.985 & 0.030 \\
+glossy\_synthetic & train & horse & base & 0.19937 & 30.47 & 0.969 & 0.029 \\
+glossy\_synthetic & train & horse & rc & \textbf{0.17848} & \textbf{30.51} & \textbf{0.970} & \textbf{0.029} \\
+glossy\_synthetic & train & horse & wo\_ref & 0.19573 & 30.00 & 0.969 & 0.032 \\
+glossy\_synthetic & train & horse & wo\_conf & 0.18144 & 30.35 & 0.969 & 0.030 \\
+glossy\_synthetic & train & horse & rough\_only & 0.19804 & 30.46 & 0.969 & 0.030 \\
+glossy\_synthetic & train & luyu & base & 0.11888 & 32.08 & 0.966 & 0.031 \\
+glossy\_synthetic & train & luyu & rc & 0.11004 & 31.62 & 0.966 & 0.033 \\
+glossy\_synthetic & train & luyu & wo\_ref & 0.12230 & \textbf{32.10} & \textbf{0.967} & \textbf{0.031} \\
+glossy\_synthetic & train & luyu & wo\_conf & \textbf{0.10962} & 31.85 & 0.966 & 0.032 \\
+glossy\_synthetic & train & luyu & rough\_only & 0.12040 & 31.87 & 0.965 & 0.033 \\
+glossy\_synthetic & train & potion & base & 0.09240 & 34.99 & 0.974 & 0.049 \\
+glossy\_synthetic & train & potion & rc & 0.08716 & \textbf{35.19} & \textbf{0.975} & \textbf{0.048} \\
+glossy\_synthetic & train & potion & wo\_ref & 0.09206 & 34.99 & 0.974 & 0.050 \\
+glossy\_synthetic & train & potion & wo\_conf & \textbf{0.08236} & 34.91 & 0.973 & 0.052 \\
+glossy\_synthetic & train & potion & rough\_only & 0.09311 & 35.06 & 0.974 & 0.052 \\
+glossy\_synthetic & train & tbell & base & 0.28080 & 33.50 & 0.977 & 0.032 \\
+glossy\_synthetic & train & tbell & rc & \textbf{0.22629} & \textbf{33.59} & \textbf{0.978} & \textbf{0.031} \\
+glossy\_synthetic & train & tbell & wo\_ref & 0.26858 & 33.36 & 0.976 & 0.034 \\
+glossy\_synthetic & train & tbell & wo\_conf & 0.23942 & 33.46 & 0.977 & 0.033 \\
+glossy\_synthetic & train & tbell & rough\_only & 0.27762 & 33.40 & 0.977 & 0.033 \\
+glossy\_synthetic & train & teapot & base & 0.33510 & 29.87 & 0.968 & 0.039 \\
+glossy\_synthetic & train & teapot & rc & \textbf{0.29428} & \textbf{30.01} & \textbf{0.969} & 0.038 \\
+glossy\_synthetic & train & teapot & wo\_ref & 0.32739 & 30.00 & 0.969 & \textbf{0.038} \\
+glossy\_synthetic & train & teapot & wo\_conf & 0.29900 & 29.83 & 0.968 & 0.039 \\
+glossy\_synthetic & train & teapot & rough\_only & 0.32567 & 29.89 & 0.968 & 0.039 \\
+glossy\_synthetic & train & Avg. (n=8) & base & 0.17662 & \textbf{33.01} & 0.974 & 0.034 \\
+glossy\_synthetic & train & Avg. (n=8) & rc & \textbf{0.15684} & 33.00 & \textbf{0.974} & \textbf{0.034} \\
+glossy\_synthetic & train & Avg. (n=8) & wo\_ref & 0.17446 & 32.89 & 0.974 & 0.035 \\
+glossy\_synthetic & train & Avg. (n=8) & wo\_conf & 0.15993 & 32.90 & 0.974 & 0.035 \\
+glossy\_synthetic & train & Avg. (n=8) & rough\_only & 0.17558 & 32.93 & 0.974 & 0.035 \\
+\midrule
+glossy\_synthetic & test & angel & base & 0.12240 & 29.74 & 0.951 & 0.040 \\
+glossy\_synthetic & test & angel & rc & \textbf{0.10780} & \textbf{29.88} & \textbf{0.952} & 0.039 \\
+glossy\_synthetic & test & angel & wo\_ref & 0.12369 & 29.87 & 0.952 & \textbf{0.039} \\
+glossy\_synthetic & test & angel & wo\_conf & 0.11224 & 29.81 & 0.952 & 0.039 \\
+glossy\_synthetic & test & angel & rough\_only & 0.12214 & 29.73 & 0.951 & 0.040 \\
+glossy\_synthetic & test & bell & base & 0.10972 & 31.64 & 0.963 & 0.042 \\
+glossy\_synthetic & test & bell & rc & \textbf{0.10774} & \textbf{31.77} & \textbf{0.964} & \textbf{0.039} \\
+glossy\_synthetic & test & bell & wo\_ref & 0.11180 & 31.57 & 0.963 & 0.042 \\
+glossy\_synthetic & test & bell & wo\_conf & 0.11289 & 31.64 & 0.963 & 0.042 \\
+glossy\_synthetic & test & bell & rough\_only & 0.11193 & 31.68 & 0.963 & 0.042 \\
+glossy\_synthetic & test & cat & base & 0.15661 & \textbf{33.30} & \textbf{0.975} & \textbf{0.038} \\
+glossy\_synthetic & test & cat & rc & \textbf{0.14977} & 33.05 & 0.974 & 0.039 \\
+glossy\_synthetic & test & cat & wo\_ref & 0.15894 & 32.87 & 0.974 & 0.040 \\
+glossy\_synthetic & test & cat & wo\_conf & 0.15441 & 32.93 & 0.974 & 0.039 \\
+glossy\_synthetic & test & cat & rough\_only & 0.15795 & 33.10 & 0.975 & 0.039 \\
+glossy\_synthetic & test & horse & base & 0.22503 & 27.63 & 0.945 & 0.038 \\
+glossy\_synthetic & test & horse & rc & \textbf{0.19465} & \textbf{27.70} & \textbf{0.945} & \textbf{0.038} \\
+glossy\_synthetic & test & horse & wo\_ref & 0.22322 & 27.47 & 0.944 & 0.040 \\
+glossy\_synthetic & test & horse & wo\_conf & 0.20740 & 27.65 & 0.945 & 0.039 \\
+glossy\_synthetic & test & horse & rough\_only & 0.22210 & 27.68 & 0.945 & 0.038 \\
+glossy\_synthetic & test & luyu & base & 0.12442 & \textbf{29.48} & 0.948 & 0.038 \\
+glossy\_synthetic & test & luyu & rc & \textbf{0.11950} & 29.06 & 0.948 & 0.039 \\
+glossy\_synthetic & test & luyu & wo\_ref & 0.12953 & 29.47 & \textbf{0.948} & \textbf{0.037} \\
+glossy\_synthetic & test & luyu & wo\_conf & 0.12016 & 29.30 & 0.947 & 0.038 \\
+glossy\_synthetic & test & luyu & rough\_only & 0.12684 & 29.32 & 0.947 & 0.038 \\
+glossy\_synthetic & test & potion & base & 0.08585 & 32.73 & 0.963 & 0.059 \\
+glossy\_synthetic & test & potion & rc & 0.08339 & \textbf{32.88} & \textbf{0.964} & \textbf{0.057} \\
+glossy\_synthetic & test & potion & wo\_ref & 0.08513 & 32.63 & 0.962 & 0.059 \\
+glossy\_synthetic & test & potion & wo\_conf & \textbf{0.07839} & 32.64 & 0.961 & 0.061 \\
+glossy\_synthetic & test & potion & rough\_only & 0.08533 & 32.74 & 0.962 & 0.060 \\
+glossy\_synthetic & test & tbell & base & 0.31694 & 30.42 & 0.964 & 0.042 \\
+glossy\_synthetic & test & tbell & rc & \textbf{0.26044} & 30.66 & \textbf{0.965} & 0.041 \\
+glossy\_synthetic & test & tbell & wo\_ref & 0.30908 & 30.67 & 0.964 & 0.043 \\
+glossy\_synthetic & test & tbell & wo\_conf & 0.27823 & 30.60 & 0.965 & \textbf{0.041} \\
+glossy\_synthetic & test & tbell & rough\_only & 0.31866 & \textbf{30.67} & 0.965 & 0.042 \\
+glossy\_synthetic & test & teapot & base & 0.29593 & 26.58 & 0.945 & 0.051 \\
+glossy\_synthetic & test & teapot & rc & \textbf{0.25243} & 26.75 & \textbf{0.947} & 0.050 \\
+glossy\_synthetic & test & teapot & wo\_ref & 0.29760 & \textbf{26.76} & 0.946 & \textbf{0.050} \\
+glossy\_synthetic & test & teapot & wo\_conf & 0.27440 & 26.51 & 0.944 & 0.052 \\
+glossy\_synthetic & test & teapot & rough\_only & 0.30042 & 26.58 & 0.944 & 0.052 \\
+glossy\_synthetic & test & Avg. (n=8) & base & 0.17961 & 30.19 & 0.957 & 0.043 \\
+glossy\_synthetic & test & Avg. (n=8) & rc & \textbf{0.15947} & \textbf{30.22} & \textbf{0.957} & \textbf{0.043} \\
+glossy\_synthetic & test & Avg. (n=8) & wo\_ref & 0.17987 & 30.16 & 0.957 & 0.044 \\
+glossy\_synthetic & test & Avg. (n=8) & wo\_conf & 0.16727 & 30.13 & 0.956 & 0.044 \\
+glossy\_synthetic & test & Avg. (n=8) & rough\_only & 0.18067 & 30.19 & 0.957 & 0.044 \\
+\midrule
+shiny\_blender\_synthetic & train & ball & base & 0.17126 & 40.85 & 0.992 & 0.032 \\
+shiny\_blender\_synthetic & train & ball & rc & \textbf{0.16640} & \textbf{40.99} & \textbf{0.992} & \textbf{0.031} \\
+shiny\_blender\_synthetic & train & ball & wo\_ref & 0.17000 & 40.64 & 0.992 & 0.032 \\
+shiny\_blender\_synthetic & train & ball & wo\_conf & 0.16730 & 40.43 & 0.992 & 0.032 \\
+shiny\_blender\_synthetic & train & ball & rough\_only & 0.16909 & 40.91 & 0.992 & 0.032 \\
+shiny\_blender\_synthetic & train & car & base & 0.31248 & 36.74 & 0.986 & 0.009 \\
+shiny\_blender\_synthetic & train & car & rc & \textbf{0.14267} & 36.51 & 0.986 & 0.009 \\
+shiny\_blender\_synthetic & train & car & wo\_ref & 0.34986 & \textbf{36.85} & \textbf{0.986} & \textbf{0.009} \\
+shiny\_blender\_synthetic & train & car & wo\_conf & 0.18725 & 36.75 & 0.986 & 0.009 \\
+shiny\_blender\_synthetic & train & car & rough\_only & 0.32922 & 36.84 & 0.986 & 0.009 \\
+shiny\_blender\_synthetic & train & coffee & base & 0.05389 & 39.01 & 0.983 & 0.034 \\
+shiny\_blender\_synthetic & train & coffee & rc & \textbf{0.02223} & 38.85 & 0.983 & 0.035 \\
+shiny\_blender\_synthetic & train & coffee & wo\_ref & 0.05077 & 38.89 & 0.983 & 0.035 \\
+shiny\_blender\_synthetic & train & coffee & wo\_conf & 0.02846 & 39.01 & 0.983 & 0.035 \\
+shiny\_blender\_synthetic & train & coffee & rough\_only & 0.05304 & \textbf{39.13} & \textbf{0.984} & \textbf{0.034} \\
+shiny\_blender\_synthetic & train & helmet & base & 0.64058 & 40.14 & \textbf{0.993} & \textbf{0.006} \\
+shiny\_blender\_synthetic & train & helmet & rc & \textbf{0.08954} & 40.05 & 0.993 & 0.006 \\
+shiny\_blender\_synthetic & train & helmet & wo\_ref & 0.35781 & 40.08 & 0.993 & 0.006 \\
+shiny\_blender\_synthetic & train & helmet & wo\_conf & 0.09561 & \textbf{40.16} & 0.993 & 0.006 \\
+shiny\_blender\_synthetic & train & helmet & rough\_only & 0.30797 & 40.15 & 0.993 & 0.007 \\
+shiny\_blender\_synthetic & train & teapot & base & 0.02176 & 49.09 & 0.999 & 0.002 \\
+shiny\_blender\_synthetic & train & teapot & rc & \textbf{0.01248} & \textbf{49.78} & \textbf{0.999} & \textbf{0.001} \\
+shiny\_blender\_synthetic & train & teapot & wo\_ref & 0.02193 & 49.53 & 0.999 & 0.002 \\
+shiny\_blender\_synthetic & train & teapot & wo\_conf & 0.01608 & 49.35 & 0.999 & 0.002 \\
+shiny\_blender\_synthetic & train & teapot & rough\_only & 0.02207 & 49.03 & 0.999 & 0.002 \\
+shiny\_blender\_synthetic & train & toaster & base & 0.27815 & 33.76 & \textbf{0.978} & \textbf{0.024} \\
+shiny\_blender\_synthetic & train & toaster & rc & 0.16209 & 33.82 & 0.978 & 0.025 \\
+shiny\_blender\_synthetic & train & toaster & wo\_ref & 0.32046 & \textbf{33.84} & 0.978 & 0.024 \\
+shiny\_blender\_synthetic & train & toaster & wo\_conf & \textbf{0.16198} & 33.77 & 0.978 & 0.025 \\
+shiny\_blender\_synthetic & train & toaster & rough\_only & 0.27776 & 33.72 & 0.978 & 0.025 \\
+shiny\_blender\_synthetic & train & Avg. (n=6) & base & 0.24635 & 39.93 & 0.989 & \textbf{0.018} \\
+shiny\_blender\_synthetic & train & Avg. (n=6) & rc & \textbf{0.09924} & \textbf{40.00} & 0.989 & 0.018 \\
+shiny\_blender\_synthetic & train & Avg. (n=6) & wo\_ref & 0.21181 & 39.97 & 0.989 & 0.018 \\
+shiny\_blender\_synthetic & train & Avg. (n=6) & wo\_conf & 0.10945 & 39.91 & 0.989 & 0.018 \\
+shiny\_blender\_synthetic & train & Avg. (n=6) & rough\_only & 0.19319 & 39.96 & \textbf{0.989} & 0.018 \\
+\midrule
+shiny\_blender\_synthetic & test & ball & base & 0.04955 & 38.51 & 0.988 & 0.037 \\
+shiny\_blender\_synthetic & test & ball & rc & 0.04815 & \textbf{38.57} & 0.988 & \textbf{0.036} \\
+shiny\_blender\_synthetic & test & ball & wo\_ref & 0.04856 & 38.31 & 0.988 & 0.037 \\
+shiny\_blender\_synthetic & test & ball & wo\_conf & \textbf{0.04715} & 38.35 & \textbf{0.988} & 0.037 \\
+shiny\_blender\_synthetic & test & ball & rough\_only & 0.04862 & 38.56 & 0.988 & 0.037 \\
+shiny\_blender\_synthetic & test & car & base & 0.08607 & 31.47 & 0.967 & 0.019 \\
+shiny\_blender\_synthetic & test & car & rc & \textbf{0.04824} & 31.45 & \textbf{0.967} & 0.019 \\
+shiny\_blender\_synthetic & test & car & wo\_ref & 0.08750 & \textbf{31.58} & 0.967 & \textbf{0.019} \\
+shiny\_blender\_synthetic & test & car & wo\_conf & 0.07093 & 31.54 & 0.967 & 0.019 \\
+shiny\_blender\_synthetic & test & car & rough\_only & 0.08964 & 31.56 & 0.967 & 0.019 \\
+shiny\_blender\_synthetic & test & coffee & base & 0.00691 & 34.61 & 0.974 & 0.046 \\
+shiny\_blender\_synthetic & test & coffee & rc & 0.00925 & \textbf{34.87} & \textbf{0.975} & 0.046 \\
+shiny\_blender\_synthetic & test & coffee & wo\_ref & 0.00740 & 34.54 & 0.974 & 0.047 \\
+shiny\_blender\_synthetic & test & coffee & wo\_conf & \textbf{0.00639} & 34.82 & 0.975 & \textbf{0.046} \\
+shiny\_blender\_synthetic & test & coffee & rough\_only & 0.00793 & 34.58 & 0.975 & 0.046 \\
+shiny\_blender\_synthetic & test & helmet & base & 0.21684 & 35.84 & 0.985 & 0.015 \\
+shiny\_blender\_synthetic & test & helmet & rc & \textbf{0.03596} & 35.91 & 0.985 & 0.015 \\
+shiny\_blender\_synthetic & test & helmet & wo\_ref & 0.16892 & 35.72 & 0.985 & 0.015 \\
+shiny\_blender\_synthetic & test & helmet & wo\_conf & 0.03638 & \textbf{35.93} & 0.985 & 0.015 \\
+shiny\_blender\_synthetic & test & helmet & rough\_only & 0.15543 & 35.84 & \textbf{0.985} & \textbf{0.014} \\
+shiny\_blender\_synthetic & test & teapot & base & 0.00390 & 46.17 & 0.998 & 0.003 \\
+shiny\_blender\_synthetic & test & teapot & rc & \textbf{0.00270} & \textbf{46.42} & \textbf{0.998} & \textbf{0.003} \\
+shiny\_blender\_synthetic & test & teapot & wo\_ref & 0.00425 & 46.38 & 0.998 & 0.003 \\
+shiny\_blender\_synthetic & test & teapot & wo\_conf & 0.00383 & 46.30 & 0.998 & 0.003 \\
+shiny\_blender\_synthetic & test & teapot & rough\_only & 0.00397 & 46.19 & 0.998 & 0.003 \\
+shiny\_blender\_synthetic & test & toaster & base & 0.10546 & \textbf{27.34} & 0.950 & \textbf{0.057} \\
+shiny\_blender\_synthetic & test & toaster & rc & \textbf{0.05721} & 27.16 & 0.949 & 0.058 \\
+shiny\_blender\_synthetic & test & toaster & wo\_ref & 0.13611 & 27.32 & \textbf{0.950} & 0.057 \\
+shiny\_blender\_synthetic & test & toaster & wo\_conf & 0.06718 & 26.95 & 0.949 & 0.059 \\
+shiny\_blender\_synthetic & test & toaster & rough\_only & 0.11183 & 26.97 & 0.948 & 0.059 \\
+shiny\_blender\_synthetic & test & Avg. (n=6) & base & 0.07812 & 35.66 & 0.977 & \textbf{0.029} \\
+shiny\_blender\_synthetic & test & Avg. (n=6) & rc & \textbf{0.03359} & \textbf{35.73} & 0.977 & 0.030 \\
+shiny\_blender\_synthetic & test & Avg. (n=6) & wo\_ref & 0.07546 & 35.64 & \textbf{0.977} & 0.030 \\
+shiny\_blender\_synthetic & test & Avg. (n=6) & wo\_conf & 0.03864 & 35.65 & 0.977 & 0.030 \\
+shiny\_blender\_synthetic & test & Avg. (n=6) & rough\_only & 0.06957 & 35.62 & 0.977 & 0.030 \\
+\bottomrule
+\end{tabular}}
+\end{table*}

@@ -1,0 +1,49 @@
+\begin{table*}[t]
+\centering
+\caption{Compact main comparison by dataset using reflection consistency and full-image metrics.}
+\label{tab:main_full_metrics_by_dataset_compact}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllcccccccc}
+\toprule
+Dataset & Split & Scene & \multicolumn{2}{c}{RC$\downarrow$} & \multicolumn{2}{c}{PSNR$\uparrow$} & \multicolumn{2}{c}{SSIM$\uparrow$} & \multicolumn{2}{c}{LPIPS$\downarrow$} \\
+\cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11}
+ &  &  & Base & RC & Base & RC & Base & RC & Base & RC \\
+\midrule
+glossy\_synthetic & train & angel & 0.11611 & \textbf{0.09976} & \textbf{32.87} & 32.81 & 0.974 & \textbf{0.974} & 0.033 & \textbf{0.032} \\
+glossy\_synthetic & train & bell & 0.14782 & \textbf{0.14334} & 34.26 & \textbf{34.27} & 0.977 & \textbf{0.978} & 0.033 & \textbf{0.031} \\
+glossy\_synthetic & train & cat & 0.12246 & \textbf{0.11540} & 36.01 & \textbf{36.04} & 0.986 & \textbf{0.986} & 0.029 & \textbf{0.029} \\
+glossy\_synthetic & train & horse & 0.19937 & \textbf{0.17848} & 30.47 & \textbf{30.51} & 0.969 & \textbf{0.970} & 0.029 & \textbf{0.029} \\
+glossy\_synthetic & train & luyu & 0.11888 & \textbf{0.11004} & \textbf{32.08} & 31.62 & \textbf{0.966} & 0.966 & \textbf{0.031} & 0.033 \\
+glossy\_synthetic & train & potion & 0.09240 & \textbf{0.08716} & 34.99 & \textbf{35.19} & 0.974 & \textbf{0.975} & 0.049 & \textbf{0.048} \\
+glossy\_synthetic & train & tbell & 0.28080 & \textbf{0.22629} & 33.50 & \textbf{33.59} & 0.977 & \textbf{0.978} & 0.032 & \textbf{0.031} \\
+glossy\_synthetic & train & teapot & 0.33510 & \textbf{0.29428} & 29.87 & \textbf{30.01} & 0.968 & \textbf{0.969} & 0.039 & \textbf{0.038} \\
+glossy\_synthetic & train & Avg. (n=8) & 0.17662 & \textbf{0.15684} & \textbf{33.01} & 33.00 & 0.974 & \textbf{0.974} & 0.034 & \textbf{0.034} \\
+\midrule
+glossy\_synthetic & test & angel & 0.12240 & \textbf{0.10780} & 29.74 & \textbf{29.88} & 0.951 & \textbf{0.952} & 0.040 & \textbf{0.039} \\
+glossy\_synthetic & test & bell & 0.10972 & \textbf{0.10774} & 31.64 & \textbf{31.77} & 0.963 & \textbf{0.964} & 0.042 & \textbf{0.039} \\
+glossy\_synthetic & test & cat & 0.15661 & \textbf{0.14977} & \textbf{33.30} & 33.05 & \textbf{0.975} & 0.974 & \textbf{0.038} & 0.039 \\
+glossy\_synthetic & test & horse & 0.22503 & \textbf{0.19465} & 27.63 & \textbf{27.70} & 0.945 & \textbf{0.945} & 0.038 & \textbf{0.038} \\
+glossy\_synthetic & test & luyu & 0.12442 & \textbf{0.11950} & \textbf{29.48} & 29.06 & 0.948 & \textbf{0.948} & \textbf{0.038} & 0.039 \\
+glossy\_synthetic & test & potion & 0.08585 & \textbf{0.08339} & 32.73 & \textbf{32.88} & 0.963 & \textbf{0.964} & 0.059 & \textbf{0.057} \\
+glossy\_synthetic & test & tbell & 0.31694 & \textbf{0.26044} & 30.42 & \textbf{30.66} & 0.964 & \textbf{0.965} & 0.042 & \textbf{0.041} \\
+glossy\_synthetic & test & teapot & 0.29593 & \textbf{0.25243} & 26.58 & \textbf{26.75} & 0.945 & \textbf{0.947} & 0.051 & \textbf{0.050} \\
+glossy\_synthetic & test & Avg. (n=8) & 0.17961 & \textbf{0.15947} & 30.19 & \textbf{30.22} & 0.957 & \textbf{0.957} & 0.043 & \textbf{0.043} \\
+\midrule
+shiny\_blender\_synthetic & train & ball & 0.17126 & \textbf{0.16640} & 40.85 & \textbf{40.99} & 0.992 & \textbf{0.992} & 0.032 & \textbf{0.031} \\
+shiny\_blender\_synthetic & train & car & 0.31248 & \textbf{0.14267} & \textbf{36.74} & 36.51 & \textbf{0.986} & 0.986 & \textbf{0.009} & 0.009 \\
+shiny\_blender\_synthetic & train & coffee & 0.05389 & \textbf{0.02223} & \textbf{39.01} & 38.85 & \textbf{0.983} & 0.983 & \textbf{0.034} & 0.035 \\
+shiny\_blender\_synthetic & train & helmet & 0.64058 & \textbf{0.08954} & \textbf{40.14} & 40.05 & \textbf{0.993} & 0.993 & \textbf{0.006} & 0.006 \\
+shiny\_blender\_synthetic & train & teapot & 0.02176 & \textbf{0.01248} & 49.09 & \textbf{49.78} & 0.999 & \textbf{0.999} & 0.002 & \textbf{0.001} \\
+shiny\_blender\_synthetic & train & toaster & 0.27815 & \textbf{0.16209} & 33.76 & \textbf{33.82} & \textbf{0.978} & 0.978 & \textbf{0.024} & 0.025 \\
+shiny\_blender\_synthetic & train & Avg. (n=6) & 0.24635 & \textbf{0.09924} & 39.93 & \textbf{40.00} & \textbf{0.989} & 0.989 & \textbf{0.018} & 0.018 \\
+\midrule
+shiny\_blender\_synthetic & test & ball & 0.04955 & \textbf{0.04815} & 38.51 & \textbf{38.57} & 0.988 & \textbf{0.988} & 0.037 & \textbf{0.036} \\
+shiny\_blender\_synthetic & test & car & 0.08607 & \textbf{0.04824} & \textbf{31.47} & 31.45 & 0.967 & \textbf{0.967} & 0.019 & \textbf{0.019} \\
+shiny\_blender\_synthetic & test & coffee & \textbf{0.00691} & 0.00925 & 34.61 & \textbf{34.87} & 0.974 & \textbf{0.975} & 0.046 & \textbf{0.046} \\
+shiny\_blender\_synthetic & test & helmet & 0.21684 & \textbf{0.03596} & 35.84 & \textbf{35.91} & \textbf{0.985} & 0.985 & \textbf{0.015} & 0.015 \\
+shiny\_blender\_synthetic & test & teapot & 0.00390 & \textbf{0.00270} & 46.17 & \textbf{46.42} & 0.998 & \textbf{0.998} & 0.003 & \textbf{0.003} \\
+shiny\_blender\_synthetic & test & toaster & 0.10546 & \textbf{0.05721} & \textbf{27.34} & 27.16 & \textbf{0.950} & 0.949 & \textbf{0.057} & 0.058 \\
+shiny\_blender\_synthetic & test & Avg. (n=6) & 0.07812 & \textbf{0.03359} & 35.66 & \textbf{35.73} & 0.977 & \textbf{0.977} & \textbf{0.029} & 0.030 \\
+\bottomrule
+\end{tabular}}
+\end{table*}

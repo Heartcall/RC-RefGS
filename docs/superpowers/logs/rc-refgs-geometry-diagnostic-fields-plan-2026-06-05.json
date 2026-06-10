@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-06-05T11:22:46+08:00",
+  "status": "plan_only_no_train_changes",
+  "reason": "True geometry metrics and RC correspondence diagnostics are unavailable from current completed artifacts.",
+  "recommended_flags": [
+    "--log_rc_geometry_diagnostics",
+    "--rc_geometry_diagnostics_interval",
+    "--rc_geometry_diagnostics_output"
+  ],
+  "fields": [
+    "rc_valid_correspondence_ratio",
+    "pair_angle_distribution",
+    "reflection_direction_similarity_distribution",
+    "confidence_weight_distribution",
+    "reflective_mask_coverage",
+    "specular_variance",
+    "depth_valid_ratio",
+    "normal_valid_ratio",
+    "normal_agreement_distribution",
+    "reconstruction_residual_distribution_in_rc_valid_regions"
+  ],
+  "implementation_policy": [
+    "disabled_by_default",
+    "no_loss_terms",
+    "no_metric_semantic_changes",
+    "write JSONL or per-iteration JSON summaries only",
+    "do not use raw Glossy Synthetic as train source"
+  ],
+  "tests_required": [
+    "default train.py behavior unchanged",
+    "flags parsed but disabled by default",
+    "no Shiny Real scope generated",
+    "diagnostic output contains distributions only when enabled"
+  ],
+  "claim_boundary": "Diagnostic fields only; no geometry improvement claim."
+}

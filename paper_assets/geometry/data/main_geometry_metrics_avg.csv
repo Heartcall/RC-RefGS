@@ -1,0 +1,13 @@
+dataset,split,method,metric,mean_value,median_value,std_value,valid_n,total_scene_count,metric_direction,evaluation_level,note
+glossy_synthetic,all,base,geometry_proxy_bbox_diag,2.431791436340302,2.462842216371223,0.2193634521651059,8,8,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+glossy_synthetic,all,base,geometry_proxy_vertex_count,121786.625,111390.0,51723.53157397873,8,8,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+glossy_synthetic,all,base,geometry_proxy_vertex_count_delta_from_input,21786.625,11390.0,51723.53157397873,8,8,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+glossy_synthetic,all,rc,geometry_proxy_bbox_diag,2.4181282680274805,2.4236949377457417,0.21617436688334643,8,8,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+glossy_synthetic,all,rc,geometry_proxy_vertex_count,121619.0,107523.0,51103.98887317897,8,8,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+glossy_synthetic,all,rc,geometry_proxy_vertex_count_delta_from_input,21619.0,7523.0,51103.98887317897,8,8,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+shiny_blender_synthetic,all,base,geometry_proxy_bbox_diag,2.907943768486977,3.1191259853111895,0.5438741638877713,6,6,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+shiny_blender_synthetic,all,base,geometry_proxy_vertex_count,70289.66666666667,54921.0,40352.362457344294,6,6,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+shiny_blender_synthetic,all,base,geometry_proxy_vertex_count_delta_from_input,-29710.333333333332,-45079.0,40352.36245734429,6,6,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+shiny_blender_synthetic,all,rc,geometry_proxy_bbox_diag,2.9080225343959643,3.1222250251907235,0.5440573180682584,6,6,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+shiny_blender_synthetic,all,rc,geometry_proxy_vertex_count,69444.66666666667,55234.0,39671.50610814882,6,6,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.
+shiny_blender_synthetic,all,rc,geometry_proxy_vertex_count_delta_from_input,-30555.333333333332,-44766.0,39671.50610814882,6,6,diagnostic,level3_proxy,Proxy average only; not a geometry-quality mean.

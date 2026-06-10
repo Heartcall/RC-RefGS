@@ -1,0 +1,6 @@
+Metric / Loss,Operates on,Region / Mask,Direction,Optimized during training?,Potential mismatch
+RGB reconstruction loss,composited final pbr_rgb vs ground-truth RGB,full image; alpha-composited where RGBA is available,lower loss,Yes,single-view RGB fitting can reward view-specific highlight placement
+RC loss,spec_light sampled across source-target view projection,"projection valid, depth consistency, source/target alpha, source roughness, normal agreement, specular confidence",lower,"Yes, scheduled when lambda_ref_consistency > 0","regularizes specular stability, not final RGB pixel fidelity"
+mean_reflection_consistency,same spec_light consistency loss on evaluation pairs,same RC correspondence masks and weights,lower better,Indirectly aligned with RC loss,does not evaluate ground-truth RGB reconstruction
+reflective_region_psnr,final pbr_rgb vs ground-truth RGB,alpha > 0.2 and roughness < 0.6,higher better,No direct loss,uses image-space mask without RC depth/normal/correspondence confidence
+Refl. PSNR / SSIM / LPIPS,final rendered RGB vs ground-truth RGB,reflective mask from alpha and roughness in render-quality evaluation,PSNR/SSIM higher; LPIPS lower,No direct loss,single-view masked image metrics are sensitive to highlight shifts and mask definition

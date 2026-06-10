@@ -1,0 +1,13 @@
+metric,evaluation_level,available,affected_run_count,reason,safe_action
+chamfer_l1,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+chamfer_l2,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+fscore_0p5pct,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+fscore_1pct,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+fscore_2pct,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+precision_1pct,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+recall_1pct,level1_gt_mesh,False,98,missing accepted GT mesh/point cloud and missing extracted predicted meshes,Do not report this metric until required inputs exist.
+normal_mae,level2_gt_normal,False,98,missing saved rendered normal buffers; Glossy has no GT normal; Shiny normal coordinate-space not verified,Do not report this metric until required inputs exist.
+normal_cosine,level2_gt_normal,False,98,missing saved rendered normal buffers; Glossy has no GT normal; Shiny normal coordinate-space not verified,Do not report this metric until required inputs exist.
+depth_mae,level2_gt_depth,False,98,missing GT depth and saved rendered depth buffers,Do not report this metric until required inputs exist.
+depth_rmse,level2_gt_depth,False,98,missing GT depth and saved rendered depth buffers,Do not report this metric until required inputs exist.
+depth_absrel,level2_gt_depth,False,98,missing GT depth and saved rendered depth buffers,Do not report this metric until required inputs exist.

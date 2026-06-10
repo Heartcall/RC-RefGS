@@ -1,0 +1,31 @@
+\begin{table*}[t]
+\centering
+\caption{Main experiment geometry proxy diagnostics by dataset. No GT mesh or extracted predicted mesh is available; these values are point-cloud artifact proxies, not mesh-quality metrics.}
+\label{tab:main_geometry_metrics_by_dataset_compact}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllcc}
+\toprule
+Dataset & Split & Scene & \multicolumn{2}{c}{proxy\_vertex\_count} \\
+& &  & Base & RC \\
+\cmidrule(lr){4-5}
+\midrule
+glossy\_synthetic & all & angel & 170191 & 170763 \\
+ &  & bell & 72881 & 75282 \\
+ &  & cat & 69090 & 66158 \\
+ &  & horse & 211650 & 204831 \\
+ &  & luyu & 155704 & 166906 \\
+ &  & potion & 71997 & 73966 \\
+ &  & tbell & 80006 & 79138 \\
+ &  & teapot & 142774 & 135908 \\
+ & & Avg. & 121787 & 121619 \\
+\midrule
+shiny\_blender\_synthetic & all & ball & 43555 & 43856 \\
+ &  & car & 106794 & 102952 \\
+ &  & coffee & 49223 & 50156 \\
+ &  & helmet & 60619 & 60312 \\
+ &  & teapot & 21759 & 20536 \\
+ &  & toaster & 139788 & 138856 \\
+ & & Avg. & 70290 & 69445 \\
+\bottomrule
+\end{tabular}}
+\end{table*}

@@ -1,0 +1,13 @@
+{
+  "main_runs": 28,
+  "main_point_clouds_found": 28,
+  "ablation_runs": 70,
+  "ablation_point_clouds_found": 70,
+  "true_geometry_metrics_computed": false,
+  "proxy_metrics_computed": [
+    "geometry_proxy_vertex_count",
+    "geometry_proxy_bbox_diag",
+    "geometry_proxy_vertex_count_delta_from_input"
+  ],
+  "claim_boundary": "No mesh quality improvement claim is supported."
+}

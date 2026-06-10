@@ -1,0 +1,5 @@
+source_file,role,rows,columns_used
+paper_assets/data/main_full_metrics_by_dataset_wide.csv,main base-vs-RC absolute per-scene metrics,28,"base_mean_reflection_consistency, rc_mean_reflection_consistency, base_reflective_region_psnr, rc_reflective_region_psnr, base_full_psnr, rc_full_psnr, base_full_ssim, rc_full_ssim, base_full_lpips, rc_full_lpips, base_reflective_psnr, rc_reflective_psnr, base_reflective_ssim, rc_reflective_ssim, base_reflective_lpips, rc_reflective_lpips, base_valid_pair_count, rc_valid_pair_count"
+paper_assets/data/ablation_full_metrics_by_dataset_wide.csv,ablation per-scene variant metrics,140,"variant, mean_reflection_consistency, reflective_psnr, reflective_ssim, reflective_lpips, reflective_psnr, reflective_ssim, reflective_lpips"
+paper_assets/data/rc_tradeoff_summary.csv,trade-off categories and notes,28,"dataset, scene, split, consistency_improves, full_quality_improves, reflective_quality_improves, tradeoff_category, notes"
+paper_assets/data/rc_win_counts_by_metric.csv,metric win counts,16,"metric, split, better_direction, rc_wins, total_pairs, win_rate, mean_delta, interpretation, win_rate_percent"

@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-06-05T11:22:46+08:00",
+  "status": "design_only_loss_not_implemented",
+  "motivation": [
+    "reflection consistency alone is not sufficient",
+    "mesh/surface reconstruction requires geometry metrics"
+  ],
+  "loss": "L_geo_rc = sum_u M_valid(u) * w(u) * [lambda_d * rho(D_t(u)-warp(D_s)(u)) + lambda_n * (1-dot(N_t(u), warp(N_s)(u))))]",
+  "required_masks": [
+    "RC valid correspondence mask",
+    "visibility/non-occlusion mask",
+    "reflective mask",
+    "depth-valid mask",
+    "normal-valid mask"
+  ],
+  "weights": [
+    "reflection-direction similarity",
+    "confidence weight",
+    "optional reconstruction residual guard",
+    "optional pair-angle gate"
+  ],
+  "safeguards": [
+    "late start",
+    "low lambda",
+    "Huber or Charbonnier penalty",
+    "skip invalid depth/normal",
+    "verify normal coordinate system",
+    "no mesh claim without GT geometry"
+  ],
+  "first_candidate": "rc_geo_guard_stage1",
+  "defaults": {
+    "lambda_ref_consistency": 0.01,
+    "ref_consistency_start": 5000,
+    "ref_consistency_every": 8,
+    "lambda_geo_rc_depth": 0.01,
+    "lambda_geo_rc_normal": 0.005,
+    "geo_rc_start": 7000,
+    "geo_rc_every": 8,
+    "robust_penalty": "Charbonnier or Huber"
+  },
+  "future_evaluation": [
+    "helmet/luyu first",
+    "max_jobs=2",
+    "compare against base/current rc/previous qp variants",
+    "no global claim from two scenes"
+  ],
+  "claim_boundary": "Design only; no geometry-aware loss implemented and no improvement claim."
+}

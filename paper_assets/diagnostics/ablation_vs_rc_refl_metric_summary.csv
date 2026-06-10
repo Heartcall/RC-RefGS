@@ -1,0 +1,17 @@
+variant,metric,win_vs_rc,loss_vs_rc,tie_vs_rc,mean_improvement_vs_rc,n
+base,mean_reflection_consistency,1,27,0,-0.052473887312226006,28
+base,reflective_psnr,12,16,0,0.06056018741763314,28
+base,reflective_ssim,14,14,0,0.00016228379795745921,28
+base,reflective_lpips,18,10,0,0.00040647405407590384,28
+wo_ref,mean_reflection_consistency,1,27,0,-0.04395763245577526,28
+wo_ref,reflective_psnr,15,13,0,0.07569716485179143,28
+wo_ref,reflective_ssim,14,14,0,0.00024156346308941225,28
+wo_ref,reflective_lpips,17,11,0,2.918653183973932e-05,28
+wo_conf,mean_reflection_consistency,7,21,0,-0.00638189337582195,28
+wo_conf,reflective_psnr,15,13,0,0.05049523757428531,28
+wo_conf,reflective_ssim,16,12,0,6.197020639570854e-05,28
+wo_conf,reflective_lpips,15,13,0,0.00018837703782955022,28
+rough_only,mean_reflection_consistency,1,27,0,-0.03925649532881966,28
+rough_only,reflective_psnr,8,20,0,-0.09091913838775818,28
+rough_only,reflective_ssim,14,14,0,7.042177781758323e-06,28
+rough_only,reflective_lpips,15,13,0,-0.00010866057291127114,28

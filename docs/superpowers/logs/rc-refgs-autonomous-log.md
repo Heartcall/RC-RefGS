@@ -8724,6 +8724,42 @@ python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_re
 - **NO-GO** for training, metrics, four-scene pilot launch, Shiny Blender Real, metric changes, or quality-preserving result claims.
 - Released the round-local task claim at `2026-06-03 21:15:44 CST`.
 
+## 2026-06-05 11:23:35 CST - Geometry-aware RC-RefGS pivot inventory and proxy evaluation
+
+**Task claim and scope:**
+- Claimed exactly one task: "Use available project skills/tools to pivot RC-RefGS from reflection-consistency-only evaluation toward geometry-aware surface reconstruction evidence."
+- Scope was inventory/evaluation/design/reporting only over existing non-Shiny-Real outputs.
+- Did not launch training, rendering, long GPU jobs, Shiny Blender Real, full 16-job pilot, 14-scene validation, metric semantic changes, raw Glossy training-source use, or global quality/mesh claims.
+
+**Code and tests:**
+- Added `scripts/inspect_rc_refgs_geometry_signals.py`.
+- Added `metrics/geometry_quality_eval.py`.
+- Added `tests/test_geometry_signal_inventory.py` and `tests/test_geometry_quality_eval.py`.
+- Existing reflection/render metric scripts and `train.py` semantics were not modified.
+
+**Inventory result:**
+- Inspected `14` non-Shiny-Real scenes.
+- Possible now: proxy point-cloud artifact diagnostics and reflection/RGB correlations from existing JSONs.
+- Unavailable now: true depth, true normal, and true mesh metrics.
+
+**Stage-1 geometry evaluation result:**
+- Evaluated `12` rows for `helmet,luyu` across base/current rc and prior qp variants.
+- Computed only proxy diagnostics: `geometry_proxy_vertex_count` and `geometry_proxy_bbox_diag`.
+- True depth/normal/mesh metrics are unavailable due missing GT/rendered buffers/reference geometry/predicted meshes.
+- Correlation diagnostics are proxy-only; they do not support geometry improvement claims.
+
+**Reports generated:**
+- `docs/superpowers/logs/rc-refgs-geometry-aware-skill-usage-2026-06-05.md`
+- `docs/superpowers/logs/rc-refgs-geometry-signal-inventory-2026-06-05.{md,json,csv}`
+- `docs/superpowers/logs/rc-refgs-geometry-eval-stage1-2026-06-05.{md,json}`
+- `docs/superpowers/logs/rc-refgs-geometry-eval-stage1-comparison-2026-06-05.csv`
+- `docs/superpowers/logs/rc-refgs-geometry-diagnostic-fields-plan-2026-06-05.{md,json}`
+- `docs/superpowers/logs/rc-refgs-geometry-aware-rc-design-2026-06-05.{md,json}`
+
+**Decision:**
+- **CONDITIONAL GO** for proxy diagnostics and geometry-aware instrumentation/design.
+- **NO-GO** for mesh/surface improvement claims until true geometry metrics are available.
+
 ## 2026-06-05 03:42:30 CST - Completed rc_qp_angle10_sched Stage 1 analysis
 
 **Task claim and scope:**

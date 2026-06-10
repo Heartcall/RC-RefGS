@@ -21,3 +21,15 @@ Full-image PSNR/SSIM/LPIPS 与 reflective-region PSNR/SSIM/LPIPS 不应和 refle
 Safe claim：RC 在已完成 FD-P2-lite / non-Shiny-Real 设置下主要改善 cross-view reflection consistency，并且该收益需要与 full-image 和 reflective-region 渲染质量指标分开评价。
 
 Unsafe claim：RC 全面优于所有 baseline、必然提升 PSNR/SSIM/LPIPS、已在所有 reflective datasets 上完成验证，或必然提升 mesh quality。
+
+
+<!-- FULL_METRIC_TABLES:START -->
+## 6. Per-dataset full metric tables
+
+新增的 full metric tables 将主实验和消融实验拆分到 dataset、split、scene 与 method/variant 层级，避免只用 win-count 或平均 trade-off 概括结果。主实验表使用 Base 与 RC 的绝对指标值；消融表将 Base/RC 与 wo_ref、wo_conf、rough_only 放在同一 per-scene 表格中比较。所有 Avg. 行均在同一 dataset + split 内计算，消融表进一步按 variant 分开计算。缺失项以 “--” 显示并排除出平均值，因此这些表支持逐指标、逐范围的谨慎讨论，而不支持“所有指标全面提升”的结论。
+<!-- FULL_METRIC_TABLES:END -->
+<!-- GEOMETRY_EVALUATION:START -->
+## 7. Geometry / Mesh Quality 补测
+
+补测结果显示，当前 completed runs 只有 final point-cloud artifact 可用于 Level 3 proxy diagnostics；没有 accepted GT mesh / GT point cloud、没有 predicted mesh，也没有 saved rendered depth/normal buffers。因此，本结果包不能支持 mesh quality improvement claim。当前更安全的表述是：RC 的 consistency 改善尚未稳定转化为可验证的 surface / mesh quality 提升，后续需要 geometry-aware RC 或 mesh-aware RC filtering，并补充 Chamfer/F-score/normal/depth 指标。
+<!-- GEOMETRY_EVALUATION:END -->

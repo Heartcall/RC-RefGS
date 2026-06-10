@@ -27,3 +27,17 @@
 - main: source CSV lacks train_rc_delta_reflective_region_psnr; this metric is not expanded into cleaned_main_results.csv.
 - win-counts: reflective_region_psnr aggregate rows are retained from the win-count source table.
 - tradeoff: reflective_region_psnr evidence is retained in trade-off notes from the source table.
+
+
+<!-- FULL_METRIC_TABLES:START -->
+## Full Metric Tables By Dataset
+
+- Main absolute metrics source: `docs/superpowers/logs/rc-refgs-fd-p2-lite-final-main-summary-2026-06-01.csv`.
+- Main valid-pair count source: `docs/superpowers/logs/rc-refgs-fd-p2-lite-main-table-2026-05-29.csv`.
+- Ablation absolute metrics source: `docs/superpowers/logs/rc-refgs-fd-p2-lite-complete-metrics-ablation-table-2026-05-29.csv`.
+- The main full tables use absolute Base/RC values from the final main summary, not values reconstructed from deltas.
+- The ablation full tables combine Base/RC rows from the main absolute metrics with wo_ref/wo_conf/rough_only rows from the complete ablation table.
+- Averages are computed within dataset + split, and for ablations also within variant. Missing values are excluded from averages and displayed as `--` in LaTeX.
+- Source columns named `reflective_region_ssim` and `reflective_region_lpips` were not found; available `reflective_ssim` and `reflective_lpips` columns are retained under their source metric names.
+- The previously missing `reflective_region_psnr` delta is not reconstructed. Absolute `reflective_region_psnr` values are retained where present in the full metric sources.
+<!-- FULL_METRIC_TABLES:END -->

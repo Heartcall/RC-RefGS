@@ -1,0 +1,15 @@
+dataset,split,scene,notes,base_geometry_proxy_vertex_count,base_geometry_proxy_bbox_diag,base_geometry_proxy_vertex_count_delta_from_input,rc_geometry_proxy_vertex_count,rc_geometry_proxy_bbox_diag,rc_geometry_proxy_vertex_count_delta_from_input
+glossy_synthetic,all,angel,Model-level proxy metrics; no train/test-specific geometry.,170191,2.056682494393122,70191,170763,2.058790774944899,70763
+glossy_synthetic,all,bell,Model-level proxy metrics; no train/test-specific geometry.,72881,2.363923631903748,-27119,75282,2.36548100361723,-24718
+glossy_synthetic,all,cat,Model-level proxy metrics; no train/test-specific geometry.,69090,2.5151492232977146,-30910,66158,2.41639425476256,-33842
+glossy_synthetic,all,horse,Model-level proxy metrics; no train/test-specific geometry.,211650,2.1712656735729152,111650,204831,2.1716356365311995,104831
+glossy_synthetic,all,luyu,Model-level proxy metrics; no train/test-specific geometry.,155704,2.436008983017052,55704,166906,2.4309956207289236,66906
+glossy_synthetic,all,potion,Model-level proxy metrics; no train/test-specific geometry.,71997,2.764447009146561,-28003,73966,2.7665411157337596,-26034
+glossy_synthetic,all,tbell,Model-level proxy metrics; no train/test-specific geometry.,80006,2.657179025665908,-19994,79138,2.6540723335520098,-20862
+glossy_synthetic,all,teapot,Model-level proxy metrics; no train/test-specific geometry.,142774,2.489675449725394,42774,135908,2.4811154043492603,35908
+shiny_blender_synthetic,all,ball,Model-level proxy metrics; no train/test-specific geometry.,43555,3.457995544554162,-56445,43856,3.458759631915073,-56144
+shiny_blender_synthetic,all,car,Model-level proxy metrics; no train/test-specific geometry.,106794,2.7522671465756106,6794,102952,2.7454865590772584,2952
+shiny_blender_synthetic,all,coffee,Model-level proxy metrics; no train/test-specific geometry.,49223,3.215523413427645,-50777,50156,3.2141837518307477,-49844
+shiny_blender_synthetic,all,helmet,Model-level proxy metrics; no train/test-specific geometry.,60619,3.1117898624991978,-39381,60312,3.1134405101621865,-39688
+shiny_blender_synthetic,all,teapot,Model-level proxy metrics; no train/test-specific geometry.,21759,1.7836245357420664,-78241,20536,1.7852552131712587,-79464
+shiny_blender_synthetic,all,toaster,Model-level proxy metrics; no train/test-specific geometry.,139788,3.1264621081231807,39788,138856,3.131009540219261,38856

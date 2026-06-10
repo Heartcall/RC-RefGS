@@ -1,0 +1,29 @@
+\begin{table*}[t]
+\centering
+\caption{Reflective-region metric degradation summary. Positive improvement means RC is better after aligning metric directions.}
+\label{tab:diag_refl_metric_degradation}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllrrrlllllll}
+\toprule
+dataset & split & metric & win & loss & tie & mean\_improvement & median\_improvement & std\_improvement & min\_improvement & max\_improvement & worst\_scene & best\_scene \\
+\midrule
+glossy\_synthetic & train & Region PSNR & 3 & 5 & 0 & -0.094 & -0.024 & 0.325 & -0.800 & 0.260 & luyu (-0.800) & potion (0.260) \\
+glossy\_synthetic & train & Refl. PSNR & 3 & 5 & 0 & -0.102 & -0.070 & 0.228 & -0.649 & 0.119 & luyu (-0.649) & potion (0.119) \\
+glossy\_synthetic & train & Refl. SSIM & 5 & 3 & 0 & -0.000046 & 0.000071 & 0.000455 & -0.000676 & 0.000781 & luyu (-0.000676) & bell (0.000781) \\
+glossy\_synthetic & train & Refl. LPIPS & 2 & 6 & 0 & -0.000133 & -0.000225 & 0.000893 & -0.001706 & 0.001531 & luyu (-0.001706) & bell (0.001531) \\
+glossy\_synthetic & test & Region PSNR & 6 & 2 & 0 & 0.047 & 0.193 & 0.399 & -0.740 & 0.513 & luyu (-0.740) & angel (0.513) \\
+glossy\_synthetic & test & Refl. PSNR & 6 & 2 & 0 & -0.080 & 0.047 & 0.306 & -0.656 & 0.174 & luyu (-0.656) & potion (0.174) \\
+glossy\_synthetic & test & Refl. SSIM & 3 & 5 & 0 & -0.000239 & -0.000173 & 0.000882 & -0.001948 & 0.001185 & cat (-0.001948) & bell (0.001185) \\
+glossy\_synthetic & test & Refl. LPIPS & 4 & 4 & 0 & -0.000033 & 0.000084 & 0.001415 & -0.002417 & 0.002677 & luyu (-0.002417) & bell (0.002677) \\
+shiny\_blender\_synthetic & train & Region PSNR & 4 & 2 & 0 & 0.182 & 0.104 & 0.279 & -0.106 & 0.738 & coffee (-0.106) & teapot (0.738) \\
+shiny\_blender\_synthetic & train & Refl. PSNR & 3 & 3 & 0 & -0.055 & 0.015 & 0.585 & -1.153 & 0.787 & coffee (-1.153) & teapot (0.787) \\
+shiny\_blender\_synthetic & train & Refl. SSIM & 2 & 4 & 0 & -0.000215 & -0.000157 & 0.000465 & -0.001161 & 0.000341 & coffee (-0.001161) & toaster (0.000341) \\
+shiny\_blender\_synthetic & train & Refl. LPIPS & 2 & 4 & 0 & -0.000701 & -0.000255 & 0.001050 & -0.002788 & 0.000234 & ball (-0.002788) & toaster (0.000234) \\
+shiny\_blender\_synthetic & test & Region PSNR & 2 & 4 & 0 & -0.128 & -0.164 & 0.407 & -0.806 & 0.372 & coffee (-0.806) & teapot (0.372) \\
+shiny\_blender\_synthetic & test & Refl. PSNR & 4 & 2 & 0 & 0.016 & 0.057 & 0.177 & -0.251 & 0.290 & coffee (-0.251) & teapot (0.290) \\
+shiny\_blender\_synthetic & test & Refl. SSIM & 4 & 2 & 0 & -0.000163 & 0.000022 & 0.000461 & -0.001135 & 0.000289 & coffee (-0.001135) & car (0.000289) \\
+shiny\_blender\_synthetic & test & Refl. LPIPS & 2 & 4 & 0 & -0.000976 & -0.000372 & 0.001531 & -0.004307 & 0.000037 & ball (-0.004307) & teapot (0.000037) \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
