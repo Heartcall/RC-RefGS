@@ -116,6 +116,30 @@ def _require_render_keys(render_pkg, keys, package_name):
             raise KeyError(f"{package_name} render package missing required key: {key}")
 
 
+def _confidence_stats(weight, mask):
+    total = int(mask.numel())
+    valid = int(mask.sum().item())
+    if valid <= 0:
+        return {
+            "valid_pair_count": 0,
+            "valid_pixel_count": 0,
+            "total_pixel_count": total,
+            "valid_mask_ratio": 0.0,
+            "mean_confidence": 0.0,
+            "median_confidence": 0.0,
+        }
+
+    confidence = weight[mask]
+    return {
+        "valid_pair_count": 1,
+        "valid_pixel_count": valid,
+        "total_pixel_count": total,
+        "valid_mask_ratio": float(valid / max(total, 1)),
+        "mean_confidence": float(confidence.mean().detach().item()),
+        "median_confidence": float(confidence.median().detach().item()),
+    }
+
+
 def reflection_consistency_loss(
     src_pkg,
     tgt_pkg,
@@ -125,6 +149,8 @@ def reflection_consistency_loss(
     alpha_threshold=0.2,
     roughness_threshold=0.6,
     depth_tolerance=0.02,
+    detach_geometry=False,
+    return_diagnostics=False,
 ):
     _require_render_keys(
         src_pkg,
@@ -150,26 +176,37 @@ def reflection_consistency_loss(
 
     spec_src = src_pkg["spec_light"]
     spec_tgt = tgt_pkg["spec_light"]
-    depth_src = src_pkg["surf_depth"]
+    depth_src = src_pkg["surf_depth"].detach() if detach_geometry else src_pkg["surf_depth"]
 
     points = backproject_depth(src_cam, depth_src)
     grid, projected_depth, valid = project_points(tgt_cam, points)
+    if detach_geometry:
+        grid = grid.detach()
+        projected_depth = projected_depth.detach()
+        valid = valid.detach()
 
     sampled_spec = _sample_map(spec_tgt, grid)
-    sampled_alpha = _sample_map(tgt_pkg["rend_alpha"], grid)[:, :1]
-    sampled_depth = _sample_map(tgt_pkg["surf_depth"], grid)[:, :1]
+    tgt_alpha = tgt_pkg["rend_alpha"].detach() if detach_geometry else tgt_pkg["rend_alpha"]
+    tgt_depth = tgt_pkg["surf_depth"].detach() if detach_geometry else tgt_pkg["surf_depth"]
+    sampled_alpha = _sample_map(tgt_alpha, grid)[:, :1]
+    sampled_depth = _sample_map(tgt_depth, grid)[:, :1]
 
     src_spec = spec_src.reshape(spec_src.shape[0], -1).T
-    src_alpha = src_pkg["rend_alpha"].reshape(1, -1).T
-    src_roughness = src_pkg["roughness_map"].reshape(1, -1).T
+    src_alpha_map = src_pkg["rend_alpha"].detach() if detach_geometry else src_pkg["rend_alpha"]
+    src_roughness_map = src_pkg["roughness_map"].detach() if detach_geometry else src_pkg["roughness_map"]
+    src_alpha = src_alpha_map.reshape(1, -1).T
+    src_roughness = src_roughness_map.reshape(1, -1).T
 
+    src_rend_normal = src_pkg["rend_normal"].detach() if detach_geometry else src_pkg["rend_normal"]
+    src_surf_normal = src_pkg["surf_normal"].detach() if detach_geometry else src_pkg["surf_normal"]
     src_normal_agree = (
-        src_pkg["rend_normal"] * src_pkg["surf_normal"]
+        src_rend_normal * src_surf_normal
     ).sum(dim=0, keepdim=True).reshape(1, -1).T.clamp(0.0, 1.0)
 
     depth_scale = projected_depth.abs().clamp_min(1.0)
     depth_ok = (sampled_depth - projected_depth).abs() <= depth_tolerance * depth_scale
-    spec_conf = src_spec.mean(dim=-1, keepdim=True).clamp(0.0, 1.0) * (
+    src_spec_for_conf = src_spec.detach() if detach_geometry else src_spec
+    spec_conf = src_spec_for_conf.mean(dim=-1, keepdim=True).clamp(0.0, 1.0) * (
         1.0 - src_roughness.clamp(0.0, 1.0)
     ).pow(gamma)
 
@@ -183,9 +220,18 @@ def reflection_consistency_loss(
     )
 
     weight = mask.float() * src_alpha * sampled_alpha * src_normal_agree * spec_conf
+    if detach_geometry:
+        weight = weight.detach()
+        mask = mask.detach()
     weight_sum = weight.sum()
     if weight_sum <= 0:
-        return spec_src.new_zeros(())
+        loss = spec_src.new_zeros(())
+        if return_diagnostics:
+            return loss, _confidence_stats(weight, mask)
+        return loss
 
     residual = (src_spec.detach() - sampled_spec).abs().mean(dim=-1, keepdim=True)
-    return (residual * weight).sum() / weight_sum
+    loss = (residual * weight).sum() / weight_sum
+    if return_diagnostics:
+        return loss, _confidence_stats(weight, mask)
+    return loss

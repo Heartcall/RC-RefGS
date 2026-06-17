@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 def _extract_cuda_device(argv):
     if "--cuda_device" in argv:
@@ -57,6 +58,38 @@ def _prepare_gt_image(gt_image, bg):
         return gt_image[:3, ...]
     raise ValueError(f"Expected ground-truth image with >=3 channels, got shape {tuple(gt_image.shape)}")
 
+
+def _ref_consistency_target_lambda(opt):
+    max_lambda = getattr(opt, "ref_consistency_max_lambda", 0.0)
+    if max_lambda is not None and max_lambda > 0:
+        return float(max_lambda)
+    return float(getattr(opt, "lambda_ref_consistency", 0.0))
+
+
+def _effective_ref_consistency_lambda(
+    iteration,
+    lambda_ref_consistency,
+    ref_consistency_start,
+    ref_consistency_ramp_iters=0,
+    ref_consistency_max_lambda=0.0,
+):
+    target_lambda = ref_consistency_max_lambda if ref_consistency_max_lambda > 0 else lambda_ref_consistency
+    if target_lambda <= 0 or iteration < ref_consistency_start:
+        return 0.0
+    if ref_consistency_ramp_iters <= 0:
+        return float(target_lambda)
+
+    progress = (iteration - ref_consistency_start) / float(ref_consistency_ramp_iters)
+    progress = min(max(progress, 0.0), 1.0)
+    return float(target_lambda * progress)
+
+
+def _append_rc_training_diagnostics(model_path, payload):
+    path = os.path.join(model_path, "rc_training_diagnostics.jsonl")
+    with open(path, "a", encoding="utf-8") as handle:
+        handle.write(json.dumps(payload, sort_keys=True) + "\n")
+
+
 def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint):
     first_iter = 0
     tb_writer = prepare_output_and_logger(dataset)
@@ -83,6 +116,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
     ema_loss_for_log = 0.0
     ema_dist_for_log = 0.0
     ema_normal_for_log = 0.0
+    last_effective_ref_lambda = 0.0
+    last_raw_ref_loss = 0.0
 
     progress_bar = tqdm(range(first_iter, opt.iterations), desc="Training progress")
     first_iter += 1
@@ -137,18 +172,56 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
             roughness_smoothness_loss = tv_loss(render_pkg["roughness_map"][None])
             loss = loss + opt.lambda_roughness_smoothness * roughness_smoothness_loss
 
-        if opt.lambda_ref_consistency > 0 and iteration >= opt.ref_consistency_start and iteration % opt.ref_consistency_every == 0:
+        effective_ref_lambda = _effective_ref_consistency_lambda(
+            iteration,
+            opt.lambda_ref_consistency,
+            opt.ref_consistency_start,
+            getattr(opt, "ref_consistency_ramp_iters", 0),
+            getattr(opt, "ref_consistency_max_lambda", 0.0),
+        )
+        if (
+            _ref_consistency_target_lambda(opt) > 0
+            and effective_ref_lambda > 0
+            and iteration >= opt.ref_consistency_start
+            and opt.ref_consistency_every > 0
+            and iteration % opt.ref_consistency_every == 0
+        ):
             pair_cam = choose_pair_camera(viewpoint_stack, viewpoint_cam, opt.ref_consistency_max_angle)
             if pair_cam is not None:
                 pair_pkg = render(pair_cam, gaussians, pipe, bg, iteration=iteration)
-                ref_loss = reflection_consistency_loss(
+                ref_loss, ref_diagnostics = reflection_consistency_loss(
                     render_pkg,
                     pair_pkg,
                     viewpoint_cam,
                     pair_cam,
                     opt.ref_consistency_gamma,
+                    detach_geometry=opt.ref_consistency_detach_geometry,
+                    return_diagnostics=True,
                 )
-                loss = loss + opt.lambda_ref_consistency * ref_loss
+                weighted_ref_loss = effective_ref_lambda * ref_loss
+                loss = loss + weighted_ref_loss
+                last_effective_ref_lambda = float(effective_ref_lambda)
+                last_raw_ref_loss = float(ref_loss.detach().item())
+                _append_rc_training_diagnostics(
+                    dataset.model_path,
+                    {
+                        "iteration": int(iteration),
+                        "effective_lambda_ref_consistency": float(effective_ref_lambda),
+                        "raw_ref_consistency_loss": float(ref_loss.detach().item()),
+                        "weighted_ref_consistency_loss": float(weighted_ref_loss.detach().item()),
+                        "valid_pair_count": int(ref_diagnostics["valid_pair_count"]),
+                        "valid_pixel_count": int(ref_diagnostics["valid_pixel_count"]),
+                        "total_pixel_count": int(ref_diagnostics["total_pixel_count"]),
+                        "valid_mask_ratio": float(ref_diagnostics["valid_mask_ratio"]),
+                        "mean_confidence": float(ref_diagnostics["mean_confidence"]),
+                        "median_confidence": float(ref_diagnostics["median_confidence"]),
+                        "source_split": "train",
+                        "target_split": "train",
+                        "source_image_name": str(getattr(viewpoint_cam, "image_name", "")),
+                        "target_image_name": str(getattr(pair_cam, "image_name", "")),
+                        "detach_geometry": bool(opt.ref_consistency_detach_geometry),
+                    },
+                )
         
         # loss
         total_loss = loss
@@ -167,6 +240,8 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                     "Loss": f"{ema_loss_for_log:.{5}f}",
                     "distort": f"{ema_dist_for_log:.{5}f}",
                     "normal": f"{ema_normal_for_log:.{5}f}",
+                    "ref_lam": f"{last_effective_ref_lambda:.{5}f}",
+                    "ref_raw": f"{last_raw_ref_loss:.{5}f}",
                     "Points": f"{len(gaussians.get_xyz)}"
                 }
                 progress_bar.set_postfix(loss_dict)

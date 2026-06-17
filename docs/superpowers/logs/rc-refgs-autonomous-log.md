@@ -1,5 +1,137 @@
 # RC-RefGS Autonomous Log
 
+## 2026-06-17 01:00:00 CST - Conservative RC Method-Redesign Flags Window
+
+**Recovered state:**
+- Recovered current diagnostics boundary: geometry pipeline **GO**, stable RC mesh-quality improvement **NO-GO**, scene-dependent RC geometry behavior **GO**, module-level geometry contribution **NO-GO**.
+- Preserved existing uncommitted protocol-log edits from the geometry failure diagnostics window.
+- Did not modify or overwrite `paper_assets/geometry_gt/rerun_20260611/final_all/`.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Implement explicit, low-risk rc_detach_geometry and rc_late_start/ramp controls without launching training.”**
+
+**Code changes:**
+- `arguments/__init__.py`
+  - Added disabled-by-default `--ref_consistency_detach_geometry`.
+  - Added disabled-by-default `--ref_consistency_ramp_iters`.
+  - Added disabled-by-default `--ref_consistency_max_lambda`.
+- `utils/reflection_consistency.py`
+  - Added opt-in `detach_geometry` and `return_diagnostics` parameters.
+  - Default scalar-return behavior remains unchanged for existing callers.
+  - `detach_geometry=True` detaches source depth, target projection grid/depth check, alpha/depth confidence inputs, source roughness/normals, source spec confidence, final weight, and mask.
+  - Target `spec_light` remains differentiable.
+- `train.py`
+  - Added effective RC lambda helper and ramp schedule.
+  - Kept ramp disabled by default; with `ref_consistency_ramp_iters <= 0`, scheduled RC uses the target lambda immediately after `ref_consistency_start`, matching prior behavior.
+  - Added `rc_training_diagnostics.jsonl` append on RC loss events.
+  - Added progress-bar fields for effective RC lambda and raw RC loss.
+- `tests/test_reflection_consistency.py`
+  - Added gradient behavior coverage for detach mode.
+- `tests/test_rc_refgs_training_static.py`
+  - Added argument parsing, default compatibility, ramp schedule, training wiring, and diagnostics logging checks.
+
+**Analysis / planning files:**
+- `paper_assets/geometry_gt/rerun_20260611/final_diagnostics/analysis/rc_gradient_flow_audit_zh.md`
+- `paper_assets/geometry_gt/rerun_20260611/final_diagnostics/analysis/next_experiment_commands.md`
+
+**Safety:**
+- No training launched.
+- No full rerun launched.
+- No previous result files deleted or overwritten.
+- No default RC behavior changed unless new CLI flags are explicitly set.
+- No claim boundary upgraded.
+
+**Validation performed before final closeout:**
+- RED focused tests failed before implementation because `detach_geometry`, new args, ramp helper, and diagnostics logging were absent.
+- GREEN `python -m unittest tests/test_reflection_consistency.py tests/test_rc_refgs_training_static.py` -> pass (`20` tests; emitted a local CUDA-driver warning during CPU tensor backward).
+- `python -m py_compile train.py arguments/__init__.py utils/reflection_consistency.py gaussian_renderer/__init__.py` -> pass.
+- `python -m py_compile paper_assets/geometry_gt/rerun_20260611/final_diagnostics/scripts/generate_geometry_failure_diagnostics.py` -> pass.
+- Final `git diff --check` -> pass after protocol-log update.
+- Prohibited-process scan for training/eval/extraction launchers -> empty.
+- `git diff -- paper_assets/geometry_gt/rerun_20260611/final_all` -> empty.
+
+**Decision:**
+- GO for code-level readiness of explicit diagnostic variants.
+- GO for one-scene smoke only after explicit approval and runtime preflight.
+- CONDITIONAL GO for a 4-6 scene reduced experiment only after one-scene smoke succeeds.
+- SWITCH MODEL for deeper residual/specular-invariance redesign.
+- Stable RC mesh-quality improvement remains **NO-GO**.
+
+## 2026-06-17 00:00:00 CST - Geometry Failure-Mode Diagnostics and Optimization Plan Window
+
+**Recovered state:**
+- Recovered clean `git status` / empty `git diff --stat`.
+- Recovered coordination board and autonomous log.
+- Reused frozen geometry rerun artifacts under `paper_assets/geometry_gt/rerun_20260611/final_all/` and completed rerun JSONs under `output/rc_refgs_geometry_rerun/`.
+
+**Round-local task claim:**
+- Claimed exactly one task:
+  - **“Generate safe RC-RefGS geometry failure-mode diagnostics and an optimization plan without modifying train.py or renderer logic.”**
+
+**Actions taken:**
+- Added non-invasive diagnostic generator:
+  - `paper_assets/geometry_gt/rerun_20260611/final_diagnostics/scripts/generate_geometry_failure_diagnostics.py`
+- Added focused regression tests:
+  - `tests/test_geometry_failure_diagnostics.py`
+- Generated the diagnostics package under:
+  - `paper_assets/geometry_gt/rerun_20260611/final_diagnostics/`
+
+**Diagnostic inventory:**
+- Main scene rows: `14`.
+- Main metric rows used for direction-aligned deltas: `194`.
+- Ablation metric rows used for ranking/pairwise deltas: `970`.
+- Reflection consistency JSON rows joined: `56`.
+- Consistency-vs-geometry correlation rows: `30`.
+- All consistency/geometry correlations are weak by `|r| < 0.35`, so reflection consistency is not supported as a reliable geometry proxy.
+
+**Key generated artifacts:**
+- `data/main_base_vs_rc_geometry_delta_verified.csv`
+- `data/geometry_win_loss_by_metric.csv`
+- `data/geometry_dataset_level_delta.csv`
+- `data/geometry_scene_failure_modes.csv`
+- `data/ablation_rank_by_metric.csv`
+- `data/ablation_pairwise_delta.csv`
+- `data/rc_consistency_geometry_correlation.csv`
+- `data/metric_tradeoff_matrix.csv`
+- `figures/geometry_delta_heatmap.{png,pdf}`
+- `figures/rc_vs_base_chamfer_fscore_scatter.{png,pdf}`
+- `figures/consistency_vs_geometry_scatter.{png,pdf}`
+- `figures/ablation_rank_heatmap.{png,pdf}`
+- `analysis/failure_mode_analysis_zh.md`
+- `analysis/failure_mode_analysis.md`
+- `analysis/optimization_plan_zh.md`
+- `analysis/claim_boundary_update.md`
+- `analysis/code_logic_audit_zh.md`
+
+**Evidence boundary:**
+- Supported: geometry pipeline is complete and scene-dependent / mixed RC geometry behavior is evidenced.
+- Hypothesis: poor consistency-to-geometry transfer is likely driven by objective mismatch, view-dependent specular non-invariance, geometry-lighting ambiguity, mask/confidence noise, and schedule/loss-scale issues.
+- Unsupported: stable RC mesh-quality improvement and strong module-level geometry contribution.
+
+**Safety:**
+- No training launched.
+- No full 70-run rerun launched.
+- No completed rerun outputs deleted or overwritten.
+- No ICP/similarity alignment applied.
+- `train.py` and renderer logic were not modified.
+
+**Validation:**
+- `python -m py_compile paper_assets/geometry_gt/rerun_20260611/final_diagnostics/scripts/generate_geometry_failure_diagnostics.py` -> pass
+- `python -m unittest tests/test_geometry_failure_diagnostics.py` -> pass (`3` tests)
+- CSV header/row-count validation -> pass (`10` generated CSVs)
+- NaN/inf CSV scan -> pass (no matches)
+- Figure non-empty check -> pass (`8` files, all non-zero size)
+- Claim-boundary scan -> pass (`Stable RC mesh-quality improvement: NO-GO`)
+- `git diff --check` -> pass after protocol-log update.
+
+**Decision:**
+- Geometry pipeline: **GO**
+- Stable RC mesh-quality improvement: **NO-GO**
+- Scene-dependent RC geometry behavior: **GO**
+- Module-level geometry contribution: **NO-GO**
+- Next-model recommendation: **SWITCH MODEL** if method redesign beyond diagnostics is requested; **GO** if only more diagnostics/scripts remain.
+
 ## 2026-05-29 07:51:10 CST - FD Ablation Metric RGB Fix + Shiny Real Recovery Policy Window
 
 **Recovered state:**

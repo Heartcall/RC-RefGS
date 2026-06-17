@@ -1,8 +1,11 @@
 import unittest
 from pathlib import Path
 import ast
+from argparse import ArgumentParser
 
 import torch
+
+from arguments import OptimizationParams
 
 
 class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
@@ -36,6 +39,9 @@ class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
             "self.ref_consistency_every = 4",
             "self.ref_consistency_max_angle = 20.0",
             "self.ref_consistency_gamma = 2.0",
+            "self.ref_consistency_detach_geometry = False",
+            "self.ref_consistency_ramp_iters = 0",
+            "self.ref_consistency_max_lambda = 0.0",
             "self.lambda_roughness_smoothness = 0.0",
             "self.roughness_smoothness_start = 3000",
         ]
@@ -43,17 +49,87 @@ class ReflectionConsistencyTrainingGateTests(unittest.TestCase):
             with self.subTest(default=default):
                 self.assertIn(default, source)
 
+    def test_new_reflection_consistency_arguments_parse_with_backward_compatible_defaults(self):
+        parser = ArgumentParser()
+        OptimizationParams(parser)
+
+        defaults = parser.parse_args([])
+        self.assertFalse(defaults.ref_consistency_detach_geometry)
+        self.assertEqual(defaults.ref_consistency_ramp_iters, 0)
+        self.assertEqual(defaults.ref_consistency_max_lambda, 0.0)
+
+        parsed = parser.parse_args(
+            [
+                "--ref_consistency_detach_geometry",
+                "--ref_consistency_ramp_iters",
+                "5000",
+                "--ref_consistency_max_lambda",
+                "0.015",
+            ]
+        )
+        self.assertTrue(parsed.ref_consistency_detach_geometry)
+        self.assertEqual(parsed.ref_consistency_ramp_iters, 5000)
+        self.assertAlmostEqual(parsed.ref_consistency_max_lambda, 0.015)
+
     def test_train_uses_reflection_consistency_only_behind_ablation_gate(self):
         source = Path("train.py").read_text()
 
         required_snippets = [
             "from utils.reflection_consistency import choose_pair_camera, reflection_consistency_loss",
-            "opt.lambda_ref_consistency > 0",
+            "_ref_consistency_target_lambda(opt) > 0",
             "iteration >= opt.ref_consistency_start",
             "iteration % opt.ref_consistency_every == 0",
+            "_effective_ref_consistency_lambda(",
             "pair_cam = choose_pair_camera(",
             "reflection_consistency_loss(",
-            "loss = loss + opt.lambda_ref_consistency * ref_loss",
+            "detach_geometry=opt.ref_consistency_detach_geometry",
+            "return_diagnostics=True",
+            "loss = loss + weighted_ref_loss",
+        ]
+        for snippet in required_snippets:
+            with self.subTest(snippet=snippet):
+                self.assertIn(snippet, source)
+
+    def test_reflection_consistency_ramp_schedule_values(self):
+        source = Path("train.py").read_text()
+        module = ast.parse(source)
+        nodes = [
+            node
+            for node in module.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name in {"_ref_consistency_target_lambda", "_effective_ref_consistency_lambda"}
+        ]
+        self.assertEqual(len(nodes), 2)
+        compiled = compile(ast.Module(body=nodes, type_ignores=[]), filename="train.py", mode="exec")
+        scope = {}
+        exec(compiled, scope)
+        effective = scope["_effective_ref_consistency_lambda"]
+
+        self.assertEqual(effective(9999, 0.02, 10000, 0, 0.0), 0.0)
+        self.assertEqual(effective(10000, 0.02, 10000, 0, 0.0), 0.02)
+        self.assertEqual(effective(14999, 0.02, 10000, 0, 0.0), 0.02)
+
+        self.assertEqual(effective(14999, 0.02, 15000, 5000, 0.0), 0.0)
+        self.assertEqual(effective(15000, 0.02, 15000, 5000, 0.0), 0.0)
+        self.assertAlmostEqual(effective(17500, 0.02, 15000, 5000, 0.0), 0.01)
+        self.assertAlmostEqual(effective(20000, 0.02, 15000, 5000, 0.0), 0.02)
+        self.assertAlmostEqual(effective(17500, 0.02, 15000, 5000, 0.01), 0.005)
+
+    def test_train_writes_rc_training_diagnostics_jsonl(self):
+        source = Path("train.py").read_text()
+
+        required_snippets = [
+            "def _append_rc_training_diagnostics(",
+            "rc_training_diagnostics.jsonl",
+            '"effective_lambda_ref_consistency"',
+            '"raw_ref_consistency_loss"',
+            '"weighted_ref_consistency_loss"',
+            '"valid_pair_count"',
+            '"valid_mask_ratio"',
+            '"mean_confidence"',
+            '"median_confidence"',
+            '"source_split"',
+            '"target_split"',
         ]
         for snippet in required_snippets:
             with self.subTest(snippet=snippet):

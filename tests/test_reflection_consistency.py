@@ -143,6 +143,58 @@ class ReflectionConsistencyHelperTests(unittest.TestCase):
         ):
             rc.reflection_consistency_loss(src_pkg, tgt_pkg, cam, cam)
 
+    def test_detach_geometry_keeps_target_specular_trainable_but_detaches_geometry_confidence(self):
+        rc = _load_module()
+        cam = _dummy_camera(width=2, height=2)
+        src_pkg = _dummy_render_pkg()
+        tgt_pkg = _dummy_render_pkg()
+
+        src_pkg["spec_light"] = torch.full((3, 2, 2), 0.25, requires_grad=True)
+        src_pkg["rend_alpha"] = torch.ones(1, 2, 2, requires_grad=True)
+        src_pkg["roughness_map"] = torch.full((1, 2, 2), 0.1, requires_grad=True)
+        src_pkg["surf_depth"] = torch.ones(1, 2, 2, requires_grad=True)
+        src_pkg["rend_normal"] = src_pkg["rend_normal"].clone().requires_grad_(True)
+        src_pkg["surf_normal"] = src_pkg["surf_normal"].clone().requires_grad_(True)
+
+        tgt_pkg["spec_light"] = torch.tensor(
+            [
+                [[0.10, 0.20], [0.30, 0.40]],
+                [[0.20, 0.30], [0.40, 0.50]],
+                [[0.30, 0.40], [0.50, 0.60]],
+            ],
+            dtype=torch.float32,
+            requires_grad=True,
+        )
+        tgt_pkg["rend_alpha"] = torch.ones(1, 2, 2, requires_grad=True)
+        tgt_pkg["surf_depth"] = torch.ones(1, 2, 2, requires_grad=True)
+
+        loss, diagnostics = rc.reflection_consistency_loss(
+            src_pkg,
+            tgt_pkg,
+            cam,
+            cam,
+            detach_geometry=True,
+            return_diagnostics=True,
+        )
+        loss.backward()
+
+        self.assertGreater(float(loss.detach()), 0.0)
+        self.assertGreater(float(tgt_pkg["spec_light"].grad.abs().sum()), 0.0)
+        for tensor in (
+            src_pkg["spec_light"],
+            src_pkg["rend_alpha"],
+            src_pkg["roughness_map"],
+            src_pkg["surf_depth"],
+            src_pkg["rend_normal"],
+            src_pkg["surf_normal"],
+            tgt_pkg["rend_alpha"],
+            tgt_pkg["surf_depth"],
+        ):
+            self.assertIsNone(tensor.grad)
+        self.assertEqual(diagnostics["valid_pair_count"], 1)
+        self.assertGreater(diagnostics["valid_mask_ratio"], 0.0)
+        self.assertGreater(diagnostics["mean_confidence"], 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()
