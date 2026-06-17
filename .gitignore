@@ -17,3 +17,19 @@ __pycache__/
 build/
 dist/
 *.egg-info/
+
+# experiment outputs / large artifacts
+output/
+paper_assets/geometry_gt/
+paper_assets/geometry/.mplconfig/
+*.pth
+*.pt
+*.ply
+*.ckpt
+*.tar
+*.zip
+*.npy
+*.npz
+__pycache__/
+*.pyc
+PYTORCH_CUDA_ALLOC_CONF=*

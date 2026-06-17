@@ -7,7 +7,7 @@
 | RC improves reflective-region quality. | Mixed support. | Reflective-region win counts. | Available completed rows only. | Reflective-region quality has mixed metric-specific behavior. | RC always improves reflective-region PSNR/SSIM/LPIPS. |
 | Confidence weighting contributes to the RC behavior. | Trend-level support. | wo_conf ablation aggregate. | FD-P2-lite non-Shiny-Real ablation rows. | Removing confidence weighting weakens the observed consistency behavior in this scoped ablation. | Confidence weighting is always the dominant or sufficient factor. |
 | Roughness smoothness alone explains RC. | No. | rough_only ablation aggregate. | FD-P2-lite non-Shiny-Real ablation rows. | Roughness-only regularization does not reproduce the main RC consistency behavior. | Roughness smoothness is the theoretical core of RC. |
-| RC improves mesh quality. | No. | No independent geometry metric table in the result package. | Current available results. | Geometry filtering should be treated as an engineering extension requiring separate evaluation. | RC necessarily improves mesh or geometry quality. |
+| RC improves mesh quality. | No. | GT mapping/evaluator available, but 0/28 main and 0/70 ablation prediction rows are currently evaluable. | FD-P2-lite non-Shiny-Real completed-row manifest; historical prediction roots absent. | GT resources are available, but exact completed prediction geometry must be restored before true geometry can be evaluated. | RC necessarily improves mesh or geometry quality. |
 
 
 <!-- FULL_METRIC_TABLES:START -->
@@ -24,9 +24,15 @@
 <!-- GEOMETRY_EVALUATION:START -->
 ## Geometry / Mesh Quality Claim Boundary
 
-当前 geometry 补测只从已有 completed runs 的 final point-cloud PLY 中得到 Level 3 proxy diagnostics（vertex count、bbox diagonal、input-to-final vertex-count delta）。当前没有 accepted GT mesh / GT point cloud、没有已抽取 predicted mesh，也没有 saved rendered depth/normal buffers，因此 Chamfer、F-score、depth error、normal error 均不可计算。
+GT geometry 现已覆盖全部 14 个 scoped scenes：Glossy Synthetic 使用 8 个 `eval_pts.ply` GT point clouds，Shiny Blender Synthetic 使用 6 个 GT meshes。TRUE geometry evaluator 已实现 deterministic sampling、raw-coordinate Chamfer/accuracy/completeness 和 0.5%/1%/2% GT bbox 阈值 F-score，并将 similarity alignment 限定为显式 diagnostic。
 
-Safe wording: 当前结果不支持 RC 改善 mesh quality 的结论；RC 的 reflection consistency 改善仍需通过 geometry-aware / mesh-aware 评估验证。
+Historical boundary: exact May 27/28 prediction geometry is still unavailable, so the historical recovery package remains main `0/28` and ablation `0/70`; no historical average is reported and no `Ref-GS-I2` substitution is allowed.
+
+New-rerun smoke evidence: the separately labeled `shiny_blender_synthetic/ball` Base/RC smoke has two non-empty meshes and two finite raw-coordinate GT rows. Base/RC Chamfer-L1 is `0.0077380615/0.0077896341`; 0.5% F-score is `0.9990550/0.9989650`, with both equal to `1.0` at 1% and 2% thresholds. This validates the extraction/evaluation pipeline but does not show RC geometry improvement.
+
+Safe wording: GT resources and the repaired extraction/evaluation pipeline are operational for the ball smoke; current one-scene evidence shows comparable geometry with Base slightly better on primary Chamfer and strict-threshold F-score. Broader RC mesh-quality conclusions require separately reviewed multi-scene evidence.
 
 Unsafe wording: RC 必然改善 Chamfer、F-score、normal/depth error 或 mesh quality。
+
+New-rerun boundary: the ball Base/RC smoke is complete and isolated from historical outputs. Pipeline status is GO; automatic expansion to the remaining rerun matrix is NO-GO pending separate resource review, and the mesh-quality improvement claim remains NO-GO because the smoke does not favor RC on primary geometry metrics.
 <!-- GEOMETRY_EVALUATION:END -->

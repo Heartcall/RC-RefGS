@@ -79,6 +79,20 @@ def to_cam_open3d(viewpoint_stack):
     return camera_traj
 
 
+def _focus_point_fn(poses):
+    directions = poses[:, :3, 2:3]
+    directions = directions / np.linalg.norm(directions, axis=1, keepdims=True)
+    origins = poses[:, :3, 3:4]
+    identity = np.eye(3, dtype=poses.dtype)[None]
+    projection = identity - directions @ np.swapaxes(directions, -2, -1)
+    normal_matrix = np.swapaxes(projection, -2, -1) @ projection
+    focus = np.linalg.solve(
+        normal_matrix.mean(axis=0),
+        (normal_matrix @ origins).mean(axis=0),
+    )
+    return focus[:, 0]
+
+
 class GaussianExtractor(object):
     def __init__(self, gaussians, render, pipe, bg_color=None):
         """
@@ -140,11 +154,10 @@ class GaussianExtractor(object):
         """
         Estimate the bounding sphere given camera pose
         """
-        from utils.render_utils import transform_poses_pca, focus_point_fn
         torch.cuda.empty_cache()
         c2ws = np.array([np.linalg.inv(np.asarray((cam.world_view_transform.T).cpu().numpy())) for cam in self.viewpoint_stack])
         poses = c2ws[:,:3,:] @ np.diag([1, -1, -1, 1])
-        center = (focus_point_fn(poses))
+        center = _focus_point_fn(poses)
         self.radius = np.linalg.norm(c2ws[:,:3,3] - center, axis=-1).min()
         self.center = torch.from_numpy(center).float().cuda()
         print(f"The estimated bounding radius is {self.radius:.2f}")

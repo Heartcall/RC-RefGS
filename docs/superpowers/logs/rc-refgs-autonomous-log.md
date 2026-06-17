@@ -9050,3 +9050,213 @@ python scripts/run_rc_refgs_quality_preserving_pilot.py --output_root /tmp/rc_re
 - **CONDITIONAL GO** for runner hardening with exact manual CUDA blocker.
 - **NO-GO** for Stage 1 scientific conclusions, Stage 2, full 16-job pilot, 14-scene validation, Shiny Blender Real, or any quality-preserving/global superiority claim.
 - Released the round-local task claim at `2026-06-04 12:33:58 CST`.
+
+## 2026-06-11 16:49:14 CST - TRUE GT geometry evaluation supplement
+
+**Task claim and scope:**
+- Claimed exactly one task: supplement TRUE geometry evaluation for completed FD-P2-lite main and ablation experiments.
+- Did not launch training, rerun model optimization, fabricate missing values, mix image train/test splits, or substitute unrelated outputs.
+- Geometry rows use `split=scene_geometry` because one trained model produces one scene geometry; train/test image metrics are not duplicated.
+
+**State and resource audit:**
+- Recovered the authoritative completed scope from frozen paper tables: main `28` model rows (`14 x base/rc`) and ablation `70` model rows (`14 x base/rc/wo_ref/wo_conf/rough_only`).
+- Found GT for all `14` scenes:
+  - Glossy Synthetic: `8` `eval_pts.ply` GT point clouds under `GlossySyntheticConverted`.
+  - Shiny Blender Synthetic: `6` `<scene>_gt_mesh.ply` GT meshes.
+- Verified each Glossy `eval_pts.ply` is byte-identical to `points.ply`; excluded `points3d.ply` as initialization data.
+- Historical completed prediction roots `/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527` and `/tmp/rc_refgs_full_dataset_ablations_i31000_20260528` are absent.
+- Found six separate `Ref-GS-I2` baseline meshes, but excluded them because they are not provenance-matched Base/RC or ablation outputs.
+
+**Implementation:**
+- Added `paper_assets/geometry_gt/scripts/evaluate_gt_geometry.py`.
+- Implemented deterministic mesh surface sampling and point-cloud subsampling, bidirectional nearest-neighbor distances, Chamfer-L1/L2, accuracy, completeness, precision/recall/F-score at `0.5%`, `1%`, and `2%` of GT bbox diagonal, and normal metrics only when both sides have reliable normals.
+- Raw coordinates are primary. Optional similarity alignment is explicitly labeled `diagnostic_similarity_aligned` and never replaces raw metrics.
+- Added tests in `tests/test_evaluate_gt_geometry.py`.
+
+**Commands and outcomes:**
+- `python -m unittest tests/test_evaluate_gt_geometry.py -v` -> initial RED failure because evaluator file was absent; post-implementation targeted tests pass.
+- Real one-scene smoke: Glossy `angel/eval_pts.ply` against itself with `100000` requested points and seed `17` -> `36474` points used, Chamfer-L1/L2 `0`, F-score `1.0` at all thresholds, normal fields omitted.
+- `python paper_assets/geometry_gt/scripts/evaluate_gt_geometry.py --build-project-package --num-points 100000 --seed 17` -> main valid `0/28`, ablation valid `0/70`, exclusions `98`, GT mappings `14`, decision `NO-GO`.
+
+**Per-scene outcome:**
+- Glossy Synthetic `angel,bell,cat,horse,luyu,potion,tbell,teapot`: GT point cloud found; every applicable Base/RC/ablation group row excluded because the matched completed prediction path is absent.
+- Shiny Blender Synthetic `ball,car,coffee,helmet,teapot,toaster`: GT mesh found; every applicable Base/RC/ablation group row excluded because the matched completed prediction path is absent.
+
+**Generated artifacts:**
+- Audit/analysis: `paper_assets/geometry_gt/geometry_gt_evaluation_audit.md`, `geometry_gt_results_analysis_zh.md`, `geometry_gt_eval_summary.json`.
+- Data: six requested main/ablation CSVs plus `geometry_eval_exclusions.csv` and `geometry_eval_scene_gt_mapping.csv`.
+- Tables: `tableG1_main_geometry_metrics.tex`, `tableG2_ablation_geometry_metrics.tex`, `tableG3_geometry_claim_boundary.tex`.
+- Figures: `figG1_main_chamfer_by_scene.{pdf,png}`, `figG2_main_fscore_by_scene.{pdf,png}`, `figG3_ablation_geometry_heatmap.{pdf,png}`.
+- Figure G4 was not generated because zero valid true-geometry rows make a reflection-consistency trade-off join unsafe.
+
+**Decision and next action:**
+- **NO-GO** for RC mesh-quality improvement, Chamfer improvement, F-score improvement, or ablation geometry claims.
+- GT availability is no longer the blocker. Exact completed prediction geometry availability is the blocker.
+- Restore the exact completed model directories from durable backup, archive them outside `/tmp`, then rerun the evaluation-only package without training.
+- Recommended next model/window: Codex artifact-recovery + evaluation-only window; do not start a new training window.
+- Released the round-local task claim at `2026-06-11 16:49:14 CST`.
+
+**Final verification:**
+- Base Python: evaluator `py_compile` passed; `tests/test_evaluate_gt_geometry.py` passed (`6` tests).
+- `ref_gs` environment with project library path: existing geometry/extraction regression bundle passed (`7` tests).
+- Structured assertions: main `0/28`, ablation `0/70`, exclusions `98`, GT mappings `14/14` (`8` point clouds + `6` meshes), metric directions verified, no CSV NaN/inf, and averages restricted to valid rows.
+- Deterministic regeneration: `17` non-PDF generated artifacts had stable SHA-256 hashes across consecutive package runs.
+- Figure QA: all three generated PDFs parsed as one-page documents; PNGs were visually inspected; Figure G4 is absent by design because no safe join exists.
+- `git diff --check` passed; prohibited-process scan was empty.
+
+## 2026-06-11 17:46:11 CST - Completed prediction artifact recovery audit
+
+**Task claim and scope:**
+- Claimed exactly one task: recover exact completed FD-P2-lite main/ablation prediction artifacts for TRUE GT geometry evaluation.
+- Recovery and evaluation-only extraction were allowed; training, substitution, split changes, and use of `Ref-GS-I2` meshes were prohibited.
+
+**Search performed:**
+- Recovered the authoritative roots, paths, scene/variant map, and row counts from `paper_assets/geometry_gt`, frozen experiment tables, logs, and shell history.
+- Searched `/data/liuly` (`46G`), `/home/liuly` (`226G`), `/mnt/data`, repository outputs, `/tmp`, archives, symlinks, trash, `cfg_args`, checkpoints, cameras, point clouds, and mesh formats.
+- Both recorded roots are absent. `/mnt/data` is absent. No exact archive, backup link, iteration-31000 checkpoint, RC-bearing `cfg_args`, point cloud, or mesh was found.
+- The only iteration-31000 predictions found were six April `Ref-GS-I2` scenes; all were excluded as different-run artifacts.
+- The repository `output/rc_refgs_smoke/teapot_i1` contains only a one-iteration smoke `cfg_args` and was excluded as incomplete/unrelated.
+
+**Commands and outcomes:**
+- Exact-root and keyword directory searches -> `0` matching run directories.
+- Iteration-31000 point-cloud search -> `6` files, all under `Ref-GS-I2`, all excluded.
+- Date-window search for May 26-June 1 model artifacts -> dataset input point clouds only; no completed prediction artifact.
+- Checkpoint/archive/symlink/trash/config-content searches -> `0` provenance-matched candidates.
+- Shell-history audit -> run commands target the historical `/tmp` roots; no durable backup destination recorded.
+
+**Artifacts and decision:**
+- Added `paper_assets/geometry_gt/prediction_artifact_recovery_report.md` and the recovery execution plan.
+- Recovered artifacts: `0`; mesh extraction jobs: `0`; retraining jobs: `0`.
+- Coverage remains main `0/28`, ablation `0/70`, exclusions `98/98`.
+- **NO-GO** for mesh-quality improvement. Restoring an external backup is the only evaluation-only path; otherwise retraining is required as a separately approved new experiment.
+- Released the round-local task claim after verification.
+
+**Validation:**
+- `python -m py_compile paper_assets/geometry_gt/scripts/evaluate_gt_geometry.py` -> pass.
+- `python -m unittest tests/test_evaluate_gt_geometry.py -v` -> pass (`6` tests).
+- Corrected existing geometry/extraction regression bundle in `ref_gs` -> pass (`9` tests). An initial command named a nonexistent `tests/test_extract_meshes_for_completed_runs` module; repository inventory identified the actual smoke/static modules and the corrected command passed.
+- Structured assertions -> main `0/28`, ablation `0/70`, exclusions `98`, mappings `14`, and all 13 requested metric directions verified.
+- Empty metric tables contain no NaN/inf values and no averages are emitted.
+- `git diff --check` -> pass; no training, extraction, or evaluator process remained active.
+
+## 2026-06-11 19:14:40 CST - Durable geometry rerun planning
+
+**Task claim and scope:**
+- Claimed exactly one task: prepare and review a durable new-experiment rerun plan for TRUE GT geometry evaluation.
+- Planning/static validation only. No training, mesh extraction, metric execution, or `/tmp` output was started.
+
+**Plan:**
+- Added `paper_assets/geometry_gt/geometry_rerun_plan.md`.
+- Fixed scope: 14 scenes, seed 0, iteration 31000, 70 unique runs over `base,rc,wo_ref,wo_conf,rough_only`; Base/RC supply the 28-row main comparison and are reused in the 70-row ablation table.
+- Durable root: `/data/liuly/experiments/rc_refgs_geometry_rerun/`.
+- Paper results must use `paper_assets/geometry_gt/rerun_20260611/` and must not overwrite the historical recovery package.
+- Defined exact variant commands, per-scene sources/GT, per-run output paths, required artifacts, extraction/evaluation commands, runtime/storage estimates, and failure policy.
+
+**Static review findings:**
+- All 8 Glossy and 6 Shiny training transform pairs and all 14 GT geometries exist.
+- The broad full-dataset wrapper is unsuitable unchanged because it always expands Shiny Blender Real.
+- Current extraction planner and project-package evaluator still encode historical paths/output locations; rerun manifest/output-root support is required before execution.
+- `/data` has only 24 GB free versus an 80 GB minimum planning gate.
+- `nvidia-smi` cannot communicate with the NVIDIA driver in the current context.
+- Environment isolation was verified: GT evaluator tests pass in base Python (`6`), while extraction tests pass in `ref_gs` only with its library path pinned (`6`); Open3D then imports as version `0.17.0`.
+- Direct-launcher dry expansion produced exactly `30` Shiny jobs and `40` Glossy jobs, with one train and two reflection-metric commands per job; no durable probe directory was created.
+- Structured plan review confirmed `14` scenes, `70` unique runs, main `28` rows, ablation `70` rows, all requested artifacts/commands, and no `TBD`/`TODO` markers.
+- CUDA probe under `CUDA_VISIBLE_DEVICES=0` returned `torch_cuda_available=false`, `torch_device_count=0`.
+- `git diff --check` passed and no train/extraction/evaluator process remained active.
+
+**Decision:**
+- **NO-GO** to start training now.
+- After storage, CUDA, scoped-launcher, and non-overwriting evaluator gates pass: GO for a two-run `shiny_blender_synthetic/ball` Base/RC smoke only.
+- Full 70-run execution remains review-gated after smoke mesh extraction and finite GT metrics.
+
+## 2026-06-11 20:01:11 CST - Durable geometry rerun infrastructure and dry-run validation
+
+**Task claim and scope:**
+- Claimed exactly one task: implement the new geometry-rerun launcher, manifest-aware mesh extraction, and isolated manifest-driven GT evaluator interfaces.
+- Infrastructure, tests, and dry runs only. No training, mesh extraction, checkpoint restoration, or true geometry metric computation from model predictions was started.
+
+**Implemented interfaces:**
+- Added `scripts/run_rc_refgs_geometry_rerun.py` with fixed 14-scene/5-variant expansion, `--dry-run`, `--subset ball_base_rc_smoke`, explicit `--execute`, confirmation token, CUDA/free-space/source/path gates, and durable artifact fields.
+- Extended `paper_assets/geometry/scripts/extract_meshes_for_completed_runs.py` with `--manifest`, durable prediction-root planning, explicit incomplete-row exclusions, and `prediction_mesh_manifest.csv` output. Ref-GS-I2 substitution is prohibited.
+- Extended `paper_assets/geometry_gt/scripts/evaluate_gt_geometry.py` with `--prediction-manifest`, `--gt-mapping`, `--output-root`, and `--split`; rerun package output is isolated under `paper_assets/geometry_gt/rerun_20260611/` and raw-coordinate evaluation remains primary without silent ICP.
+- Added focused tests in `tests/test_geometry_rerun_launcher.py` and `tests/test_geometry_rerun_mesh_manifest.py`; extended `tests/test_evaluate_gt_geometry.py`.
+
+**Dry-run and manifest outcomes:**
+- Full launcher dry run generated exactly `70` jobs at seed `0`, iteration `31000`: `40` Glossy Synthetic and `30` Shiny Blender Synthetic.
+- Ball Base/RC smoke dry run generated exactly `2` jobs and no training process.
+- Mesh planner read the 70-job manifest and emitted `70` explicit `run manifest row is not completed: planned` exclusions because no rerun training artifacts exist yet.
+- Evaluator manifest join wrote an isolated zero-result package with main `0/28`, ablation `0/70`, exclusions `98`, `raw_coordinates_primary=true`, `silent_icp_applied=false`, and decision `NO-GO`.
+
+**Validation:**
+- Launcher tests passed (`6`), extraction-manifest tests passed (`1`), and evaluator tests passed (`8`), for `15` focused tests total.
+- Manifest row/path assertions confirmed `70` full rows, `2` smoke rows, durable `/data/liuly/experiments/rc_refgs_geometry_rerun/runs/` model paths, and no `/tmp` training output.
+- Current `/data` free space remains approximately `23.3 GiB`, below the `80 GiB` launch gate.
+- `nvidia-smi` lists eight idle GPUs, but the required `ref_gs` PyTorch runtime reports `torch_cuda_available=false` and `torch_device_count=0`; no smoke execution was attempted.
+- Existing extraction regressions passed (`6`), Python compilation passed, row/path/finite checks passed, and `git diff --check` passed.
+
+**Decision:**
+- **GO** for rerun infrastructure and dry-run readiness.
+- **NO-GO** to start the ball Base/RC smoke while both storage and CUDA gates fail; explicit user approval remains required even after those gates pass.
+- Mesh-quality claim remains **NO-GO** until valid raw-coordinate Chamfer/F-score results exist.
+
+## 2026-06-11 23:06:26 CST - Geometry rerun runtime readiness audit
+
+**Task claim and scope:**
+- Claimed exactly one task: diagnose and document disk-space and CUDA/PyTorch readiness gates for the durable geometry rerun.
+- Read-only runtime audit and documentation only. No training, mesh extraction, file deletion, data movement, package installation, or PyTorch reinstall was performed.
+
+**Disk audit:**
+- `/data` has exactly `25,016,840,192` bytes (`23.30 GiB`) free versus the `80 GiB` requirement.
+- `/data/liuly` contains approximately `46 GiB` total: dataset `42G`, old outputs `4.3G`, priors `104K`; the rerun experiment directory does not yet exist.
+- Required current geometry sources are `GlossySyntheticConverted` (`853M`) and `Shiny Blender Synthetic` (`5.1G`); both are protected.
+- Three files exceed 1 GiB: `ref_real.zip` (5.10 GB), `nerf_synthetic.zip` (1.27 GB), and `GlossySynthetic.tar.gz` (1.19 GB). They are archive/unknown candidates and were not deleted.
+- No documented disposable cache was found under `/data/liuly`.
+- Even deleting all of `/data/liuly` would not reach `80 GiB`; filesystem-level capacity relief or a different durable volume is required.
+
+**CUDA/PyTorch audit:**
+- Exact authoritative command context: `conda run -n ref_gs`.
+- Python `/home/liuly/anaconda3/envs/ref_gs/bin/python`, Python `3.7.16`, PyTorch `1.12.1`, CUDA runtime `11.3`, CUDA available `true`, device count `8`, GPU 0 `NVIDIA RTX A5000`.
+- Driver `535.247.01` reports CUDA `12.2`; installed packages include CUDA-enabled PyTorch and `cudatoolkit 11.3.1`.
+- PyTorch is not CPU-only and no reinstall is justified. Earlier false negatives were caused by a restricted command context without `/dev/nvidia*`; the activated host runtime passes.
+- At audit time GPUs 0 and 7 were idle, while GPUs 1-6 were occupied by unrelated processes. Occupancy must be checked again before any approved execution.
+
+**Consolidated gate:**
+- Disk >= 80 GiB: fail (`23.30 GiB`).
+- CUDA available and device count > 0: pass in exact activated environment.
+- Durable output-root safety: pass.
+- Ball Base/RC dry-run expansion: pass (`2` jobs).
+- Explicit execution approval: absent.
+- Overall: **NO-GO** for ball smoke; mesh-quality claim remains **NO-GO**.
+
+**Artifacts:**
+- `paper_assets/geometry_gt/rerun_20260611/runtime_disk_audit.md`
+- `paper_assets/geometry_gt/rerun_20260611/runtime_cuda_audit.md`
+- `paper_assets/geometry_gt/rerun_20260611/runtime_readiness_report.md`
+
+## 2026-06-12 07:19:15 CST - Ball Base/RC smoke mesh extraction and GT evaluation
+
+**Task claim and scope:**
+- Continued exactly one task: repair smoke mesh extraction for the already completed `shiny_blender_synthetic/ball` Base/RC runs and execute GT geometry evaluation only if both meshes were non-empty.
+- No training, output deletion, historical artifact substitution, `/tmp` output root, or fabricated metric was used.
+
+**Root causes and fixes:**
+- `GaussianExtractor` required renderer key `render`, while the RC renderer exposes `pbr_rgb`; `extract_mesh.py` now adapts `pbr_rgb` to the extractor contract locally.
+- Mesh extraction now forces a non-debug renderer iteration so it does not rewrite tracked `result/*.png`; the pre-task Base first-camera debug-image state was restored after diagnosis.
+- `utils.mesh_utils.estimate_bounding_sphere()` imported nonexistent `utils.render_utils`; the required focus-point least-squares helper is now local and tested.
+- The wrapper forced `train`, aborted on the first subprocess failure, and could skip manifest persistence; it now preserves requested `split=both`, records `failed_exit_<code>` plus log path, continues per row, and writes the manifest in `finally`.
+- Prediction roots now accept absolute non-temporary paths while rejecting relative paths and `/tmp`, `/var/tmp`, and `/dev/shm`; Matplotlib cache is pinned under the repository.
+- The initial successful renderer pass produced zero-vertex meshes because `depth_trunc=3.0` was below the logged minimum `8.06`; the wrapper now passes `depth_trunc=10.0`.
+- The evaluator now accepts isolated descendants such as `rerun_20260611/smoke_ball_base_rc` while still rejecting legacy output roots.
+
+**Smoke result:**
+- Prediction manifest: exactly `2` rows, both `completed`, `split=both`, `depth_trunc=10.0`.
+- Base mesh: `output/rc_refgs_geometry_rerun/pred_meshes/shiny_blender_synthetic/ball/base/seed_0/mesh_iter31000.ply` (`61,955,417` bytes).
+- RC mesh: `output/rc_refgs_geometry_rerun/pred_meshes/shiny_blender_synthetic/ball/rc/seed_0/mesh_iter31000.ply` (`61,931,673` bytes).
+- GT evaluation: `2/2` valid main rows, `100000` sampled points, raw coordinates, no silent ICP, no coordinate mismatch, all reported numeric metrics finite.
+- Base: Chamfer-L1 `0.0077380615`, Chamfer-L2 `0.0000654435`, F-score `0.9990550/1.0/1.0` at `0.5%/1%/2%` GT-bbox thresholds.
+- RC: Chamfer-L1 `0.0077896341`, Chamfer-L2 `0.0000663342`, F-score `0.9989650/1.0/1.0` at `0.5%/1%/2%` thresholds.
+
+**Decision:**
+- **GO** for the repaired smoke extraction and GT evaluation pipeline.
+- **NO-GO** for automatic expansion beyond smoke: RC is slightly worse than Base on both Chamfer metrics and the strict `0.5%` F-score, and broader execution remains a separately reviewed resource decision.
+- **NO-GO** for an RC mesh-quality improvement claim; the current evidence is one-scene smoke only and does not show a primary geometry improvement.

@@ -3,4 +3,4 @@ experiment_group,expected_runs,completed_runs,valid_metrics,failed_oom_excluded,
 "Ablation variants, FD-P2-lite non-Shiny-Real",42,42,42,0,"wo_ref, wo_conf and rough_only completed for non-Shiny-Real scope.",Yes: scoped diagnostic ablation trends.
 Full FD-P2 including Shiny Real main cells,34,29,29,5,Shiny Blender Real cells were incomplete/OOM and excluded.,No: do not claim complete full-dataset validation.
 Full ablation including Shiny Real cells,51,42,42,9,Shiny Blender Real ablation cells were incomplete/OOM and excluded.,No: do not generalize ablation to Shiny Real.
-Independent mesh or geometry-quality evaluation,0,0,0,0,No independent geometry-quality table is available in this result package.,No: do not claim mesh-quality improvement.
+Independent true GT geometry evaluation group rows,98,0,0,98,"GT maps to all 14 scenes; recovery found 0 exact predictions. New 70-job rerun infrastructure is dry-run ready, but no training artifact exists and Ref-GS-I2 remains excluded.",No: do not claim mesh-quality improvement; storage/CUDA gates and an explicitly approved new smoke rerun are still required.

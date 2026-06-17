@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 import shlex
+import subprocess
 from pathlib import Path
 
 import pandas as pd
@@ -22,6 +24,14 @@ MAIN_ROOT = Path("/tmp/rc_refgs_full_dataset_base_rc_i31000_20260527")
 ABLATION_ROOT = Path("/tmp/rc_refgs_full_dataset_ablations_i31000_20260528")
 OUT_DIR = REPO_ROOT / "paper_assets/geometry/mesh_extraction_plans"
 ITERATION = 31000
+DEFAULT_DEPTH_TRUNC = 10.0
+RERUN_ROOT = Path("/data/liuly/experiments/rc_refgs_geometry_rerun")
+RERUN_PREDICTION_ROOT = RERUN_ROOT / "pred_meshes"
+RERUN_MANIFEST_OUTPUT = (
+    REPO_ROOT
+    / "paper_assets/geometry_gt/rerun_20260611/data/prediction_mesh_manifest.csv"
+)
+REF_GS_PYTHON = Path("/home/liuly/anaconda3/envs/ref_gs/bin/python")
 
 
 def _nested_model_dir(seed_dir: Path) -> Path:
@@ -46,9 +56,17 @@ def _expected_runs():
         yield "ablation", row.dataset, row.scene, row.variant, _nested_model_dir(root / row.dataset / row.scene / row.variant / "seed_0")
 
 
-def _command(model_path: Path, output_mesh: Path, split: str, cuda_device: str | None, dry_run: bool) -> str:
+def _command(
+    model_path: Path,
+    output_mesh: Path,
+    split: str,
+    cuda_device: str | None,
+    dry_run: bool,
+    python_executable: str = "python",
+    depth_trunc: float = DEFAULT_DEPTH_TRUNC,
+) -> str:
     argv = [
-        "python",
+        str(python_executable),
         "extract_mesh.py",
         "--model_path",
         str(model_path),
@@ -60,6 +78,8 @@ def _command(model_path: Path, output_mesh: Path, split: str, cuda_device: str |
         split,
         "--mesh_mode",
         "bounded",
+        "--depth_trunc",
+        str(depth_trunc),
         "--summary_json",
         str(output_mesh.with_suffix(".summary.json")),
         "--check_imports",
@@ -72,14 +92,238 @@ def _command(model_path: Path, output_mesh: Path, split: str, cuda_device: str |
     return " ".join(shlex.quote(part) for part in argv)
 
 
+def _is_below(path: Path, root: Path) -> bool:
+    path = path.resolve(strict=False)
+    root = root.resolve(strict=False)
+    return path == root or root in path.parents
+
+
+def _manifest_point_cloud(row: dict, model_path: Path, iteration: int) -> Path:
+    explicit = row.get("point_cloud_path", "").strip()
+    candidates = []
+    if explicit:
+        candidates.append(Path(explicit))
+    candidates.append(model_path / "point_cloud" / f"iteration_{iteration}" / "point_cloud.ply")
+    if model_path.exists():
+        candidates.extend(
+            sorted(model_path.glob(f"*/point_cloud/iteration_{iteration}/point_cloud.ply"))
+        )
+    return next((path for path in candidates if path.is_file()), candidates[0])
+
+
+def _manifest_rows(
+    manifest: Path,
+    prediction_root: Path,
+    split: str,
+    cuda_device: str | None,
+    python_executable: Path,
+    depth_trunc: float,
+):
+    with manifest.open(newline="", encoding="utf-8") as handle:
+        source_rows = list(csv.DictReader(handle))
+    rows = []
+    for source in source_rows:
+        dataset = source.get("dataset", "").strip()
+        scene = source.get("scene", "").strip()
+        variant = source.get("variant", "").strip()
+        seed = int(source.get("seed", "0") or 0)
+        iteration = int(source.get("iteration", str(ITERATION)) or ITERATION)
+        model_path = Path(source.get("model_path", ""))
+        point_cloud = _manifest_point_cloud(source, model_path, iteration)
+        output_mesh = (
+            prediction_root
+            / dataset
+            / scene
+            / variant
+            / f"seed_{seed}"
+            / f"mesh_iter{iteration}.ply"
+        )
+        summary_path = output_mesh.with_suffix(".summary.json")
+        extraction_log = model_path / "logs" / f"extract_mesh_iter{iteration}.log"
+        reason = ""
+        if "Ref-GS-I2" in str(model_path):
+            status = "excluded"
+            reason = "unrelated Ref-GS-I2 artifact is prohibited"
+        elif source.get("status", "").strip().lower() not in {"completed", "skipped_complete"}:
+            status = "excluded"
+            reason = "run manifest row is not completed: {}".format(
+                source.get("status", "").strip() or "missing status"
+            )
+        elif not point_cloud.is_file():
+            checkpoint = Path(source.get("checkpoint_path", "")) if source.get("checkpoint_path") else None
+            status = "excluded"
+            if checkpoint is not None and checkpoint.is_file():
+                reason = "checkpoint present but final point_cloud.ply is missing"
+            else:
+                reason = "missing final point_cloud.ply"
+        elif not (model_path / "cfg_args").is_file():
+            status = "excluded"
+            reason = "missing cfg_args"
+        elif output_mesh.is_file() and output_mesh.stat().st_size > 0:
+            status = "completed"
+            reason = "existing durable mesh"
+        else:
+            status = "planned"
+        command = _command(
+            model_path,
+            output_mesh,
+            split,
+            cuda_device,
+            dry_run=True,
+            python_executable=str(python_executable),
+            depth_trunc=depth_trunc,
+        )
+        rows.append(
+            {
+                "dataset": dataset,
+                "scene": scene,
+                "split": split,
+                "variant": variant,
+                "seed": seed,
+                "iteration": iteration,
+                "model_path": str(model_path),
+                "point_cloud_path": str(point_cloud),
+                "prediction_path": str(output_mesh),
+                "summary_path": str(summary_path),
+                "extraction_log_path": str(extraction_log),
+                "cuda_device": cuda_device or "",
+                "depth_trunc": depth_trunc,
+                "status": status,
+                "reason": reason,
+                "command": command,
+            }
+        )
+    return rows
+
+
+def _write_rows(path: Path, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fields = list(rows[0]) if rows else [
+        "dataset", "scene", "split", "variant", "seed", "iteration",
+        "model_path", "point_cloud_path", "prediction_path", "summary_path",
+        "extraction_log_path", "cuda_device", "status", "reason", "command",
+    ]
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+
+def _validate_prediction_root(prediction_root: Path) -> Path:
+    prediction_root = Path(prediction_root)
+
+    if not prediction_root.is_absolute():
+        raise SystemExit("Execution refused: --prediction-root must be an absolute path")
+
+    prediction_root = prediction_root.resolve(strict=False)
+
+    forbidden_roots = [
+        Path("/tmp").resolve(strict=False),
+        Path("/var/tmp").resolve(strict=False),
+        Path("/dev/shm").resolve(strict=False),
+    ]
+
+    for root in forbidden_roots:
+        if prediction_root == root or root in prediction_root.parents:
+            raise SystemExit(
+                f"Execution refused: prediction root must not be under temporary root {root}"
+            )
+
+    return prediction_root
+
+def _execute_manifest_rows(rows: list[dict], prediction_root: Path, python_executable: Path) -> None:
+    prediction_root = _validate_prediction_root(prediction_root)
+
+    env = os.environ.copy()
+    ref_lib = "/home/liuly/anaconda3/envs/ref_gs/lib"
+    env["LD_LIBRARY_PATH"] = ref_lib + (
+        ":" + env["LD_LIBRARY_PATH"] if env.get("LD_LIBRARY_PATH") else ""
+    )
+    mpl_config_dir = REPO_ROOT / "paper_assets/geometry/.mplconfig"
+    mpl_config_dir.mkdir(parents=True, exist_ok=True)
+    env["MPLCONFIGDIR"] = str(mpl_config_dir)
+    for row in rows:
+        if row["status"] != "planned":
+            continue
+        output_mesh = Path(row["prediction_path"])
+        output_mesh.parent.mkdir(parents=True, exist_ok=True)
+        argv = [
+            str(python_executable),
+            "extract_mesh.py",
+            "--model_path", row["model_path"],
+            "--iteration", str(row["iteration"]),
+            "--output_mesh", row["prediction_path"],
+            "--split", row["split"],
+            "--mesh_mode", "bounded",
+            "--depth_trunc", str(row["depth_trunc"]),
+            "--summary_json", row["summary_path"],
+            "--check_imports",
+            "--check_open3d",
+        ]
+        if row.get("cuda_device"):
+            argv.extend(["--cuda_device", row["cuda_device"]])
+        extraction_log = Path(row["extraction_log_path"])
+        extraction_log.parent.mkdir(parents=True, exist_ok=True)
+        with extraction_log.open("a", encoding="utf-8") as handle:
+            try:
+                subprocess.run(
+                    argv,
+                    cwd=str(REPO_ROOT),
+                    env=env,
+                    stdout=handle,
+                    stderr=subprocess.STDOUT,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as exc:
+                row["status"] = f"failed_exit_{exc.returncode}"
+                row["reason"] = (
+                    f"extract_mesh.py exited with exit code {exc.returncode}; "
+                    f"see log {extraction_log}"
+                )
+                continue
+        if output_mesh.is_file() and output_mesh.stat().st_size > 0:
+            row["status"] = "completed"
+            row["reason"] = ""
+        else:
+            row["status"] = "failed_no_mesh"
+            row["reason"] = "mesh extraction completed without a non-empty mesh"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Plan mesh extraction for completed RC-RefGS rows.")
     parser.add_argument("--execute", action="store_true", help="Actually execute extraction commands. Default is dry-run planning only.")
+    parser.add_argument("--manifest", type=Path, default=None)
+    parser.add_argument("--prediction-root", type=Path, default=RERUN_PREDICTION_ROOT)
+    parser.add_argument("--manifest-output", type=Path, default=RERUN_MANIFEST_OUTPUT)
+    parser.add_argument("--python-executable", type=Path, default=REF_GS_PYTHON)
     parser.add_argument("--limit_scenes", nargs="*", default=None)
     parser.add_argument("--skip_existing", action="store_true")
     parser.add_argument("--split", default="train", choices=["train", "test", "both"])
     parser.add_argument("--cuda_device", default=None)
+    parser.add_argument("--depth_trunc", type=float, default=DEFAULT_DEPTH_TRUNC)
     args = parser.parse_args()
+
+    if args.manifest is not None:
+        rows = _manifest_rows(
+            args.manifest,
+            args.prediction_root,
+            args.split,
+            args.cuda_device,
+            args.python_executable,
+            args.depth_trunc,
+        )
+        try:
+            if args.execute:
+                _execute_manifest_rows(rows, args.prediction_root, args.python_executable)
+        finally:
+            _write_rows(args.manifest_output, rows)
+        counts = {}
+        for row in rows:
+            counts[row["status"]] = counts.get(row["status"], 0) + 1
+        print(
+            f"Wrote {args.manifest_output} rows={len(rows)} "
+            f"status={counts}"
+        )
+        return 0
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     rows = []
@@ -94,12 +338,20 @@ def main() -> int:
             status = "missing_point_cloud"
         else:
             status = "planned" if not args.execute else "not_executed_by_guard"
-        command = _command(model_path, output_mesh, args.split, args.cuda_device, dry_run=not args.execute)
+        command = _command(
+            model_path,
+            output_mesh,
+            args.split,
+            args.cuda_device,
+            dry_run=not args.execute,
+            depth_trunc=args.depth_trunc,
+        )
         rows.append(
             {
                 "group": group,
                 "dataset": dataset,
                 "scene": scene,
+                "extraction_split": args.split,
                 "variant": variant,
                 "model_path": str(model_path),
                 "point_cloud": str(point_cloud),

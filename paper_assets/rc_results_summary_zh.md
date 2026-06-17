@@ -14,7 +14,7 @@ Full-image PSNR/SSIM/LPIPS 与 reflective-region PSNR/SSIM/LPIPS 不应和 refle
 
 ## 4. 实验覆盖与限制
 
-当前可用于论文主结论的范围是 FD-P2-lite / non-Shiny-Real / 已完成 runs。Shiny Blender Real 的 incomplete/OOM 单元被排除，不能写成完整验证；full FD-P2 与 full ablation 也不能据此宣称全部完成。当前结果包没有独立几何或 mesh quality 指标，因此不能主张 RC 必然改善几何质量或 mesh quality。
+当前可用于论文主结论的范围是 FD-P2-lite / non-Shiny-Real / 已完成 runs。Shiny Blender Real 的 incomplete/OOM 单元被排除，不能写成完整验证；full FD-P2 与 full ablation 也不能据此宣称全部完成。GT geometry 已覆盖 14 个 scoped scenes，但 completed main/ablation runs 的历史 `/tmp` prediction artifacts 当前已不存在，因此 TRUE geometry evaluation 没有有效结果行，仍不能主张 RC 改善几何质量或 mesh quality。
 
 ## 5. 论文安全表述
 
@@ -31,5 +31,9 @@ Unsafe claim：RC 全面优于所有 baseline、必然提升 PSNR/SSIM/LPIPS、�
 <!-- GEOMETRY_EVALUATION:START -->
 ## 7. Geometry / Mesh Quality 补测
 
-补测结果显示，当前 completed runs 只有 final point-cloud artifact 可用于 Level 3 proxy diagnostics；没有 accepted GT mesh / GT point cloud、没有 predicted mesh，也没有 saved rendered depth/normal buffers。因此，本结果包不能支持 mesh quality improvement claim。当前更安全的表述是：RC 的 consistency 改善尚未稳定转化为可验证的 surface / mesh quality 提升，后续需要 geometry-aware RC 或 mesh-aware RC filtering，并补充 Chamfer/F-score/normal/depth 指标。
+新的 GT audit 已将 8 个 Glossy Synthetic scenes 映射到 `eval_pts.ply` GT point clouds，并将 6 个 Shiny Blender Synthetic scenes 映射到 `<scene>_gt_mesh.ply` GT meshes，GT 覆盖为 14/14。评估脚本已实现 raw-coordinate Chamfer-L1/L2、accuracy、completeness、0.5%/1%/2% GT bbox 阈值下的 precision/recall/F-score，以及可靠 normals 存在时的 normal metrics。
+
+但是，完成实验原先位于 `/tmp/rc_refgs_full_dataset_*` 的 prediction point clouds / meshes 当前已不存在。后续 recovery audit 恢复 exact historical artifacts 数量为 0；独立 `Ref-GS-I2` baseline meshes 属于不同 runs，未被替代使用。因此历史 package 仍是 main 0/28、ablation 0/70。与该 recovery package 分离的新 rerun smoke 已完成 `shiny_blender_synthetic/ball` Base/RC 两行：两个 mesh 均非空，raw-coordinate GT evaluation 为 2/2 valid rows，且未检测到 coordinate mismatch。
+
+Smoke 指标为：Base Chamfer-L1/L2 `0.0077380615/0.0000654435`，RC `0.0077896341/0.0000663342`；0.5% GT-bbox F-score 为 Base `0.9990550`、RC `0.9989650`，1% 和 2% 阈值下两者均为 `1.0`。因此 extraction/evaluation pipeline 为 **GO**，但 RC 在主要 Chamfer 与严格 F-score 上没有优于 Base。自动扩展到 smoke 之外仍为 **NO-GO**，RC mesh-quality improvement claim 仍为 **NO-GO**；后续更大范围实验必须单独进行资源与证据审查。
 <!-- GEOMETRY_EVALUATION:END -->

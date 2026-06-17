@@ -1,4 +1,5 @@
 import json
+import numpy as np
 import subprocess
 import sys
 import tempfile
@@ -6,7 +7,44 @@ import unittest
 from pathlib import Path
 
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
 class ExtractMeshStaticTests(unittest.TestCase):
+    def test_focus_point_helper_recovers_common_camera_target(self):
+        import utils.mesh_utils as mesh_utils
+
+        self.assertTrue(hasattr(mesh_utils, "_focus_point_fn"))
+        poses = np.zeros((3, 3, 4), dtype=np.float64)
+        poses[0, :, 2] = [-1.0, 0.0, 0.0]
+        poses[0, :, 3] = [1.0, 0.0, 0.0]
+        poses[1, :, 2] = [0.0, -1.0, 0.0]
+        poses[1, :, 3] = [0.0, 1.0, 0.0]
+        poses[2, :, 2] = [0.0, 0.0, -1.0]
+        poses[2, :, 3] = [0.0, 0.0, 1.0]
+
+        np.testing.assert_allclose(mesh_utils._focus_point_fn(poses), np.zeros(3), atol=1e-8)
+
+    def test_mesh_render_adapter_uses_pbr_rgb_when_render_is_absent(self):
+        import extract_mesh
+
+        self.assertTrue(hasattr(extract_mesh, "_render_for_mesh_extraction"))
+        render_for_mesh_extraction = extract_mesh._render_for_mesh_extraction
+
+        pbr_rgb = object()
+        seen_kwargs = {}
+
+        def renderer(*args, **kwargs):
+            seen_kwargs.update(kwargs)
+            return {"pbr_rgb": pbr_rgb, "rend_alpha": object()}
+
+        render_pkg = render_for_mesh_extraction(renderer)("camera", "gaussians")
+
+        self.assertIs(render_pkg["render"], pbr_rgb)
+        self.assertIs(render_pkg["pbr_rgb"], pbr_rgb)
+        self.assertIn("iteration", seen_kwargs)
+        self.assertEqual(seen_kwargs["iteration"], 1)
+
     def test_extract_mesh_entrypoint_contract(self):
         script = Path("extract_mesh.py")
         self.assertTrue(script.exists(), "extract_mesh.py is missing")
@@ -41,7 +79,7 @@ class ExtractMeshStaticTests(unittest.TestCase):
                 self.assertIn(snippet, source)
 
     def test_extract_mesh_dry_run_summary_reports_expected_paths(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as tmpdir:
             tmpdir_path = Path(tmpdir)
             model_path = tmpdir_path / "model"
             point_cloud_dir = model_path / "point_cloud" / "iteration_300"
@@ -96,7 +134,7 @@ class ExtractMeshStaticTests(unittest.TestCase):
             self.assertIn("point_cloud.ply", "\n".join(summary["expected_inputs"]))
 
     def test_extract_mesh_open3d_preflight_is_non_crashing(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as tmpdir:
             tmpdir_path = Path(tmpdir)
             model_path = tmpdir_path / "model"
             point_cloud_dir = model_path / "point_cloud" / "iteration_300"
@@ -144,7 +182,7 @@ class ExtractMeshStaticTests(unittest.TestCase):
             self.assertIn("recommended_ld_library_path_prefix", summary["open3d_info"])
 
     def test_extract_mesh_dry_run_can_emit_runtime_command_plan(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory(dir=REPO_ROOT) as tmpdir:
             tmpdir_path = Path(tmpdir)
             model_path = tmpdir_path / "model"
             point_cloud_dir = model_path / "point_cloud" / "iteration_300"

@@ -157,6 +157,20 @@ def _camera_list(scene, split):
     return cameras
 
 
+def _render_for_mesh_extraction(render_fn):
+    def wrapped_render(*args, **kwargs):
+        kwargs.setdefault("iteration", 1)
+        render_pkg = render_fn(*args, **kwargs)
+        if "render" not in render_pkg:
+            if "pbr_rgb" not in render_pkg:
+                raise KeyError("mesh extraction requires renderer output 'render' or 'pbr_rgb'")
+            render_pkg = dict(render_pkg)
+            render_pkg["render"] = render_pkg["pbr_rgb"]
+        return render_pkg
+
+    return wrapped_render
+
+
 def _run_extraction(args, lp, pp):
     import torch
     import open3d as o3d
@@ -173,7 +187,12 @@ def _run_extraction(args, lp, pp):
     scene = Scene(dataset, gaussians, load_iteration=args.iteration, shuffle=False, resolution_scales=[1.0])
     bg_color = [1.0, 1.0, 1.0] if dataset.white_background else [0.0, 0.0, 0.0]
 
-    extractor = GaussianExtractor(gaussians, render, pipe, bg_color=bg_color)
+    extractor = GaussianExtractor(
+        gaussians,
+        _render_for_mesh_extraction(render),
+        pipe,
+        bg_color=bg_color,
+    )
     cameras = _camera_list(scene, args.split)
     if not cameras:
         raise ValueError(f"No cameras available for split '{args.split}'")
